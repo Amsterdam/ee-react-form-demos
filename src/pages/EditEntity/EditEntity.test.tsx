@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
-import Contact from './Contact';
+import EditEntity from './EditEntity';
 
-describe('Contact', () => {
+describe('EditEntity', () => {
   it('renders the component', () => {
-    const { container } = render(<Contact />);
+    const { container } = render(<EditEntity />);
     expect(container.firstChild).toBeDefined();
   });
 
   it('has the expected content', () => {
-    const { container } = render(<Contact />);
+    const { container } = render(<EditEntity />);
     expect(container.textContent).toEqual('Contact');
   });
 });

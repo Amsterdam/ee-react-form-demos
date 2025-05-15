@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
-import Home from './Home';
+import CreateEntity from './CreateEntity';
 
-describe('Home', () => {
+describe('CreateEntity', () => {
   it('renders the component', () => {
-    const { container } = render(<Home />);
+    const { container } = render(<CreateEntity />);
     expect(container.firstChild).toBeDefined();
   });
 
   it('has the expected content', () => {
-    const { container } = render(<Home />);
+    const { container } = render(<CreateEntity />);
     expect(container.textContent?.trim()).toEqual('Home');
   });
 });

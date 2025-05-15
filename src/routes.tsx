@@ -1,6 +1,6 @@
 import App from '@/containers/App/App';
-import Home from '@/pages/Home/Home';
-import Contact from '@/pages/Contact/Contact';
+import CreateEntity from '@/pages/CreateEntity/CreateEntity';
+import EditEntity from '@/pages/EditEntity/EditEntity';
 
 const routes = [
   {
@@ -8,11 +8,11 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: <CreateEntity />,
       },
       {
-        path: 'contact',
-        element: <Contact />,
+        path: 'edit',
+        element: <EditEntity />,
       },
       // {
       //   path: '*',
