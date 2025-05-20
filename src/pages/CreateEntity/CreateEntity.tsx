@@ -3,9 +3,10 @@ import styles from './styles.module.css';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import FormTextInput from '@/components/FormTextInput/FormTextInput';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { EntityFormData } from '@/types';
 import FormTextarea from '@/components/FormTextarea/FormTextarea';
+import FormRepeaterInput from '@/components/FormRepeaterInput/FormRepeaterInput';
 
 // apiVersion: backstage.io/v1alpha1
 // kind: Component
@@ -40,6 +41,7 @@ const Home = () => {
     kind: 'Component',
     name: 'ee-docs',
     description: 'The primary app for developers.amsterdam',
+    tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
   } as EntityFormData);
 
   // const [formState, formAction] = useActionState(submitEntityForm);
@@ -116,13 +118,20 @@ const Home = () => {
           <FormTextInput
             label="Name"
             description="Textinput description text goes here..."
-            // value={formState.name}
+            value={formData.name}
             // onChange={handleChange}
           />
 
           <FormTextarea
             label="Description"
             description="Textarea description text goes here..."
+            value={formData.description}
+          />
+
+          <FormRepeaterInput
+            label="Repeater"
+            initialValues={formData.tags}
+            onChange={(tags: string[]) => setFormData({ ...formData, tags })}
           />
 
           <div>

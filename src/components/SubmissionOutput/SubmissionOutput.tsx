@@ -43,8 +43,8 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
     kind: formData.kind,
     metadata: {
       name: formData.name,
-      description: 'The primary app for developers.amsterdam',
-      tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
+      description: formData.description,
+      tags: formData.tags,
       annotations: {
         'backstage.io/source-location':
           'url:https://github.com/amsterdam/ee-docs/',
@@ -89,6 +89,6 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
       </SyntaxHighlighter>
     </Grid.Cell>
   );
-}
+};
 
 export default SubmissionOutput;

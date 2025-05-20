@@ -15,7 +15,7 @@ interface FormSelectProps {
 // TODO dynamic IDs
 // TOOD is name necessary? useful for accessibility?
 const FormSelect = ({ label, description, options }: FormSelectProps) => (
-  <Field>
+  <Field className="ams-mb-m">
     <Label htmlFor="input2">{label}</Label>
     {description && (
       <Paragraph id="description2" size="small">

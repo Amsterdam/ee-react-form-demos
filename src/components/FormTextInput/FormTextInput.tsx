@@ -9,17 +9,17 @@ import {
 interface FormTextInputProps {
   label: string;
   description?: string;
-  // value: string;
+  value: string;
   error?: string;
 }
 
 const FormTextInput = ({
   label,
   description,
-  // value,
+  value,
   error,
 }: FormTextInputProps) => (
-  <Field invalid={!!error}>
+  <Field className="ams-mb-m" invalid={!!error}>
     <Label htmlFor="input3">{label}</Label>
     {description && (
       <Paragraph id="description2" size="small">
@@ -30,7 +30,7 @@ const FormTextInput = ({
     <TextInput
       aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
       id="input3"
-      // value={value}
+      value={value}
       invalid={!!error}
       name="name"
     />
