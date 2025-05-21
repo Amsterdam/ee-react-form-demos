@@ -7,6 +7,7 @@ import { FormEvent, useState } from 'react';
 import { EntityFormData } from '@/types';
 import FormTextarea from '@/components/FormTextarea/FormTextarea';
 import FormRepeaterInput from '@/components/FormRepeaterInput/FormRepeaterInput';
+import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 
 // apiVersion: backstage.io/v1alpha1
 // kind: Component
@@ -133,6 +134,8 @@ const Home = () => {
             initialValues={formData.tags}
             onChange={(tags: string[]) => setFormData({ ...formData, tags })}
           />
+
+          <FormAutoSelect label="Auto select" />
 
           <div>
             <Button type="submit">Versturen</Button>
