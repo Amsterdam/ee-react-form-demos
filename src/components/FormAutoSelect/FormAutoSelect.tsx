@@ -18,6 +18,9 @@ interface FormAutoSelectProps {
   label: string;
 }
 
+// TODO fix height
+// TODO fix chevron height + color
+// TODO dropdown menu option font-size
 const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
   <Field className="ams-mb-xs">
     <label htmlFor="input5">{label}</label>
@@ -27,6 +30,10 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
       className="react-select__container"
       classNamePrefix="react-select"
       styles={{
+        container: (baseStyles, state) => ({
+          ...baseStyles,
+          outline: state.isFocused ? '1px solid rgb(0, 95, 204)' : '0',
+        }),
         clearIndicator: baseStyles => ({
           ...baseStyles,
           color: 'rgb(102, 102, 102)',
@@ -34,24 +41,23 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
         input: baseStyles => ({
           ...baseStyles,
           color: 'var(--ams-text-input-color)',
-          // background: 'var(--ams-text-input-background-color)',
           background: 'transparent',
+          font: 'var(--ams-text-input-font-weight) var(--ams-text-input-font-size) var(--ams-text-input-font-family)',
+          lineHeight: 'var(--ams-text-input-line-height)',
+          margin: '0px',
           opacity: 1,
           width: '100%',
-          // gridArea: '1 / 2',
-          font: 'var(--ams-text-input-font-weight) var(--ams-text-input-font-size) var(--ams-text-input-font-family)',
-          // minWidth: '2px',
-          // border: '0px',
-          margin: '0px',
-          // outline: '0px',
           padding: '0',
-          // '0 calc(var(--ams-text-input-padding-block) * 2)',
         }),
         option: (baseStyles, state) => ({
           ...baseStyles,
           backgroundColor: state.isFocused
             ? 'rgb(222, 235, 255)'
             : 'transparent',
+          fontSize: 'var(--ams-text-input-font-size)',
+          // Hack to ensure background container box-shadow 'border' displays
+          // marginLeft: '1px',
+          // width: 'calc(100% - 2px)',
         }),
       }}
       isClearable
@@ -59,6 +65,7 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
         ClearIndicator,
         DropdownIndicator,
       }}
+      noOptionsMessage={() => 'Geen opties'}
     />
   </Field>
 );

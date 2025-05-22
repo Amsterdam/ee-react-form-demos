@@ -1,22 +1,25 @@
 /* stylelint-disable selector-class-pattern */
+// Some styles for this class are defined in the component
 .react-select__container {
+  box-shadow: var(--ams-text-input-box-shadow);
+  outline-offset: var(--ams-text-area-outline-offset);
   width: 100%;
+
+  &:hover {
+    box-shadow: var(--ams-text-input-hover-box-shadow);
+  }
+
+  &--is-focused {
+    box-shadow: var(--ams-text-input-hover-box-shadow);
+  }
 }
 
+// This inherits styling
 .react-select__control {
-  box-shadow: var(--ams-text-input-box-shadow);
-  box-sizing: border-box;
-  display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
+  line-height: var(--ams-text-input-line-height);
   padding-block: var(--ams-text-input-padding-block);
   padding-inline: var(--ams-text-input-padding-inline) 0;
-  transition: 100ms;
-
-  .ams-text-input {
-    background: transparent;
-    box-shadow: none;
-  }
 }
 
 .react-select__placeholder {
@@ -26,11 +29,11 @@
   font-size: var(--ams-text-input-font-size);
   font-weight: var(--ams-text-input-font-weight);
   grid-area: 1 / 1 / 2 / 3;
-  position: absolute;
+  // position: absolute;
 }
 
 .react-select__indicator {
-  padding: var(--ams-text-input-padding-inline);
+  padding: 0 var(--ams-text-input-padding-inline);
 
   svg {
     height: 1em;
@@ -38,9 +41,10 @@
   }
 }
 
+// Some styles for this class are defined in the component
 .react-select__clear-indicator {
   box-sizing: border-box;
-  color: rgb(204, 204, 204);
+  // color: rgb(204, 204, 204);
   display: flex;
 }
 
@@ -48,17 +52,21 @@
   align-self: stretch;
   background-color: rgb(204, 204, 204);
   box-sizing: border-box;
-  margin-bottom: 8px;
-  margin-top: 8px;
+  // margin-bottom: 8px;
+  // margin-top: 8px;
   width: 1px;
 }
 
 .react-select__menu {
   background: #fff;
-  border: 1px solid #000;
+  // border: 1px solid #000;
+  box-shadow: var(--ams-text-input-box-shadow);
+  padding: 1px;
 }
 
+// Some styles need to be defined in the component
 .react-select__option {
+  box-shadow: 0 var(--ams-text-input-hover-box-shadow);
   font-family: var(--ams-text-input-font-family);
   font-size: var(--ams-text-input-font-size);
   font-weight: var(--ams-text-input-font-weight);
@@ -113,4 +121,12 @@
   font-size: var(--ams-text-input-font-size);
   font-weight: var(--ams-text-input-font-weight);
   min-width: 0;
+}
+
+.react-select__menu-notice {
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  line-height: var(--ams-text-input-line-height);
+  padding-block: var(--ams-text-input-padding-block);
 }
