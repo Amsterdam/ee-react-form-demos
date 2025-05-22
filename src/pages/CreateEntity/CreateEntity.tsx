@@ -1,5 +1,4 @@
 import { Button, Grid, Heading } from '@amsterdam/design-system-react';
-import styles from './styles.module.css';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import FormTextInput from '@/components/FormTextInput/FormTextInput';
@@ -8,6 +7,7 @@ import { EntityFormData } from '@/types';
 import FormTextarea from '@/components/FormTextarea/FormTextarea';
 import FormRepeaterInput from '@/components/FormRepeaterInput/FormRepeaterInput';
 import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
+// import styles from './styles.module.css';
 
 // apiVersion: backstage.io/v1alpha1
 // kind: Component

@@ -16,7 +16,7 @@ const FormTextarea = ({
   label,
   description,
   value,
-  error,
+  // error,
 }: FormTextareaProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor="body">{label}</Label>

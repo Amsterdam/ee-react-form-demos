@@ -1,7 +1,8 @@
 import { Field } from '@amsterdam/design-system-react';
 import Select from 'react-select';
+import ClearIndicator from './ClearIndicator';
+import DropdownIndicator from './DropdownIndicator';
 import './styles.scss';
-import CustomInput from './CustomInput';
 
 const options = [
   {
@@ -17,7 +18,6 @@ interface FormAutoSelectProps {
   label: string;
 }
 
-// TODO dropdown indicator - use designsystem chevron icon
 const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
   <Field className="ams-mb-xs">
     <label htmlFor="input5">{label}</label>
@@ -26,23 +26,39 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
       unstyled
       className="react-select__container"
       classNamePrefix="react-select"
-      // styles={{
-      //   input: (baseStyles, state) => ({
-      //     ...baseStyles,
-      //     color: 'var(--ams-text-input-color)',
-      //     background: 'var(--ams-text-input-background-color)',
-      //     opacity: 1,
-      //     width: '100%',
-      //     // gridArea: '1 / 2',
-      //     // font: 'var(--ams-text-input-font-weight) var(--ams-text-input-font-size) var(--ams-text-input-font-family)',
-      //     // minWidth: '2px',
-      //     // border: '0px',
-      //     margin: '0px',
-      //     // outline: '0px',
-      //     padding: 'var(--ams-text-input-padding-block)',
-      //   }),
-      // }}
-      // components={{ Input: CustomInput }}
+      styles={{
+        clearIndicator: baseStyles => ({
+          ...baseStyles,
+          color: 'rgb(102, 102, 102)',
+        }),
+        input: baseStyles => ({
+          ...baseStyles,
+          color: 'var(--ams-text-input-color)',
+          // background: 'var(--ams-text-input-background-color)',
+          background: 'transparent',
+          opacity: 1,
+          width: '100%',
+          // gridArea: '1 / 2',
+          font: 'var(--ams-text-input-font-weight) var(--ams-text-input-font-size) var(--ams-text-input-font-family)',
+          // minWidth: '2px',
+          // border: '0px',
+          margin: '0px',
+          // outline: '0px',
+          padding: '0',
+          // '0 calc(var(--ams-text-input-padding-block) * 2)',
+        }),
+        option: (baseStyles, state) => ({
+          ...baseStyles,
+          backgroundColor: state.isFocused
+            ? 'rgb(222, 235, 255)'
+            : 'transparent',
+        }),
+      }}
+      isClearable
+      components={{
+        ClearIndicator,
+        DropdownIndicator,
+      }}
     />
   </Field>
 );

@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 .react-select__container {
   width: 100%;
 }
@@ -8,62 +9,62 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  padding-block: var(--ams-text-input-padding-block);
+  padding-inline: var(--ams-text-input-padding-inline) 0;
   transition: 100ms;
-  // width: 100%;
-
-  // &--is-focused {
-  //   .ams-text-input {
-  //     max-width: 2px;
-  //   }
-  // }
 
   .ams-text-input {
     background: transparent;
     box-shadow: none;
-    // box-shadow: inset 0 1px 0 var(--ams-border-width-s) var(--ams-color-interactive-secondary),
-    //   inset -1px 0 0 var(--ams-border-width-s) var(--ams-color-interactive-secondary),
-    //   inset 0 -1px 0 var(--ams-border-width-s) var(--ams-color-interactive-secondary);
   }
 }
 
 .react-select__placeholder {
-  color: var(--ams-text-input-color);
+  box-sizing: border-box;
+  color: var(--ams-text-input-placeholder-color);
   font-family: var(--ams-text-input-font-family);
   font-size: var(--ams-text-input-font-size);
   font-weight: var(--ams-text-input-font-weight);
-  left: calc(var(--ams-text-input-padding-block) * 2);
+  grid-area: 1 / 1 / 2 / 3;
   position: absolute;
+}
 
-    grid-area: 1 / 1 / 2 / 3;
-    color: rgb(128, 128, 128);
-    margin-left: 2px;
-    margin-right: 2px;
-    box-sizing: border-box;
+.react-select__indicator {
+  padding: var(--ams-text-input-padding-inline);
+
+  svg {
+    height: 1em;
+    width: 1em;
+  }
+}
+
+.react-select__clear-indicator {
+  box-sizing: border-box;
+  color: rgb(204, 204, 204);
+  display: flex;
 }
 
 .react-select__indicator-separator {
   align-self: stretch;
-  width: 1px;
   background-color: rgb(204, 204, 204);
+  box-sizing: border-box;
   margin-bottom: 8px;
   margin-top: 8px;
-  box-sizing: border-box;
-}
-
-.react-select__dropdown-indicator {
-  padding-inline: calc(var(--ams-text-input-padding-inline) * 0.5);
+  width: 1px;
 }
 
 .react-select__menu {
   background: #fff;
   border: 1px solid #000;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
 }
 
 .react-select__option {
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  line-height: var(--ams-text-input-line-height);
   padding-block: var(--ams-text-input-padding-block);
   padding-inline: var(--ams-text-input-padding-inline);
-
 
   &:active {
     background-color: rgb(178, 212, 255);
@@ -72,42 +73,44 @@
 
 .react-select__select__value-container {
   align-items: center;
+  box-sizing: border-box;
   display: grid;
   flex: 1 1 0%;
   flex-wrap: wrap;
-  position: relative;
   overflow: hidden;
   padding: 2px 8px;
-  box-sizing: border-box;
+  position: relative;
 
   &--has-value {
     align-items: center;
+    box-sizing: border-box;
     display: grid;
     flex: 1 1 0%;
     flex-wrap: wrap;
-    position: relative;
     overflow: hidden;
     padding: 2px 8px;
-    box-sizing: border-box;
+    position: relative;
   }
 
   &--is-multi {
     align-items: center;
+    box-sizing: border-box;
     display: flex;
     flex: 1 1 0%;
     flex-wrap: wrap;
-    position: relative;
     overflow: hidden;
     padding: 2px 8px;
-    box-sizing: border-box;
+    position: relative;
   }
 }
 
 .react-select__single-value {
-  background-color: rgb(230, 230, 230);
   border-radius: 2px;
   box-sizing: border-box;
+  color: var(--ams-text-input-color);
   display: flex;
-  margin: 2px;
-  min-width: 0px;
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  min-width: 0;
 }
