@@ -18,17 +18,27 @@ interface FormAutoSelectProps {
   label: string;
 }
 
-// TODO fix height
-// TODO fix chevron height + color
-// TODO dropdown menu option font-size
+// TODO isDisabled state
+// TODO isMulti state
+
+// The following props are untested:
+// - isLoading
+// - isRtl
 const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
   <Field className="ams-mb-xs">
     <label htmlFor="input5">{label}</label>
     <Select
       options={options}
+      isClearable
+      isDisabled
       unstyled
       className="react-select__container"
       classNamePrefix="react-select"
+      components={{
+        ClearIndicator,
+        DropdownIndicator,
+      }}
+      noOptionsMessage={() => 'Geen opties'}
       styles={{
         container: (baseStyles, state) => ({
           ...baseStyles,
@@ -40,14 +50,14 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
         }),
         input: baseStyles => ({
           ...baseStyles,
-          color: 'var(--ams-text-input-color)',
           background: 'transparent',
+          color: 'var(--ams-text-input-color)',
           font: 'var(--ams-text-input-font-weight) var(--ams-text-input-font-size) var(--ams-text-input-font-family)',
           lineHeight: 'var(--ams-text-input-line-height)',
           margin: '0px',
           opacity: 1,
-          width: '100%',
           padding: '0',
+          width: '100%',
         }),
         option: (baseStyles, state) => ({
           ...baseStyles,
@@ -55,17 +65,8 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
             ? 'rgb(222, 235, 255)'
             : 'transparent',
           fontSize: 'var(--ams-text-input-font-size)',
-          // Hack to ensure background container box-shadow 'border' displays
-          // marginLeft: '1px',
-          // width: 'calc(100% - 2px)',
         }),
       }}
-      isClearable
-      components={{
-        ClearIndicator,
-        DropdownIndicator,
-      }}
-      noOptionsMessage={() => 'Geen opties'}
     />
   </Field>
 );
