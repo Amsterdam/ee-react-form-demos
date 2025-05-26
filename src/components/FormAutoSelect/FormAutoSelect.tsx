@@ -18,7 +18,6 @@ interface FormAutoSelectProps {
   label: string;
 }
 
-// TODO isDisabled state
 // TODO isMulti state
 
 // The following props are untested:
@@ -30,7 +29,6 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
     <Select
       options={options}
       isClearable
-      isDisabled
       unstyled
       className="react-select__container"
       classNamePrefix="react-select"

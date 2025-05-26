@@ -1,5 +1,27 @@
 /* stylelint-disable selector-class-pattern */
 // Some styles for this class are defined in the component
+.react-select {
+  &--is-disabled {
+    &.react-select__container {
+      box-shadow: var(--ams-select-disabled-box-shadow);
+      pointer-events: all;
+
+      /* stylelint-disable-next-line max-nesting-depth */
+      &:hover {
+        box-shadow: var(--ams-select-disabled-box-shadow);
+      }
+    }
+
+    .react-select__placeholder {
+      color: var(--ams-select-disabled-color);
+    }
+
+    .react-select__dropdown-indicator {
+      fill: var(--ams-select-disabled-color);
+    }
+  }
+}
+
 .react-select__container {
   box-shadow: var(--ams-text-input-box-shadow);
   outline-offset: var(--ams-text-area-outline-offset);
@@ -20,6 +42,11 @@
   line-height: var(--ams-text-input-line-height);
   padding-block: var(--ams-text-input-padding-block);
   padding-inline: var(--ams-text-input-padding-inline) 0;
+
+  &--is-disabled {
+    color: var(--ams-select-disabled-color);
+    cursor: var(--ams-select-disabled-cursor) !important;
+  }
 }
 
 .react-select__placeholder {
@@ -29,7 +56,6 @@
   font-size: var(--ams-text-input-font-size);
   font-weight: var(--ams-text-input-font-weight);
   grid-area: 1 / 1 / 2 / 3;
-  // position: absolute;
 }
 
 .react-select__indicator {
@@ -44,7 +70,6 @@
 // Some styles for this class are defined in the component
 .react-select__clear-indicator {
   box-sizing: border-box;
-  // color: rgb(204, 204, 204);
   display: flex;
 }
 
@@ -52,14 +77,11 @@
   align-self: stretch;
   background-color: rgb(204, 204, 204);
   box-sizing: border-box;
-  // margin-bottom: 8px;
-  // margin-top: 8px;
   width: 1px;
 }
 
 .react-select__menu {
   background: #fff;
-  // border: 1px solid #000;
   box-shadow: var(--ams-text-input-box-shadow);
   padding: 1px;
 }
@@ -121,6 +143,10 @@
   font-size: var(--ams-text-input-font-size);
   font-weight: var(--ams-text-input-font-weight);
   min-width: 0;
+
+  &--is-disabled {
+    color: var(--ams-select-disabled-color);
+  }
 }
 
 .react-select__menu-notice {
