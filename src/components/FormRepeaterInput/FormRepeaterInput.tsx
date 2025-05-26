@@ -42,7 +42,7 @@ const FormRepeaterInput = ({
   };
 
   return (
-    <Field className="ams-mb-xs">
+    <Field className="ams-mb-m">
       <Label htmlFor="input4">{label}</Label>
       {items.map((item, index) => (
         <div className={styles.row} key={index}>

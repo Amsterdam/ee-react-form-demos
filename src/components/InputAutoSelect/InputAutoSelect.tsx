@@ -51,7 +51,6 @@ const InputAutoSelect = ({
         margin: '0px',
         opacity: 1,
         padding: '0',
-        // width: '100%',
       }),
       option: (baseStyles, state) => ({
         ...baseStyles,
