@@ -91,6 +91,7 @@ const Home = () => {
     if (Object.keys(newErrors).length === 0) {
       // Submit the data
       console.log('Submitting:', data, {
+        formattedFormData,
         toJson: Object.fromEntries(formData.entries()),
         tagsfield: formData.getAll('tags'),
       });
@@ -142,12 +143,12 @@ const Home = () => {
           />
 
           <FormRepeaterInput
-            label="Repeater"
+            label="Tags"
             initialValues={formData.tags}
             onChange={(tags: string[]) => setFormData({ ...formData, tags })}
           />
 
-          <FormAutoSelect label="Auto select" />
+          <FormAutoSelect label="Tags" description="Tags text goes here..." />
 
           <div>
             <Button type="submit">Versturen</Button>
