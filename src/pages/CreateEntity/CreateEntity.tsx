@@ -37,6 +37,8 @@ import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 //   system: dii-ee-developers-amsterdam
 
 const Home = () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
