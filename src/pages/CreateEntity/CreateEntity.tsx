@@ -37,6 +37,7 @@ import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 //   system: dii-ee-developers-amsterdam
 
 const Home = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     kind: 'Component',
@@ -78,13 +79,22 @@ const Home = () => {
     // if (!data.name) newErrors.name = 'Name is required';
     // if (!data.email) newErrors.email = 'Email is required';
 
+    const formattedFormData: EntityFormData = {
+      kind: data.kind as string,
+      name: data.name as string,
+      description: data.description as string,
+      tags: formData.getAll('tags') as string[],
+    };
+
     if (Object.keys(newErrors).length === 0) {
       // Submit the data
       console.log('Submitting:', data, {
         toJson: Object.fromEntries(formData.entries()),
+        tagsfield: formData.getAll('tags'),
       });
 
-      setFormData(Object.fromEntries(formData.entries()) as EntityFormData);
+      // setFormData(Object.fromEntries(formData.entries()) as EntityFormData);
+      setFormData(formattedFormData);
     } else {
       setErrors(newErrors);
     }
