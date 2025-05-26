@@ -18,8 +18,6 @@ interface FormAutoSelectProps {
   label: string;
 }
 
-// TODO isMulti state
-
 // The following props are untested:
 // - isLoading
 // - isRtl

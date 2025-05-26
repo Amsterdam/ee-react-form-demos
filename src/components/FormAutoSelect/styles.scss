@@ -149,6 +149,41 @@
   }
 }
 
+.react-select__multi-value {
+  background-color: rgb(230, 230, 230);
+  border-radius: 2px;
+  box-sizing: border-box;
+  display: flex;
+  margin: 2px;
+  min-width: 0;
+  // padding: 3px 6px;
+}
+
+.react-select__multi-value__label {
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: rgb(51, 51, 51);
+  font-size: var(--ams-text-input-font-size);
+  overflow: hidden;
+  padding: 6px 6px 6px 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-select__multi-value__remove {
+  padding: 0 2px;
+
+  &:hover {
+    background-color: var(--ams-color-text-secondary);
+    color: #fff;
+  }
+
+  svg {
+    height: 20px;
+    width: 20px;
+  }
+}
+
 .react-select__menu-notice {
   font-family: var(--ams-text-input-font-family);
   font-size: var(--ams-text-input-font-size);
