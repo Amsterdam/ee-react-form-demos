@@ -4,6 +4,7 @@ import ClearIndicator from './ClearIndicator';
 import DropdownIndicator from './DropdownIndicator';
 import './styles.scss';
 
+// Example option values
 const options = [
   {
     value: 'backstage.io/source-location',
@@ -31,6 +32,7 @@ const FormAutoSelect = ({ label }: FormAutoSelectProps) => (
       className="react-select__container"
       classNamePrefix="react-select"
       components={{
+        // Override these components to use ADS SVG icons
         ClearIndicator,
         DropdownIndicator,
       }}

@@ -1,5 +1,4 @@
 /* stylelint-disable selector-class-pattern */
-// Some styles for this class are defined in the component
 .react-select {
   &--is-disabled {
     &.react-select__container {
@@ -22,6 +21,7 @@
   }
 }
 
+// Some styles for this class are defined in the component to ensure priority
 .react-select__container {
   box-shadow: var(--ams-text-input-box-shadow);
   outline-offset: var(--ams-text-area-outline-offset);
@@ -36,7 +36,7 @@
   }
 }
 
-// This inherits styling
+// This class inherits styling
 .react-select__control {
   justify-content: space-between;
   line-height: var(--ams-text-input-line-height);
@@ -67,7 +67,7 @@
   }
 }
 
-// Some styles for this class are defined in the component
+// Some styles for this class are defined in the component to ensure priority
 .react-select__clear-indicator {
   box-sizing: border-box;
   display: flex;
@@ -86,7 +86,7 @@
   padding: 1px;
 }
 
-// Some styles need to be defined in the component
+// Some styles for this class are defined in the component to ensure priority
 .react-select__option {
   box-shadow: 0 var(--ams-text-input-hover-box-shadow);
   font-family: var(--ams-text-input-font-family);
@@ -134,6 +134,7 @@
   }
 }
 
+// This class inherits styling
 .react-select__single-value {
   border-radius: 2px;
   box-sizing: border-box;
@@ -156,7 +157,6 @@
   display: flex;
   margin: 2px;
   min-width: 0;
-  // padding: 3px 6px;
 }
 
 .react-select__multi-value__label {
@@ -184,6 +184,7 @@
   }
 }
 
+// This class inherits styling
 .react-select__menu-notice {
   font-family: var(--ams-text-input-font-family);
   font-size: var(--ams-text-input-font-size);
