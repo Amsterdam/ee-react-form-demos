@@ -47,6 +47,7 @@ const FormRepeaterInput = ({
       {items.map((item, index) => (
         <div className={styles.row} key={index}>
           <TextInput
+            name="tags"
             value={item}
             onChange={e => handleChange(index, e.target.value)}
           />

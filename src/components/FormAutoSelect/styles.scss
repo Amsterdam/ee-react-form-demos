@@ -1,0 +1,194 @@
+/* stylelint-disable selector-class-pattern */
+.react-select {
+  &--is-disabled {
+    &.react-select__container {
+      box-shadow: var(--ams-select-disabled-box-shadow);
+      pointer-events: all;
+
+      /* stylelint-disable-next-line max-nesting-depth */
+      &:hover {
+        box-shadow: var(--ams-select-disabled-box-shadow);
+      }
+    }
+
+    .react-select__placeholder {
+      color: var(--ams-select-disabled-color);
+    }
+
+    .react-select__dropdown-indicator {
+      fill: var(--ams-select-disabled-color);
+    }
+  }
+}
+
+// Some styles for this class are defined in the component to ensure priority
+.react-select__container {
+  box-shadow: var(--ams-text-input-box-shadow);
+  outline-offset: var(--ams-text-area-outline-offset);
+  width: 100%;
+
+  &:hover {
+    box-shadow: var(--ams-text-input-hover-box-shadow);
+  }
+
+  &--is-focused {
+    box-shadow: var(--ams-text-input-hover-box-shadow);
+  }
+}
+
+// This class inherits styling
+.react-select__control {
+  justify-content: space-between;
+  line-height: var(--ams-text-input-line-height);
+  padding-block: var(--ams-text-input-padding-block);
+  padding-inline: var(--ams-text-input-padding-inline) 0;
+
+  &--is-disabled {
+    color: var(--ams-select-disabled-color);
+    cursor: var(--ams-select-disabled-cursor) !important;
+  }
+}
+
+.react-select__placeholder {
+  box-sizing: border-box;
+  color: var(--ams-text-input-placeholder-color);
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.react-select__indicator {
+  padding: 0 var(--ams-text-input-padding-inline);
+
+  svg {
+    height: 1em;
+    width: 1em;
+  }
+}
+
+// Some styles for this class are defined in the component to ensure priority
+.react-select__clear-indicator {
+  box-sizing: border-box;
+  display: flex;
+}
+
+.react-select__indicator-separator {
+  align-self: stretch;
+  background-color: rgb(204, 204, 204);
+  box-sizing: border-box;
+  width: 1px;
+}
+
+.react-select__menu {
+  background: #fff;
+  box-shadow: var(--ams-text-input-box-shadow);
+  padding: 1px;
+}
+
+// Some styles for this class are defined in the component to ensure priority
+.react-select__option {
+  box-shadow: 0 var(--ams-text-input-hover-box-shadow);
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  line-height: var(--ams-text-input-line-height);
+  padding-block: var(--ams-text-input-padding-block);
+  padding-inline: var(--ams-text-input-padding-inline);
+
+  &:active {
+    background-color: rgb(178, 212, 255);
+  }
+}
+
+.react-select__select__value-container {
+  align-items: center;
+  box-sizing: border-box;
+  display: grid;
+  flex: 1 1 0%;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding: 2px 8px;
+  position: relative;
+
+  &--has-value {
+    align-items: center;
+    box-sizing: border-box;
+    display: grid;
+    flex: 1 1 0%;
+    flex-wrap: wrap;
+    overflow: hidden;
+    padding: 2px 8px;
+    position: relative;
+  }
+
+  &--is-multi {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 0%;
+    flex-wrap: wrap;
+    overflow: hidden;
+    padding: 2px 8px;
+    position: relative;
+  }
+}
+
+// This class inherits styling
+.react-select__single-value {
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: var(--ams-text-input-color);
+  display: flex;
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  min-width: 0;
+
+  &--is-disabled {
+    color: var(--ams-select-disabled-color);
+  }
+}
+
+.react-select__multi-value {
+  background-color: rgb(230, 230, 230);
+  border-radius: 2px;
+  box-sizing: border-box;
+  display: flex;
+  margin: 2px;
+  min-width: 0;
+}
+
+.react-select__multi-value__label {
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: rgb(51, 51, 51);
+  font-size: var(--ams-text-input-font-size);
+  overflow: hidden;
+  padding: 6px 6px 6px 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-select__multi-value__remove {
+  padding: 0 2px;
+
+  &:hover {
+    background-color: var(--ams-color-text-secondary);
+    color: #fff;
+  }
+
+  svg {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+// This class inherits styling
+.react-select__menu-notice {
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  line-height: var(--ams-text-input-line-height);
+  padding-block: var(--ams-text-input-padding-block);
+}
