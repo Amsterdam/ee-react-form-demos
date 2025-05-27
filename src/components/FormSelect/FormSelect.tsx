@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import {
   Field,
   Label,
@@ -9,12 +10,20 @@ interface FormSelectProps {
   label: string;
   description?: string;
   options: Record<string, string>;
+  onChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => void;
 }
 
 // TODO options sometimes has different value to labels
 // TODO dynamic IDs
 // TOOD is name necessary? useful for accessibility?
-const FormSelect = ({ label, description, options }: FormSelectProps) => (
+const FormSelect = ({
+  label,
+  description,
+  options,
+  onChange,
+}: FormSelectProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor="input2">{label}</Label>
     {description && (
@@ -26,6 +35,7 @@ const FormSelect = ({ label, description, options }: FormSelectProps) => (
       aria-describedby={description ? 'description2' : ''}
       id="input2"
       name="kind"
+      onChange={onChange}
     >
       {Object.keys(options).map((value, index) => (
         <Select.Option value={value} key={`form-select-${index}`}>

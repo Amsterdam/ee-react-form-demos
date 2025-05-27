@@ -2,11 +2,13 @@ import { Button, Grid, Heading } from '@amsterdam/design-system-react';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import FormTextInput from '@/components/FormTextInput/FormTextInput';
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { EntityFormData } from '@/types';
 import FormTextarea from '@/components/FormTextarea/FormTextarea';
 import FormRepeaterInput from '@/components/FormRepeaterInput/FormRepeaterInput';
 import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
+import getTags from '@/utils/getTags';
+import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
 // import styles from './styles.module.css';
 
 // apiVersion: backstage.io/v1alpha1
@@ -46,6 +48,7 @@ const Home = () => {
     name: 'ee-docs',
     description: 'The primary app for developers.amsterdam',
     tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
+    annotations: [],
   } as EntityFormData);
 
   // const [formState, formAction] = useActionState(submitEntityForm);
@@ -62,14 +65,16 @@ const Home = () => {
   //   }
   // }, [formState]);
 
-  // const handleChange = (e: ChangeEvent<HTMLFormElement>) => {
-  //   const { name, value } = e.target;
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
 
-  //   setFormData(prev => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -126,29 +131,43 @@ const Home = () => {
               System: 'System',
               User: 'User',
             }}
-            // onChange={handleChange}
+            onChange={handleChange}
           />
 
           <FormTextInput
             label="Name"
             description="Textinput description text goes here..."
             value={formData.name}
-            // onChange={handleChange}
+            onChange={handleChange}
           />
 
           <FormTextarea
             label="Description"
             description="Textarea description text goes here..."
             value={formData.description}
+            onChange={handleChange}
           />
 
-          <FormRepeaterInput
+          {/* Single input repeater */}
+          {/* <FormRepeaterInput
             label="Tags"
             initialValues={formData.tags}
             onChange={(tags: string[]) => setFormData({ ...formData, tags })}
+          /> */}
+
+          {/* TODO handle on change */}
+          <FormAutoSelect
+            label="Tags"
+            description="Tags text goes here..."
+            options={getTags()}
           />
 
-          <FormAutoSelect label="Tags" description="Tags text goes here..." />
+          <FormAnnotationFields
+            initialValues={[]}
+            onChange={(annotations: Record<string, string>[]) =>
+              setFormData({ ...formData, annotations })
+            }
+          />
 
           <div>
             <Button type="submit">Versturen</Button>
