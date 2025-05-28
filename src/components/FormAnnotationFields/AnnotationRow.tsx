@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
-import { IconButton, Label, TextInput } from '@amsterdam/design-system-react';
+import { Button, Label, TextInput } from '@amsterdam/design-system-react';
 import styles from './styles.module.css';
-import { useState } from 'react';
+import getAnnotations from '@/utils/getAnnotations';
+import { CloseIcon } from '@amsterdam/design-system-react-icons';
 
 interface AnnotationRowProps {
   index: number;
@@ -16,6 +18,9 @@ const AnnotationRow = ({
   // showRemoveButton = false,
 }: AnnotationRowProps) => {
   const [keyValue, setKeyValue] = useState<string | undefined>(undefined);
+  const rules =
+    ANNOTATIONS.find(annotation => annotation.key === keyValue)?.type ??
+    'string';
 
   return (
     <div className={styles.row}>
@@ -23,6 +28,13 @@ const AnnotationRow = ({
       <Label htmlFor="select">Type</Label>
       <InputAutoSelect
         options={ANNOTATIONS.map(({ key, label }) => ({ key, label }))}
+        onChange={(newValue: unknown | null) => {
+          if (newValue) {
+            setKeyValue((newValue as { label: string; key: string }).key);
+          } else {
+            setKeyValue(undefined);
+          }
+        }}
       />
 
       <Label htmlFor="body">Value</Label>
@@ -34,9 +46,14 @@ const AnnotationRow = ({
         // invalid={!!error}
         // placeholder={}
         name="annotation_value"
+        className="ams-mb-m"
       />
       {/* {showRemoveButton && ( */}
-        <IconButton label="Sluiten" onClick={() => removeItem?.()} />
+      <div>
+        <Button icon={CloseIcon} onClick={() => removeItem?.()}>
+          Sluiten
+        </Button>
+      </div>
       {/* )} */}
     </div>
   );

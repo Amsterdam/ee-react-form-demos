@@ -30,19 +30,19 @@ const FormAnnotationFields = ({
     const newItems = [...items];
     newItems[index] = value;
     setItems(newItems);
-    onChange(newItems);
+    // onChange(newItems);
   };
 
   const addItem = () => {
     const newItems = [...items, ''];
     setItems(newItems);
-    onChange(newItems);
+    // onChange(newItems);
   };
 
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
     setItems(newItems);
-    onChange(newItems);
+    // onChange(newItems);
   };
 
   return (
