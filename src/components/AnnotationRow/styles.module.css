@@ -1,14 +1,11 @@
-.row {
+.container {
   border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   padding: 12px;
   width: 100%;
-  /* align-items: center;
-  display: flex; */
-  /* margin-bottom: var(--ams-space-m); */
 }
 
-.row button {
+.container button {
   margin-left: var(--ams-space-xs);
 }

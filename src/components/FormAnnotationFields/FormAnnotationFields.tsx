@@ -1,17 +1,7 @@
 import { useState } from 'react';
-import {
-  Button,
-  Field,
-  IconButton,
-  Label,
-  Row,
-  TextInput,
-} from '@amsterdam/design-system-react';
+import { Button, Field } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
-import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
-import ANNOTATIONS from '@/utils/getAnnotations';
-import styles from './styles.module.css';
-import AnnotationRow from './AnnotationRow';
+import AnnotationRow from '../AnnotationRow/AnnotationRow';
 
 interface FormAnnotationFieldsProps {
   initialValues: string[];
@@ -26,12 +16,12 @@ const FormAnnotationFields = ({
 }: FormAnnotationFieldsProps) => {
   const [items, setItems] = useState<string[]>(initialValues);
 
-  const handleChange = (index: number, value: string) => {
-    const newItems = [...items];
-    newItems[index] = value;
-    setItems(newItems);
-    // onChange(newItems);
-  };
+  // const handleChange = (index: number, value: string) => {
+  //   const newItems = [...items];
+  //   newItems[index] = value;
+  //   setItems(newItems);
+  //   // onChange(newItems);
+  // };
 
   const addItem = () => {
     const newItems = [...items, ''];
