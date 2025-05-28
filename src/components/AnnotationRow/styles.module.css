@@ -2,10 +2,7 @@
   border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
+  margin-bottom: var(--ams-space-m);
   padding: 12px;
   width: 100%;
-}
-
-.container button {
-  margin-left: var(--ams-space-xs);
 }

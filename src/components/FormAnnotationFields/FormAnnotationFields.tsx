@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Button, Field } from '@amsterdam/design-system-react';
+import { Button, Heading } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRow from '../AnnotationRow/AnnotationRow';
+import styles from './styles.module.css';
 
 interface FormAnnotationFieldsProps {
   initialValues: string[];
@@ -36,57 +37,31 @@ const FormAnnotationFields = ({
   };
 
   return (
-    <Field className="ams-mb-m">
-      <h3>Annotations</h3>
-      {/* <AnnotationRow /> */}
-      {/* <Label htmlFor="input4">Annotation type</Label>
-      <InputAutoSelect
-        options={ANNOTATIONS.map(({ key, label }) => ({ key, label }))}
-      />
+    <div className={`${styles.container} ams-mb-m`}>
+      <Heading level={4} className="ams-mb-s">
+        Annotations
+      </Heading>
 
-      <Label htmlFor="body">Value</Label>
-      <TextInput
-        // aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
-        id="input3"
-        // value={value}
-        // invalid={!!error}
-        name="annotation_value"
-      /> */}
-
-      {items.map((item, index) => (
-        <AnnotationRow
-          // showRemoveButton={items.length > 1}
-          removeItem={() => removeItem(index)}
-          index={index}
-          key={index}
-        />
-      ))}
-
-      {/* {items.map((item, index) => (
-        <div className={styles.row} key={index}>
-          <InputAutoSelect
-            options={ANNOTATIONS.map(({ key, label }) => ({ key, label }))}
+      <div className="ams-mb-m">
+        {items.map((item, index) => (
+          <AnnotationRow
+            // showRemoveButton={items.length > 1}
+            removeItem={() => removeItem(index)}
+            index={index}
+            key={index}
           />
+        ))}
+      </div>
 
-          <Label htmlFor="body">Value</Label>
-
-          <TextInput
-            // aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
-            id="input3"
-            // value={value}
-            // invalid={!!error}
-            // placeholder={}
-            name="annotation_value"
-          />
-          {items.length > 1 && (
-            <IconButton label="Sluiten" onClick={() => removeItem(index)} />
-          )}
-        </div>
-      ))} */}
-      <Button icon={<EnlargeIcon />} onClick={addItem}>
-        Add annotation
+      <Button
+        icon={<EnlargeIcon />}
+        iconBefore
+        variant="tertiary"
+        onClick={addItem}
+      >
+        Add a new annotation
       </Button>
-    </Field>
+    </div>
   );
 };
 

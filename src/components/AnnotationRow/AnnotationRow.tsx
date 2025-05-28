@@ -3,23 +3,23 @@ import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
 import {
   Button,
+  Field,
+  Heading,
   Label,
   Select,
   TextInput,
 } from '@amsterdam/design-system-react';
+import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
 import styles from './styles.module.css';
-import { CloseIcon } from '@amsterdam/design-system-react-icons';
 
 interface AnnotationRowProps {
   index: number;
   removeItem?: () => void;
-  // showRemoveButton?: boolean;
 }
 
 const AnnotationRow = ({
   index,
   removeItem = undefined,
-  // showRemoveButton = false,
 }: AnnotationRowProps) => {
   const [keyValue, setKeyValue] = useState<string | undefined>(undefined);
   const annotation = ANNOTATIONS.find(
@@ -27,11 +27,12 @@ const AnnotationRow = ({
   );
 
   return (
-    <div className={styles.row}>
-      <h4>Annotation {index + 1}</h4>
-      <Label htmlFor="select">Type</Label>
+    <Field className={styles.container}>
+      <Heading level={4}>Annotation {index + 1}</Heading>
+      <Label htmlFor={`annotation-type-${index}`}>Type</Label>
       <InputAutoSelect
         options={ANNOTATIONS.map(({ key, label }) => ({ key, label }))}
+        id={`annotation-type-${index}`}
         onChange={(newValue: unknown | null) => {
           if (newValue) {
             setKeyValue((newValue as { label: string; key: string }).key);
@@ -41,13 +42,14 @@ const AnnotationRow = ({
         }}
       />
 
-      <Label htmlFor={`annotation${index}`}>Value</Label>
+      <Label htmlFor={`annotation-value-${index}`}>Value</Label>
 
       {annotation?.values ? (
         <Select
           // aria-describedby={description ? 'description2' : ''}
-          id={`annotation${index}`}
+          id={`annotation-value-${index}`}
           name="annotation"
+          className="ams-mb-m"
           // onChange={onChange}
         >
           {annotation.values.map((value, optionIndex) => (
@@ -63,7 +65,7 @@ const AnnotationRow = ({
         <TextInput
           // aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
           type={annotation?.type === 'url' ? 'url' : 'text'}
-          id="input3"
+          id={`annotation-value-${index}`}
           // value={value}
           // invalid={!!error}
           placeholder={annotation?.example ? annotation.example : undefined}
@@ -72,14 +74,17 @@ const AnnotationRow = ({
         />
       )}
 
-      {/* {showRemoveButton && ( */}
-      <div>
-        <Button icon={CloseIcon} onClick={() => removeItem?.()}>
-          Sluiten
+      <div className="ams-mb-m">
+        <Button
+          icon={TrashBinIcon}
+          iconBefore
+          variant="tertiary"
+          onClick={() => removeItem?.()}
+        >
+          Delete
         </Button>
       </div>
-      {/* )} */}
-    </div>
+    </Field>
   );
 };
 

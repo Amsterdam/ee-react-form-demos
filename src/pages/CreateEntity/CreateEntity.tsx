@@ -38,7 +38,11 @@ import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotati
 //   owner: dii-engineering-enablement
 //   system: dii-ee-developers-amsterdam
 
-// TODO initial values (should match YAML output)
+// TODO tags - handleChange in YAML Preview
+// TODO handle annotations in YAML preview
+// TODO links repeater field
+// TODO spec fields
+// TODO handle initial values (should match YAML output - example: Kind select menu)
 // TODO validation
 const Home = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -112,71 +116,69 @@ const Home = () => {
 
   return (
     <Grid>
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
-        <div>
-          <Heading level={1} size="level-3">
-            Create an entity
-          </Heading>
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
+        <Heading level={1} size="level-3">
+          Create an entity
+        </Heading>
 
-          <form onSubmit={handleSubmit}>
-            <FormSelect
-              label="Kind"
-              // TODO include link in description - what happens?
-              description="Description text goes here..."
-              // This looks a bit weird but is intended because select menu values
-              // are often different to the labels (in this example they're not)
-              options={{
-                API: 'API',
-                Component: 'Component',
-                Domain: 'Domain',
-                Group: 'Group',
-                Resource: 'Resource',
-                System: 'System',
-                User: 'User',
-              }}
-              onChange={handleChange}
-            />
+        <form onSubmit={handleSubmit}>
+          <FormSelect
+            label="Kind"
+            // TODO include link in description - what happens?
+            description="Description text goes here..."
+            // This looks a bit weird but is intended because select menu values
+            // are often different to the labels (in this example they're not)
+            options={{
+              API: 'API',
+              Component: 'Component',
+              Domain: 'Domain',
+              Group: 'Group',
+              Resource: 'Resource',
+              System: 'System',
+              User: 'User',
+            }}
+            onChange={handleChange}
+          />
 
-            <FormTextInput
-              label="Name"
-              description="Textinput description text goes here..."
-              value={formData.name}
-              onChange={handleChange}
-            />
+          <FormTextInput
+            label="Name"
+            description="Textinput description text goes here..."
+            value={formData.name}
+            onChange={handleChange}
+          />
 
-            <FormTextarea
-              label="Description"
-              description="Textarea description text goes here..."
-              value={formData.description}
-              onChange={handleChange}
-            />
+          <FormTextarea
+            label="Description"
+            description="Textarea description text goes here..."
+            value={formData.description}
+            onChange={handleChange}
+          />
 
-            {/* Single input repeater */}
-            {/* <FormRepeaterInput
-              label="Tags"
-              initialValues={formData.tags}
-              onChange={(tags: string[]) => setFormData({ ...formData, tags })}
-            /> */}
+          {/* Single input repeater */}
+          {/* <FormRepeaterInput
+            label="Tags"
+            initialValues={formData.tags}
+            onChange={(tags: string[]) => setFormData({ ...formData, tags })}
+          /> */}
 
-            {/* TODO handle on change */}
-            <FormAutoSelect
-              label="Tags"
-              description="Tags text goes here..."
-              options={getTags()}
-            />
+          {/* TODO handle on change */}
+          <FormAutoSelect
+            label="Tags"
+            description="Tags text goes here..."
+            options={getTags()}
+          />
 
-            <FormAnnotationFields
-              initialValues={[]}
-              onChange={(annotations: Record<string, string>[]) =>
-                setFormData({ ...formData, annotations })
-              }
-            />
+          <FormAnnotationFields
+            initialValues={[]}
+            onChange={(annotations: Record<string, string>[]) =>
+              setFormData({ ...formData, annotations })
+            }
+          />
 
-            <div>
-              <Button type="submit">Versturen</Button>
-            </div>
-          </form>
-        </div>
+          <div>
+            <Button type="submit">Submit</Button>
+          </div>
+        </form>
       </Grid.Cell>
       <SubmissionOutput formData={formData} />
     </Grid>

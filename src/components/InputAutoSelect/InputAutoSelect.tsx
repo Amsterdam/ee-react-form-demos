@@ -25,6 +25,7 @@ interface InputAutoSelectProps extends SelectEventHandlers {
   isDisabled?: boolean;
   isMulti?: boolean;
   options: OptionsOrGroups<unknown, GroupBase<unknown>> | undefined;
+  id?: string;
 }
 
 // WARNING: The following prop types are unstyled and untested:
@@ -35,6 +36,7 @@ const InputAutoSelect = ({
   isDisabled = false,
   isMulti = false,
   options,
+  id = undefined,
   ...eventHandlers
 }: InputAutoSelectProps) => (
   <Select
@@ -51,6 +53,7 @@ const InputAutoSelect = ({
       DropdownIndicator,
     }}
     noOptionsMessage={() => 'Geen opties'}
+    id={id}
     {...eventHandlers}
     styles={{
       container: (baseStyles, state) => ({
