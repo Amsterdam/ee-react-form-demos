@@ -17,8 +17,11 @@ module.exports = defineConfig({
       { find: '@@', replacement: path.resolve(__dirname) },
     ],
   },
-  // Uncomment the server block below to fix the localhost port to 3000
-  // server: {
-  //   port: 3000,
-  // },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "/src/styles/variables.scss" as *;`,
+      },
+    },
+  },
 });

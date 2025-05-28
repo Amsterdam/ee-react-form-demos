@@ -3,6 +3,7 @@ import { Grid, Heading } from '@amsterdam/design-system-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import yaml from 'js-yaml';
+import styles from './styles.module.scss';
 
 // const codeString = `
 // apiVersion: backstage.io/v1alpha1
@@ -79,14 +80,16 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
   });
 
   return (
-    <Grid.Cell span="all">
-      <Heading level={2} size="level-5">
-        YAML Output
-      </Heading>
+    <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
+      <div className={styles.inner}>
+        <Heading level={2} size="level-5">
+          YAML Output
+        </Heading>
 
-      <SyntaxHighlighter language="yaml" style={docco}>
-        {codeString}
-      </SyntaxHighlighter>
+        <SyntaxHighlighter language="yaml" style={docco}>
+          {codeString}
+        </SyntaxHighlighter>
+      </div>
     </Grid.Cell>
   );
 };
