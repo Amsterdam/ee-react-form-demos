@@ -9,6 +9,7 @@ import FormTextarea from '@/components/FormTextarea/FormTextarea';
 import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
 import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
+import { ActionMeta, MultiValue } from 'react-select';
 // import styles from './styles.module.css';
 
 // apiVersion: backstage.io/v1alpha1
@@ -161,11 +162,26 @@ const Home = () => {
             onChange={(tags: string[]) => setFormData({ ...formData, tags })}
           /> */}
 
-          {/* TODO handle on change */}
           <FormAutoSelect
             label="Tags"
+            name="tags"
             description="Tags text goes here..."
             options={getTags()}
+            onChange={(
+              newValue: MultiValue<{
+                label: string;
+                value: string;
+              }>,
+              actionMeta: ActionMeta<{
+                label: string;
+                value: string;
+              }>
+            ) => {
+              setFormData(prev => ({
+                ...prev,
+                [actionMeta.name as string]: newValue.map(({ value }) => value),
+              }));
+            }}
           />
 
           <FormAnnotationFields

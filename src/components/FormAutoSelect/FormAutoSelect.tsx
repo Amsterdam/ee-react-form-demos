@@ -1,4 +1,10 @@
-import { GroupBase, OptionsOrGroups, Props as SelectProps } from 'react-select';
+import {
+  ActionMeta,
+  GroupBase,
+  MultiValue,
+  OptionsOrGroups,
+  Props as SelectProps,
+} from 'react-select';
 import { Field, Label, Paragraph } from '@amsterdam/design-system-react';
 import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
 
@@ -16,16 +22,28 @@ type SelectEventHandlers = Pick<
   | 'onMenuScrollToBottom'
 >;
 
+type Option = {
+  label: string;
+  value: string;
+};
+
 interface FormAutoSelectProps extends SelectEventHandlers {
   label: string;
+  name: string;
   description?: string;
-  options: OptionsOrGroups<unknown, GroupBase<unknown>> | undefined;
+  options: OptionsOrGroups<Option, GroupBase<Option>> | undefined;
+  onChange: (
+    newValue: MultiValue<Option>,
+    actionMeta: ActionMeta<Option>
+  ) => void;
 }
 
 const FormAutoSelect = ({
   label,
+  name,
   description,
   options,
+  onChange,
   ...props
 }: FormAutoSelectProps) => (
   <Field className="ams-mb-m">
@@ -35,7 +53,13 @@ const FormAutoSelect = ({
         {description}
       </Paragraph>
     )}
-    <InputAutoSelect options={options} isMulti onChange={() => {}} {...props} />
+    <InputAutoSelect
+      options={options}
+      isMulti
+      onChange={onChange}
+      name={name}
+      {...props}
+    />
   </Field>
 );
 
