@@ -39,6 +39,7 @@ interface SubmissionOutputProps {
   formData: EntityFormData;
 }
 
+// TODO annotations - with is link value with `url: ` in speech marks but not other values?
 const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
   const codeString = yaml.dump({
     apiVersion: 'backstage.io/v1alpha1',
@@ -65,26 +66,10 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
         },
         {} as Record<string, string>
       ),
-      links: [
-        {
-          url: 'https://developers.amsterdam/',
-          title: 'developers.amsterdam',
-          icon: 'launch',
-        },
-        {
-          url: 'https://github.com/amsterdam/ee-docs',
-          title: 'GitHub Repo',
-          icon: 'github',
-        },
-        {
-          url: 'https://gemeente-amsterdam.atlassian.net/browse/COM-70',
-          title: 'Jira Board',
-          icon: 'dashboard',
-        },
-      ],
+      links: formData.links,
       spec: {
-        type: 'website',
-        lifecycle: 'production',
+        type: formData.spec.type,
+        lifecycle: formData.spec.lifecycle,
         owner: 'dii-engineering-enablement',
         system: 'dii-ee-developers-amsterdam',
       },

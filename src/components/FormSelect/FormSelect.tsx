@@ -9,16 +9,16 @@ import {
 interface FormSelectProps {
   label: string;
   description?: string;
+  name: string;
   options: Record<string, string>;
   initialValue?: string;
-  onChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => void;
+  onChange: (name: string, value: string) => void;
 }
 
 const FormSelect = ({
   label,
   description,
+  name,
   options,
   initialValue = undefined,
   onChange,
@@ -33,9 +33,11 @@ const FormSelect = ({
     <Select
       aria-describedby={description ? 'description2' : ''}
       id="input2"
-      name="kind"
+      name={name}
       value={initialValue}
-      onChange={onChange}
+      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+        onChange(name, e.target.options[e.target.selectedIndex].value)
+      }
     >
       {Object.keys(options).map((value, index) => (
         <Select.Option value={value} key={`form-select-${index}`}>

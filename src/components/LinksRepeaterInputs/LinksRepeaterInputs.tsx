@@ -1,79 +1,87 @@
 import { useEffect, useState } from 'react';
 import { Button, Heading } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
-import AnnotationRow from '../AnnotationRow/AnnotationRow';
 import styles from './styles.module.css';
+import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
 
-interface FormAnnotationFieldsProps {
-  initialValues: { key: string; value: string | undefined }[];
-  // label: string;
+interface LinksRepeaterInputsProps {
+  initialValues: {
+    url: string;
+    title: string;
+    icon: string;
+  }[];
   onChange: (
-    annotations: {
-      key: string | undefined;
-      value: string | undefined;
+    items: {
+      url: string;
+      title: string;
+      icon: string;
     }[]
   ) => void;
 }
 
-const FormAnnotationFields = ({
+const LinksRepeaterInputs = ({
   initialValues,
-  // label,
   onChange,
-}: FormAnnotationFieldsProps) => {
-  // const [items, setItems] = useState<string[]>([]);
-  // TODO rename values to items
-  const [values, setValues] =
-    useState<{ key: string | undefined; value: string | undefined }[]>(
-      initialValues
-    );
+}: LinksRepeaterInputsProps) => {
+  const [items, setItems] = useState<
+    {
+      url: string;
+      title: string;
+      icon: string;
+    }[]
+  >(initialValues);
 
   // const handleChange = (index: number, value: string) => {
   //   const newItems = [...items];
   //   newItems[index] = value;
   //   setItems(newItems);
-  //   // onChange(newItems);
+  //   onChange(newItems);
   // };
 
   const addItem = () => {
     // const newItems = [...items, ''];
     // setItems(newItems);
-    setValues([...values, { key: '', value: '' }]);
+    setItems([...items, { url: '', title: '', icon: 'dashboard' }]);
     // onChange(newItems);
   };
 
   const removeItem = (index: number) => {
     // const newItems = items.filter((_, i) => i !== index);
     // setItems(newItems);
-    const newValues = values.filter((_, i) => i !== index);
-    setValues(newValues);
     // onChange(newItems);
+    const newItems = items.filter((_, i) => i !== index);
+    setItems(newItems);
   };
 
   useEffect(() => {
-    onChange(values);
-  }, [values]);
+    onChange(items);
+  }, [items]);
 
   return (
     <div className={`${styles.container} ams-mb-l`}>
       <Heading level={4} className="ams-mb-s">
-        Annotations
+        Links
       </Heading>
 
       <div className="ams-mb-m">
-        {values.map((_value, index) => (
-          <AnnotationRow
-            // showRemoveButton={items.length > 1}
+        {items.map((item, index) => (
+          <LinkRepeaterRow
             removeItem={() => removeItem(index)}
             index={index}
-            key={index}
-            onChange={(key, value) => {
-              setValues(prevValues =>
-                prevValues.map((prevValue, i) =>
-                  i === index ? { key, value } : prevValue
+            item={item}
+            onChange={(name, value) => {
+              setItems(prevItems =>
+                prevItems.map((prevItem, i) =>
+                  i === index
+                    ? {
+                        ...prevItem,
+                        [name]: value,
+                      }
+                    : prevItem
                 )
               );
             }}
-            values={_value}
+            key={index}
           />
         ))}
       </div>
@@ -84,10 +92,10 @@ const FormAnnotationFields = ({
         variant="tertiary"
         onClick={addItem}
       >
-        Add a new annotation
+        Add a new link
       </Button>
     </div>
   );
 };
 
-export default FormAnnotationFields;
+export default LinksRepeaterInputs;
