@@ -39,19 +39,11 @@ import { ActionMeta, MultiValue } from 'react-select';
 //   owner: dii-engineering-enablement
 //   system: dii-ee-developers-amsterdam
 
-const initialAnnotations = {
-  'backstage.io/source-location': 'url:https://github.com/amsterdam/ee-docs/',
-  'github.com/project-slug': 'amsterdam/ee-docs',
-  'github.com/team-slug': 'amsterdam/engineering-enablement',
-  'lighthouse.com/website-url': 'https://developers.amsterdam',
-};
-
-// TODO tags - handleChange in YAML Preview
-// TODO handle annotations in YAML preview
 // TODO links repeater field
 // TODO spec fields
 // TODO handle initial values (should match YAML output - example: Kind select menu)
 // TODO validation
+// TODO tests
 const Home = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -62,7 +54,12 @@ const Home = () => {
     name: 'ee-docs',
     description: 'The primary app for developers.amsterdam',
     tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
-    annotations: [],
+    annotations: {
+      'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
+      'github.com/project-slug': 'amsterdam/ee-docs',
+      'github.com/team-slug': 'amsterdam/engineering-enablement',
+      'lighthouse.com/website-url': 'https://developers.amsterdam',
+    },
   } as EntityFormData);
 
   // const [formState, formAction] = useActionState(submitEntityForm);
@@ -192,10 +189,10 @@ const Home = () => {
           />
 
           <FormAnnotationFields
-            initialValues={Object.keys(initialAnnotations).map(
-              initialAnnotation => ({
-                key: initialAnnotation,
-                value: initialAnnotations[initialAnnotation],
+            initialValues={Object.keys(formData.annotations).map(
+              annotation => ({
+                key: annotation,
+                value: formData.annotations[annotation],
               })
             )}
             onChange={(

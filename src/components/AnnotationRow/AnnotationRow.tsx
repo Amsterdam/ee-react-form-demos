@@ -16,16 +16,20 @@ interface AnnotationRowProps {
   index: number;
   removeItem?: () => void;
   onChange: (key: string | undefined, value: string | undefined) => void;
+  values: { key: string | undefined; value: string | undefined };
 }
 
 const AnnotationRow = ({
   index,
   removeItem = undefined,
   onChange,
+  values,
 }: AnnotationRowProps) => {
-  const [keyValue, setKeyValue] = useState<string | undefined>(undefined);
+  const [keyValue, setKeyValue] = useState<string | undefined>(values.key);
   // TODO fix name
-  const [valueValue, setValueValue] = useState<string | undefined>(undefined);
+  const [valueValue, setValueValue] = useState<string | undefined>(
+    values.value
+  );
   const annotation = ANNOTATIONS.find(
     annotation => annotation.key === keyValue
   );
@@ -44,10 +48,23 @@ const AnnotationRow = ({
         onChange={(newValue: unknown | null) => {
           if (newValue) {
             setKeyValue((newValue as { label: string; key: string }).key);
+
+            const rule = ANNOTATIONS.find(
+              annotation =>
+                (newValue as { label: string; key: string }).key ===
+                annotation.key
+            );
+
+            if (rule?.values) {
+              setValueValue(rule.values[0]);
+            } else {
+              setValueValue(undefined);
+            }
           } else {
             setKeyValue(undefined);
           }
         }}
+        value={keyValue}
       />
 
       <Label htmlFor={`annotation-value-${index}`}>Value</Label>
@@ -58,21 +75,18 @@ const AnnotationRow = ({
           id={`annotation-value-${index}`}
           name="annotation"
           className="ams-mb-m"
-          // onChange={onChange}
+          value={valueValue}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+            if (e.target.value) {
+              setValueValue(e.target.value);
+            } else {
+              setValueValue(undefined);
+            }
+          }}
         >
           {annotation.values.map((value, optionIndex) => (
             <Select.Option
               value={value}
-              onChange={(newValue: unknown | null) => {
-                console.log("select on Change", newValue);
-                if (newValue) {
-                  setValueValue(
-                    (newValue as { label: string; key: string }).key
-                  );
-                } else {
-                  setValueValue(undefined);
-                }
-              }}
               key={`annotation-${index}-select-${optionIndex}`}
             >
               {value}
@@ -88,6 +102,7 @@ const AnnotationRow = ({
           // invalid={!!error}
           placeholder={annotation?.example ? annotation.example : undefined}
           name="annotation_value"
+          value={valueValue}
           className="ams-mb-m"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setValueValue(e.target.value);

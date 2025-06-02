@@ -15,9 +15,6 @@ interface FormSelectProps {
   ) => void;
 }
 
-// TODO options sometimes has different value to labels
-// TODO dynamic IDs
-// TOOD is name necessary? useful for accessibility?
 const FormSelect = ({
   label,
   description,

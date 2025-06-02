@@ -20,12 +20,13 @@ const FormAnnotationFields = ({
   // label,
   onChange,
 }: FormAnnotationFieldsProps) => {
-  const [items, setItems] = useState<string[]>([]);
+  // const [items, setItems] = useState<string[]>([]);
+  // TODO rename values to items
   const [values, setValues] =
     useState<{ key: string | undefined; value: string | undefined }[]>(
       initialValues
     );
-console.log({ initialValues })
+
   // const handleChange = (index: number, value: string) => {
   //   const newItems = [...items];
   //   newItems[index] = value;
@@ -34,15 +35,15 @@ console.log({ initialValues })
   // };
 
   const addItem = () => {
-    const newItems = [...items, ''];
-    setItems(newItems);
+    // const newItems = [...items, ''];
+    // setItems(newItems);
     setValues([...values, { key: '', value: '' }]);
     // onChange(newItems);
   };
 
   const removeItem = (index: number) => {
-    const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
+    // const newItems = items.filter((_, i) => i !== index);
+    // setItems(newItems);
     const newValues = values.filter((_, i) => i !== index);
     setValues(newValues);
     // onChange(newItems);
@@ -74,6 +75,7 @@ console.log({ initialValues })
                 )
               );
             }}
+            values={_value}
           />
         ))}
       </div>

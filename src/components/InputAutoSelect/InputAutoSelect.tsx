@@ -27,6 +27,7 @@ interface InputAutoSelectProps extends SelectEventHandlers {
   options: OptionsOrGroups<unknown, GroupBase<unknown>> | undefined;
   id?: string;
   name?: string;
+  value?: string;
 }
 
 // WARNING: The following prop types are unstyled and untested:
@@ -39,6 +40,7 @@ const InputAutoSelect = ({
   options,
   id = undefined,
   name = undefined,
+  value = undefined,
   ...eventHandlers
 }: InputAutoSelectProps) => (
   <Select
@@ -57,6 +59,9 @@ const InputAutoSelect = ({
     noOptionsMessage={() => 'Geen opties'}
     id={id}
     name={name}
+    defaultValue={
+      value ? options?.find(option => option.key === value) : undefined
+    }
     {...eventHandlers}
     styles={{
       container: (baseStyles, state) => ({

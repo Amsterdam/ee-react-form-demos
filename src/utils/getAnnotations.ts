@@ -64,6 +64,28 @@ const ANNOTATIONS: Annotation[] = [
     label: 'Timetell code',
     example: '230001',
   },
+  {
+    key: 'backstage.io/source-location',
+    label: 'Source location',
+    type: 'url',
+    example: 'https://github.com/amsterdam/ee-docs',
+  },
+  {
+    key: 'github.com/project-slug',
+    label: 'GitHub Project slug',
+    example: 'amsterdam/ee-docs',
+  },
+  {
+    key: 'github.com/team-slug',
+    label: 'GitHub Team slug',
+    example: 'amsterdam/engineering-enablement',
+  },
+  {
+    key: 'lighthouse.com/website-url',
+    label: 'Lighthouse Website URL',
+    type: 'url',
+    example: 'https://developers.amsterdam',
+  },
 ];
 
 export default ANNOTATIONS;

@@ -4,6 +4,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import yaml from 'js-yaml';
 import styles from './styles.module.scss';
+import ANNOTATIONS from '@/utils/getAnnotations';
 
 // const codeString = `
 // apiVersion: backstage.io/v1alpha1
@@ -39,7 +40,6 @@ interface SubmissionOutputProps {
 }
 
 const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
-  // console.log('output', { formData });
   const codeString = yaml.dump({
     apiVersion: 'backstage.io/v1alpha1',
     kind: formData.kind,
@@ -47,14 +47,24 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
       name: formData.name,
       description: formData.description,
       tags: formData.tags,
-      annotations: formData.annotations,
-      // annotations: {
-      //   'backstage.io/source-location':
-      //     'url:https://github.com/amsterdam/ee-docs/',
-      //   'github.com/project-slug': 'amsterdam/ee-docs',
-      //   'github.com/team-slug': 'amsterdam/engineering-enablement',
-      //   'lighthouse.com/website-url': 'https://developers.amsterdam',
-      // },
+      // annotations: [],
+      annotations: Object.entries(formData.annotations).reduce(
+        (acc, [key, value]) => {
+          const rule = ANNOTATIONS.find(annotation => annotation.key === key);
+
+          // If key is empty skip the record
+          if (key) {
+            if (rule?.type === 'url') {
+              acc[key] = `url: ${value}`;
+            } else {
+              acc[key] = value ?? '';
+            }
+          }
+
+          return acc;
+        },
+        {} as Record<string, string>
+      ),
       links: [
         {
           url: 'https://developers.amsterdam/',
