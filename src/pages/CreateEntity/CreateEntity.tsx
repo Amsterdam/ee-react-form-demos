@@ -87,6 +87,7 @@ const Home = () => {
     }));
   };
 
+  // TODO handle annotations and new tags
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -143,6 +144,8 @@ const Home = () => {
               User: 'User',
             }}
             onChange={handleChange}
+            // TODO refactor props order + value or initialValue?
+            initialValue={formData.kind}
           />
 
           <FormTextInput
@@ -171,6 +174,7 @@ const Home = () => {
             name="tags"
             description="Tags text goes here..."
             options={getTags()}
+            initialValues={formData.tags}
             onChange={(
               newValue: MultiValue<{
                 label: string;
@@ -195,6 +199,7 @@ const Home = () => {
                 value: formData.annotations[annotation],
               })
             )}
+            // TODO refactor
             onChange={(
               annotations: {
                 key: string | undefined;

@@ -32,6 +32,7 @@ interface FormAutoSelectProps extends SelectEventHandlers {
   name: string;
   description?: string;
   options: OptionsOrGroups<Option, GroupBase<Option>> | undefined;
+  initialValues: string[];
   onChange: (
     newValue: MultiValue<Option>,
     actionMeta: ActionMeta<Option>
@@ -43,6 +44,7 @@ const FormAutoSelect = ({
   name,
   description,
   options,
+  initialValues,
   onChange,
   ...props
 }: FormAutoSelectProps) => (
@@ -58,6 +60,7 @@ const FormAutoSelect = ({
       isMulti
       onChange={onChange}
       name={name}
+      value={options?.filter(option => initialValues.includes(option.value))}
       {...props}
     />
   </Field>

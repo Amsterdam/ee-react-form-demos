@@ -64,7 +64,9 @@ const AnnotationRow = ({
             setKeyValue(undefined);
           }
         }}
-        value={keyValue}
+        value={ANNOTATIONS.map(({ key, label }) => ({ key, label })).find(
+          option => option.key === keyValue
+        )}
       />
 
       <Label htmlFor={`annotation-value-${index}`}>Value</Label>

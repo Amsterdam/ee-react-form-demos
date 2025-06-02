@@ -10,6 +10,7 @@ interface FormSelectProps {
   label: string;
   description?: string;
   options: Record<string, string>;
+  initialValue?: string;
   onChange: (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
@@ -19,6 +20,7 @@ const FormSelect = ({
   label,
   description,
   options,
+  initialValue = undefined,
   onChange,
 }: FormSelectProps) => (
   <Field className="ams-mb-m">
@@ -32,6 +34,7 @@ const FormSelect = ({
       aria-describedby={description ? 'description2' : ''}
       id="input2"
       name="kind"
+      value={initialValue}
       onChange={onChange}
     >
       {Object.keys(options).map((value, index) => (
