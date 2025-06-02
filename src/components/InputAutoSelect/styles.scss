@@ -156,7 +156,10 @@
   border-radius: 2px;
   box-sizing: border-box;
   display: flex;
-  margin: 2px 8px 2px -2px;
+  // comment if not using design-system compact mode
+  margin: 1px 8px 1px -2px;
+  // uncomment if not using design-system compact mode
+  // margin: 2px 8px 2px -2px;
   min-width: 0;
 }
 
@@ -179,10 +182,11 @@
     color: #fff;
   }
 
-  svg {
-    height: 20px;
-    width: 20px;
-  }
+  // Uncomment if not using design-system compact mode
+  // svg {
+  //   height: 20px;
+  //   width: 20px;
+  // }
 }
 
 // This class inherits styling

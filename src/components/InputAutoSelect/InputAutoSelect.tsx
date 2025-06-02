@@ -1,13 +1,33 @@
-import Select, { GroupBase, OptionsOrGroups } from 'react-select';
+import Select, {
+  GroupBase,
+  OptionsOrGroups,
+  Props as SelectProps,
+} from 'react-select';
 import ClearIndicator from './ClearIndicator';
 import DropdownIndicator from './DropdownIndicator';
 import './styles.scss';
 
-interface InputAutoSelectProps {
+type SelectEventHandlers = Pick<
+  SelectProps<unknown, boolean, GroupBase<unknown>>,
+  | 'onChange'
+  | 'onBlur'
+  | 'onFocus'
+  | 'onInputChange'
+  | 'onKeyDown'
+  | 'onMenuOpen'
+  | 'onMenuClose'
+  | 'onMenuScrollToTop'
+  | 'onMenuScrollToBottom'
+>;
+
+interface InputAutoSelectProps extends SelectEventHandlers {
   isClearable?: boolean;
   isDisabled?: boolean;
   isMulti?: boolean;
   options: OptionsOrGroups<unknown, GroupBase<unknown>> | undefined;
+  id?: string;
+  name?: string;
+  value?: string;
 }
 
 // WARNING: The following prop types are unstyled and untested:
@@ -18,6 +38,10 @@ const InputAutoSelect = ({
   isDisabled = false,
   isMulti = false,
   options,
+  id = undefined,
+  name = undefined,
+  value = undefined,
+  ...eventHandlers
 }: InputAutoSelectProps) => (
   <Select
     options={options}
@@ -33,6 +57,12 @@ const InputAutoSelect = ({
       DropdownIndicator,
     }}
     noOptionsMessage={() => 'Geen opties'}
+    id={id}
+    name={name}
+    defaultValue={
+      value ? options?.find(option => option.key === value) : undefined
+    }
+    {...eventHandlers}
     styles={{
       container: (baseStyles, state) => ({
         ...baseStyles,

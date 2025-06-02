@@ -3,4 +3,5 @@ export type EntityFormData = {
   name: string;
   description: string;
   tags: string[];
+  annotations: Record<string, string | undefined>;
 };

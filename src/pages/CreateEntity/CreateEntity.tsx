@@ -2,11 +2,14 @@ import { Button, Grid, Heading } from '@amsterdam/design-system-react';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import FormTextInput from '@/components/FormTextInput/FormTextInput';
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { EntityFormData } from '@/types';
 import FormTextarea from '@/components/FormTextarea/FormTextarea';
-import FormRepeaterInput from '@/components/FormRepeaterInput/FormRepeaterInput';
+// import FormRepeaterInput from '@/components/FormRepeaterInput/FormRepeaterInput';
 import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
+import getTags from '@/utils/getTags';
+import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
+import { ActionMeta, MultiValue } from 'react-select';
 // import styles from './styles.module.css';
 
 // apiVersion: backstage.io/v1alpha1
@@ -36,6 +39,11 @@ import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 //   owner: dii-engineering-enablement
 //   system: dii-ee-developers-amsterdam
 
+// TODO links repeater field
+// TODO spec fields
+// TODO handle initial values (should match YAML output - example: Kind select menu)
+// TODO validation
+// TODO tests
 const Home = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -46,6 +54,12 @@ const Home = () => {
     name: 'ee-docs',
     description: 'The primary app for developers.amsterdam',
     tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
+    annotations: {
+      'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
+      'github.com/project-slug': 'amsterdam/ee-docs',
+      'github.com/team-slug': 'amsterdam/engineering-enablement',
+      'lighthouse.com/website-url': 'https://developers.amsterdam',
+    },
   } as EntityFormData);
 
   // const [formState, formAction] = useActionState(submitEntityForm);
@@ -62,14 +76,16 @@ const Home = () => {
   //   }
   // }, [formState]);
 
-  // const handleChange = (e: ChangeEvent<HTMLFormElement>) => {
-  //   const { name, value } = e.target;
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
 
-  //   setFormData(prev => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -105,7 +121,7 @@ const Home = () => {
 
   return (
     <Grid>
-      <Grid.Cell span="all">
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
         <Heading level={1} size="level-3">
           Create an entity
         </Heading>
@@ -126,32 +142,85 @@ const Home = () => {
               System: 'System',
               User: 'User',
             }}
-            // onChange={handleChange}
+            onChange={handleChange}
           />
 
           <FormTextInput
             label="Name"
             description="Textinput description text goes here..."
             value={formData.name}
-            // onChange={handleChange}
+            onChange={handleChange}
           />
 
           <FormTextarea
             label="Description"
             description="Textarea description text goes here..."
             value={formData.description}
+            onChange={handleChange}
           />
 
-          <FormRepeaterInput
+          {/* Single input repeater */}
+          {/* <FormRepeaterInput
             label="Tags"
             initialValues={formData.tags}
             onChange={(tags: string[]) => setFormData({ ...formData, tags })}
+          /> */}
+
+          <FormAutoSelect
+            label="Tags"
+            name="tags"
+            description="Tags text goes here..."
+            options={getTags()}
+            onChange={(
+              newValue: MultiValue<{
+                label: string;
+                value: string;
+              }>,
+              actionMeta: ActionMeta<{
+                label: string;
+                value: string;
+              }>
+            ) => {
+              setFormData(prev => ({
+                ...prev,
+                [actionMeta.name as string]: newValue.map(({ value }) => value),
+              }));
+            }}
           />
 
-          <FormAutoSelect label="Tags" description="Tags text goes here..." />
+          <FormAnnotationFields
+            initialValues={Object.keys(formData.annotations).map(
+              annotation => ({
+                key: annotation,
+                value: formData.annotations[annotation],
+              })
+            )}
+            onChange={(
+              annotations: {
+                key: string | undefined;
+                value: string | undefined;
+              }[]
+            ) =>
+              setFormData({
+                ...formData,
+                annotations: annotations
+                  .filter(
+                    (a): a is { key: string; value: string | undefined } =>
+                      typeof a.key === 'string'
+                  )
+                  .reduce(
+                    (acc, { key, value }) => {
+                      acc[key] = value ?? '';
+                      return acc;
+                    },
+                    {} as Record<string, string | undefined>
+                  ),
+              })
+            }
+          />
 
           <div>
-            <Button type="submit">Versturen</Button>
+            <Button type="submit">Submit</Button>
           </div>
         </form>
       </Grid.Cell>

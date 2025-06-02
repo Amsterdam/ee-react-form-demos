@@ -5,12 +5,16 @@ import {
   Paragraph,
   TextInput,
 } from '@amsterdam/design-system-react';
+import { ChangeEvent } from 'react';
 
 interface FormTextInputProps {
   label: string;
   description?: string;
   value: string;
   error?: string;
+  onChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => void;
 }
 
 const FormTextInput = ({
@@ -18,6 +22,7 @@ const FormTextInput = ({
   description,
   value,
   error,
+  onChange,
 }: FormTextInputProps) => (
   <Field className="ams-mb-m" invalid={!!error}>
     <Label htmlFor="input3">{label}</Label>
@@ -33,6 +38,7 @@ const FormTextInput = ({
       value={value}
       invalid={!!error}
       name="name"
+      onChange={onChange}
     />
   </Field>
 );

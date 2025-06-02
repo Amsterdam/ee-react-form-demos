@@ -5,14 +5,14 @@ const Header = () => (
   <Grid>
     <Grid.Cell span="all">
       <PageHeader
-        brandName="React Template"
+        brandName="Backstage Forms"
         menuItems={[
           <Link key={1} to=".." className="ams-page-header__menu-link">
             Create an entity
           </Link>,
-          <Link key={2} to="../contact" className="ams-page-header__menu-link">
-            Edit an entity
-          </Link>,
+          // <Link key={2} to="../contact" className="ams-page-header__menu-link">
+          //   Edit an entity
+          // </Link>,
         ]}
       />
     </Grid.Cell>

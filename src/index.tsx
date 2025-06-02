@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import '@amsterdam/design-system-tokens/dist/index.css';
 import '@amsterdam/design-system-assets/font/index.css';
 import '@amsterdam/design-system-css/dist/index.css';
+import '@amsterdam/design-system-tokens/dist/compact.css';
 import './style.css';
 import routes from './routes';
 
