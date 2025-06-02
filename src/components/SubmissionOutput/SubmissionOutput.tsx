@@ -39,6 +39,7 @@ interface SubmissionOutputProps {
 }
 
 const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
+  // console.log('output', { formData });
   const codeString = yaml.dump({
     apiVersion: 'backstage.io/v1alpha1',
     kind: formData.kind,
@@ -46,13 +47,14 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
       name: formData.name,
       description: formData.description,
       tags: formData.tags,
-      annotations: {
-        'backstage.io/source-location':
-          'url:https://github.com/amsterdam/ee-docs/',
-        'github.com/project-slug': 'amsterdam/ee-docs',
-        'github.com/team-slug': 'amsterdam/engineering-enablement',
-        'lighthouse.com/website-url': 'https://developers.amsterdam',
-      },
+      annotations: formData.annotations,
+      // annotations: {
+      //   'backstage.io/source-location':
+      //     'url:https://github.com/amsterdam/ee-docs/',
+      //   'github.com/project-slug': 'amsterdam/ee-docs',
+      //   'github.com/team-slug': 'amsterdam/engineering-enablement',
+      //   'lighthouse.com/website-url': 'https://developers.amsterdam',
+      // },
       links: [
         {
           url: 'https://developers.amsterdam/',

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
 import {
@@ -15,16 +15,24 @@ import styles from './styles.module.css';
 interface AnnotationRowProps {
   index: number;
   removeItem?: () => void;
+  onChange: (key: string | undefined, value: string | undefined) => void;
 }
 
 const AnnotationRow = ({
   index,
   removeItem = undefined,
+  onChange,
 }: AnnotationRowProps) => {
   const [keyValue, setKeyValue] = useState<string | undefined>(undefined);
+  // TODO fix name
+  const [valueValue, setValueValue] = useState<string | undefined>(undefined);
   const annotation = ANNOTATIONS.find(
     annotation => annotation.key === keyValue
   );
+
+  useEffect(() => {
+    onChange(keyValue, valueValue);
+  }, [keyValue, valueValue]);
 
   return (
     <Field className={styles.container}>
@@ -55,6 +63,16 @@ const AnnotationRow = ({
           {annotation.values.map((value, optionIndex) => (
             <Select.Option
               value={value}
+              onChange={(newValue: unknown | null) => {
+                console.log("select on Change", newValue);
+                if (newValue) {
+                  setValueValue(
+                    (newValue as { label: string; key: string }).key
+                  );
+                } else {
+                  setValueValue(undefined);
+                }
+              }}
               key={`annotation-${index}-select-${optionIndex}`}
             >
               {value}
@@ -71,6 +89,9 @@ const AnnotationRow = ({
           placeholder={annotation?.example ? annotation.example : undefined}
           name="annotation_value"
           className="ams-mb-m"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setValueValue(e.target.value);
+          }}
         />
       )}
 

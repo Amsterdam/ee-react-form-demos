@@ -39,6 +39,13 @@ import { ActionMeta, MultiValue } from 'react-select';
 //   owner: dii-engineering-enablement
 //   system: dii-ee-developers-amsterdam
 
+const initialAnnotations = {
+  'backstage.io/source-location': 'url:https://github.com/amsterdam/ee-docs/',
+  'github.com/project-slug': 'amsterdam/ee-docs',
+  'github.com/team-slug': 'amsterdam/engineering-enablement',
+  'lighthouse.com/website-url': 'https://developers.amsterdam',
+};
+
 // TODO tags - handleChange in YAML Preview
 // TODO handle annotations in YAML preview
 // TODO links repeater field
@@ -185,9 +192,33 @@ const Home = () => {
           />
 
           <FormAnnotationFields
-            initialValues={[]}
-            onChange={(annotations: Record<string, string>[]) =>
-              setFormData({ ...formData, annotations })
+            initialValues={Object.keys(initialAnnotations).map(
+              initialAnnotation => ({
+                key: initialAnnotation,
+                value: initialAnnotations[initialAnnotation],
+              })
+            )}
+            onChange={(
+              annotations: {
+                key: string | undefined;
+                value: string | undefined;
+              }[]
+            ) =>
+              setFormData({
+                ...formData,
+                annotations: annotations
+                  .filter(
+                    (a): a is { key: string; value: string | undefined } =>
+                      typeof a.key === 'string'
+                  )
+                  .reduce(
+                    (acc, { key, value }) => {
+                      acc[key] = value ?? '';
+                      return acc;
+                    },
+                    {} as Record<string, string | undefined>
+                  ),
+              })
             }
           />
 
