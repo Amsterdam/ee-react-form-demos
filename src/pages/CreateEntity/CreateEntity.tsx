@@ -1,4 +1,10 @@
-import { Button, Grid, Heading } from '@amsterdam/design-system-react';
+import {
+  Button,
+  Checkbox,
+  Field,
+  Grid,
+  Heading,
+} from '@amsterdam/design-system-react';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import FormTextInput from '@/components/FormTextInput/FormTextInput';
@@ -43,6 +49,7 @@ import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterI
 // TODO spec fields
 // TODO validation
 // TODO tests
+// TODO check htmlFor values
 // TODO when to use name HTML form attr?
 const Home = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -243,6 +250,96 @@ const Home = () => {
             // TODO refactor props order + value or initialValue?
             initialValue={formData.spec.lifecycle}
           />
+
+          {/* TODO convert to single (not multi) */}
+          <FormAutoSelect
+            label="Owner"
+            name="owner"
+            description="Spec - owner text goes here..."
+            options={[
+              {
+                value: 'ee',
+                label: 'Engineering Enablement',
+              },
+              {
+                value: 'dadi',
+                label: 'Data Diensten',
+              },
+            ]}
+            initialValues={[formData.spec.owner]}
+            onChange={(
+              newValue: MultiValue<{
+                label: string;
+                value: string;
+              }>,
+              actionMeta: ActionMeta<{
+                label: string;
+                value: string;
+              }>
+            ) => {
+              setFormData(prev => ({
+                ...prev,
+                spec: {
+                  ...prev.spec,
+                  owner: '', // TODO
+                },
+              }));
+            }}
+          />
+
+          <Field className="ams-mb-m">
+            <Checkbox
+              onChange={e =>
+                setFormData({
+                  ...formData,
+                  spec: {
+                    ...formData.spec,
+                    hasSystem: e.target.checked,
+                  },
+                })
+              }
+            >
+              Has system?
+            </Checkbox>
+          </Field>
+
+          {/* TODO convert to single (not multi) */}
+          {formData.spec.hasSystem && (
+            <FormAutoSelect
+              label="System"
+              name="system"
+              description="Spec - system text goes here..."
+              options={[
+                {
+                  value: 'ee',
+                  label: 'Engineering Enablement',
+                },
+                {
+                  value: 'dadi',
+                  label: 'Data Diensten',
+                },
+              ]}
+              initialValues={[formData.spec.owner]}
+              onChange={(
+                newValue: MultiValue<{
+                  label: string;
+                  value: string;
+                }>,
+                actionMeta: ActionMeta<{
+                  label: string;
+                  value: string;
+                }>
+              ) => {
+                setFormData(prev => ({
+                  ...prev,
+                  spec: {
+                    ...prev.spec,
+                    system: '', // TODO
+                  },
+                }));
+              }}
+            />
+          )}
 
           {/* Single input repeater */}
           {/* <FormRepeaterInput
