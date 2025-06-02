@@ -4,4 +4,9 @@ export type EntityFormData = {
   description: string;
   tags: string[];
   annotations: Record<string, string | undefined>;
+  links: {
+    url: string;
+    title: string;
+    icon: string;
+  }[];
 };

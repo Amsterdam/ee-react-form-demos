@@ -10,6 +10,7 @@ import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
 import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
 import { ActionMeta, MultiValue } from 'react-select';
+import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterInputs';
 // import styles from './styles.module.css';
 
 // apiVersion: backstage.io/v1alpha1
@@ -41,7 +42,6 @@ import { ActionMeta, MultiValue } from 'react-select';
 
 // TODO links repeater field
 // TODO spec fields
-// TODO handle initial values (should match YAML output - example: Kind select menu)
 // TODO validation
 // TODO tests
 const Home = () => {
@@ -60,6 +60,23 @@ const Home = () => {
       'github.com/team-slug': 'amsterdam/engineering-enablement',
       'lighthouse.com/website-url': 'https://developers.amsterdam',
     },
+    links: [
+      {
+        url: 'https://developers.amsterdam/',
+        title: 'developers.amsterdam',
+        icon: 'launch',
+      },
+      {
+        url: 'https://github.com/amsterdam/ee-docs',
+        title: 'GitHub Repo',
+        icon: 'github',
+      },
+      {
+        url: 'https://gemeente-amsterdam.atlassian.net/browse/COM-70',
+        title: 'Jira Board',
+        icon: 'dashboard',
+      },
+    ],
   } as EntityFormData);
 
   // const [formState, formAction] = useActionState(submitEntityForm);
@@ -133,7 +150,7 @@ const Home = () => {
             // TODO include link in description - what happens?
             description="Description text goes here..."
             // This looks a bit weird but is intended because select menu values
-            // are often different to the labels (in this example they're not)
+            // are often different to the labels (however, not in this example)
             options={{
               API: 'API',
               Component: 'Component',
@@ -222,6 +239,11 @@ const Home = () => {
                   ),
               })
             }
+          />
+
+          <LinksRepeaterInputs
+            initialValues={formData?.links ?? []}
+            onChange={_items => undefined}
           />
 
           <div>
