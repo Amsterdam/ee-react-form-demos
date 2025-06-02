@@ -9,4 +9,11 @@ export type EntityFormData = {
     title: string;
     icon: string;
   }[];
+  spec: {
+    type: string;
+    lifecycle: string;
+    owner: string;
+    hasSystem: boolean;
+    system: string;
+  };
 };

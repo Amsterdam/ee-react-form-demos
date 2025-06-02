@@ -40,10 +40,10 @@ import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterI
 //   owner: dii-engineering-enablement
 //   system: dii-ee-developers-amsterdam
 
-// TODO links repeater field
 // TODO spec fields
 // TODO validation
 // TODO tests
+// TODO when to use name HTML form attr?
 const Home = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -77,6 +77,17 @@ const Home = () => {
         icon: 'dashboard',
       },
     ],
+    spec: {
+      type: 'website',
+      lifecycle: 'production',
+
+      // TODO React-input select
+      owner: 'dii-engineering-enablement',
+
+      // TODO via checkbox
+      hasSystem: true,
+      system: 'dii-ee-developers-amsterdam',
+    },
   } as EntityFormData);
 
   // const [formState, formAction] = useActionState(submitEntityForm);
@@ -94,7 +105,7 @@ const Home = () => {
   // }, [formState]);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
 
@@ -149,6 +160,7 @@ const Home = () => {
             label="Kind"
             // TODO include link in description - what happens?
             description="Description text goes here..."
+            name="kind"
             // This looks a bit weird but is intended because select menu values
             // are often different to the labels (however, not in this example)
             options={{
@@ -160,7 +172,12 @@ const Home = () => {
               System: 'System',
               User: 'User',
             }}
-            onChange={handleChange}
+            onChange={(_name, value) => {
+              setFormData(prev => ({
+                ...prev,
+                kind: value,
+              }));
+            }}
             // TODO refactor props order + value or initialValue?
             initialValue={formData.kind}
           />
@@ -177,6 +194,54 @@ const Home = () => {
             description="Textarea description text goes here..."
             value={formData.description}
             onChange={handleChange}
+          />
+
+          <FormSelect
+            label="Type"
+            description="Spec - type text goes here..."
+            name="type"
+            options={{
+              service: 'Service',
+              website: 'Website',
+              library: 'Library',
+              'mobile-app': 'Mobile/Native App',
+            }}
+            onChange={(_name, value) => {
+              setFormData(prev => ({
+                ...prev,
+                spec: {
+                  ...prev.spec,
+                  type: value,
+                },
+              }));
+            }}
+            // TODO refactor props order + value or initialValue?
+            initialValue={formData.spec.type}
+          />
+
+          <FormSelect
+            label="Lifecycle"
+            description="Spec - lifecycle text goes here..."
+            name="lifecycle"
+            options={{
+              prototype: 'Prototype',
+              alpha: 'Alpha',
+              beta: 'Beta',
+              production: 'Production',
+              deprecated: 'Deprecated',
+              archived: 'Archived',
+            }}
+            onChange={(_name, value) => {
+              setFormData(prev => ({
+                ...prev,
+                spec: {
+                  ...prev.spec,
+                  lifecycle: value,
+                },
+              }));
+            }}
+            // TODO refactor props order + value or initialValue?
+            initialValue={formData.spec.lifecycle}
           />
 
           {/* Single input repeater */}
@@ -227,6 +292,7 @@ const Home = () => {
                 ...formData,
                 annotations: annotations
                   .filter(
+                    // We're not interested in values with no parent key value
                     (a): a is { key: string; value: string | undefined } =>
                       typeof a.key === 'string'
                   )
@@ -243,7 +309,12 @@ const Home = () => {
 
           <LinksRepeaterInputs
             initialValues={formData?.links ?? []}
-            onChange={_items => undefined}
+            onChange={links => {
+              setFormData({
+                ...formData,
+                links,
+              });
+            }}
           />
 
           <div>

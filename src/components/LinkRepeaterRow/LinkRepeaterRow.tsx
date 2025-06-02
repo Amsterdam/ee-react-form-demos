@@ -6,8 +6,8 @@ import {
   Select,
   TextInput,
 } from '@amsterdam/design-system-react';
-import styles from './styles.module.css';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
+import styles from './styles.module.css';
 
 interface LinkRepeaterRowProps {
   index: number;
@@ -17,9 +17,15 @@ interface LinkRepeaterRowProps {
     icon: string;
   };
   removeItem: () => void;
+  onChange: (name: string, value: string) => void;
 }
 
-const LinkRepeaterRow = ({ index, item, removeItem }: LinkRepeaterRowProps) => (
+const LinkRepeaterRow = ({
+  index,
+  item,
+  removeItem,
+  onChange,
+}: LinkRepeaterRowProps) => (
   <div className={styles.root} key={index}>
     <Heading level={4}>Link {index + 1}</Heading>
 
@@ -29,7 +35,7 @@ const LinkRepeaterRow = ({ index, item, removeItem }: LinkRepeaterRowProps) => (
         type="url"
         name="url"
         value={item.url}
-        // onChange={e => handleChange(index, e.target.value)}
+        onChange={e => onChange('url', e.target.value)}
       />
     </Field>
     <Field className="ams-mb-m">
@@ -37,7 +43,7 @@ const LinkRepeaterRow = ({ index, item, removeItem }: LinkRepeaterRowProps) => (
       <TextInput
         name="title"
         value={item.title}
-        // onChange={e => handleChange(index, e.target.value)}
+        onChange={e => onChange('title', e.target.value)}
       />
     </Field>
     <Field className="ams-mb-m">
@@ -47,7 +53,9 @@ const LinkRepeaterRow = ({ index, item, removeItem }: LinkRepeaterRowProps) => (
         // id="input2"
         name="icon"
         value={item?.icon}
-        // onChange={onChange}
+        onChange={e =>
+          onChange('icon', e.target.options[e.target.selectedIndex].value)
+        }
       >
         <Select.Option value="dashboard">Dashboard</Select.Option>
         <Select.Option value="github">GitHub</Select.Option>

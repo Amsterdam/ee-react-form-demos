@@ -53,10 +53,8 @@ const FormAnnotationFields = ({
     onChange(values);
   }, [values]);
 
-  // console.log('FormAnnotationFields', { items, values });
-
   return (
-    <div className={`${styles.container} ams-mb-m`}>
+    <div className={`${styles.container} ams-mb-l`}>
       <Heading level={4} className="ams-mb-s">
         Annotations
       </Heading>
