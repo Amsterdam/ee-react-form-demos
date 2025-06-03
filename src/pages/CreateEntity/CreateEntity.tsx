@@ -12,6 +12,9 @@ import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotati
 import { ActionMeta, MultiValue } from 'react-select';
 import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterInputs';
 import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput';
+import getOwners from '@/utils/getOwners';
+import getSystems from '@/utils/getSystems';
+import sortAlphabetically from '@/utils/sortAlphabetically';
 // import styles from './styles.module.css';
 
 // apiVersion: backstage.io/v1alpha1
@@ -40,6 +43,9 @@ import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput'
 //   lifecycle: production
 //   owner: dii-engineering-enablement
 //   system: dii-ee-developers-amsterdam
+
+const ownerOptions = getOwners().sort(sortAlphabetically);
+const systemOptions = getSystems().sort(sortAlphabetically);
 
 // TODO spec fields - initial values and options in System and Owner
 // TODO validation
@@ -250,16 +256,7 @@ const Home = () => {
             label="Owner"
             name="owner"
             description="Spec - owner text goes here..."
-            options={[
-              {
-                value: 'ee',
-                label: 'Engineering Enablement',
-              },
-              {
-                value: 'dadi',
-                label: 'Data Diensten',
-              },
-            ]}
+            options={ownerOptions}
             initialValues={[formData.spec.owner]}
             onChange={(
               newValue: MultiValue<{
@@ -271,7 +268,7 @@ const Home = () => {
                 ...prev,
                 spec: {
                   ...prev.spec,
-                  owner: newValue.value,
+                  owner: newValue?.value,
                 },
               }));
             }}
@@ -296,40 +293,25 @@ const Home = () => {
               label="System"
               name="system"
               description="Spec - system text goes here..."
-              options={[
-                {
-                  value: 'ee',
-                  label: 'Engineering Enablement',
-                },
-                {
-                  value: 'dadi',
-                  label: 'Data Diensten',
-                },
-              ]}
-              initialValues={[formData.spec.owner]}
+              options={systemOptions}
+              initialValues={[formData.spec.system]}
               onChange={(
                 newValue: MultiValue<{
                   label: string;
                   value: string;
                 }>
               ) => {
+                console.log({ newValue });
                 setFormData(prev => ({
                   ...prev,
                   spec: {
                     ...prev.spec,
-                    system: newValue.value,
+                    system: newValue?.value,
                   },
                 }));
               }}
             />
           )}
-
-          {/* Single input repeater */}
-          {/* <FormRepeaterInput
-            label="Tags"
-            initialValues={formData.tags}
-            onChange={(tags: string[]) => setFormData({ ...formData, tags })}
-          /> */}
 
           <FormAutoSelect
             label="Tags"
