@@ -1,10 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Field,
-  Grid,
-  Heading,
-} from '@amsterdam/design-system-react';
+import { Button, Grid, Heading } from '@amsterdam/design-system-react';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import FormTextInput from '@/components/FormTextInput/FormTextInput';
@@ -17,6 +11,7 @@ import getTags from '@/utils/getTags';
 import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
 import { ActionMeta, MultiValue } from 'react-select';
 import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterInputs';
+import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput';
 // import styles from './styles.module.css';
 
 // apiVersion: backstage.io/v1alpha1
@@ -92,7 +87,7 @@ const Home = () => {
       owner: 'dii-engineering-enablement',
 
       // TODO via checkbox
-      hasSystem: false,
+      hasSystem: true,
       system: 'dii-ee-developers-amsterdam',
     },
   } as EntityFormData);
@@ -282,21 +277,19 @@ const Home = () => {
             }}
           />
 
-          <Field className="ams-mb-m">
-            <Checkbox
-              onChange={e =>
-                setFormData({
-                  ...formData,
-                  spec: {
-                    ...formData.spec,
-                    hasSystem: e.target.checked,
-                  },
-                })
-              }
-            >
-              Has system?
-            </Checkbox>
-          </Field>
+          <FormCheckboxInput
+            label="Has system"
+            value={formData.spec.hasSystem}
+            onChange={e =>
+              setFormData({
+                ...formData,
+                spec: {
+                  ...formData.spec,
+                  hasSystem: e.target.checked,
+                },
+              })
+            }
+          />
 
           {formData.spec.hasSystem && (
             <FormAutoSelect

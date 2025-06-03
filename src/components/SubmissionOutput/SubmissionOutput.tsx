@@ -35,7 +35,7 @@ import ANNOTATIONS from '@/utils/getAnnotations';
 //   system: dii-ee-developers-amsterdam
 // `;
 
-const processFormData = formData => {
+const processFormData = (formData: EntityFormData) => {
   let base = {
     apiVersion: 'backstage.io/v1alpha1',
     kind: formData.kind,
@@ -66,7 +66,7 @@ const processFormData = formData => {
         type: formData.spec.type,
         lifecycle: formData.spec.lifecycle,
         owner: formData.spec.owner,
-        system: formData.spec.system,
+        // system: formData.spec.system,
       },
     },
   };
@@ -93,41 +93,6 @@ interface SubmissionOutputProps {
 
 // TODO annotations - with is link value with `url: ` in speech marks but not other values?
 const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
-  console.log({ formData });
-  // const codeString = yaml.dump({
-  //   apiVersion: 'backstage.io/v1alpha1',
-  //   kind: formData.kind,
-  //   metadata: {
-  //     name: formData.name,
-  //     description: formData.description,
-  //     tags: formData.tags,
-  //     // annotations: [],
-  //     annotations: Object.entries(formData.annotations).reduce(
-  //       (acc, [key, value]) => {
-  //         const rule = ANNOTATIONS.find(annotation => annotation.key === key);
-
-  //         // If key is empty skip the record
-  //         if (key) {
-  //           if (rule?.type === 'url') {
-  //             acc[key] = `url: ${value}`;
-  //           } else {
-  //             acc[key] = value ?? '';
-  //           }
-  //         }
-
-  //         return acc;
-  //       },
-  //       {} as Record<string, string>
-  //     ),
-  //     links: formData.links,
-  //     spec: {
-  //       type: formData.spec.type,
-  //       lifecycle: formData.spec.lifecycle,
-  //       owner: 'dii-engineering-enablement',
-  //       system: 'dii-ee-developers-amsterdam',
-  //     },
-  //   },
-  // });
   const codeString = yaml.dump(processFormData(formData));
 
   return (
