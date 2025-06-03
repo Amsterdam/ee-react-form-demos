@@ -35,13 +35,8 @@ import ANNOTATIONS from '@/utils/getAnnotations';
 //   system: dii-ee-developers-amsterdam
 // `;
 
-interface SubmissionOutputProps {
-  formData: EntityFormData;
-}
-
-// TODO annotations - with is link value with `url: ` in speech marks but not other values?
-const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
-  const codeString = yaml.dump({
+const processFormData = formData => {
+  let base = {
     apiVersion: 'backstage.io/v1alpha1',
     kind: formData.kind,
     metadata: {
@@ -70,11 +65,70 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
       spec: {
         type: formData.spec.type,
         lifecycle: formData.spec.lifecycle,
-        owner: 'dii-engineering-enablement',
-        system: 'dii-ee-developers-amsterdam',
+        owner: formData.spec.owner,
+        system: formData.spec.system,
       },
     },
-  });
+  };
+
+  if (formData.spec.hasSystem) {
+    base = {
+      ...base,
+      metadata: {
+        ...base.metadata,
+        spec: {
+          ...base.metadata.spec,
+          system: formData.spec.system,
+        },
+      },
+    };
+  }
+
+  return base;
+};
+
+interface SubmissionOutputProps {
+  formData: EntityFormData;
+}
+
+// TODO annotations - with is link value with `url: ` in speech marks but not other values?
+const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
+  console.log({ formData });
+  // const codeString = yaml.dump({
+  //   apiVersion: 'backstage.io/v1alpha1',
+  //   kind: formData.kind,
+  //   metadata: {
+  //     name: formData.name,
+  //     description: formData.description,
+  //     tags: formData.tags,
+  //     // annotations: [],
+  //     annotations: Object.entries(formData.annotations).reduce(
+  //       (acc, [key, value]) => {
+  //         const rule = ANNOTATIONS.find(annotation => annotation.key === key);
+
+  //         // If key is empty skip the record
+  //         if (key) {
+  //           if (rule?.type === 'url') {
+  //             acc[key] = `url: ${value}`;
+  //           } else {
+  //             acc[key] = value ?? '';
+  //           }
+  //         }
+
+  //         return acc;
+  //       },
+  //       {} as Record<string, string>
+  //     ),
+  //     links: formData.links,
+  //     spec: {
+  //       type: formData.spec.type,
+  //       lifecycle: formData.spec.lifecycle,
+  //       owner: 'dii-engineering-enablement',
+  //       system: 'dii-ee-developers-amsterdam',
+  //     },
+  //   },
+  // });
+  const codeString = yaml.dump(processFormData(formData));
 
   return (
     <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>

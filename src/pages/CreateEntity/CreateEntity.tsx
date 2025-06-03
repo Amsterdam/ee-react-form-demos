@@ -46,7 +46,7 @@ import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterI
 //   owner: dii-engineering-enablement
 //   system: dii-ee-developers-amsterdam
 
-// TODO spec fields
+// TODO spec fields - initial values and options in System and Owner
 // TODO validation
 // TODO tests
 // TODO check htmlFor values
@@ -92,7 +92,7 @@ const Home = () => {
       owner: 'dii-engineering-enablement',
 
       // TODO via checkbox
-      hasSystem: true,
+      hasSystem: false,
       system: 'dii-ee-developers-amsterdam',
     },
   } as EntityFormData);
@@ -251,7 +251,6 @@ const Home = () => {
             initialValue={formData.spec.lifecycle}
           />
 
-          {/* TODO convert to single (not multi) */}
           <FormAutoSelect
             label="Owner"
             name="owner"
@@ -271,17 +270,13 @@ const Home = () => {
               newValue: MultiValue<{
                 label: string;
                 value: string;
-              }>,
-              actionMeta: ActionMeta<{
-                label: string;
-                value: string;
               }>
             ) => {
               setFormData(prev => ({
                 ...prev,
                 spec: {
                   ...prev.spec,
-                  owner: '', // TODO
+                  owner: newValue.value,
                 },
               }));
             }}
@@ -303,7 +298,6 @@ const Home = () => {
             </Checkbox>
           </Field>
 
-          {/* TODO convert to single (not multi) */}
           {formData.spec.hasSystem && (
             <FormAutoSelect
               label="System"
@@ -324,17 +318,13 @@ const Home = () => {
                 newValue: MultiValue<{
                   label: string;
                   value: string;
-                }>,
-                actionMeta: ActionMeta<{
-                  label: string;
-                  value: string;
                 }>
               ) => {
                 setFormData(prev => ({
                   ...prev,
                   spec: {
                     ...prev.spec,
-                    system: '', // TODO
+                    system: newValue.value,
                   },
                 }));
               }}
@@ -354,6 +344,7 @@ const Home = () => {
             description="Tags text goes here..."
             options={getTags()}
             initialValues={formData.tags}
+            isMulti
             onChange={(
               newValue: MultiValue<{
                 label: string;
