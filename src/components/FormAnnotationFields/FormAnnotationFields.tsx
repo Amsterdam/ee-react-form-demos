@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Button, Heading } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRow from '../AnnotationRow/AnnotationRow';
@@ -20,38 +21,23 @@ const FormAnnotationFields = ({
   // label,
   onChange,
 }: FormAnnotationFieldsProps) => {
-  // const [items, setItems] = useState<string[]>([]);
-  // TODO rename values to items
-  const [values, setValues] =
+  const [items, setItems] =
     useState<{ key: string | undefined; value: string | undefined }[]>(
       initialValues
     );
 
-  // const handleChange = (index: number, value: string) => {
-  //   const newItems = [...items];
-  //   newItems[index] = value;
-  //   setItems(newItems);
-  //   // onChange(newItems);
-  // };
-
   const addItem = () => {
-    // const newItems = [...items, ''];
-    // setItems(newItems);
-    setValues([...values, { key: '', value: '' }]);
-    // onChange(newItems);
+    setItems([...items, { key: '', value: '' }]);
   };
 
   const removeItem = (index: number) => {
-    // const newItems = items.filter((_, i) => i !== index);
-    // setItems(newItems);
-    const newValues = values.filter((_, i) => i !== index);
-    setValues(newValues);
-    // onChange(newItems);
+    const newItems = items.filter((_, i) => i !== index);
+    setItems(newItems);
   };
 
   useEffect(() => {
-    onChange(values);
-  }, [values]);
+    onChange(items);
+  }, [items]);
 
   return (
     <div className={`${styles.container} ams-mb-l`}>
@@ -60,20 +46,19 @@ const FormAnnotationFields = ({
       </Heading>
 
       <div className="ams-mb-m">
-        {values.map((_value, index) => (
+        {items.map((item, index) => (
           <AnnotationRow
-            // showRemoveButton={items.length > 1}
             removeItem={() => removeItem(index)}
             index={index}
-            key={index}
+            values={item}
+            key={`faf-${uuidv4()}`}
             onChange={(key, value) => {
-              setValues(prevValues =>
-                prevValues.map((prevValue, i) =>
-                  i === index ? { key, value } : prevValue
+              setItems(prevItems =>
+                prevItems.map((prevItem, i) =>
+                  i === index ? { key, value } : prevItem
                 )
               );
             }}
-            values={_value}
           />
         ))}
       </div>

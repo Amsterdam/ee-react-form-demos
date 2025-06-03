@@ -81,7 +81,7 @@ const LinksRepeaterInputs = ({
                 )
               );
             }}
-            key={index}
+            key={`lri-${index}`}
           />
         ))}
       </div>
