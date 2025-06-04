@@ -27,9 +27,12 @@ interface InputAutoSelectProps extends SelectEventHandlers {
   options: OptionsOrGroups<unknown, GroupBase<unknown>> | undefined;
   id?: string;
   name?: string;
+  required?: boolean;
   // TODO type
   value?: unknown;
 }
+
+// TODO invalid styling
 
 // WARNING: The following prop types are unstyled and untested:
 // - isLoading
@@ -41,6 +44,7 @@ const InputAutoSelect = ({
   options,
   id = undefined,
   name = undefined,
+  required = false,
   value = undefined,
   ...eventHandlers
 }: InputAutoSelectProps) => (
@@ -60,6 +64,7 @@ const InputAutoSelect = ({
     noOptionsMessage={() => 'Geen opties'}
     id={id}
     name={name}
+    required={required}
     defaultValue={value}
     {...eventHandlers}
     styles={{

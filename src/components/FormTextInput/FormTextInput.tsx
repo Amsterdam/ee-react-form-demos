@@ -11,6 +11,7 @@ interface FormTextInputProps {
   label: string;
   description?: string;
   value: string;
+  required?: boolean;
   error?: string;
   onChange: (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -21,6 +22,7 @@ const FormTextInput = ({
   label,
   description,
   value,
+  required = false,
   error,
   onChange,
 }: FormTextInputProps) => (
@@ -38,6 +40,7 @@ const FormTextInput = ({
       value={value}
       invalid={!!error}
       name="name"
+      required={required}
       onChange={onChange}
     />
   </Field>

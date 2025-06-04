@@ -34,6 +34,11 @@
   &--is-focused {
     box-shadow: var(--ams-text-input-hover-box-shadow);
   }
+
+  /* stylelint-disable-next-line selector-no-qualifying-type */
+  &:has(input:last-of-type:invalid) .react-select__control {
+    box-shadow: var(--ams-text-input-invalid-hover-box-shadow);
+  }
 }
 
 // This class inherits styling

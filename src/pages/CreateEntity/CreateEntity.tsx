@@ -100,10 +100,10 @@ const Home = () => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(formData);
-
+    console.log({ data });
     // Simple validation
     const newErrors = {};
-    // if (!data.name) newErrors.name = 'Name is required';
+    // if (!data.owner) newErrors.name = 'Name is required';
     // if (!data.email) newErrors.email = 'Email is required';
 
     const formattedFormData: EntityFormData = {
@@ -151,6 +151,7 @@ const Home = () => {
               System: 'System',
               User: 'User',
             }}
+            required
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
@@ -165,6 +166,7 @@ const Home = () => {
             label="Name"
             description="Textinput description text goes here..."
             value={formData.name}
+            required
             onChange={handleChange}
           />
 
@@ -185,6 +187,7 @@ const Home = () => {
               library: 'Library',
               'mobile-app': 'Mobile/Native App',
             }}
+            required
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
@@ -210,6 +213,7 @@ const Home = () => {
               deprecated: 'Deprecated',
               archived: 'Archived',
             }}
+            required
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
@@ -229,6 +233,7 @@ const Home = () => {
             description="Spec - owner text goes here..."
             options={ownerOptions}
             initialValues={[formData.spec.owner]}
+            required
             onChange={(
               newValue: MultiValue<{
                 label: string;
@@ -246,7 +251,7 @@ const Home = () => {
           />
 
           <FormCheckboxInput
-            label="Has system"
+            label="Entity belongs to a system?"
             value={formData.spec.hasSystem}
             onChange={e =>
               setFormData({
@@ -266,6 +271,7 @@ const Home = () => {
               description="Spec - system text goes here..."
               options={systemOptions}
               initialValues={[formData.spec.system]}
+              required
               onChange={(
                 newValue: MultiValue<{
                   label: string;
