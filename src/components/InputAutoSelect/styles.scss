@@ -29,6 +29,10 @@
 
   &:hover {
     box-shadow: var(--ams-text-input-hover-box-shadow);
+
+    &:has(input:last-of-type:invalid) {
+      box-shadow: var(--ams-text-input-invalid-hover-box-shadow);
+    }
   }
 
   &--is-focused {
@@ -36,8 +40,8 @@
   }
 
   /* stylelint-disable-next-line selector-no-qualifying-type */
-  &:has(input:last-of-type:invalid) .react-select__control {
-    box-shadow: var(--ams-text-input-invalid-hover-box-shadow);
+  &:has(input:last-of-type:invalid) {
+    box-shadow: var(--ams-text-input-invalid-box-shadow);
   }
 }
 

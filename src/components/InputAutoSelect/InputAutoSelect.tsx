@@ -70,7 +70,7 @@ const InputAutoSelect = ({
     styles={{
       container: (baseStyles, state) => ({
         ...baseStyles,
-        outline: state.isFocused ? '1px solid rgb(0, 95, 204)' : '0',
+        outline: state.isFocused ? '2px solid -webkit-focus-ring-color' : '0',
       }),
       clearIndicator: baseStyles => ({
         ...baseStyles,
