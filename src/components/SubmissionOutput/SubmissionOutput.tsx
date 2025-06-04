@@ -35,13 +35,8 @@ import ANNOTATIONS from '@/utils/getAnnotations';
 //   system: dii-ee-developers-amsterdam
 // `;
 
-interface SubmissionOutputProps {
-  formData: EntityFormData;
-}
-
-// TODO annotations - with is link value with `url: ` in speech marks but not other values?
-const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
-  const codeString = yaml.dump({
+const processFormData = (formData: EntityFormData) => {
+  let base = {
     apiVersion: 'backstage.io/v1alpha1',
     kind: formData.kind,
     metadata: {
@@ -70,11 +65,35 @@ const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
       spec: {
         type: formData.spec.type,
         lifecycle: formData.spec.lifecycle,
-        owner: 'dii-engineering-enablement',
-        system: 'dii-ee-developers-amsterdam',
+        owner: formData.spec.owner,
+        // system: formData.spec.system,
       },
     },
-  });
+  };
+
+  if (formData.spec.hasSystem) {
+    base = {
+      ...base,
+      metadata: {
+        ...base.metadata,
+        spec: {
+          ...base.metadata.spec,
+          system: formData.spec.system,
+        },
+      },
+    };
+  }
+
+  return base;
+};
+
+interface SubmissionOutputProps {
+  formData: EntityFormData;
+}
+
+// TODO annotations - with is link value with `url: ` in speech marks but not other values?
+const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
+  const codeString = yaml.dump(processFormData(formData));
 
   return (
     <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>

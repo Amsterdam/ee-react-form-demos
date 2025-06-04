@@ -12,6 +12,7 @@ interface FormSelectProps {
   name: string;
   options: Record<string, string>;
   initialValue?: string;
+  required?: boolean;
   onChange: (name: string, value: string) => void;
 }
 
@@ -21,6 +22,7 @@ const FormSelect = ({
   name,
   options,
   initialValue = undefined,
+  required = false,
   onChange,
 }: FormSelectProps) => (
   <Field className="ams-mb-m">
@@ -35,6 +37,7 @@ const FormSelect = ({
       id="input2"
       name={name}
       value={initialValue}
+      required={required}
       onChange={(e: ChangeEvent<HTMLSelectElement>) =>
         onChange(name, e.target.options[e.target.selectedIndex].value)
       }

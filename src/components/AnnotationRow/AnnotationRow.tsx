@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
 import {
@@ -25,18 +26,9 @@ const AnnotationRow = ({
   onChange,
   values,
 }: AnnotationRowProps) => {
-  const [keyValue, setKeyValue] = useState<string | undefined>(values.key);
-  // TODO fix name
-  const [valueValue, setValueValue] = useState<string | undefined>(
-    values.value
-  );
   const annotation = ANNOTATIONS.find(
-    annotation => annotation.key === keyValue
+    annotation => annotation.key === values.key
   );
-
-  useEffect(() => {
-    onChange(keyValue, valueValue);
-  }, [keyValue, valueValue]);
 
   return (
     <Field className={styles.container}>
@@ -47,25 +39,17 @@ const AnnotationRow = ({
         id={`annotation-type-${index}`}
         onChange={(newValue: unknown | null) => {
           if (newValue) {
-            setKeyValue((newValue as { label: string; key: string }).key);
+            const selectedKey = (newValue as { key: string }).key;
+            const rule = ANNOTATIONS.find(a => a.key === selectedKey);
+            const defaultValue = rule?.values ? rule.values[0] : undefined;
 
-            const rule = ANNOTATIONS.find(
-              annotation =>
-                (newValue as { label: string; key: string }).key ===
-                annotation.key
-            );
-
-            if (rule?.values) {
-              setValueValue(rule.values[0]);
-            } else {
-              setValueValue(undefined);
-            }
+            onChange(selectedKey, defaultValue);
           } else {
-            setKeyValue(undefined);
+            onChange(undefined, undefined);
           }
         }}
         value={ANNOTATIONS.map(({ key, label }) => ({ key, label })).find(
-          option => option.key === keyValue
+          option => option.key === values.key
         )}
       />
 
@@ -77,20 +61,13 @@ const AnnotationRow = ({
           id={`annotation-value-${index}`}
           name="annotation"
           className="ams-mb-m"
-          value={valueValue}
+          value={values.value}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            if (e.target.value) {
-              setValueValue(e.target.value);
-            } else {
-              setValueValue(undefined);
-            }
+            onChange(values.key, e.target.value || undefined);
           }}
         >
-          {annotation.values.map((value, optionIndex) => (
-            <Select.Option
-              value={value}
-              key={`annotation-${index}-select-${optionIndex}`}
-            >
+          {annotation.values.map(value => (
+            <Select.Option value={value} key={`annotation-row-${uuidv4()}`}>
               {value}
             </Select.Option>
           ))}
@@ -104,10 +81,10 @@ const AnnotationRow = ({
           // invalid={!!error}
           placeholder={annotation?.example ? annotation.example : undefined}
           name="annotation_value"
-          value={valueValue}
+          value={values.value ?? ''}
           className="ams-mb-m"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setValueValue(e.target.value);
+            onChange(values.key, e.target.value || undefined);
           }}
         />
       )}

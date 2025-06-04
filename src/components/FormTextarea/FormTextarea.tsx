@@ -10,6 +10,7 @@ interface FormTextareaProps {
   label: string;
   description?: string;
   value: string;
+  required?: boolean;
   error?: string;
   onChange: (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -20,6 +21,7 @@ const FormTextarea = ({
   label,
   description,
   value,
+  required = false,
   // error,
   onChange,
 }: FormTextareaProps) => (
@@ -36,6 +38,7 @@ const FormTextarea = ({
       rows={4}
       name="description"
       value={value}
+      required={required}
       onChange={onChange}
     />
   </Field>

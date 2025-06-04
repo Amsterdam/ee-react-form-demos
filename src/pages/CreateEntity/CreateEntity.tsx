@@ -11,44 +11,24 @@ import getTags from '@/utils/getTags';
 import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
 import { ActionMeta, MultiValue } from 'react-select';
 import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterInputs';
+import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput';
+import getOwners from '@/utils/getOwners';
+import getSystems from '@/utils/getSystems';
+import sortAlphabetically from '@/utils/sortAlphabetically';
 // import styles from './styles.module.css';
 
-// apiVersion: backstage.io/v1alpha1
-// kind: Component
-// metadata:
-//   name: ee-docs
-//   description: The primary app for developers.amsterdam
-//   tags: [docusaurus, nodejs, react, typescript]
-//   annotations:
-//     backstage.io/source-location: url:https://github.com/amsterdam/ee-docs/
-//     github.com/project-slug: amsterdam/ee-docs
-//     github.com/team-slug: amsterdam/engineering-enablement
-//     lighthouse.com/website-url: https://developers.amsterdam
-//   links:
-//     - url: https://developers.amsterdam/
-//       title: developers.amsterdam
-//       icon: launch
-//     - url: https://github.com/amsterdam/ee-docs
-//       title: GitHub Repo
-//       icon: github
-//     - url: https://gemeente-amsterdam.atlassian.net/browse/COM-70
-//       title: Jira Board
-//       icon: dashboard
-// spec:
-//   type: website
-//   lifecycle: production
-//   owner: dii-engineering-enablement
-//   system: dii-ee-developers-amsterdam
+const ownerOptions = getOwners().sort(sortAlphabetically);
+const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO spec fields
-// TODO validation
+// TODO validation - can we retrieve browser validation errors?
+// TODO validation - alert/header with invalid fields
 // TODO tests
-// TODO when to use name HTML form attr?
+// TODO check htmlFor values
+// TODO check name values
+// TODO description texts
+// TODO isloading state
 const Home = () => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     kind: 'Component',
     name: 'ee-docs',
@@ -115,15 +95,15 @@ const Home = () => {
     }));
   };
 
-  // TODO handle annotations and new tags
+  // TODO handle annotations, new tags and spec fields
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(formData);
-
+    console.log({ data });
     // Simple validation
     const newErrors = {};
-    // if (!data.name) newErrors.name = 'Name is required';
+    // if (!data.owner) newErrors.name = 'Name is required';
     // if (!data.email) newErrors.email = 'Email is required';
 
     const formattedFormData: EntityFormData = {
@@ -141,10 +121,9 @@ const Home = () => {
         tagsfield: formData.getAll('tags'),
       });
 
-      // setFormData(Object.fromEntries(formData.entries()) as EntityFormData);
       setFormData(formattedFormData);
     } else {
-      setErrors(newErrors);
+      // setErrors(newErrors);
     }
   };
 
@@ -172,6 +151,7 @@ const Home = () => {
               System: 'System',
               User: 'User',
             }}
+            required
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
@@ -186,6 +166,7 @@ const Home = () => {
             label="Name"
             description="Textinput description text goes here..."
             value={formData.name}
+            required
             onChange={handleChange}
           />
 
@@ -206,6 +187,7 @@ const Home = () => {
               library: 'Library',
               'mobile-app': 'Mobile/Native App',
             }}
+            required
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
@@ -231,6 +213,7 @@ const Home = () => {
               deprecated: 'Deprecated',
               archived: 'Archived',
             }}
+            required
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
@@ -244,12 +227,68 @@ const Home = () => {
             initialValue={formData.spec.lifecycle}
           />
 
-          {/* Single input repeater */}
-          {/* <FormRepeaterInput
-            label="Tags"
-            initialValues={formData.tags}
-            onChange={(tags: string[]) => setFormData({ ...formData, tags })}
-          /> */}
+          <FormAutoSelect
+            label="Owner"
+            name="owner"
+            description="Spec - owner text goes here..."
+            options={ownerOptions}
+            initialValues={[formData.spec.owner]}
+            required
+            onChange={(
+              newValue: MultiValue<{
+                label: string;
+                value: string;
+              }>
+            ) => {
+              setFormData(prev => ({
+                ...prev,
+                spec: {
+                  ...prev.spec,
+                  owner: newValue?.value,
+                },
+              }));
+            }}
+          />
+
+          <FormCheckboxInput
+            label="Entity belongs to a system?"
+            value={formData.spec.hasSystem}
+            onChange={e =>
+              setFormData({
+                ...formData,
+                spec: {
+                  ...formData.spec,
+                  hasSystem: e.target.checked,
+                },
+              })
+            }
+          />
+
+          {formData.spec.hasSystem && (
+            <FormAutoSelect
+              label="System"
+              name="system"
+              description="Spec - system text goes here..."
+              options={systemOptions}
+              initialValues={[formData.spec.system]}
+              required
+              onChange={(
+                newValue: MultiValue<{
+                  label: string;
+                  value: string;
+                }>
+              ) => {
+                console.log({ newValue });
+                setFormData(prev => ({
+                  ...prev,
+                  spec: {
+                    ...prev.spec,
+                    system: newValue?.value,
+                  },
+                }));
+              }}
+            />
+          )}
 
           <FormAutoSelect
             label="Tags"
@@ -257,6 +296,7 @@ const Home = () => {
             description="Tags text goes here..."
             options={getTags()}
             initialValues={formData.tags}
+            isMulti
             onChange={(
               newValue: MultiValue<{
                 label: string;

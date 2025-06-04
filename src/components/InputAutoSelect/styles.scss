@@ -29,10 +29,19 @@
 
   &:hover {
     box-shadow: var(--ams-text-input-hover-box-shadow);
+
+    &:has(input:last-of-type:invalid) {
+      box-shadow: var(--ams-text-input-invalid-hover-box-shadow);
+    }
   }
 
   &--is-focused {
     box-shadow: var(--ams-text-input-hover-box-shadow);
+  }
+
+  /* stylelint-disable-next-line selector-no-qualifying-type */
+  &:has(input:last-of-type:invalid) {
+    box-shadow: var(--ams-text-input-invalid-box-shadow);
   }
 }
 
