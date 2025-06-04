@@ -17,8 +17,3 @@ export type EntityFormData = {
     system: string;
   };
 };
-
-export type ReactSelectOption = {
-  value: string;
-  label: string;
-};

@@ -9,7 +9,7 @@ import FormTextarea from '@/components/FormTextarea/FormTextarea';
 import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
 import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
-import { ActionMeta, MultiValue } from 'react-select';
+import { ActionMeta } from 'react-select';
 import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterInputs';
 import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput';
 import getOwners from '@/utils/getOwners';
@@ -20,7 +20,9 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
+// TODO bug - annotation input only lets you update 1 character
 // TODO validation - can we retrieve browser validation errors?
+// TODO validation - dyanmic field validation (annotation + links)
 // TODO validation - alert/header with invalid fields
 // TODO tests
 // TODO check htmlFor values
@@ -60,11 +62,7 @@ const Home = () => {
     spec: {
       type: 'website',
       lifecycle: 'production',
-
-      // TODO React-input select
       owner: 'dii-engineering-enablement',
-
-      // TODO via checkbox
       hasSystem: true,
       system: 'dii-ee-developers-amsterdam',
     },
@@ -106,11 +104,20 @@ const Home = () => {
     // if (!data.owner) newErrors.name = 'Name is required';
     // if (!data.email) newErrors.email = 'Email is required';
 
-    const formattedFormData: EntityFormData = {
+    const formattedFormData = {
       kind: data.kind as string,
       name: data.name as string,
       description: data.description as string,
       tags: formData.getAll('tags') as string[],
+      annotations: {},
+      links: [],
+      spec: {
+        type: 'website',
+        lifecycle: 'production',
+        owner: 'team',
+        hasSystem: false,
+        system: 'system-name',
+      },
     };
 
     if (Object.keys(newErrors).length === 0) {
@@ -234,17 +241,13 @@ const Home = () => {
             options={ownerOptions}
             initialValues={[formData.spec.owner]}
             required
-            onChange={(
-              newValue: MultiValue<{
-                label: string;
-                value: string;
-              }>
-            ) => {
+            onChange={newValue => {
+              const option = Array.isArray(newValue) ? newValue[0] : newValue;
               setFormData(prev => ({
                 ...prev,
                 spec: {
                   ...prev.spec,
-                  owner: newValue?.value,
+                  owner: option?.value ?? '',
                 },
               }));
             }}
@@ -272,18 +275,13 @@ const Home = () => {
               options={systemOptions}
               initialValues={[formData.spec.system]}
               required
-              onChange={(
-                newValue: MultiValue<{
-                  label: string;
-                  value: string;
-                }>
-              ) => {
-                console.log({ newValue });
+              onChange={newValue => {
+                const option = Array.isArray(newValue) ? newValue[0] : newValue;
                 setFormData(prev => ({
                   ...prev,
                   spec: {
                     ...prev.spec,
-                    system: newValue?.value,
+                    system: option?.value ?? '',
                   },
                 }));
               }}
@@ -298,10 +296,7 @@ const Home = () => {
             initialValues={formData.tags}
             isMulti
             onChange={(
-              newValue: MultiValue<{
-                label: string;
-                value: string;
-              }>,
+              newValue,
               actionMeta: ActionMeta<{
                 label: string;
                 value: string;
@@ -309,7 +304,9 @@ const Home = () => {
             ) => {
               setFormData(prev => ({
                 ...prev,
-                [actionMeta.name as string]: newValue.map(({ value }) => value),
+                [actionMeta.name as string]: Array.isArray(newValue)
+                  ? newValue?.map(({ value }: { value: string }) => value)
+                  : [],
               }));
             }}
           />

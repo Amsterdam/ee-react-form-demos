@@ -1,38 +1,23 @@
-import Select, {
-  GroupBase,
-  OptionsOrGroups,
-  Props as SelectProps,
-} from 'react-select';
-import ClearIndicator from './ClearIndicator';
-import DropdownIndicator from './DropdownIndicator';
+import Select, { ActionMeta } from 'react-select';
+import ClearIndicator from './components/ClearIndicator';
+import DropdownIndicator from './components/DropdownIndicator';
 import './styles.scss';
+import { ReactSelectOption, ReactSelectValue } from './types';
 
-type SelectEventHandlers = Pick<
-  SelectProps<unknown, boolean, GroupBase<unknown>>,
-  | 'onChange'
-  | 'onBlur'
-  | 'onFocus'
-  | 'onInputChange'
-  | 'onKeyDown'
-  | 'onMenuOpen'
-  | 'onMenuClose'
-  | 'onMenuScrollToTop'
-  | 'onMenuScrollToBottom'
->;
-
-interface InputAutoSelectProps extends SelectEventHandlers {
+interface InputAutoSelectProps {
   isClearable?: boolean;
   isDisabled?: boolean;
   isMulti?: boolean;
-  options: OptionsOrGroups<unknown, GroupBase<unknown>> | undefined;
+  options: ReactSelectOption[] | undefined;
   id?: string;
   name?: string;
   required?: boolean;
-  // TODO type
-  value?: unknown;
+  value?: ReactSelectValue;
+  onChange: (
+    newValue: ReactSelectValue,
+    actionMeta: ActionMeta<ReactSelectOption>
+  ) => void;
 }
-
-// TODO invalid styling
 
 // WARNING: The following prop types are unstyled and untested:
 // - isLoading

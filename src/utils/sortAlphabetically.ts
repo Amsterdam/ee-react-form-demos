@@ -1,4 +1,4 @@
-import { ReactSelectOption } from '@/types';
+import { ReactSelectOption } from '@/components/InputAutoSelect/types';
 
 export default function sortAlphabetically(
   a: ReactSelectOption,

@@ -1,4 +1,4 @@
-import { ReactSelectOption } from '@/types';
+import { ReactSelectOption } from '@/components/InputAutoSelect/types';
 
 const getOwners = (): ReactSelectOption[] => [
   {
