@@ -20,15 +20,15 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO validation
+// TODO validation - can we retrieve browser validation errors?
+// TODO validation - alert/header with invalid fields
 // TODO tests
 // TODO check htmlFor values
-// TODO when to use name HTML form attr?
+// TODO check name values
+// TODO description texts
+// TODO isloading state
 const Home = () => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     kind: 'Component',
     name: 'ee-docs',
@@ -95,7 +95,7 @@ const Home = () => {
     }));
   };
 
-  // TODO handle annotations and new tags
+  // TODO handle annotations, new tags and spec fields
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -123,7 +123,7 @@ const Home = () => {
 
       setFormData(formattedFormData);
     } else {
-      setErrors(newErrors);
+      // setErrors(newErrors);
     }
   };
 
