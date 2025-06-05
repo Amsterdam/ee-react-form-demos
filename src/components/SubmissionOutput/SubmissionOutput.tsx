@@ -5,6 +5,7 @@ import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import yaml from 'js-yaml';
 import styles from './styles.module.scss';
 import ANNOTATIONS from '@/utils/getAnnotations';
+import { Entity } from '@/types/Entity';
 
 // const codeString = `
 // apiVersion: backstage.io/v1alpha1
@@ -36,6 +37,7 @@ import ANNOTATIONS from '@/utils/getAnnotations';
 // `;
 
 const processFormData = (formData: EntityFormData) => {
+  // TODO get backstage entity type definition
   let base = {
     apiVersion: 'backstage.io/v1alpha1',
     kind: formData.kind,
@@ -62,24 +64,21 @@ const processFormData = (formData: EntityFormData) => {
         {} as Record<string, string>
       ),
       links: formData.links,
-      spec: {
-        type: formData.spec.type,
-        lifecycle: formData.spec.lifecycle,
-        owner: formData.spec.owner,
-        // system: formData.spec.system,
-      },
     },
-  };
+    spec: {
+      type: formData.spec.type,
+      lifecycle: formData.spec.lifecycle,
+      owner: formData.spec.owner,
+      // system: formData.spec.system,
+    },
+  } as Entity;
 
   if (formData.spec.hasSystem) {
     base = {
       ...base,
-      metadata: {
-        ...base.metadata,
-        spec: {
-          ...base.metadata.spec,
-          system: formData.spec.system,
-        },
+      spec: {
+        ...base.spec,
+        system: formData.spec.system,
       },
     };
   }
