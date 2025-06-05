@@ -30,17 +30,6 @@ const AnnotationRow = ({
     annotation => annotation.key === values.label
   );
 
-  // console.log({
-  //   map: ANNOTATIONS.map(({ key, label }) => ({
-  //     value: key,
-  //     label,
-  //   })),
-  //   find: ANNOTATIONS.map(({ key, label }) => ({
-  //     value: key,
-  //     label,
-  //   })).find(option => option.value === values.label),
-  // });
-
   return (
     <Field className={styles.container}>
       <Heading level={4}>Annotation {index + 1}</Heading>

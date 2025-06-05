@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Heading } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRow from '../AnnotationRow/AnnotationRow';
 import styles from './styles.module.css';
 
+type AnnotationItem = {
+  id: string;
+  label: string | undefined;
+  value: string | undefined;
+};
+
 interface FormAnnotationFieldsProps {
   initialValues: { key: string; value: string | undefined }[];
-  // label: string;
   onChange: (
     annotations: {
       label: string | undefined;
@@ -18,25 +22,42 @@ interface FormAnnotationFieldsProps {
 
 const FormAnnotationFields = ({
   initialValues,
-  // label,
   onChange,
 }: FormAnnotationFieldsProps) => {
-  const [items, setItems] = useState<
-    { label: string | undefined; value: string | undefined }[]
-  >(
+  const idCounterRef = useRef(0);
+
+  const [items, setItems] = useState<AnnotationItem[]>(
     initialValues.map(({ key, value }) => ({
+      id: `annotation-${++idCounterRef.current}`,
       label: key,
       value,
     }))
   );
 
   const addItem = () => {
-    setItems([...items, { label: '', value: '' }]);
+    const newItem: AnnotationItem = {
+      id: `annotation-${++idCounterRef.current}`,
+      label: '',
+      value: '',
+    };
+    setItems([...items, newItem]);
   };
 
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
     setItems(newItems);
+  };
+
+  const updateItem = (
+    index: number,
+    label: string | undefined,
+    value: string | undefined
+  ) => {
+    setItems(prevItems =>
+      prevItems.map((prevItem, i) =>
+        i === index ? { ...prevItem, label, value } : prevItem
+      )
+    );
   };
 
   useEffect(() => {
@@ -54,15 +75,9 @@ const FormAnnotationFields = ({
           <AnnotationRow
             removeItem={() => removeItem(index)}
             index={index}
-            values={item}
-            key={`faf-${uuidv4()}`}
-            onChange={(label, value) => {
-              setItems(prevItems =>
-                prevItems.map((prevItem, i) =>
-                  i === index ? { label, value } : prevItem
-                )
-              );
-            }}
+            values={{ label: item.label, value: item.value }}
+            key={item.id}
+            onChange={(label, value) => updateItem(index, label, value)}
           />
         ))}
       </div>
