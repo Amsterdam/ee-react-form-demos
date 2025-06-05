@@ -321,7 +321,7 @@ const Home = () => {
             // TODO refactor
             onChange={(
               annotations: {
-                key: string | undefined;
+                label: string | undefined;
                 value: string | undefined;
               }[]
             ) =>
@@ -330,12 +330,12 @@ const Home = () => {
                 annotations: annotations
                   .filter(
                     // We're not interested in values with no parent key value
-                    (a): a is { key: string; value: string | undefined } =>
-                      typeof a.key === 'string'
+                    (a): a is { label: string; value: string | undefined } =>
+                      typeof a.label === 'string'
                   )
                   .reduce(
-                    (acc, { key, value }) => {
-                      acc[key] = value ?? '';
+                    (acc, { label, value }) => {
+                      acc[label] = value ?? '';
                       return acc;
                     },
                     {} as Record<string, string | undefined>

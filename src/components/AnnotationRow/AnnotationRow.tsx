@@ -17,7 +17,7 @@ interface AnnotationRowProps {
   index: number;
   removeItem?: () => void;
   onChange: (key: string | undefined, value: string | undefined) => void;
-  values: { key: string | undefined; value: string | undefined };
+  values: { label: string | undefined; value: string | undefined };
 }
 
 const AnnotationRow = ({
@@ -27,19 +27,30 @@ const AnnotationRow = ({
   values,
 }: AnnotationRowProps) => {
   const annotation = ANNOTATIONS.find(
-    annotation => annotation.key === values.key
+    annotation => annotation.key === values.label
   );
+
+  // console.log({
+  //   map: ANNOTATIONS.map(({ key, label }) => ({
+  //     value: key,
+  //     label,
+  //   })),
+  //   find: ANNOTATIONS.map(({ key, label }) => ({
+  //     value: key,
+  //     label,
+  //   })).find(option => option.value === values.label),
+  // });
 
   return (
     <Field className={styles.container}>
       <Heading level={4}>Annotation {index + 1}</Heading>
       <Label htmlFor={`annotation-type-${index}`}>Type</Label>
       <InputAutoSelect
-        options={ANNOTATIONS.map(({ key, label }) => ({ key, label }))}
+        options={ANNOTATIONS.map(({ key, label }) => ({ value: key, label }))}
         id={`annotation-type-${index}`}
         onChange={(newValue: unknown | null) => {
           if (newValue) {
-            const selectedKey = (newValue as { key: string }).key;
+            const selectedKey = (newValue as { value: string }).value;
             const rule = ANNOTATIONS.find(a => a.key === selectedKey);
             const defaultValue = rule?.values ? rule.values[0] : undefined;
 
@@ -48,9 +59,10 @@ const AnnotationRow = ({
             onChange(undefined, undefined);
           }
         }}
-        value={ANNOTATIONS.map(({ key, label }) => ({ key, label })).find(
-          option => option.key === values.key
-        )}
+        value={ANNOTATIONS.map(({ key, label }) => ({
+          value: key,
+          label,
+        })).find(option => option.value === values.label)}
       />
 
       <Label htmlFor={`annotation-value-${index}`}>Value</Label>
@@ -58,12 +70,12 @@ const AnnotationRow = ({
       {annotation?.values ? (
         <Select
           // aria-describedby={description ? 'description2' : ''}
-          id={`annotation-value-${index}`}
-          name="annotation"
+          // id={`annotation-value-${index}`}
+          // name="annotation"
           className="ams-mb-m"
-          value={values.value}
+          defaultValue={values.value}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            onChange(values.key, e.target.value || undefined);
+            onChange(values.label, e.target.value || undefined);
           }}
         >
           {annotation.values.map(value => (
@@ -76,15 +88,15 @@ const AnnotationRow = ({
         <TextInput
           // aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
           type={annotation?.type === 'url' ? 'url' : 'text'}
-          id={`annotation-value-${index}`}
+          // id={`annotation-value-${index}`}
           // value={value}
           // invalid={!!error}
           placeholder={annotation?.example ? annotation.example : undefined}
-          name="annotation_value"
-          value={values.value ?? ''}
+          // name="annotation_value"
+          defaultValue={values.value ?? ''}
           className="ams-mb-m"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            onChange(values.key, e.target.value || undefined);
+            onChange(values.label, e.target.value || undefined);
           }}
         />
       )}

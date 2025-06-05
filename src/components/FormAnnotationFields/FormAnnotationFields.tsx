@@ -10,7 +10,7 @@ interface FormAnnotationFieldsProps {
   // label: string;
   onChange: (
     annotations: {
-      key: string | undefined;
+      label: string | undefined;
       value: string | undefined;
     }[]
   ) => void;
@@ -21,13 +21,17 @@ const FormAnnotationFields = ({
   // label,
   onChange,
 }: FormAnnotationFieldsProps) => {
-  const [items, setItems] =
-    useState<{ key: string | undefined; value: string | undefined }[]>(
-      initialValues
-    );
+  const [items, setItems] = useState<
+    { label: string | undefined; value: string | undefined }[]
+  >(
+    initialValues.map(({ key, value }) => ({
+      label: key,
+      value,
+    }))
+  );
 
   const addItem = () => {
-    setItems([...items, { key: '', value: '' }]);
+    setItems([...items, { label: '', value: '' }]);
   };
 
   const removeItem = (index: number) => {
@@ -52,10 +56,10 @@ const FormAnnotationFields = ({
             index={index}
             values={item}
             key={`faf-${uuidv4()}`}
-            onChange={(key, value) => {
+            onChange={(label, value) => {
               setItems(prevItems =>
                 prevItems.map((prevItem, i) =>
-                  i === index ? { key, value } : prevItem
+                  i === index ? { label, value } : prevItem
                 )
               );
             }}
