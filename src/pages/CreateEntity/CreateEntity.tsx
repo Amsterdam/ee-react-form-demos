@@ -20,7 +20,6 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO bug - annotation input only lets you update 1 character
 // TODO validation - can we retrieve browser validation errors?
 // TODO validation - dyanmic field validation (annotation + links)
 // TODO validation - alert/header with invalid fields
@@ -94,9 +93,14 @@ const Home = () => {
   };
 
   // TODO handle annotations, new tags and spec fields
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    await (e.target as HTMLFormElement).validateForm();
+
+    console.log('isValid', form.isValid());
+
     const data = Object.fromEntries(formData);
     console.log({ data });
     // Simple validation

@@ -52,6 +52,7 @@ const AnnotationRow = ({
           value: key,
           label,
         })).find(option => option.value === values.label)}
+        required
       />
 
       <Label htmlFor={`annotation-value-${index}`}>Value</Label>
@@ -63,6 +64,7 @@ const AnnotationRow = ({
           // name="annotation"
           className="ams-mb-m"
           defaultValue={values.value}
+          required
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
             onChange(values.label, e.target.value || undefined);
           }}
@@ -83,6 +85,7 @@ const AnnotationRow = ({
           placeholder={annotation?.example ? annotation.example : undefined}
           // name="annotation_value"
           defaultValue={values.value ?? ''}
+          required
           className="ams-mb-m"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             onChange(values.label, e.target.value || undefined);

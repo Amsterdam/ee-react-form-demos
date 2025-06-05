@@ -35,6 +35,7 @@ const LinkRepeaterRow = ({
         type="url"
         name="url"
         value={item.url}
+        required
         onChange={e => onChange('url', e.target.value)}
       />
     </Field>
@@ -43,6 +44,7 @@ const LinkRepeaterRow = ({
       <TextInput
         name="title"
         value={item.title}
+        required
         onChange={e => onChange('title', e.target.value)}
       />
     </Field>
@@ -53,6 +55,7 @@ const LinkRepeaterRow = ({
         // id="input2"
         name="icon"
         value={item?.icon}
+        required
         onChange={e =>
           onChange('icon', e.target.options[e.target.selectedIndex].value)
         }
