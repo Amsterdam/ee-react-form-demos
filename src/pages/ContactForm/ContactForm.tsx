@@ -15,40 +15,8 @@ import {
 import { FormEvent, useState } from 'react';
 import { z } from 'zod/v4';
 import styles from './ContactForm.module.css';
-
-// Quick translate method
-const translations = {
-  name: 'Voornaam',
-  email: 'E-mailadres',
-  body: 'Bericht',
-};
-const t = (input: keyof typeof translations) => {
-  return translations[input];
-};
-
-const invalidTypeError = 'U hebt een ongeldige waarde ingevoerd voor dit veld';
-const requiredError = 'Dit veld is verplicht';
-
-const ContactFormSchema = z.object({
-  name: z
-    .string({
-      error: issue =>
-        issue.input === undefined ? requiredError : invalidTypeError,
-    })
-    .min(1, { error: requiredError }),
-  email: z
-    .email({
-      error: issue =>
-        issue.input === undefined ? requiredError : invalidTypeError,
-    })
-    .min(1, { error: requiredError }),
-  body: z
-    .string({
-      error: issue =>
-        issue.input === undefined ? requiredError : invalidTypeError,
-    })
-    .min(1, { error: requiredError }),
-});
+import t, { translations } from './utils/translate';
+import ContactFormSchema from './schema';
 
 const ContactForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -58,6 +26,7 @@ const ContactForm = () => {
     body: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const validateForm = (formData: FormData): Record<string, string> => {
     const data = {
@@ -96,10 +65,34 @@ const ContactForm = () => {
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, proceed with submission
       setIsLoading(true);
+      setTimeout(() => {
+        setIsSubmitted(true);
+      }, 1500);
     }
   };
 
   const hasErrors = Object.keys(errors).length > 0;
+
+  if (isSubmitted) {
+    return (
+      <Grid>
+        <Grid.Cell
+          span={{ narrow: 4, medium: 8, wide: 6 }}
+          className="ams-mb-xl"
+        >
+          <Heading level={1} size="level-3" className="ams-mb-m">
+            Contactformulier
+          </Heading>
+
+          <Alert heading="Gelukt" headingLevel={2} severity="success">
+            <Paragraph>
+              Het formulier is verzonden. We hebben uw gegevens goed ontvangen.
+            </Paragraph>
+          </Alert>
+        </Grid.Cell>
+      </Grid>
+    );
+  }
 
   return (
     <Grid>
