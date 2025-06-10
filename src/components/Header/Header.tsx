@@ -10,9 +10,9 @@ const Header = () => (
           <Link key={1} to=".." className="ams-page-header__menu-link">
             Create an entity
           </Link>,
-          // <Link key={2} to="../contact" className="ams-page-header__menu-link">
-          //   Edit an entity
-          // </Link>,
+          <Link key={2} to="../contact" className="ams-page-header__menu-link">
+            Contact
+          </Link>,
         ]}
       />
     </Grid.Cell>
