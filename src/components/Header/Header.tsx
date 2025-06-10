@@ -5,13 +5,20 @@ const Header = () => (
   <Grid>
     <Grid.Cell span="all">
       <PageHeader
-        brandName="Backstage Forms"
+        brandName="Form Examples"
         menuItems={[
           <Link key={1} to=".." className="ams-page-header__menu-link">
-            Create an entity
+            Create a Backstage entity
           </Link>,
           <Link key={2} to="../contact" className="ams-page-header__menu-link">
             Contact
+          </Link>,
+          <Link
+            key={3}
+            to="../contact-2"
+            className="ams-page-header__menu-link"
+          >
+            Contact (2)
           </Link>,
         ]}
       />

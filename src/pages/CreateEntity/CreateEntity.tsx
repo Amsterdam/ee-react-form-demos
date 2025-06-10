@@ -20,8 +20,6 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO refactor contact form methods
-
 // TODO check htmlFor values
 // TODO check name values
 // TODO description texts
