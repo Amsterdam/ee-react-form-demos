@@ -1,3 +1,4 @@
+import Loader from '@/components/Loader/Loader';
 import {
   Alert,
   Button,
@@ -13,9 +14,20 @@ import {
 } from '@amsterdam/design-system-react';
 import { FormEvent, useState } from 'react';
 import { z } from 'zod/v4';
+import styles from './ContactForm.module.css';
 
-const invalidTypeError = 'Invalid type provided for this field';
-const requiredError = 'This field cannot be blank';
+// Quick translate method
+const translations = {
+  name: 'Voornaam',
+  email: 'E-mailadres',
+  body: 'Bericht',
+};
+const t = (input: keyof typeof translations) => {
+  return translations[input];
+};
+
+const invalidTypeError = 'U hebt een ongeldige waarde ingevoerd voor dit veld';
+const requiredError = 'Dit veld is verplicht';
 
 const ContactFormSchema = z.object({
   name: z
@@ -38,7 +50,6 @@ const ContactFormSchema = z.object({
     .min(1, { error: requiredError }),
 });
 
-// Example with custom validation
 const ContactForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
@@ -46,12 +57,13 @@ const ContactForm = () => {
     email: '',
     body: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = (formData: FormData): Record<string, string> => {
     const data = {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
-      body: formData.get('message') as string, // Note: your schema uses 'body' but form uses 'message'
+      body: formData.get('body') as string, // Note: your schema uses 'body' but form uses 'message'
     };
 
     try {
@@ -59,13 +71,13 @@ const ContactForm = () => {
       return {}; // No errors
     } catch (error) {
       if (error instanceof z.ZodError) {
-        console.log({ error });
         const errors: Record<string, string> = {};
         error.issues.forEach(err => {
           if (err.path[0]) {
             errors[err.path[0] as string] = err.message;
           }
         });
+
         return errors;
       }
 
@@ -83,10 +95,9 @@ const ContactForm = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, proceed with submission
-      console.log('Form is valid, submitting...');
+      setIsLoading(true);
     }
   };
-  console.log({ formData, errors });
 
   const hasErrors = Object.keys(errors).length > 0;
 
@@ -98,16 +109,23 @@ const ContactForm = () => {
         </Heading>
 
         {/* Use noValidate so browser validation doesn't block JS */}
-        <form className="ams-gap-m" noValidate onSubmit={handleSubmit}>
+        <form
+          className={`${styles.form} ams-gap-m`}
+          noValidate
+          onSubmit={handleSubmit}
+        >
+          {isLoading && (
+            <div className={styles.loader}>
+              <Loader />
+            </div>
+          )}
           {hasErrors && (
             <Alert heading="Niet gelukt" headingLevel={2} severity="error">
-              <Paragraph>
-                There was an error with the following fields:
-              </Paragraph>
+              <Paragraph>Er was een fout met de volgende velden:</Paragraph>
               <OrderedList>
                 {Object.entries(errors).map(([field, message]) => (
                   <OrderedList.Item key={`error-item-${field}`}>
-                    {field}: {message}
+                    {t(field as keyof typeof translations)}: {message}
                   </OrderedList.Item>
                 ))}
               </OrderedList>
@@ -122,7 +140,7 @@ const ContactForm = () => {
             <TextInput
               id="name"
               name="name"
-              placeholder="Name"
+              placeholder="Voornaam"
               aria-describedby={errors.name ? 'error-name' : ''}
               invalid={!!errors.name}
               onChange={e =>
