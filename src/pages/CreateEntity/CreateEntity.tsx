@@ -97,9 +97,14 @@ const Home = () => {
   };
 
   // TODO handle annotations, new tags and spec fields
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    await (e.target as HTMLFormElement).validateForm();
+
+    console.log('isValid', form.isValid());
+
     const data = Object.fromEntries(formData);
     console.log({ data });
     // Simple validation
