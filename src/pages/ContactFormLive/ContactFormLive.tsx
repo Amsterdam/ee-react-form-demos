@@ -12,21 +12,82 @@ import {
   TextArea,
   TextInput,
 } from '@amsterdam/design-system-react';
-import { FormEvent, useState } from 'react';
+import {
+  ChangeEvent,
+  FocusEvent,
+  FormEvent,
+  useCallback,
+  useState,
+} from 'react';
 import { z } from 'zod/v4';
-import styles from './ContactForm.module.css';
+import styles from './ContactFormLive.module.css';
 import t, { translations } from './utils/translate';
-import ContactFormSchema from './schema';
+import ContactFormLiveSchema from './schema';
+import { debounce } from 'es-toolkit';
 
-const ContactForm = () => {
+const ContactFormLive = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    body: '',
-  });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [submitTouched, setSubmitTouched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateField = (name: string, value: string): string | null => {
+    try {
+      // Create a partial schema for single field validation
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const fieldSchema = ContactFormLiveSchema.pick({ [name]: true } as any);
+      fieldSchema.parse({ [name]: value });
+      return null; // No error
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return error.issues[0]?.message || 'Invalid input';
+      }
+      return null;
+    }
+  };
+
+  const debouncedValidate = useCallback(
+    debounce((name: string, value: string) => {
+      if (touched[name]) {
+        const fieldError = validateField(name, value);
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          if (fieldError) {
+            newErrors[name] = fieldError;
+          } else {
+            delete newErrors[name];
+          }
+          return newErrors;
+        });
+      }
+    }, 300), // 300ms delay
+    [touched]
+  );
+
+  // Handle input changes
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    debouncedValidate(name, value);
+  };
+
+  // Handle when field loses focus (mark as touched)
+  const handleBlur = (
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setTouched(prev => ({ ...prev, [name]: true }));
+
+    // Validate the field when it's first touched
+    const fieldError = validateField(name, value);
+    if (fieldError) {
+      setErrors(prev => ({ ...prev, [name]: fieldError }));
+    }
+  };
 
   const validateForm = (formData: FormData): Record<string, string> => {
     const data = {
@@ -36,7 +97,7 @@ const ContactForm = () => {
     };
 
     try {
-      ContactFormSchema.parse(data);
+      ContactFormLiveSchema.parse(data);
       return {}; // No errors
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -61,6 +122,7 @@ const ContactForm = () => {
     const validationErrors = validateForm(formData);
 
     setErrors(validationErrors);
+    setSubmitTouched(true);
 
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, proceed with submission
@@ -98,11 +160,11 @@ const ContactForm = () => {
     <Grid>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
         <Heading level={1} size="level-3" className="ams-mb-m">
-          Contactformulier
+          Contactformulier 2
         </Heading>
 
         <Paragraph className="ams-mb-m">
-          This form validates on submit.
+          This form validates whilst you type.
         </Paragraph>
 
         {/* Use noValidate so browser validation doesn't block JS */}
@@ -116,7 +178,7 @@ const ContactForm = () => {
               <Loader />
             </div>
           )}
-          {hasErrors && (
+          {submitTouched && hasErrors && (
             <Alert heading="Niet gelukt" headingLevel={2} severity="error">
               <Paragraph>Er was een fout met de volgende velden:</Paragraph>
               <OrderedList>
@@ -140,9 +202,8 @@ const ContactForm = () => {
               placeholder="Voornaam"
               aria-describedby={errors.name ? 'error-name' : ''}
               invalid={!!errors.name}
-              onChange={e =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
-              }
+              onChange={handleInputChange}
+              onBlur={handleBlur}
             />
           </Field>
           <Field invalid={!!errors.email}>
@@ -157,9 +218,8 @@ const ContactForm = () => {
               placeholder="E-mailadres"
               aria-describedby={errors.name ? 'error-email' : ''}
               invalid={!!errors.name}
-              onChange={e =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
-              }
+              onChange={handleInputChange}
+              onBlur={handleBlur}
             />
           </Field>
           <Field invalid={!!errors.email}>
@@ -173,9 +233,8 @@ const ContactForm = () => {
               placeholder="Bericht"
               aria-describedby={errors.body ? 'error-body' : ''}
               invalid={!!errors.body}
-              onChange={e =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
-              }
+              onChange={handleInputChange}
+              onBlur={handleBlur}
             />
           </Field>
 
@@ -188,4 +247,4 @@ const ContactForm = () => {
   );
 };
 
-export default ContactForm;
+export default ContactFormLive;
