@@ -160,7 +160,7 @@ const ContactFormLive = () => {
     <Grid>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
         <Heading level={1} size="level-3" className="ams-mb-m">
-          ContactformLiveulier
+          Contactformulier 2
         </Heading>
 
         <Paragraph className="ams-mb-m">
