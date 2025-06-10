@@ -20,14 +20,18 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO validation - can we retrieve browser validation errors?
-// TODO validation - dyanmic field validation (annotation + links)
-// TODO validation - alert/header with invalid fields
-// TODO tests
+// TODO refactor contact form methods
+
 // TODO check htmlFor values
 // TODO check name values
 // TODO description texts
-// TODO isloading state
+// TODO isloading/submission state
+// TODO react-hook-form to this migration path?
+// TODO document results
+// - validation alert/header with invalid fields - Cannot accomplish with browser validation
+// TODO validation - variant of this form with zod validation?
+// TODO validation - dynamic field validation (annotation + links)
+// TODO tests
 const Home = () => {
   // const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({

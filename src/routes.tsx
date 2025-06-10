@@ -1,6 +1,7 @@
 import App from '@/containers/App/App';
 import CreateEntity from '@/pages/CreateEntity/CreateEntity';
 import EditEntity from '@/pages/EditEntity/EditEntity';
+import ContactForm from './pages/ContactForm/ContactForm';
 
 const routes = [
   {
@@ -13,6 +14,10 @@ const routes = [
       {
         path: 'edit',
         element: <EditEntity />,
+      },
+      {
+        path: 'contact',
+        element: <ContactForm />,
       },
       // {
       //   path: '*',
