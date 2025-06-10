@@ -68,7 +68,7 @@
     "react-select": "^5.10.1",
     "react-syntax-highlighter": "^15.6.1",
     "uuid": "^11.1.0",
-    "zod": "^3.25.51"
+    "zod": "^3.25.57"
   },
   "overrides": {
     "react-syntax-highlighter": {
