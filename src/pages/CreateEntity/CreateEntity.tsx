@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Grid,
   Heading,
@@ -12,7 +13,6 @@ import FormTextInput from '@/components/FormTextInput/FormTextInput';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { EntityFormData } from '@/types';
 import FormTextarea from '@/components/FormTextarea/FormTextarea';
-// import FormRepeaterInput from '@/components/FormRepeaterInput/FormRepeaterInput';
 import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
 import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
@@ -22,12 +22,12 @@ import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput'
 import getOwners from '@/utils/getOwners';
 import getSystems from '@/utils/getSystems';
 import sortAlphabetically from '@/utils/sortAlphabetically';
-// import styles from './styles.module.css';
+import Loader from '@/components/Loader/Loader';
+import styles from './CreateEntity.module.css';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO isloading/submission state
 // TODO validation - variant of this form with zod validation?
 // TODO react-hook-form to this migration path?
 // TODO document results
@@ -72,6 +72,8 @@ const CreateEntity = () => {
       system: 'dii-ee-developers-amsterdam',
     },
   } as EntityFormData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -91,25 +93,32 @@ const CreateEntity = () => {
       formData,
     });
 
-    const formattedFormData = {
-      kind: formData.kind,
-      name: formData.name,
-      description: formData.description,
-      tags: formData.tags,
-      annotations: formData.annotations,
-      links: formData.links,
-      spec: {
-        type: formData.spec.type,
-        lifecycle: formData.spec.lifecycle,
-        owner: formData.spec.owner,
-        hasSystem: !!formData.spec.hasSystem,
-        system: formData.spec.system,
-      },
-    };
+    // const formattedFormData = {
+    //   kind: formData.kind,
+    //   name: formData.name,
+    //   description: formData.description,
+    //   tags: formData.tags,
+    //   annotations: formData.annotations,
+    //   links: formData.links,
+    //   spec: {
+    //     type: formData.spec.type,
+    //     lifecycle: formData.spec.lifecycle,
+    //     owner: formData.spec.owner,
+    //     hasSystem: !!formData.spec.hasSystem,
+    //     system: formData.spec.system,
+    //   },
+    // };
 
-    console.log({ formattedFormData });
+    // Mock API call
+    // Here's where validation could happen
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSubmitted(true);
+    }, 1500);
   };
-
+  console.log({ isSubmitted });
   return (
     <Grid>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
@@ -403,6 +412,30 @@ const CreateEntity = () => {
         </form>
       </Grid.Cell>
       <SubmissionOutput formData={formData} />
+
+      {isLoading && (
+        <div className={styles.loader}>
+          <Loader />
+        </div>
+      )}
+      {isSubmitted && (
+        <div className={styles.loader}>
+          <Alert
+            closeable
+            heading="Gelukt"
+            headingLevel={2}
+            severity="success"
+            onClose={() => {
+              setIsLoading(false);
+              setIsSubmitted(false);
+            }}
+          >
+            <Paragraph>
+              Het formulier is verzonden. We hebben uw gegevens goed ontvangen.
+            </Paragraph>
+          </Alert>
+        </div>
+      )}
     </Grid>
   );
 };
