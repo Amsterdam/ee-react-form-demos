@@ -37,6 +37,7 @@ const LinkRepeaterRow = ({
         id={`link-${index}-url`}
         value={item.url}
         required
+        aria-describedby="links-description"
         onChange={e => onChange('url', e.target.value)}
       />
     </Field>
@@ -47,17 +48,18 @@ const LinkRepeaterRow = ({
         value={item.title}
         id={`link-${index}-title`}
         required
+        aria-describedby="links-description"
         onChange={e => onChange('title', e.target.value)}
       />
     </Field>
     <Field className="ams-mb-m">
       <Label htmlFor={`link-${index}-icon`}>Icon</Label>
       <Select
-        // aria-describedby={description ? 'description2' : ''}
         name="icon"
         value={item?.icon}
         id={`link-${index}-icon`}
         required
+        aria-describedby="links-description"
         onChange={e =>
           onChange('icon', e.target.options[e.target.selectedIndex].value)
         }

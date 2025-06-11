@@ -26,8 +26,6 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO check name values
-// TODO handle submit data
 // TODO isloading/submission state
 // TODO react-hook-form to this migration path?
 // TODO document results
@@ -102,50 +100,41 @@ const Home = () => {
   // TODO handle annotations, new tags and spec fields
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    await (e.target as HTMLFormElement).validateForm();
 
-    console.log('isValid', {
-      isValid: form.isValid(),
+    console.log({
       formData,
     });
 
-    const data = Object.fromEntries(formData);
-    console.log({ data });
-    // Simple validation
-    const newErrors = {};
-    // if (!data.owner) newErrors.name = 'Name is required';
-    // if (!data.email) newErrors.email = 'Email is required';
-
     const formattedFormData = {
-      kind: data.kind as string,
-      name: data.name as string,
-      description: data.description as string,
-      tags: formData.getAll('tags') as string[],
-      annotations: {},
-      links: [],
+      kind: formData.kind,
+      name: formData.name,
+      description: formData.description,
+      tags: formData.tags,
+      annotations: formData.annotations,
+      links: formData.links,
       spec: {
-        type: 'website',
-        lifecycle: 'production',
-        owner: 'team',
-        hasSystem: false,
-        system: 'system-name',
+        type: formData.spec.type,
+        lifecycle: formData.spec.lifecycle,
+        owner: formData.spec.owner,
+        hasSystem: !!formData.spec.hasSystem,
+        system: formData.spec.system,
       },
     };
 
-    if (Object.keys(newErrors).length === 0) {
-      // Submit the data
-      console.log('Submitting:', data, {
-        formattedFormData,
-        toJson: Object.fromEntries(formData.entries()),
-        tagsfield: formData.getAll('tags'),
-      });
+    console.log({ formattedFormData });
 
-      setFormData(formattedFormData);
-    } else {
-      // setErrors(newErrors);
-    }
+    // if (Object.keys(newErrors).length === 0) {
+    //   // Submit the data
+    //   // console.log('Submitting:', {
+    //   //   formattedFormData,
+    //   //   toJson: Object.fromEntries(formData.entries()),
+    //   //   tagsfield: formData.getAll('tags'),
+    //   // });
+
+    //   // setFormData(formattedFormData);
+    // } else {
+    //   // setErrors(newErrors);
+    // }
   };
 
   return (

@@ -70,7 +70,7 @@ const FormAnnotationFields = ({
         Annotations
       </Heading>
 
-      <Paragraph size="small" className="ams-mb-s">
+      <Paragraph size="small" className="ams-mb-s" id="annotations-description">
         An object with arbitrary non-identifying metadata attached to the
         entity, identical in use to Kubernetes object annotations.
       </Paragraph>

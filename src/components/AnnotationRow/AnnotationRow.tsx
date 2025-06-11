@@ -37,6 +37,12 @@ const AnnotationRow = ({
       <InputAutoSelect
         options={ANNOTATIONS.map(({ key, label }) => ({ value: key, label }))}
         id={`annotation-type-${index}`}
+        value={ANNOTATIONS.map(({ key, label }) => ({
+          value: key,
+          label,
+        })).find(option => option.value === values.label)}
+        required
+        aria-describedby="annotations-description"
         onChange={(newValue: unknown | null) => {
           if (newValue) {
             const selectedKey = (newValue as { value: string }).value;
@@ -48,23 +54,17 @@ const AnnotationRow = ({
             onChange(undefined, undefined);
           }
         }}
-        value={ANNOTATIONS.map(({ key, label }) => ({
-          value: key,
-          label,
-        })).find(option => option.value === values.label)}
-        required
       />
 
       <Label htmlFor={`annotation-value-${index}`}>Value</Label>
 
       {annotation?.values ? (
         <Select
-          // aria-describedby={description ? 'description2' : ''}
           id={`annotation-value-${index}`}
-          // name="annotation"
           className="ams-mb-m"
           defaultValue={values.value}
           required
+          aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
             onChange(values.label, e.target.value || undefined);
           }}
@@ -77,16 +77,13 @@ const AnnotationRow = ({
         </Select>
       ) : (
         <TextInput
-          // aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
           type={annotation?.type === 'url' ? 'url' : 'text'}
           id={`annotation-value-${index}`}
-          // value={value}
-          // invalid={!!error}
           placeholder={annotation?.example ? annotation.example : undefined}
-          // name="annotation_value"
           defaultValue={values.value ?? ''}
           required
           className="ams-mb-m"
+          aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             onChange(values.label, e.target.value || undefined);
           }}

@@ -31,24 +31,11 @@ const LinksRepeaterInputs = ({
     }[]
   >(initialValues);
 
-  // const handleChange = (index: number, value: string) => {
-  //   const newItems = [...items];
-  //   newItems[index] = value;
-  //   setItems(newItems);
-  //   onChange(newItems);
-  // };
-
   const addItem = () => {
-    // const newItems = [...items, ''];
-    // setItems(newItems);
     setItems([...items, { url: '', title: '', icon: 'dashboard' }]);
-    // onChange(newItems);
   };
 
   const removeItem = (index: number) => {
-    // const newItems = items.filter((_, i) => i !== index);
-    // setItems(newItems);
-    // onChange(newItems);
     const newItems = items.filter((_, i) => i !== index);
     setItems(newItems);
   };
@@ -63,7 +50,7 @@ const LinksRepeaterInputs = ({
         Links
       </Heading>
 
-      <Paragraph size="small" className="ams-mb-s">
+      <Paragraph size="small" className="ams-mb-s" id="links-description">
         A list of external hyperlinks related to the entity. Links can provide
         additional contextual information that may be located outside of
         Backstage itself. For example, an admin dashboard or external CMS page.
