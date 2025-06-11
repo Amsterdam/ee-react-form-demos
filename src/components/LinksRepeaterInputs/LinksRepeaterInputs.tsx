@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import styles from './styles.module.css';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
 
 interface LinksRepeaterInputsProps {
-  initialValues: {
+  items: {
     url: string;
     title: string;
     icon: string;
@@ -19,30 +18,27 @@ interface LinksRepeaterInputsProps {
   ) => void;
 }
 
-const LinksRepeaterInputs = ({
-  initialValues,
-  onChange,
-}: LinksRepeaterInputsProps) => {
-  const [items, setItems] = useState<
-    {
-      url: string;
-      title: string;
-      icon: string;
-    }[]
-  >(initialValues);
-
+const LinksRepeaterInputs = ({ items, onChange }: LinksRepeaterInputsProps) => {
   const addItem = () => {
-    setItems([...items, { url: '', title: '', icon: 'dashboard' }]);
+    onChange([...items, { url: '', title: '', icon: 'dashboard' }]);
   };
 
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
+    onChange(newItems);
   };
 
-  useEffect(() => {
-    onChange(items);
-  }, [items]);
+  const updateItem = (index: number, name: string, value: string) => {
+    const newItems = items.map((item, i) =>
+      i === index
+        ? {
+            ...item,
+            [name]: value,
+          }
+        : item
+    );
+    onChange(newItems);
+  };
 
   return (
     <div className={`${styles.container} ams-mb-l`}>
@@ -62,18 +58,7 @@ const LinksRepeaterInputs = ({
             removeItem={() => removeItem(index)}
             index={index}
             item={item}
-            onChange={(name, value) => {
-              setItems(prevItems =>
-                prevItems.map((prevItem, i) =>
-                  i === index
-                    ? {
-                        ...prevItem,
-                        [name]: value,
-                      }
-                    : prevItem
-                )
-              );
-            }}
+            onChange={(name, value) => updateItem(index, name, value)}
             key={`lri-${index}`}
           />
         ))}

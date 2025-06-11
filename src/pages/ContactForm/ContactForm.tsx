@@ -29,6 +29,11 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const validateForm = (formData: FormData): Record<string, string> => {
+    // TODO can we use this flow?
+    // const form = e.target as HTMLFormElement;
+    // const formData = new FormData(form);
+    // const data = Object.fromEntries(formData);
+
     const data = {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
