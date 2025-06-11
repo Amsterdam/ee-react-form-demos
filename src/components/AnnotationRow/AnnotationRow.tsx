@@ -1,5 +1,4 @@
 import { ChangeEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
 import {
@@ -62,15 +61,15 @@ const AnnotationRow = ({
         <Select
           id={`annotation-value-${index}`}
           className="ams-mb-m"
-          defaultValue={values.value}
+          value={values.value}
           required
           aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
             onChange(values.label, e.target.value || undefined);
           }}
         >
-          {annotation.values.map(value => (
-            <Select.Option value={value} key={`annotation-row-${uuidv4()}`}>
+          {annotation.values.map((value, valueIndex) => (
+            <Select.Option value={value} key={`${values.label}-${valueIndex}`}>
               {value}
             </Select.Option>
           ))}
@@ -80,7 +79,7 @@ const AnnotationRow = ({
           type={annotation?.type === 'url' ? 'url' : 'text'}
           id={`annotation-value-${index}`}
           placeholder={annotation?.example ? annotation.example : undefined}
-          defaultValue={values.value ?? ''}
+          value={values.value ?? ''}
           required
           className="ams-mb-m"
           aria-describedby="annotations-description"

@@ -4,6 +4,7 @@ import {
   Heading,
   Link,
   Paragraph,
+  Row,
 } from '@amsterdam/design-system-react';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
@@ -27,14 +28,14 @@ const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 // TODO isloading/submission state
+// TODO validation - variant of this form with zod validation?
 // TODO react-hook-form to this migration path?
 // TODO document results
 // - validation alert/header with invalid fields - Cannot accomplish with browser validation
-// TODO validation - variant of this form with zod validation?
-// TODO validation - dynamic field validation (annotation + links)
+// - smaller forms - use react validation
+// - larger/dynamic forms - use browser validation
 // TODO tests
-const Home = () => {
-  // const [errors, setErrors] = useState({});
+const CreateEntity = () => {
   const [formData, setFormData] = useState({
     kind: 'Component',
     name: 'ee-docs',
@@ -72,20 +73,6 @@ const Home = () => {
     },
   } as EntityFormData);
 
-  // const [formState, formAction] = useActionState(submitEntityForm);
-  // const [isSubmitted, setIsSubmitted] = useState(false);
-  // const [formData, setFormData] = useState({
-  //   kind: '',
-  //   name: '',
-  // });
-  // const isPending = formState.status === 'pending';
-
-  // useEffect(() => {
-  //   if (formState.success) {
-  //     setIsSubmitted(true);
-  //   }
-  // }, [formState]);
-
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -97,7 +84,6 @@ const Home = () => {
     }));
   };
 
-  // TODO handle annotations, new tags and spec fields
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -122,19 +108,6 @@ const Home = () => {
     };
 
     console.log({ formattedFormData });
-
-    // if (Object.keys(newErrors).length === 0) {
-    //   // Submit the data
-    //   // console.log('Submitting:', {
-    //   //   formattedFormData,
-    //   //   toJson: Object.fromEntries(formData.entries()),
-    //   //   tagsfield: formData.getAll('tags'),
-    //   // });
-
-    //   // setFormData(formattedFormData);
-    // } else {
-    //   // setErrors(newErrors);
-    // }
   };
 
   return (
@@ -148,7 +121,6 @@ const Home = () => {
           <FormSelect
             id="kind"
             label="Kind"
-            // TODO include link in description - what happens?
             description={
               <Paragraph id="kind-description" size="small">
                 The kind is the high level entity type being described.{' '}
@@ -176,6 +148,7 @@ const Home = () => {
               System: 'System',
               User: 'User',
             }}
+            initialValue={formData.kind}
             required
             onChange={(_name, value) => {
               setFormData(prev => ({
@@ -183,8 +156,6 @@ const Home = () => {
                 kind: value,
               }));
             }}
-            // TODO refactor props order + value or initialValue?
-            initialValue={formData.kind}
           />
 
           <FormTextInput
@@ -215,6 +186,7 @@ const Home = () => {
               library: 'Library',
               'mobile-app': 'Mobile/Native App',
             }}
+            initialValue={formData.spec.type}
             required
             onChange={(_name, value) => {
               setFormData(prev => ({
@@ -225,8 +197,6 @@ const Home = () => {
                 },
               }));
             }}
-            // TODO refactor props order + value or initialValue?
-            initialValue={formData.spec.type}
           />
 
           <FormSelect
@@ -242,6 +212,7 @@ const Home = () => {
               deprecated: 'Deprecated',
               archived: 'Archived',
             }}
+            initialValue={formData.spec.lifecycle}
             required
             onChange={(_name, value) => {
               setFormData(prev => ({
@@ -252,8 +223,6 @@ const Home = () => {
                 },
               }));
             }}
-            // TODO refactor props order + value or initialValue?
-            initialValue={formData.spec.lifecycle}
           />
 
           <FormAutoSelect
@@ -370,7 +339,6 @@ const Home = () => {
                 value: formData.annotations[annotation],
               })
             )}
-            // TODO refactor
             onChange={(
               annotations: {
                 label: string | undefined;
@@ -397,7 +365,7 @@ const Home = () => {
           />
 
           <LinksRepeaterInputs
-            initialValues={formData?.links ?? []}
+            items={formData?.links ?? []}
             onChange={links => {
               setFormData({
                 ...formData,
@@ -406,9 +374,32 @@ const Home = () => {
             }}
           />
 
-          <div>
+          <Row>
             <Button type="submit">Submit</Button>
-          </div>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                setFormData({
+                  kind: '',
+                  name: '',
+                  description: '',
+                  tags: [],
+                  annotations: {},
+                  links: [],
+                  spec: {
+                    type: '',
+                    lifecycle: '',
+                    owner: '',
+                    hasSystem: false,
+                    system: '',
+                  },
+                });
+              }}
+            >
+              Reset
+            </Button>
+          </Row>
         </form>
       </Grid.Cell>
       <SubmissionOutput formData={formData} />
@@ -416,4 +407,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default CreateEntity;

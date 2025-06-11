@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRow from '../AnnotationRow/AnnotationRow';
@@ -25,14 +25,20 @@ const FormAnnotationFields = ({
   onChange,
 }: FormAnnotationFieldsProps) => {
   const idCounterRef = useRef(0);
+  const itemIdsRef = useRef<Map<number, string>>(new Map());
 
-  const [items, setItems] = useState<AnnotationItem[]>(
-    initialValues.map(({ key, value }) => ({
-      id: `annotation-${++idCounterRef.current}`,
+  const items: AnnotationItem[] = initialValues.map(({ key, value }, index) => {
+    // Get or create a stable ID for this index
+    if (!itemIdsRef.current.has(index)) {
+      itemIdsRef.current.set(index, `annotation-${++idCounterRef.current}`);
+    }
+
+    return {
+      id: itemIdsRef.current.get(index)!,
       label: key,
       value,
-    }))
-  );
+    };
+  });
 
   const addItem = () => {
     const newItem: AnnotationItem = {
@@ -40,12 +46,38 @@ const FormAnnotationFields = ({
       label: '',
       value: '',
     };
-    setItems([...items, newItem]);
+
+    // Convert back to the format expected by parent
+    const newItems = [...items, newItem];
+    const newAnnotations = newItems.map(item => ({
+      label: item.label,
+      value: item.value,
+    }));
+
+    onChange(newAnnotations);
   };
 
   const removeItem = (index: number) => {
+    // Clean up the ID mapping when removing
+    itemIdsRef.current.delete(index);
+    // Shift down all higher indices
+    const entries = Array.from(itemIdsRef.current.entries());
+    itemIdsRef.current.clear();
+    entries.forEach(([idx, id]) => {
+      if (idx > index) {
+        itemIdsRef.current.set(idx - 1, id);
+      } else if (idx < index) {
+        itemIdsRef.current.set(idx, id);
+      }
+    });
+
     const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
+    const newAnnotations = newItems.map(item => ({
+      label: item.label,
+      value: item.value,
+    }));
+
+    onChange(newAnnotations);
   };
 
   const updateItem = (
@@ -53,16 +85,17 @@ const FormAnnotationFields = ({
     label: string | undefined,
     value: string | undefined
   ) => {
-    setItems(prevItems =>
-      prevItems.map((prevItem, i) =>
-        i === index ? { ...prevItem, label, value } : prevItem
-      )
+    const newItems = items.map((item, i) =>
+      i === index ? { ...item, label, value } : item
     );
-  };
 
-  useEffect(() => {
-    onChange(items);
-  }, [items]);
+    const newAnnotations = newItems.map(item => ({
+      label: item.label,
+      value: item.value,
+    }));
+
+    onChange(newAnnotations);
+  };
 
   return (
     <div className={`${styles.container} ams-mb-l`}>
