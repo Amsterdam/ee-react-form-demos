@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 import {
   Field,
   Label,
@@ -9,7 +9,7 @@ import {
 interface FormSelectProps {
   id: string;
   label: string;
-  description?: string;
+  description?: ReactNode;
   name: string;
   options: Record<string, string>;
   initialValue?: string;
@@ -29,10 +29,12 @@ const FormSelect = ({
 }: FormSelectProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
-    {description && (
+    {typeof description === 'string' ? (
       <Paragraph id={`${id}-description`} size="small">
         {description}
       </Paragraph>
+    ) : (
+      description
     )}
     <Select
       aria-describedby={description ? `${id}-description` : ''}

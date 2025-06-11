@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ActionMeta } from 'react-select';
 import { Field, Label, Paragraph } from '@amsterdam/design-system-react';
 import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
@@ -7,7 +8,7 @@ interface FormAutoSelectProps {
   id: string;
   label: string;
   name: string;
-  description?: string;
+  description?: ReactNode;
   options: ReactSelectOption[] | undefined;
   initialValues: string[];
   required?: boolean;
@@ -37,10 +38,12 @@ const FormAutoSelect = ({
   return (
     <Field className="ams-mb-m">
       <Label htmlFor={id}>{label}</Label>
-      {description && (
+      {typeof description === 'string' ? (
         <Paragraph id={`${id}-description`} size="small">
           {description}
         </Paragraph>
+      ) : (
+        description
       )}
       <InputAutoSelect
         id={id}

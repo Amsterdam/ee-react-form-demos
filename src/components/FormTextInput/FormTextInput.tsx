@@ -1,3 +1,4 @@
+import { ChangeEvent, ReactNode } from 'react';
 import {
   ErrorMessage,
   Field,
@@ -5,12 +6,11 @@ import {
   Paragraph,
   TextInput,
 } from '@amsterdam/design-system-react';
-import { ChangeEvent } from 'react';
 
 interface FormTextInputProps {
   id: string;
   label: string;
-  description?: string;
+  description?: ReactNode;
   value: string;
   required?: boolean;
   error?: string;
@@ -28,10 +28,12 @@ const FormTextInput = ({
 }: FormTextInputProps) => (
   <Field className="ams-mb-m" invalid={!!error}>
     <Label htmlFor={id}>{label}</Label>
-    {description && (
+    {typeof description === 'string' ? (
       <Paragraph id={`${id}-description`} size="small">
         {description}
       </Paragraph>
+    ) : (
+      description
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextInput

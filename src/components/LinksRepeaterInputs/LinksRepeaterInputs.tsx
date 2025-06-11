@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Heading } from '@amsterdam/design-system-react';
+import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import styles from './styles.module.css';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
@@ -62,6 +62,12 @@ const LinksRepeaterInputs = ({
       <Heading level={4} className="ams-mb-s">
         Links
       </Heading>
+
+      <Paragraph size="small" className="ams-mb-s">
+        A list of external hyperlinks related to the entity. Links can provide
+        additional contextual information that may be located outside of
+        Backstage itself. For example, an admin dashboard or external CMS page.
+      </Paragraph>
 
       <div className="ams-mb-m">
         {items.map((item, index) => (
