@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm, Controller, useWatch } from 'react-hook-form';
+import { useForm, Controller, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod/v4';
 import {
@@ -12,11 +12,14 @@ import {
   Row,
 } from '@amsterdam/design-system-react';
 import FormSelect from './components/FormSelect/FormSelect';
+import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
+import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterInputs';
 // import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import Loader from '@/components/Loader/Loader';
 import styles from './CreateEntity.module.css';
+import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 
 // Define the form schema with Zod
 const entityFormSchema = z.object({
@@ -25,11 +28,15 @@ const entityFormSchema = z.object({
   description: z.string().optional(),
   // tags: z.array(z.string()).default([]),
   // annotations: z.record(z.string()).default({}),
-  // links: z.array(z.object({
-  //   url: z.string().url('Must be a valid URL'),
-  //   title: z.string().min(1, 'Title is required'),
-  //   icon: z.string().optional(),
-  // })).default([]),
+  links: z
+    .array(
+      z.object({
+        url: z.string().url('Must be a valid URL'),
+        title: z.string().min(1, 'Title is required'),
+        icon: z.string().optional(),
+      })
+    )
+    .default([]),
   spec: z.object({
     type: z.string().min(1, 'Type is required'),
     lifecycle: z.string().min(1, 'Lifecycle is required'),
@@ -48,6 +55,7 @@ const CreateEntity = () => {
     reset,
     formState: { errors, isSubmitting },
     setValue,
+    watch,
   } = useForm<EntityFormData>({
     resolver: zodResolver(entityFormSchema),
     defaultValues: {
@@ -61,23 +69,23 @@ const CreateEntity = () => {
       //   'github.com/team-slug': 'amsterdam/engineering-enablement',
       //   'lighthouse.com/website-url': 'https://developers.amsterdam',
       // },
-      // links: [
-      //   {
-      //     url: 'https://developers.amsterdam/',
-      //     title: 'developers.amsterdam',
-      //     icon: 'launch',
-      //   },
-      //   {
-      //     url: 'https://github.com/amsterdam/ee-docs',
-      //     title: 'GitHub Repo',
-      //     icon: 'github',
-      //   },
-      //   {
-      //     url: 'https://gemeente-amsterdam.atlassian.net/browse/COM-70',
-      //     title: 'Jira Board',
-      //     icon: 'dashboard',
-      //   },
-      // ],
+      links: [
+        {
+          url: 'https://developers.amsterdam/',
+          title: 'developers.amsterdam',
+          icon: 'launch',
+        },
+        {
+          url: 'https://github.com/amsterdam/ee-docs',
+          title: 'GitHub Repo',
+          icon: 'github',
+        },
+        {
+          url: 'https://gemeente-amsterdam.atlassian.net/browse/COM-70',
+          title: 'Jira Board',
+          icon: 'dashboard',
+        },
+      ],
       spec: {
         type: 'website',
         lifecycle: 'production',
@@ -88,6 +96,13 @@ const CreateEntity = () => {
     },
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'links',
+  });
+
+  const formData = watch();
+  console.log({ formData });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -117,7 +132,7 @@ const CreateEntity = () => {
       description: '',
       // tags: [],
       // annotations: {},
-      // links: [],
+      links: [],
       spec: {
         type: '',
         lifecycle: '',
@@ -196,7 +211,7 @@ const CreateEntity = () => {
             )}
           />
 
-          {/* <Controller
+          <Controller
             name="description"
             control={control}
             render={({ field }) => (
@@ -209,7 +224,7 @@ const CreateEntity = () => {
                 onChange={field.onChange}
               />
             )}
-          /> */}
+          />
 
           <Controller
             name="spec.type"
@@ -363,19 +378,21 @@ const CreateEntity = () => {
                 onChange={field.onChange}
               />
             )}
-          />
+          /> */}
 
           <Controller
             name="links"
             control={control}
             render={({ field }) => (
               <LinksRepeaterInputs
-                items={field.value}
-                error={errors.links?.message}
-                onChange={field.onChange}
+                fields={fields}
+                append={append}
+                remove={remove}
+                control={control}
+                errors={errors}
               />
             )}
-          /> */}
+          />
 
           <Row>
             <Button type="submit" disabled={isSubmitting}>
@@ -393,6 +410,7 @@ const CreateEntity = () => {
         control={control}
         render={() => <SubmissionOutput control={control} />}
       /> */}
+      <SubmissionOutput formData={formData} />
 
       {isLoading && (
         <div className={styles.loader}>

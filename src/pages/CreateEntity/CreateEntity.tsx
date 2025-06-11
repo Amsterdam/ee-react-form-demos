@@ -28,12 +28,13 @@ import styles from './CreateEntity.module.css';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
+// TODO move this form components into subdirectory under here
 // TODO validation - variant of this form with zod validation?
-// TODO react-hook-form to this migration path?
 // TODO document results
 // - validation alert/header with invalid fields - Cannot accomplish with browser validation
 // - smaller forms - use react validation
 // - larger/dynamic forms - use browser validation
+// - react-hook-form to this migration path?
 // TODO tests
 const CreateEntity = () => {
   const [formData, setFormData] = useState({
