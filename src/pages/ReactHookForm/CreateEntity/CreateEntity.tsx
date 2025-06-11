@@ -20,13 +20,21 @@ import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterI
 import Loader from '@/components/Loader/Loader';
 import styles from './CreateEntity.module.css';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
+import sortAlphabetically from '@/utils/sortAlphabetically';
+import getOwners from '@/utils/getOwners';
+import getSystems from '@/utils/getSystems';
+import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
+import getTags from '@/utils/getTags';
+
+const ownerOptions = getOwners().sort(sortAlphabetically);
+const systemOptions = getSystems().sort(sortAlphabetically);
 
 // Define the form schema with Zod
 const entityFormSchema = z.object({
   kind: z.string().min(1, 'Kind is required'),
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
-  // tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]),
   // annotations: z.record(z.string()).default({}),
   links: z
     .array(
@@ -40,14 +48,16 @@ const entityFormSchema = z.object({
   spec: z.object({
     type: z.string().min(1, 'Type is required'),
     lifecycle: z.string().min(1, 'Lifecycle is required'),
-    // owner: z.string().min(1, 'Owner is required'),
+    owner: z.string().min(1, 'Owner is required'),
     hasSystem: z.boolean().default(false),
-    // system: z.string().optional(),
+    system: z.string().optional(), // TODO conditionally required on hasSystem
   }),
 });
 
 type EntityFormData = z.infer<typeof entityFormSchema>;
 
+// TODO system doesn't clear
+// TODO annotations
 const CreateEntity = () => {
   const {
     control,
@@ -62,7 +72,7 @@ const CreateEntity = () => {
       kind: 'Component',
       name: 'ee-docs',
       description: 'The primary app for developers.amsterdam',
-      // tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
+      tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
       // annotations: {
       //   'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
       //   'github.com/project-slug': 'amsterdam/ee-docs',
@@ -89,9 +99,9 @@ const CreateEntity = () => {
       spec: {
         type: 'website',
         lifecycle: 'production',
-        // owner: 'dii-engineering-enablement',
+        owner: 'dii-engineering-enablement',
         hasSystem: true,
-        // system: 'dii-ee-developers-amsterdam',
+        system: 'dii-ee-developers-amsterdam',
       },
     },
   });
@@ -145,10 +155,7 @@ const CreateEntity = () => {
 
   return (
     <Grid>
-      <Grid.Cell
-        span={{ narrow: 4, medium: 8, wide: 6 }}
-        className="style-mb-xl"
-      >
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
         <Heading level={1} size="level-3">
           Create an entity
         </Heading>
@@ -274,36 +281,42 @@ const CreateEntity = () => {
             )}
           />
 
-          {/* <Controller
+          <Controller
             name="spec.owner"
             control={control}
-            render={({ field }) => (
-              <FormAutoSelect
-                id="owner"
-                label="Owner"
-                name="owner"
-                description={
-                  <Paragraph size="small" id="owner-description">
-                    An{' '}
-                    <Link
-                      href="https://backstage.io/docs/features/software-catalog/references#string-references"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      entity reference
-                    </Link>{' '}
-                    to the owner of the component, e.g. `artist-relations-team`.
-                    This field is required.
-                  </Paragraph>
-                }
-                options={ownerOptions}
-                value={field.value}
-                error={errors.spec?.owner?.message}
-                required
-                onChange={field.onChange}
-              />
-            )}
-          /> */}
+            render={({ field }) => {
+              const selectedOption =
+                ownerOptions?.find(opt => opt.value === field.value) ?? null;
+
+              return (
+                <FormAutoSelect
+                  id="owner"
+                  label="Owner"
+                  description={
+                    <Paragraph size="small" id="owner-description">
+                      An{' '}
+                      <Link
+                        href="https://backstage.io/docs/features/software-catalog/references#string-references"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        entity reference
+                      </Link>{' '}
+                      to the owner of the component, e.g.
+                      `artist-relations-team`. This field is required.
+                    </Paragraph>
+                  }
+                  options={ownerOptions}
+                  value={selectedOption}
+                  required
+                  onChange={selectedOption => {
+                    // react-select returns either {value, label} or null
+                    field.onChange(selectedOption ? selectedOption.value : '');
+                  }}
+                />
+              );
+            }}
+          />
 
           <Controller
             name="spec.hasSystem"
@@ -318,57 +331,75 @@ const CreateEntity = () => {
             )}
           />
 
-          {/* {hasSystem && (
+          {hasSystem && (
             <Controller
               name="spec.system"
               control={control}
-              render={({ field }) => (
-                <FormAutoSelect
-                  id="system"
-                  label="System"
-                  name="system"
-                  description={
-                    <Paragraph id="system-description" size="small">
-                      An{' '}
-                      <Link
-                        href="https://backstage.io/docs/features/software-catalog/references#string-references"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        entity reference
-                      </Link>{' '}
-                      to the system that the component belongs to, e.g.
-                      `artist-engagement-portal`. This field is optional.
-                    </Paragraph>
-                  }
-                  options={systemOptions}
-                  value={field.value || ''}
-                  error={errors.spec?.system?.message}
-                  onChange={field.onChange}
-                />
-              )}
+              render={({ field }) => {
+                const selectedOption =
+                  systemOptions?.find(opt => opt.value === field.value) ?? null;
+
+                return (
+                  <FormAutoSelect
+                    id="system"
+                    label="System"
+                    description={
+                      <Paragraph id="system-description" size="small">
+                        An{' '}
+                        <Link
+                          href="https://backstage.io/docs/features/software-catalog/references#string-references"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          entity reference
+                        </Link>{' '}
+                        to the system that the component belongs to, e.g.
+                        `artist-engagement-portal`. This field is optional.
+                      </Paragraph>
+                    }
+                    options={systemOptions}
+                    value={selectedOption}
+                    onChange={selectedOption => {
+                      field.onChange(
+                        selectedOption ? selectedOption.value : undefined
+                      );
+                    }}
+                  />
+                );
+              }}
             />
           )}
 
           <Controller
             name="tags"
             control={control}
-            render={({ field }) => (
-              <FormAutoSelect
-                id="tags"
-                label="Tags"
-                name="tags"
-                description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
-                options={getTags()}
-                value={field.value}
-                error={errors.tags?.message}
-                isMulti
-                onChange={field.onChange}
-              />
-            )}
+            render={({ field }) => {
+              const selectedOptions = (field.value ?? []).map(val => ({
+                value: val,
+                label: val, // assuming your options follow this shape
+              }));
+
+              return (
+                <FormAutoSelect
+                  id="tags"
+                  label="Tags"
+                  description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
+                  options={getTags()}
+                  value={selectedOptions}
+                  isMulti
+                  onChange={selectedOptions => {
+                    field.onChange(
+                      selectedOptions
+                        ? selectedOptions.map(opt => opt.value)
+                        : []
+                    );
+                  }}
+                />
+              );
+            }}
           />
 
-          <Controller
+          {/*<Controller
             name="annotations"
             control={control}
             render={({ field }) => (
