@@ -4,6 +4,7 @@ import {
   Heading,
   Link,
   Paragraph,
+  Row,
 } from '@amsterdam/design-system-react';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
@@ -373,7 +374,7 @@ const CreateEntity = () => {
             }}
           />
 
-          <div>
+          <Row>
             <Button type="submit">Submit</Button>
             <Button
               type="button"
@@ -398,7 +399,7 @@ const CreateEntity = () => {
             >
               Reset
             </Button>
-          </div>
+          </Row>
         </form>
       </Grid.Cell>
       <SubmissionOutput formData={formData} />
