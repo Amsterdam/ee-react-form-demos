@@ -8,6 +8,7 @@ import {
 import { ChangeEvent } from 'react';
 
 interface FormTextInputProps {
+  id: string;
   label: string;
   description?: string;
   value: string;
@@ -17,6 +18,7 @@ interface FormTextInputProps {
 }
 
 const FormTextInput = ({
+  id,
   label,
   description,
   value,
@@ -25,16 +27,16 @@ const FormTextInput = ({
   onChange,
 }: FormTextInputProps) => (
   <Field className="ams-mb-m" invalid={!!error}>
-    <Label htmlFor="input3">{label}</Label>
+    <Label htmlFor={id}>{label}</Label>
     {description && (
-      <Paragraph id="description2" size="small">
+      <Paragraph id={`${id}-description`} size="small">
         {description}
       </Paragraph>
     )}
-    {error && <ErrorMessage id="error2">{error}</ErrorMessage>}
+    {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextInput
-      aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
-      id="input3"
+      aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
+      id={id}
       value={value}
       invalid={!!error}
       name="name"

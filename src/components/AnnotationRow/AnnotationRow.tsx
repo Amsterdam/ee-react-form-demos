@@ -60,7 +60,7 @@ const AnnotationRow = ({
       {annotation?.values ? (
         <Select
           // aria-describedby={description ? 'description2' : ''}
-          // id={`annotation-value-${index}`}
+          id={`annotation-value-${index}`}
           // name="annotation"
           className="ams-mb-m"
           defaultValue={values.value}
@@ -79,7 +79,7 @@ const AnnotationRow = ({
         <TextInput
           // aria-describedby={`${description ? 'description2' : ''} ${error ? 'error2' : ''}`}
           type={annotation?.type === 'url' ? 'url' : 'text'}
-          // id={`annotation-value-${index}`}
+          id={`annotation-value-${index}`}
           // value={value}
           // invalid={!!error}
           placeholder={annotation?.example ? annotation.example : undefined}

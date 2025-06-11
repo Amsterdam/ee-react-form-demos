@@ -4,6 +4,7 @@ import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
 import { ReactSelectOption, ReactSelectValue } from '../InputAutoSelect/types';
 
 interface FormAutoSelectProps {
+  id: string;
   label: string;
   name: string;
   description?: string;
@@ -18,6 +19,7 @@ interface FormAutoSelectProps {
 }
 
 const FormAutoSelect = ({
+  id,
   label,
   name,
   description,
@@ -34,13 +36,14 @@ const FormAutoSelect = ({
 
   return (
     <Field className="ams-mb-m">
-      <Label htmlFor="body">{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       {description && (
-        <Paragraph id="bodyDescription" size="small">
+        <Paragraph id={`${id}-description`} size="small">
           {description}
         </Paragraph>
       )}
       <InputAutoSelect
+        id={id}
         options={options}
         isMulti={isMulti}
         onChange={onChange}

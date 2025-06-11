@@ -7,6 +7,7 @@ import {
 } from '@amsterdam/design-system-react';
 
 interface FormSelectProps {
+  id: string;
   label: string;
   description?: string;
   name: string;
@@ -17,6 +18,7 @@ interface FormSelectProps {
 }
 
 const FormSelect = ({
+  id,
   label,
   description,
   name,
@@ -26,15 +28,15 @@ const FormSelect = ({
   onChange,
 }: FormSelectProps) => (
   <Field className="ams-mb-m">
-    <Label htmlFor="input2">{label}</Label>
+    <Label htmlFor={id}>{label}</Label>
     {description && (
-      <Paragraph id="description2" size="small">
+      <Paragraph id={`${id}-description`} size="small">
         {description}
       </Paragraph>
     )}
     <Select
-      aria-describedby={description ? 'description2' : ''}
-      id="input2"
+      aria-describedby={description ? `${id}-description` : ''}
+      id={id}
       name={name}
       value={initialValue}
       required={required}

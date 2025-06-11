@@ -1,4 +1,5 @@
 import {
+  ErrorMessage,
   Field,
   Label,
   Paragraph,
@@ -7,6 +8,7 @@ import {
 import { ChangeEvent } from 'react';
 
 interface FormTextareaProps {
+  id: string;
   label: string;
   description?: string;
   value: string;
@@ -16,23 +18,27 @@ interface FormTextareaProps {
 }
 
 const FormTextarea = ({
+  id,
   label,
   description,
   value,
   required = false,
-  // error,
+  error,
   onChange,
 }: FormTextareaProps) => (
   <Field className="ams-mb-m">
-    <Label htmlFor="body">{label}</Label>
+    <Label htmlFor={id}>{label}</Label>
     {description && (
-      <Paragraph id="bodyDescription" size="small">
+      <Paragraph id={`${id}-description`} size="small">
         {description}
       </Paragraph>
     )}
+    {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextArea
-      aria-describedby={description ? 'bodyDescription' : ''}
-      id="body"
+      aria-describedby={
+        description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
+      }
+      id={id}
       rows={4}
       name="description"
       value={value}

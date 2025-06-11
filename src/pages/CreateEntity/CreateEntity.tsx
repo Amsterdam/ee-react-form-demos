@@ -20,9 +20,9 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO check htmlFor values
 // TODO check name values
 // TODO description texts
+// TODO handle submit data
 // TODO isloading/submission state
 // TODO react-hook-form to this migration path?
 // TODO document results
@@ -149,6 +149,7 @@ const Home = () => {
 
         <form onSubmit={handleSubmit}>
           <FormSelect
+            id="kind"
             label="Kind"
             // TODO include link in description - what happens?
             description="Description text goes here..."
@@ -176,6 +177,7 @@ const Home = () => {
           />
 
           <FormTextInput
+            id="name"
             label="Name"
             description="Textinput description text goes here..."
             value={formData.name}
@@ -184,6 +186,7 @@ const Home = () => {
           />
 
           <FormTextarea
+            id="description"
             label="Description"
             description="Textarea description text goes here..."
             value={formData.description}
@@ -191,6 +194,7 @@ const Home = () => {
           />
 
           <FormSelect
+            id="type"
             label="Type"
             description="Spec - type text goes here..."
             name="type"
@@ -215,6 +219,7 @@ const Home = () => {
           />
 
           <FormSelect
+            id="lifecycle"
             label="Lifecycle"
             description="Spec - lifecycle text goes here..."
             name="lifecycle"
@@ -241,6 +246,7 @@ const Home = () => {
           />
 
           <FormAutoSelect
+            id="owner"
             label="Owner"
             name="owner"
             description="Spec - owner text goes here..."
@@ -260,6 +266,7 @@ const Home = () => {
           />
 
           <FormCheckboxInput
+            id="hasSystem"
             label="Entity belongs to a system?"
             value={formData.spec.hasSystem}
             onChange={e =>
@@ -275,6 +282,7 @@ const Home = () => {
 
           {formData.spec.hasSystem && (
             <FormAutoSelect
+              id="hasSystem"
               label="System"
               name="system"
               description="Spec - system text goes here..."
@@ -295,6 +303,7 @@ const Home = () => {
           )}
 
           <FormAutoSelect
+            id="tags"
             label="Tags"
             name="tags"
             description="Tags text goes here..."
