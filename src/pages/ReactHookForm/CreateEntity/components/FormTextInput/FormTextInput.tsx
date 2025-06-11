@@ -1,0 +1,51 @@
+import { ReactNode } from 'react';
+import {
+  ErrorMessage,
+  Field,
+  Label,
+  Paragraph,
+  TextInput,
+} from '@amsterdam/design-system-react';
+
+interface FormTextInputProps {
+  id: string;
+  label: string;
+  description?: ReactNode;
+  value: string;
+  required?: boolean;
+  error?: string;
+  onChange: (value: string) => void;
+}
+
+const FormTextInput = ({
+  id,
+  label,
+  description,
+  value,
+  required = false,
+  error,
+  onChange,
+}: FormTextInputProps) => (
+  <Field className="ams-mb-m" invalid={!!error}>
+    <Label htmlFor={id}>{label}</Label>
+    {typeof description === 'string' ? (
+      <Paragraph id={`${id}-description`} size="small">
+        {description}
+      </Paragraph>
+    ) : (
+      description
+    )}
+    {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
+    <TextInput
+      aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
+      id={id}
+      value={value}
+      invalid={!!error}
+      name={id}
+      required={required}
+      onChange={e => onChange(e.target.value)}
+    />
+  </Field>
+);
+
+export default FormTextInput;

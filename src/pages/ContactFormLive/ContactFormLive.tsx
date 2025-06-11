@@ -191,24 +191,26 @@ const ContactFormLive = () => {
             </Alert>
           )}
 
-          <Field invalid={!!errors.name}>
+          <Field invalid={submitTouched && !!errors.name}>
             <Label htmlFor="name">Naam</Label>
-            {errors.name && (
+            {submitTouched && errors.name && (
               <ErrorMessage id={`error-name`}>{errors.name}</ErrorMessage>
             )}
             <TextInput
               id="name"
               name="name"
               placeholder="Voornaam"
-              aria-describedby={errors.name ? 'error-name' : ''}
+              aria-describedby={
+                submitTouched && errors.name ? 'error-name' : ''
+              }
               invalid={!!errors.name}
               onChange={handleInputChange}
               onBlur={handleBlur}
             />
           </Field>
-          <Field invalid={!!errors.email}>
+          <Field invalid={submitTouched && !!errors.email}>
             <Label htmlFor="email">E-mailadres</Label>
-            {errors.email && (
+            {submitTouched && errors.email && (
               <ErrorMessage id={`error-email`}>{errors.email}</ErrorMessage>
             )}
             <TextInput
@@ -216,22 +218,26 @@ const ContactFormLive = () => {
               id="email"
               name="email"
               placeholder="E-mailadres"
-              aria-describedby={errors.name ? 'error-email' : ''}
+              aria-describedby={
+                submitTouched && errors.name ? 'error-email' : ''
+              }
               invalid={!!errors.name}
               onChange={handleInputChange}
               onBlur={handleBlur}
             />
           </Field>
-          <Field invalid={!!errors.email}>
+          <Field invalid={submitTouched && !!errors.email}>
             <Label htmlFor="body">Bericht</Label>
-            {errors.email && (
+            {submitTouched && errors.email && (
               <ErrorMessage id={`error-body`}>{errors.body}</ErrorMessage>
             )}
             <TextArea
               id="body"
               name="body"
               placeholder="Bericht"
-              aria-describedby={errors.body ? 'error-body' : ''}
+              aria-describedby={
+                submitTouched && errors.body ? 'error-body' : ''
+              }
               invalid={!!errors.body}
               onChange={handleInputChange}
               onBlur={handleBlur}

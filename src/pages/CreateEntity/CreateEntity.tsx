@@ -109,7 +109,7 @@ const CreateEntity = () => {
     //   },
     // };
 
-    // Mock API call
+    // Simulate API call
     // Here's where validation could happen
     setIsLoading(true);
 
@@ -118,7 +118,7 @@ const CreateEntity = () => {
       setIsSubmitted(true);
     }, 1500);
   };
-  console.log({ isSubmitted });
+
   return (
     <Grid>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
@@ -418,6 +418,7 @@ const CreateEntity = () => {
           <Loader />
         </div>
       )}
+
       {isSubmitted && (
         <div className={styles.loader}>
           <Alert
