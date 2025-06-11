@@ -2,6 +2,7 @@ import { Checkbox, Field, Paragraph } from '@amsterdam/design-system-react';
 import { ChangeEvent } from 'react';
 
 interface FormCheckboxInputProps {
+  id: string;
   label: string;
   description?: string;
   value: boolean;
@@ -9,6 +10,7 @@ interface FormCheckboxInputProps {
 }
 
 const FormCheckboxInput = ({
+  id,
   label,
   description,
   value,
@@ -16,11 +18,16 @@ const FormCheckboxInput = ({
 }: FormCheckboxInputProps) => (
   <Field className="ams-mb-m">
     {description && (
-      <Paragraph className="ams-mb-s" size="small">
+      <Paragraph id={`${id}-description`} className="ams-mb-s" size="small">
         {description}
       </Paragraph>
     )}
-    <Checkbox onChange={onChange} checked={value}>
+    <Checkbox
+      aria-describedby={description ? `${id}-description` : ''}
+      id={id}
+      onChange={onChange}
+      checked={value}
+    >
       {label}
     </Checkbox>
   </Field>

@@ -1,4 +1,10 @@
-import { Button, Grid, Heading } from '@amsterdam/design-system-react';
+import {
+  Button,
+  Grid,
+  Heading,
+  Link,
+  Paragraph,
+} from '@amsterdam/design-system-react';
 import FormSelect from '@/components/FormSelect/FormSelect';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import FormTextInput from '@/components/FormTextInput/FormTextInput';
@@ -20,9 +26,6 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO check htmlFor values
-// TODO check name values
-// TODO description texts
 // TODO isloading/submission state
 // TODO react-hook-form to this migration path?
 // TODO document results
@@ -97,47 +100,41 @@ const Home = () => {
   // TODO handle annotations, new tags and spec fields
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    await (e.target as HTMLFormElement).validateForm();
 
-    console.log('isValid', form.isValid());
-
-    const data = Object.fromEntries(formData);
-    console.log({ data });
-    // Simple validation
-    const newErrors = {};
-    // if (!data.owner) newErrors.name = 'Name is required';
-    // if (!data.email) newErrors.email = 'Email is required';
+    console.log({
+      formData,
+    });
 
     const formattedFormData = {
-      kind: data.kind as string,
-      name: data.name as string,
-      description: data.description as string,
-      tags: formData.getAll('tags') as string[],
-      annotations: {},
-      links: [],
+      kind: formData.kind,
+      name: formData.name,
+      description: formData.description,
+      tags: formData.tags,
+      annotations: formData.annotations,
+      links: formData.links,
       spec: {
-        type: 'website',
-        lifecycle: 'production',
-        owner: 'team',
-        hasSystem: false,
-        system: 'system-name',
+        type: formData.spec.type,
+        lifecycle: formData.spec.lifecycle,
+        owner: formData.spec.owner,
+        hasSystem: !!formData.spec.hasSystem,
+        system: formData.spec.system,
       },
     };
 
-    if (Object.keys(newErrors).length === 0) {
-      // Submit the data
-      console.log('Submitting:', data, {
-        formattedFormData,
-        toJson: Object.fromEntries(formData.entries()),
-        tagsfield: formData.getAll('tags'),
-      });
+    console.log({ formattedFormData });
 
-      setFormData(formattedFormData);
-    } else {
-      // setErrors(newErrors);
-    }
+    // if (Object.keys(newErrors).length === 0) {
+    //   // Submit the data
+    //   // console.log('Submitting:', {
+    //   //   formattedFormData,
+    //   //   toJson: Object.fromEntries(formData.entries()),
+    //   //   tagsfield: formData.getAll('tags'),
+    //   // });
+
+    //   // setFormData(formattedFormData);
+    // } else {
+    //   // setErrors(newErrors);
+    // }
   };
 
   return (
@@ -149,9 +146,24 @@ const Home = () => {
 
         <form onSubmit={handleSubmit}>
           <FormSelect
+            id="kind"
             label="Kind"
             // TODO include link in description - what happens?
-            description="Description text goes here..."
+            description={
+              <Paragraph id="kind-description" size="small">
+                The kind is the high level entity type being described.{' '}
+                <Link
+                  href="https://backstage.io/docs/architecture-decisions/adrs-adr005"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  ADR005
+                </Link>{' '}
+                describes a number of core kinds that plugins can know of and
+                understand, but an organization using Backstage is free to also
+                add entities of other kinds to the catalog.
+              </Paragraph>
+            }
             name="kind"
             // This looks a bit weird but is intended because select menu values
             // are often different to the labels (however, not in this example)
@@ -176,23 +188,26 @@ const Home = () => {
           />
 
           <FormTextInput
+            id="name"
             label="Name"
-            description="Textinput description text goes here..."
+            description="The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
             value={formData.name}
             required
             onChange={handleChange}
           />
 
           <FormTextarea
+            id="description"
             label="Description"
-            description="Textarea description text goes here..."
+            description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
             value={formData.description}
             onChange={handleChange}
           />
 
           <FormSelect
+            id="type"
             label="Type"
-            description="Spec - type text goes here..."
+            description="The type of component as a string, e.g. `website`. This field is required."
             name="type"
             options={{
               service: 'Service',
@@ -215,8 +230,9 @@ const Home = () => {
           />
 
           <FormSelect
+            id="lifecycle"
             label="Lifecycle"
-            description="Spec - lifecycle text goes here..."
+            description="The lifecycle state of the component, e.g. `production`. This field is required."
             name="lifecycle"
             options={{
               prototype: 'Prototype',
@@ -241,9 +257,23 @@ const Home = () => {
           />
 
           <FormAutoSelect
+            id="owner"
             label="Owner"
             name="owner"
-            description="Spec - owner text goes here..."
+            description={
+              <Paragraph size="small" id="owner-description">
+                An{' '}
+                <Link
+                  href="https://backstage.io/docs/features/software-catalog/references#string-references"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  entity reference
+                </Link>{' '}
+                to the owner of the component, e.g. `artist-relations-team`.
+                This field is required.
+              </Paragraph>
+            }
             options={ownerOptions}
             initialValues={[formData.spec.owner]}
             required
@@ -260,6 +290,7 @@ const Home = () => {
           />
 
           <FormCheckboxInput
+            id="hasSystem"
             label="Entity belongs to a system?"
             value={formData.spec.hasSystem}
             onChange={e =>
@@ -275,9 +306,23 @@ const Home = () => {
 
           {formData.spec.hasSystem && (
             <FormAutoSelect
+              id="hasSystem"
               label="System"
               name="system"
-              description="Spec - system text goes here..."
+              description={
+                <Paragraph id="system-description" size="small">
+                  An{' '}
+                  <Link
+                    href="https://backstage.io/docs/features/software-catalog/references#string-references"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    entity reference
+                  </Link>{' '}
+                  to the system that the component belongs to, e.g.
+                  `artist-engagement-portal`. This field is optional.
+                </Paragraph>
+              }
               options={systemOptions}
               initialValues={[formData.spec.system]}
               required
@@ -295,9 +340,10 @@ const Home = () => {
           )}
 
           <FormAutoSelect
+            id="tags"
             label="Tags"
             name="tags"
-            description="Tags text goes here..."
+            description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
             options={getTags()}
             initialValues={formData.tags}
             isMulti

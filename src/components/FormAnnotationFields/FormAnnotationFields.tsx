@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Heading } from '@amsterdam/design-system-react';
+import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRow from '../AnnotationRow/AnnotationRow';
 import styles from './styles.module.css';
@@ -69,6 +69,11 @@ const FormAnnotationFields = ({
       <Heading level={4} className="ams-mb-s">
         Annotations
       </Heading>
+
+      <Paragraph size="small" className="ams-mb-s" id="annotations-description">
+        An object with arbitrary non-identifying metadata attached to the
+        entity, identical in use to Kubernetes object annotations.
+      </Paragraph>
 
       <div className="ams-mb-m">
         {items.map((item, index) => (
