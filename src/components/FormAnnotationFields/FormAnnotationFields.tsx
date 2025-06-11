@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRow from '../AnnotationRow/AnnotationRow';
-import styles from './styles.module.css';
+import styles from './FormAnnotationFields.module.css';
 
 type AnnotationItem = {
   id: string;
