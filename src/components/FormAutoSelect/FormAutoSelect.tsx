@@ -31,9 +31,19 @@ const FormAutoSelect = ({
   onChange,
   ...props
 }: FormAutoSelectProps) => {
-  const selectedValue = options?.filter(option =>
-    initialValues.includes(option.value)
-  );
+  // Filter out empty strings and find matching options
+  const validValues = initialValues.filter(val => val && val.trim() !== '');
+  const selectedValue =
+    options?.filter(option => validValues.includes(option.value)) || [];
+
+  // For react-select:
+  // - Single select: null/undefined clears the selection
+  // - Multi select: [] clears the selection
+  const selectValue = isMulti
+    ? selectedValue
+    : selectedValue.length > 0
+      ? selectedValue[0]
+      : null;
 
   return (
     <Field className="ams-mb-m">
@@ -52,7 +62,7 @@ const FormAutoSelect = ({
         onChange={onChange}
         name={name}
         required={required}
-        value={isMulti ? selectedValue : selectedValue?.[0]}
+        value={selectValue}
         {...props}
       />
     </Field>

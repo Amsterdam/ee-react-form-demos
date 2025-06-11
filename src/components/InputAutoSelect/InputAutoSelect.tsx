@@ -50,7 +50,7 @@ const InputAutoSelect = ({
     id={id}
     name={name}
     required={required}
-    defaultValue={value}
+    value={value}
     {...eventHandlers}
     styles={{
       container: (baseStyles, state) => ({
