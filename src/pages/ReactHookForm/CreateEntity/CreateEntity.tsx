@@ -445,7 +445,7 @@ const CreateEntity = () => {
                 append={append}
                 remove={remove}
                 control={control}
-                errors={errors}
+                errors={errors.links}
               />
             )}
           />

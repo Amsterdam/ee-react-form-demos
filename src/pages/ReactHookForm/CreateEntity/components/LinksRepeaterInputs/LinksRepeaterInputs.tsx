@@ -15,7 +15,7 @@ interface LinksRepeaterInputsProps {
   append: (item: { url: string; title: string; icon?: string }) => void;
   remove: (index: number) => void;
   control: Control<EntityFormData>;
-  errors: FieldErrors<EntityFormData>;
+  errors: FieldErrors<EntityFormData>[];
 }
 
 const LinksRepeaterInputs = ({
@@ -23,7 +23,9 @@ const LinksRepeaterInputs = ({
   append,
   remove,
   control,
+  errors,
 }: LinksRepeaterInputsProps) => {
+  console.log({ errors });
   return (
     <div className={`${styles.container} ams-mb-l`}>
       <Heading level={4} className="ams-mb-s">
@@ -40,6 +42,7 @@ const LinksRepeaterInputs = ({
             index={index}
             control={control}
             remove={remove}
+            errors={errors?.[index]}
           />
         ))}
       </div>
