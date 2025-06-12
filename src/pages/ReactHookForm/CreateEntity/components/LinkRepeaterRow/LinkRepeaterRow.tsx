@@ -9,7 +9,7 @@ import {
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '../../types';
 import styles from './LinkRepeaterRow.module.css';
 
 interface LinkRepeaterRowProps {

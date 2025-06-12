@@ -19,7 +19,7 @@ import {
   UseFormSetValue,
   useWatch,
 } from 'react-hook-form';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '../../types';
 
 interface AnnotationRowProps {
   control: Control<EntityFormData>;

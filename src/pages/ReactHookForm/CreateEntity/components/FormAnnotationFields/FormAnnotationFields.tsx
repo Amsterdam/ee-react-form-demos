@@ -8,7 +8,7 @@ import {
   useFieldArray,
   UseFormSetValue,
 } from 'react-hook-form';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '../../types';
 
 interface FormAnnotationFieldsProps {
   control: Control<EntityFormData>;

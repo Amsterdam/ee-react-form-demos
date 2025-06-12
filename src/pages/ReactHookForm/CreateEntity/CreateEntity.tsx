@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm, Controller, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod/v4';
 import {
   Alert,
   Button,
@@ -17,7 +16,6 @@ import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterInputs';
 import Loader from '@/components/Loader/Loader';
-import styles from './CreateEntity.module.css';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import sortAlphabetically from '@/utils/sortAlphabetically';
 import getOwners from '@/utils/getOwners';
@@ -25,53 +23,12 @@ import getSystems from '@/utils/getSystems';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
 import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
+import styles from './CreateEntity.module.css';
+import entityFormSchema from './schema';
+import { EntityFormData } from '@/types';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
-
-// Define the form schema with Zod
-const specSchema = z
-  .object({
-    type: z.string().min(1, 'Type is required'),
-    lifecycle: z.string().min(1, 'Lifecycle is required'),
-    owner: z.string().min(1, 'Owner is required'),
-    hasSystem: z.boolean().default(false),
-    system: z.string().optional(),
-  })
-  .refine(
-    data => !data.hasSystem || (data.system && data.system.trim() !== ''),
-    {
-      path: ['system'],
-      message: 'System is required',
-    }
-  );
-
-const entityFormSchema = z.object({
-  kind: z.string().min(1, 'Kind is required'),
-  name: z.string().min(1, 'Name is required'),
-  description: z.string().optional(),
-  tags: z.array(z.string()).default([]).optional(),
-  annotations: z
-    .array(
-      z.object({
-        key: z.string().min(1, 'Annotation key is required'),
-        value: z.string().min(1, 'Annotation value is required'),
-      })
-    )
-    .default([]),
-  links: z
-    .array(
-      z.object({
-        url: z.string().url('Must be a valid URL'),
-        title: z.string().min(1, 'Title is required'),
-        icon: z.string().optional(),
-      })
-    )
-    .default([]),
-  spec: specSchema,
-});
-
-type EntityFormData = z.infer<typeof entityFormSchema>;
 
 // TODO scroll to first error
 // TODO create RHF EntityForm type - annotations is now an array
@@ -83,14 +40,13 @@ const CreateEntity = () => {
     formState: { errors, isSubmitting },
     setValue,
     watch,
-  } = useForm<EntityFormData>({
+  } = useForm({
     resolver: zodResolver(entityFormSchema),
     defaultValues: {
       kind: 'Component',
       name: 'ee-docs',
       description: 'The primary app for developers.amsterdam',
       tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
-      // TODO method to convert annotations to array of key value
       annotations: [
         {
           key: 'backstage.io/source-location',
@@ -406,7 +362,7 @@ const CreateEntity = () => {
             render={({ field }) => {
               const selectedOptions = (field.value ?? []).map(val => ({
                 value: val,
-                label: val, // assuming your options follow this shape
+                label: val,
               }));
 
               return (
@@ -461,7 +417,22 @@ const CreateEntity = () => {
         </form>
       </Grid.Cell>
 
-      <SubmissionOutput formData={formData} />
+      <SubmissionOutput
+        formData={
+          {
+            ...formData,
+            annotations: formData.annotations
+              ? formData.annotations.reduce(
+                  (acc, curr) => {
+                    acc[curr.key] = curr.value;
+                    return acc;
+                  },
+                  {} as Record<string, string | undefined>
+                )
+              : {},
+          } as EntityFormData
+        }
+      />
 
       {isLoading && (
         <div className={styles.loader}>

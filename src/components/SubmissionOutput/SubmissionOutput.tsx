@@ -13,7 +13,7 @@ const processFormData = (formData: EntityFormData) => {
     kind: formData.kind,
     metadata: {
       name: formData.name,
-      description: formData.description,
+      description: formData?.description ?? '',
       tags: formData.tags,
       // annotations: [],
       annotations: formData.annotations

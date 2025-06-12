@@ -1,9 +1,12 @@
 export type EntityFormData = {
   kind: string;
   name: string;
-  description: string | undefined;
+  description: string;
   tags: string[];
-  annotations: Record<string, string | undefined>;
+  annotations: {
+    key: string;
+    value: string;
+  }[];
   links: {
     url: string;
     title: string;

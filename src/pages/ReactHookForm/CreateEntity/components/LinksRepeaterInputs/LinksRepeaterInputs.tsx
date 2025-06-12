@@ -2,7 +2,7 @@ import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
 import { Control, FieldErrors } from 'react-hook-form';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '../../types';
 import styles from './LinksRepeaterInputs.module.css';
 
 interface LinksRepeaterInputsProps {
