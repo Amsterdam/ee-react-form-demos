@@ -1,6 +1,11 @@
 import { ReactNode } from 'react';
 import { ActionMeta } from 'react-select';
-import { Field, Label, Paragraph } from '@amsterdam/design-system-react';
+import {
+  ErrorMessage,
+  Field,
+  Label,
+  Paragraph,
+} from '@amsterdam/design-system-react';
 import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect';
 import {
   ReactSelectOption,
@@ -15,6 +20,7 @@ interface FormAutoSelectProps {
   required?: boolean;
   isMulti?: boolean;
   value: ReactSelectValue;
+  error?: string;
   onChange: (
     value: ReactSelectValue,
     actionMeta: ActionMeta<ReactSelectOption>
@@ -29,11 +35,12 @@ const FormAutoSelect = ({
   required = false,
   isMulti = false,
   value,
+  error,
   onChange,
   ...props
 }: FormAutoSelectProps) => {
   return (
-    <Field className="ams-mb-m">
+    <Field className="ams-mb-m" invalid={!!error}>
       <Label htmlFor={id}>{label}</Label>
       {typeof description === 'string' ? (
         <Paragraph id={`${id}-description`} size="small">
@@ -42,13 +49,15 @@ const FormAutoSelect = ({
       ) : (
         description
       )}
+      {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
       <InputAutoSelect
         id={id}
         options={options}
         isMulti={isMulti}
-        onChange={onChange}
         required={required}
         value={value}
+        error={error}
+        onChange={onChange}
         {...props}
       />
     </Field>

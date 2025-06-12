@@ -16,7 +16,6 @@ import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterInputs';
-// import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import Loader from '@/components/Loader/Loader';
 import styles from './CreateEntity.module.css';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
@@ -31,11 +30,27 @@ const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 // Define the form schema with Zod
+const specSchema = z
+  .object({
+    type: z.string().min(1, 'Type is required'),
+    lifecycle: z.string().min(1, 'Lifecycle is required'),
+    owner: z.string().min(1, 'Owner is required'),
+    hasSystem: z.boolean().default(false),
+    system: z.string().optional(),
+  })
+  .refine(
+    data => !data.hasSystem || (data.system && data.system.trim() !== ''),
+    {
+      path: ['system'],
+      message: 'System is required',
+    }
+  );
+
 const entityFormSchema = z.object({
   kind: z.string().min(1, 'Kind is required'),
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]).optional(),
   annotations: z
     .array(
       z.object({
@@ -53,13 +68,7 @@ const entityFormSchema = z.object({
       })
     )
     .default([]),
-  spec: z.object({
-    type: z.string().min(1, 'Type is required'),
-    lifecycle: z.string().min(1, 'Lifecycle is required'),
-    owner: z.string().min(1, 'Owner is required'),
-    hasSystem: z.boolean().default(false),
-    system: z.string().optional(), // TODO conditionally required on hasSystem
-  }),
+  spec: specSchema,
 });
 
 type EntityFormData = z.infer<typeof entityFormSchema>;
@@ -130,7 +139,7 @@ const CreateEntity = () => {
   });
 
   const formData = watch();
-  console.log({ formData });
+  console.log({ formData, errors });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -155,18 +164,18 @@ const CreateEntity = () => {
 
   const resetForm = () => {
     reset({
-      kind: '',
+      kind: 'API',
       name: '',
       description: '',
-      // tags: [],
-      // annotations: {},
+      tags: [],
+      annotations: [],
       links: [],
       spec: {
-        type: '',
-        lifecycle: '',
-        // owner: '',
+        type: 'service',
+        lifecycle: 'prototype',
+        owner: '',
         hasSystem: false,
-        // system: '',
+        system: '',
       },
     });
   };
@@ -326,6 +335,7 @@ const CreateEntity = () => {
                   }
                   options={ownerOptions}
                   value={selectedOption}
+                  error={errors.spec?.owner?.message}
                   required
                   onChange={selectedOption => {
                     // react-select returns either {value, label} or null
@@ -377,6 +387,8 @@ const CreateEntity = () => {
                     }
                     options={systemOptions}
                     value={selectedOption}
+                    error={errors.spec?.system?.message}
+                    required
                     onChange={selectedOption => {
                       field.onChange(
                         selectedOption ? selectedOption.value : undefined
@@ -404,6 +416,7 @@ const CreateEntity = () => {
                   description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
                   options={getTags()}
                   value={selectedOptions}
+                  error={errors.tags?.message}
                   isMulti
                   onChange={selectedOptions => {
                     field.onChange(

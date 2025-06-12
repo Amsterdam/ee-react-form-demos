@@ -13,6 +13,7 @@ interface InputAutoSelectProps {
   name?: string;
   required?: boolean;
   value?: ReactSelectValue;
+  error?: string;
   onChange: (
     newValue: ReactSelectValue,
     actionMeta: ActionMeta<ReactSelectOption>
@@ -31,6 +32,7 @@ const InputAutoSelect = ({
   name = undefined,
   required = false,
   value = undefined,
+  error,
   ...eventHandlers
 }: InputAutoSelectProps) => (
   <Select
@@ -39,6 +41,8 @@ const InputAutoSelect = ({
     isDisabled={isDisabled}
     isMulti={isMulti}
     unstyled
+    aria-errormessage={error}
+    aria-invalid={!!error}
     className="react-select__container"
     classNamePrefix="react-select"
     components={{

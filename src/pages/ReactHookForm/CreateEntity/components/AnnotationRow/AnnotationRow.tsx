@@ -3,6 +3,7 @@ import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect';
 import {
   Button,
+  ErrorMessage,
   Field,
   Heading,
   Label,
@@ -11,7 +12,13 @@ import {
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
 import styles from './AnnotationRow.module.css';
-import { Control, Controller, FieldErrors, useWatch } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormSetValue,
+  useWatch,
+} from 'react-hook-form';
 import { EntityFormData } from '@/types';
 
 interface AnnotationRowProps {
@@ -40,7 +47,14 @@ const AnnotationRow = ({
   );
 
   return (
-    <Field className={styles.container}>
+    <Field
+      className={styles.container}
+      invalid={
+        !!(
+          errors.annotations?.[index]?.key || errors.annotations?.[index]?.value
+        )
+      }
+    >
       <Heading level={4}>Annotation {index + 1}</Heading>
 
       <Controller
@@ -62,8 +76,9 @@ const AnnotationRow = ({
                 }))}
                 id={`annotation-type-${index}`}
                 value={selectedOption}
+                error={errors.annotations?.[index]?.key?.message}
                 required
-                aria-describedby="annotations-description"
+                aria-describedby={`annotations-description ${errors.annotations?.[index]?.key ? `annotation-key-${index}-error` : ''}`}
                 onChange={(newValue: unknown | null) => {
                   if (newValue) {
                     const selectedKey = (newValue as { value: string }).value;
@@ -81,9 +96,9 @@ const AnnotationRow = ({
                 }}
               />
               {errors.annotations?.[index]?.key && (
-                <div className="error-text">
+                <ErrorMessage id={`annotation-key-${index}-error`}>
                   {errors.annotations[index]?.key?.message}
-                </div>
+                </ErrorMessage>
               )}
             </>
           );
@@ -101,8 +116,9 @@ const AnnotationRow = ({
                 id={`annotation-value-${index}`}
                 className="style-mb-m"
                 value={field.value}
+                invalid={!!errors.annotations?.[index]?.value}
                 required
-                aria-describedby="annotations-description"
+                aria-describedby={`annotations-description ${errors.annotations?.[index]?.value ? `annotation-value-${index}-error` : ''}`}
                 onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                   field.onChange(e.target.value);
                 }}
@@ -124,18 +140,19 @@ const AnnotationRow = ({
                   annotation?.example ? annotation.example : undefined
                 }
                 value={field.value}
+                invalid={!!errors.annotations?.[index]?.value}
                 required
                 className="style-mb-m"
-                aria-describedby="annotations-description"
+                aria-describedby={`annotations-description ${errors.annotations?.[index]?.value ? `annotation-value-${index}-error` : ''}`}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   field.onChange(e.target.value);
                 }}
               />
             )}
             {errors.annotations?.[index]?.value && (
-              <div className="error-text">
+              <ErrorMessage id={`annotation-value-${index}-error`}>
                 {errors.annotations[index]?.value?.message}
-              </div>
+              </ErrorMessage>
             )}
           </>
         )}
