@@ -25,6 +25,7 @@ import getOwners from '@/utils/getOwners';
 import getSystems from '@/utils/getSystems';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
+import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
@@ -35,7 +36,14 @@ const entityFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  // annotations: z.record(z.string()).default({}),
+  annotations: z
+    .array(
+      z.object({
+        key: z.string().min(1, 'Annotation key is required'),
+        value: z.string().min(1, 'Annotation value is required'),
+      })
+    )
+    .default([]),
   links: z
     .array(
       z.object({
@@ -57,7 +65,7 @@ const entityFormSchema = z.object({
 type EntityFormData = z.infer<typeof entityFormSchema>;
 
 // TODO system doesn't clear
-// TODO annotations
+// TODO create RHF EntityForm type - annotations is now an array
 const CreateEntity = () => {
   const {
     control,
@@ -73,12 +81,22 @@ const CreateEntity = () => {
       name: 'ee-docs',
       description: 'The primary app for developers.amsterdam',
       tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
-      // annotations: {
-      //   'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
-      //   'github.com/project-slug': 'amsterdam/ee-docs',
-      //   'github.com/team-slug': 'amsterdam/engineering-enablement',
-      //   'lighthouse.com/website-url': 'https://developers.amsterdam',
-      // },
+      // TODO method to convert annotations to array of key value
+      annotations: [
+        {
+          key: 'backstage.io/source-location',
+          value: 'https://github.com/amsterdam/ee-docs/',
+        },
+        { key: 'github.com/project-slug', value: 'amsterdam/ee-docs' },
+        {
+          key: 'github.com/team-slug',
+          value: 'amsterdam/engineering-enablement',
+        },
+        {
+          key: 'lighthouse.com/website-url',
+          value: 'https://developers.amsterdam',
+        },
+      ],
       links: [
         {
           url: 'https://developers.amsterdam/',
@@ -399,22 +417,16 @@ const CreateEntity = () => {
             }}
           />
 
-          {/*<Controller
-            name="annotations"
+          <FormAnnotationFields
             control={control}
-            render={({ field }) => (
-              <FormAnnotationFields
-                value={field.value}
-                error={errors.annotations?.message}
-                onChange={field.onChange}
-              />
-            )}
-          /> */}
+            errors={errors}
+            setValue={setValue}
+          />
 
           <Controller
             name="links"
             control={control}
-            render={({ field }) => (
+            render={() => (
               <LinksRepeaterInputs
                 fields={fields}
                 append={append}
@@ -436,11 +448,6 @@ const CreateEntity = () => {
         </form>
       </Grid.Cell>
 
-      {/* <Controller
-        name=""
-        control={control}
-        render={() => <SubmissionOutput control={control} />}
-      /> */}
       <SubmissionOutput formData={formData} />
 
       {isLoading && (
