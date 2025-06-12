@@ -73,7 +73,7 @@ const entityFormSchema = z.object({
 
 type EntityFormData = z.infer<typeof entityFormSchema>;
 
-// TODO system doesn't clear
+// TODO scroll to first error
 // TODO create RHF EntityForm type - annotations is now an array
 const CreateEntity = () => {
   const {
@@ -391,7 +391,7 @@ const CreateEntity = () => {
                     required
                     onChange={selectedOption => {
                       field.onChange(
-                        selectedOption ? selectedOption.value : undefined
+                        selectedOption ? selectedOption.value : ''
                       );
                     }}
                   />
