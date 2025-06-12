@@ -24,14 +24,16 @@ import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
 import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
 import styles from './CreateEntity.module.css';
-import entityFormSchema from './schema';
+import entityFormSchema, {
+  EntityFormData as RHFEntityFormData,
+} from './schema';
 import { EntityFormData } from '@/types';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
+// TODO Fix type warnings - tags, FormAnnotationFields, LinksRepeaterInputs
 // TODO scroll to first error
-// TODO create RHF EntityForm type - annotations is now an array
 const CreateEntity = () => {
   const {
     control,
@@ -102,7 +104,7 @@ const CreateEntity = () => {
   // Watch the hasSystem field to conditionally show system field
   const hasSystem = useWatch({ control, name: 'spec.hasSystem' });
 
-  const onSubmit = (data: EntityFormData) => {
+  const onSubmit = (data: RHFEntityFormData) => {
     // Mock API call
     console.log('Form data:', data);
 
@@ -294,8 +296,11 @@ const CreateEntity = () => {
                   error={errors.spec?.owner?.message}
                   required
                   onChange={selectedOption => {
-                    // react-select returns either {value, label} or null
-                    field.onChange(selectedOption ? selectedOption.value : '');
+                    // react-select + isMulti + typescript makes things a bit overcomplicated
+                    const option = Array.isArray(selectedOption)
+                      ? selectedOption[0]
+                      : selectedOption;
+                    field.onChange(selectedOption ? option.value : '');
                   }}
                 />
               );
@@ -309,7 +314,7 @@ const CreateEntity = () => {
               <FormCheckboxInput
                 id="hasSystem"
                 label="Entity belongs to a system?"
-                value={field.value}
+                value={field.value ?? false}
                 onChange={field.onChange}
               />
             )}
@@ -346,9 +351,11 @@ const CreateEntity = () => {
                     error={errors.spec?.system?.message}
                     required
                     onChange={selectedOption => {
-                      field.onChange(
-                        selectedOption ? selectedOption.value : ''
-                      );
+                      const option = Array.isArray(selectedOption)
+                        ? selectedOption[0]
+                        : selectedOption;
+
+                      field.onChange(selectedOption ? option.value : '');
                     }}
                   />
                 );
