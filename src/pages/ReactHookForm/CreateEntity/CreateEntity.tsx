@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { useForm, Controller, useWatch, useFieldArray } from 'react-hook-form';
+import {
+  useForm,
+  Controller,
+  useWatch,
+  useFieldArray,
+  Resolver,
+} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Alert,
@@ -42,8 +48,8 @@ const CreateEntity = () => {
     formState: { errors, isSubmitting },
     setValue,
     watch,
-  } = useForm({
-    resolver: zodResolver(entityFormSchema),
+  } = useForm<RHFEntityFormData>({
+    resolver: zodResolver(entityFormSchema) as Resolver<RHFEntityFormData>,
     defaultValues: {
       kind: 'Component',
       name: 'ee-docs',
@@ -82,7 +88,7 @@ const CreateEntity = () => {
         },
       ],
       spec: {
-        type: 'website',
+        componentType: 'website',
         lifecycle: 'production',
         owner: 'dii-engineering-enablement',
         hasSystem: true,
@@ -129,7 +135,7 @@ const CreateEntity = () => {
       annotations: [],
       links: [],
       spec: {
-        type: 'service',
+        componentType: 'service',
         lifecycle: 'prototype',
         owner: '',
         hasSystem: false,
@@ -219,7 +225,7 @@ const CreateEntity = () => {
           />
 
           <Controller
-            name="spec.type"
+            name="spec.componentType"
             control={control}
             render={({ field }) => (
               <FormSelect
@@ -234,7 +240,7 @@ const CreateEntity = () => {
                   'mobile-app': 'Mobile/Native App',
                 }}
                 value={field.value}
-                error={errors.spec?.type?.message}
+                error={errors.spec?.componentType?.message}
                 required
                 onChange={field.onChange}
               />
@@ -383,8 +389,10 @@ const CreateEntity = () => {
                   isMulti
                   onChange={selectedOptions => {
                     field.onChange(
-                      selectedOptions
-                        ? selectedOptions.map(opt => opt.value)
+                      Array.isArray(selectedOptions)
+                        ? selectedOptions.map(
+                            ({ value }: { value: string }) => value
+                          )
                         : []
                     );
                   }}
@@ -437,6 +445,10 @@ const CreateEntity = () => {
                   {} as Record<string, string | undefined>
                 )
               : {},
+            spec: {
+              ...formData.spec,
+              type: formData.spec.componentType,
+            },
           } as EntityFormData
         }
       />

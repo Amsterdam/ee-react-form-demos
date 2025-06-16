@@ -2,7 +2,8 @@ import z from 'zod/v4';
 
 const specSchema = z
   .object({
-    type: z.string().min(1, 'Type is required'),
+    // Avoid the property name `type`, as RHF uses this
+    componentType: z.string().min(1, 'Type is required'),
     lifecycle: z.string().min(1, 'Lifecycle is required'),
     owner: z.string().min(1, 'Owner is required'),
     hasSystem: z.boolean().default(false),
@@ -20,7 +21,7 @@ const entityFormSchema = z.object({
   kind: z.string().min(1, 'Kind is required'),
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
-  tags: z.array(z.string()).default([]).optional(),
+  tags: z.array(z.string()).default([]),
   annotations: z
     .array(
       z.object({
@@ -42,4 +43,5 @@ const entityFormSchema = z.object({
 });
 
 export type EntityFormData = z.infer<typeof entityFormSchema>;
+
 export default entityFormSchema;

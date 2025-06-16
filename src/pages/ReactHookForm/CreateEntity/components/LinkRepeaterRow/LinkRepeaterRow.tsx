@@ -8,15 +8,21 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { EntityFormData } from '../../types';
+import { Control, Controller, FieldError } from 'react-hook-form';
+import { EntityFormData as RHFEntityFormData } from '../../schema';
 import styles from './LinkRepeaterRow.module.css';
 
 interface LinkRepeaterRowProps {
   index: number;
-  control: Control<EntityFormData>;
+  control: Control<RHFEntityFormData>;
   remove: (index: number) => void;
-  errors: FieldErrors<EntityFormData>;
+  errors:
+    | {
+        url?: FieldError;
+        title?: FieldError;
+        icon?: FieldError;
+      }
+    | undefined;
 }
 
 const LinkRepeaterRow = ({
