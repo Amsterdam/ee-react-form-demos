@@ -20,10 +20,10 @@ import {
   useState,
 } from 'react';
 import { z } from 'zod/v4';
+import { debounce } from 'es-toolkit';
 import styles from './ContactFormLive.module.css';
 import t, { translations } from './utils/translate';
 import ContactFormLiveSchema from './schema';
-import { debounce } from 'es-toolkit';
 
 const ContactFormLive = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});

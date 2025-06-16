@@ -3,7 +3,7 @@ import z from 'zod/v4';
 const invalidTypeError = 'U hebt een ongeldige waarde ingevoerd voor dit veld';
 const requiredError = 'Dit veld is verplicht';
 
-const ContactFormSchema = z.object({
+const contactFormSchema = z.object({
   name: z
     .string({
       error: issue =>
@@ -24,4 +24,4 @@ const ContactFormSchema = z.object({
     .min(1, { error: requiredError }),
 });
 
-export default ContactFormSchema;
+export default contactFormSchema;

@@ -1,8 +1,9 @@
 import App from '@/containers/App/App';
 import CreateEntity from '@/pages/CreateEntity/CreateEntity';
-import RHFCreateEntity from '@/pages/ReactHookForm/CreateEntity/CreateEntity';
 import ContactForm from './pages/ContactForm/ContactForm';
 import ContactFormLive from './pages/ContactFormLive/ContactFormLive';
+import RHFCreateEntity from '@/pages/ReactHookForm/CreateEntity/CreateEntity';
+import RHFContactForm from '@/pages/ReactHookForm/ContactForm/ContactForm';
 
 const routes = [
   {
@@ -13,16 +14,20 @@ const routes = [
         element: <CreateEntity />,
       },
       {
-        path: '/rhf',
-        element: <RHFCreateEntity />,
-      },
-      {
         path: 'contact',
         element: <ContactForm />,
       },
       {
         path: 'contact-2',
         element: <ContactFormLive />,
+      },
+      {
+        path: '/rhf',
+        element: <RHFCreateEntity />,
+      },
+      {
+        path: '/rhf/contact',
+        element: <RHFContactForm />,
       },
       // {
       //   path: '*',
