@@ -1,8 +1,11 @@
 import { ReactNode } from 'react';
 import { ActionMeta } from 'react-select';
 import { Field, Label, Paragraph } from '@amsterdam/design-system-react';
-import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
-import { ReactSelectOption, ReactSelectValue } from '../InputAutoSelect/types';
+import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect';
+import {
+  ReactSelectOption,
+  ReactSelectValue,
+} from '@/components/InputAutoSelect/types';
 
 interface FormAutoSelectProps {
   id: string;

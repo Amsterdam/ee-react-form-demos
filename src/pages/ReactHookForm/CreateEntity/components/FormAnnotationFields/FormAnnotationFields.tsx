@@ -1,7 +1,6 @@
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRow from '../AnnotationRow/AnnotationRow';
-import styles from './FormAnnotationFields.module.css';
 import {
   Control,
   FieldErrors,
@@ -9,6 +8,7 @@ import {
   UseFormSetValue,
 } from 'react-hook-form';
 import { EntityFormData } from '../../schema';
+import styles from './FormAnnotationFields.module.css';
 
 interface FormAnnotationFieldsProps {
   control: Control<EntityFormData>;

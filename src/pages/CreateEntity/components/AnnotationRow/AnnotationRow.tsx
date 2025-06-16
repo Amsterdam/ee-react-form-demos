@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import ANNOTATIONS from '@/utils/getAnnotations';
-import InputAutoSelect from '../InputAutoSelect/InputAutoSelect';
+import InputAutoSelect from '../../../../components/InputAutoSelect/InputAutoSelect';
 import {
   Button,
   Field,

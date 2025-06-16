@@ -7,29 +7,30 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import FormSelect from '@/components/FormSelect/FormSelect';
-import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
-import FormTextInput from '@/components/FormTextInput/FormTextInput';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { EntityFormData } from '@/types';
-import FormTextarea from '@/components/FormTextarea/FormTextarea';
-import FormAutoSelect from '@/components/FormAutoSelect/FormAutoSelect';
-import getTags from '@/utils/getTags';
-import FormAnnotationFields from '@/components/FormAnnotationFields/FormAnnotationFields';
 import { ActionMeta } from 'react-select';
-import LinksRepeaterInputs from '@/components/LinksRepeaterInputs/LinksRepeaterInputs';
+import { EntityFormData } from '@/types';
+import FormSelect from './components/FormSelect/FormSelect';
+import FormTextInput from './components/FormTextInput/FormTextInput';
+import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput';
+import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
+import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
+import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterInputs';
+import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
+import Loader from '@/components/Loader/Loader';
 import getOwners from '@/utils/getOwners';
 import getSystems from '@/utils/getSystems';
+import getTags from '@/utils/getTags';
 import sortAlphabetically from '@/utils/sortAlphabetically';
-import Loader from '@/components/Loader/Loader';
 import styles from './CreateEntity.module.css';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO move this form components into subdirectory under here
-// TODO validation - variant of this form with zod validation?
+// TODO refactor align component filenames
+// TODO validation - variant of CreateEntity (plain) with zod validation?
+// TODO address lookup, marker example?
 // TODO document results
 // - Check shared GitHub examples (in Slack)
 // - README/storybook setup?

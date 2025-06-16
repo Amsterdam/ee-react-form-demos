@@ -17,23 +17,23 @@ import {
   Row,
 } from '@amsterdam/design-system-react';
 import FormSelect from './components/FormSelect/FormSelect';
-import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormTextInput from './components/FormTextInput/FormTextInput';
+import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
+import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
+import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
 import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterInputs';
-import Loader from '@/components/Loader/Loader';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
-import sortAlphabetically from '@/utils/sortAlphabetically';
+import Loader from '@/components/Loader/Loader';
 import getOwners from '@/utils/getOwners';
 import getSystems from '@/utils/getSystems';
-import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import getTags from '@/utils/getTags';
-import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
-import styles from './CreateEntity.module.css';
+import sortAlphabetically from '@/utils/sortAlphabetically';
 import entityFormSchema, {
   EntityFormData as RHFEntityFormData,
 } from './schema';
 import { EntityFormData } from '@/types';
+import styles from './CreateEntity.module.css';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
