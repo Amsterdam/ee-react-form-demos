@@ -102,7 +102,7 @@ const CreateEntity = () => {
   });
 
   const formData = watch();
-  console.log({ formData, errors });
+
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
