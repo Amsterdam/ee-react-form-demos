@@ -19,14 +19,14 @@ import {
   UseFormSetValue,
   useWatch,
 } from 'react-hook-form';
-import { EntityFormData } from '../../types';
+import { EntityFormData as RHFEntityFormData } from '../../schema';
 
 interface AnnotationRowProps {
-  control: Control<EntityFormData>;
+  control: Control<RHFEntityFormData>;
   index: number;
   removeItem: () => void;
-  errors: FieldErrors<EntityFormData>;
-  setValue: UseFormSetValue<EntityFormData>;
+  errors: FieldErrors<RHFEntityFormData>;
+  setValue: UseFormSetValue<RHFEntityFormData>;
 }
 
 const AnnotationRow = ({
