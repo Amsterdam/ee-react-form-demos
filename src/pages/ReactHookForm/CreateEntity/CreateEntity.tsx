@@ -38,7 +38,6 @@ import { EntityFormData } from '@/types';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO Fix type warnings - tags, FormAnnotationFields, LinksRepeaterInputs
 // TODO scroll to first error
 const CreateEntity = () => {
   const {
