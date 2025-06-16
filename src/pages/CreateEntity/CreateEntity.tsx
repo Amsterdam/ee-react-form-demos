@@ -182,7 +182,7 @@ const CreateEntity = () => {
             id="description"
             label="Description"
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
-            value={formData.description}
+            value={formData.description ?? ''}
             onChange={handleChange}
           />
 
