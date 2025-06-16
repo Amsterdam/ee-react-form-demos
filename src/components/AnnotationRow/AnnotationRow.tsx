@@ -10,7 +10,7 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
-import styles from './styles.module.css';
+import styles from './AnnotationRow.module.css';
 
 interface AnnotationRowProps {
   index: number;

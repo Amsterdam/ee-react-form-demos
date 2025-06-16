@@ -28,12 +28,14 @@ import styles from './CreateEntity.module.css';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
+// TODO move this form components into subdirectory under here
 // TODO validation - variant of this form with zod validation?
-// TODO react-hook-form to this migration path?
 // TODO document results
+// - README/storybook setup?
 // - validation alert/header with invalid fields - Cannot accomplish with browser validation
 // - smaller forms - use react validation
 // - larger/dynamic forms - use browser validation
+// - react-hook-form to this migration path?
 // TODO tests
 const CreateEntity = () => {
   const [formData, setFormData] = useState({
@@ -109,7 +111,7 @@ const CreateEntity = () => {
     //   },
     // };
 
-    // Mock API call
+    // Simulate API call
     // Here's where validation could happen
     setIsLoading(true);
 
@@ -118,7 +120,7 @@ const CreateEntity = () => {
       setIsSubmitted(true);
     }, 1500);
   };
-  console.log({ isSubmitted });
+
   return (
     <Grid>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
@@ -180,7 +182,7 @@ const CreateEntity = () => {
             id="description"
             label="Description"
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
-            value={formData.description}
+            value={formData.description ?? ''}
             onChange={handleChange}
           />
 
@@ -418,6 +420,7 @@ const CreateEntity = () => {
           <Loader />
         </div>
       )}
+
       {isSubmitted && (
         <div className={styles.loader}>
           <Alert

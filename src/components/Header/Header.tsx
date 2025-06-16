@@ -10,11 +10,14 @@ const Header = () => (
           <Link key={1} to=".." className="ams-page-header__menu-link">
             Create a Backstage entity
           </Link>,
-          <Link key={2} to="../contact" className="ams-page-header__menu-link">
+          <Link key={2} to="../rhf" className="ams-page-header__menu-link">
+            Create a Backstage entity (RHF)
+          </Link>,
+          <Link key={3} to="../contact" className="ams-page-header__menu-link">
             Contact
           </Link>,
           <Link
-            key={3}
+            key={4}
             to="../contact-2"
             className="ams-page-header__menu-link"
           >

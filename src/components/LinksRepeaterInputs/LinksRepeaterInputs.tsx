@@ -1,7 +1,7 @@
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
-import styles from './styles.module.css';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
+import styles from './LinksRepeaterInputs.module.css';
 
 interface LinksRepeaterInputsProps {
   items: {

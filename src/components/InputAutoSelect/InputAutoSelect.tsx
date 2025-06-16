@@ -1,7 +1,7 @@
 import Select, { ActionMeta } from 'react-select';
 import ClearIndicator from './components/ClearIndicator';
 import DropdownIndicator from './components/DropdownIndicator';
-import './styles.scss';
+import './InputAutoSelect.scss';
 import { ReactSelectOption, ReactSelectValue } from './types';
 
 interface InputAutoSelectProps {
@@ -13,6 +13,7 @@ interface InputAutoSelectProps {
   name?: string;
   required?: boolean;
   value?: ReactSelectValue;
+  error?: string;
   onChange: (
     newValue: ReactSelectValue,
     actionMeta: ActionMeta<ReactSelectOption>
@@ -31,6 +32,7 @@ const InputAutoSelect = ({
   name = undefined,
   required = false,
   value = undefined,
+  error,
   ...eventHandlers
 }: InputAutoSelectProps) => (
   <Select
@@ -39,6 +41,8 @@ const InputAutoSelect = ({
     isDisabled={isDisabled}
     isMulti={isMulti}
     unstyled
+    aria-errormessage={error}
+    aria-invalid={!!error}
     className="react-select__container"
     classNamePrefix="react-select"
     components={{

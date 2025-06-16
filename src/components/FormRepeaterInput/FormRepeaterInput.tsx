@@ -7,7 +7,7 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
-import styles from './styles.module.css';
+import styles from './FormRepeaterInput.module.css';
 
 interface FormRepeaterInputProps {
   initialValues: string[];

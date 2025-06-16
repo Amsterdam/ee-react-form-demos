@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
   ErrorMessage,
   Field,
@@ -14,7 +14,7 @@ interface FormTextareaProps {
   value: string;
   required?: boolean;
   error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (value: string) => void;
 }
 
 const FormTextarea = ({
@@ -28,12 +28,10 @@ const FormTextarea = ({
 }: FormTextareaProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
-    {typeof description === 'string' ? (
+    {description && (
       <Paragraph id={`${id}-description`} size="small">
         {description}
       </Paragraph>
-    ) : (
-      description
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextArea
@@ -45,7 +43,7 @@ const FormTextarea = ({
       name="description"
       value={value}
       required={required}
-      onChange={onChange}
+      onChange={e => onChange(e.target.value)}
     />
   </Field>
 );

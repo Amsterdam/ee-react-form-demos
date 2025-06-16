@@ -1,5 +1,6 @@
 import App from '@/containers/App/App';
 import CreateEntity from '@/pages/CreateEntity/CreateEntity';
+import RHFCreateEntity from '@/pages/ReactHookForm/CreateEntity/CreateEntity';
 import ContactForm from './pages/ContactForm/ContactForm';
 import ContactFormLive from './pages/ContactFormLive/ContactFormLive';
 
@@ -10,6 +11,10 @@ const routes = [
       {
         path: '/',
         element: <CreateEntity />,
+      },
+      {
+        path: '/rhf',
+        element: <RHFCreateEntity />,
       },
       {
         path: 'contact',

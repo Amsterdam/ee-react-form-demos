@@ -1,7 +1,7 @@
 const getSystems = () => [
   { label: 'Amsterdam App', value: 'dii-amsterdam-app' },
   {
-    label: 'Amsterdamse zaken Administratie',
+    label: 'Amsterdamse Zaken Administratie',
     value: 'dii-amsterdamse-zaken-administratie',
   },
   { label: 'BOR AIP', value: 'dii-bor-aip' },

@@ -1,7 +1,6 @@
 .row {
   align-items: center;
   display: flex;
-  /* margin-bottom: var(--ams-space-m); */
 }
 
 .row button {
