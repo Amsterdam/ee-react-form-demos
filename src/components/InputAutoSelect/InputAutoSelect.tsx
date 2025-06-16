@@ -1,7 +1,7 @@
 import Select, { ActionMeta } from 'react-select';
 import ClearIndicator from './components/ClearIndicator';
 import DropdownIndicator from './components/DropdownIndicator';
-import './styles.scss';
+import './InputAutoSelect.scss';
 import { ReactSelectOption, ReactSelectValue } from './types';
 
 interface InputAutoSelectProps {

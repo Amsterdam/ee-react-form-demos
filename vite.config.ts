@@ -17,11 +17,4 @@ module.exports = defineConfig({
       { find: '@@', replacement: path.resolve(__dirname) },
     ],
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "/src/styles/variables.scss" as *;`,
-      },
-    },
-  },
 });
