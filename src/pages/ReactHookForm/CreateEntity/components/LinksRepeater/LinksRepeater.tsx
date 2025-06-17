@@ -3,9 +3,9 @@ import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
 import { EntityFormData as RHFEntityFormData } from '../../schema';
-import styles from './LinksRepeaterInputs.module.css';
+import styles from './LinkRepeater.module.css';
 
-interface LinksRepeaterInputsProps {
+interface LinkRepeaterProps {
   fields: {
     id: string;
     url: string;
@@ -18,13 +18,13 @@ interface LinksRepeaterInputsProps {
   errors: FieldErrors<RHFEntityFormData>['links'];
 }
 
-const LinksRepeaterInputs = ({
+const LinkRepeater = ({
   fields,
   append,
   remove,
   control,
   errors,
-}: LinksRepeaterInputsProps) => (
+}: LinkRepeaterProps) => (
   <div className={`${styles.container} ams-mb-l`}>
     <Heading level={4} className="ams-mb-s">
       Links
@@ -56,4 +56,4 @@ const LinksRepeaterInputs = ({
   </div>
 );
 
-export default LinksRepeaterInputs;
+export default LinkRepeater;

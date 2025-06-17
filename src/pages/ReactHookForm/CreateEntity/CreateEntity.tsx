@@ -21,8 +21,8 @@ import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
-import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
-import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterInputs';
+import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
+import LinksRepeater from './components/LinksRepeater/LinksRepeater';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import Loader from '@/components/Loader/Loader';
 import getOwners from '@/utils/getOwners';
@@ -400,7 +400,7 @@ const CreateEntity = () => {
             }}
           />
 
-          <FormAnnotationFields
+          <AnnotationRepeater
             control={control}
             errors={errors}
             setValue={setValue}
@@ -410,7 +410,7 @@ const CreateEntity = () => {
             name="links"
             control={control}
             render={() => (
-              <LinksRepeaterInputs
+              <LinksRepeater
                 fields={fields}
                 append={append}
                 remove={remove}

@@ -15,8 +15,8 @@ import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormCheckboxInput from '@/components/FormCheckboxInput/FormCheckboxInput';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
-import FormAnnotationFields from './components/FormAnnotationFields/FormAnnotationFields';
-import LinksRepeaterInputs from './components/LinksRepeaterInputs/LinksRepeaterInputs';
+import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
+import LinkRepeater from './components/LinkRepeater/LinkRepeater';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import Loader from '@/components/Loader/Loader';
 import getOwners from '@/utils/getOwners';
@@ -28,8 +28,8 @@ import styles from './CreateEntity.module.css';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO refactor align component filenames
 // TODO validation - variant of CreateEntity (plain) with zod validation?
+// TODO refactor align component filenames
 // TODO address lookup, marker example?
 // TODO document results
 // - Check shared GitHub examples (in Slack)
@@ -345,7 +345,7 @@ const CreateEntity = () => {
             }}
           />
 
-          <FormAnnotationFields
+          <AnnotationRepeater
             initialValues={Object.keys(formData.annotations).map(
               annotation => ({
                 key: annotation,
@@ -377,7 +377,7 @@ const CreateEntity = () => {
             }
           />
 
-          <LinksRepeaterInputs
+          <LinkRepeater
             items={formData?.links ?? []}
             onChange={links => {
               setFormData({

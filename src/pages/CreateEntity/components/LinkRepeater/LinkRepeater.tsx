@@ -1,9 +1,9 @@
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
-import styles from './LinksRepeaterInputs.module.css';
+import styles from './LinkRepeater.module.css';
 
-interface LinksRepeaterInputsProps {
+interface LinkRepeaterProps {
   items: {
     url: string;
     title: string;
@@ -18,7 +18,7 @@ interface LinksRepeaterInputsProps {
   ) => void;
 }
 
-const LinksRepeaterInputs = ({ items, onChange }: LinksRepeaterInputsProps) => {
+const LinkRepeater = ({ items, onChange }: LinkRepeaterProps) => {
   const addItem = () => {
     onChange([...items, { url: '', title: '', icon: 'dashboard' }]);
   };
@@ -76,4 +76,4 @@ const LinksRepeaterInputs = ({ items, onChange }: LinksRepeaterInputsProps) => {
   );
 };
 
-export default LinksRepeaterInputs;
+export default LinkRepeater;

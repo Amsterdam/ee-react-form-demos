@@ -1,6 +1,6 @@
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
-import AnnotationRow from '../AnnotationRow/AnnotationRow';
+import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
 import {
   Control,
   FieldErrors,
@@ -8,19 +8,19 @@ import {
   UseFormSetValue,
 } from 'react-hook-form';
 import { EntityFormData } from '../../schema';
-import styles from './FormAnnotationFields.module.css';
+import styles from './AnnotationRepeater.module.css';
 
-interface FormAnnotationFieldsProps {
+interface AnnotationRepeaterProps {
   control: Control<EntityFormData>;
   errors: FieldErrors<EntityFormData>;
   setValue: UseFormSetValue<EntityFormData>;
 }
 
-const FormAnnotationFields = ({
+const AnnotationRepeater = ({
   control,
   errors,
   setValue,
-}: FormAnnotationFieldsProps) => {
+}: AnnotationRepeaterProps) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'annotations',
@@ -46,7 +46,7 @@ const FormAnnotationFields = ({
 
       <div className="ams-mb-m">
         {fields.map((field, index) => (
-          <AnnotationRow
+          <AnnotationRepeaterRow
             key={field.id}
             control={control}
             index={index}
@@ -69,4 +69,4 @@ const FormAnnotationFields = ({
   );
 };
 
-export default FormAnnotationFields;
+export default AnnotationRepeater;

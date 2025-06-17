@@ -11,7 +11,7 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
-import styles from './AnnotationRow.module.css';
+import styles from './AnnotationRepeaterRow.module.css';
 import {
   Control,
   Controller,
@@ -21,7 +21,7 @@ import {
 } from 'react-hook-form';
 import { EntityFormData as RHFEntityFormData } from '../../schema';
 
-interface AnnotationRowProps {
+interface AnnotationRepeaterRowProps {
   control: Control<RHFEntityFormData>;
   index: number;
   removeItem: () => void;
@@ -29,13 +29,13 @@ interface AnnotationRowProps {
   setValue: UseFormSetValue<RHFEntityFormData>;
 }
 
-const AnnotationRow = ({
+const AnnotationRepeaterRow = ({
   control,
   index,
   removeItem,
   errors,
   setValue,
-}: AnnotationRowProps) => {
+}: AnnotationRepeaterRowProps) => {
   // Watch the current annotation key to determine what type of value input to show
   const annotationKey = useWatch({
     control,
@@ -172,4 +172,4 @@ const AnnotationRow = ({
   );
 };
 
-export default AnnotationRow;
+export default AnnotationRepeaterRow;

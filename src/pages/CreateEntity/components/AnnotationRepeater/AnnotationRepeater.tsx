@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
-import AnnotationRow from '../AnnotationRow/AnnotationRow';
-import styles from './FormAnnotationFields.module.css';
+import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
+import styles from './AnnotationRepeater.module.css';
 
 type AnnotationItem = {
   id: string;
@@ -10,7 +10,7 @@ type AnnotationItem = {
   value: string | undefined;
 };
 
-interface FormAnnotationFieldsProps {
+interface AnnotationRepeaterProps {
   initialValues: { key: string; value: string | undefined }[];
   onChange: (
     annotations: {
@@ -20,10 +20,10 @@ interface FormAnnotationFieldsProps {
   ) => void;
 }
 
-const FormAnnotationFields = ({
+const AnnotationRepeater = ({
   initialValues,
   onChange,
-}: FormAnnotationFieldsProps) => {
+}: AnnotationRepeaterProps) => {
   const idCounterRef = useRef(0);
   const itemIdsRef = useRef<Map<number, string>>(new Map());
 
@@ -110,7 +110,7 @@ const FormAnnotationFields = ({
 
       <div className="ams-mb-m">
         {items.map((item, index) => (
-          <AnnotationRow
+          <AnnotationRepeaterRow
             removeItem={() => removeItem(index)}
             index={index}
             values={{ label: item.label, value: item.value }}
@@ -132,4 +132,4 @@ const FormAnnotationFields = ({
   );
 };
 
-export default FormAnnotationFields;
+export default AnnotationRepeater;

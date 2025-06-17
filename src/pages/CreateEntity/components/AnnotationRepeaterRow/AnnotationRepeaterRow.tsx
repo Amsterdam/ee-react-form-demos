@@ -10,21 +10,21 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
-import styles from './AnnotationRow.module.css';
+import styles from './AnnotationRepeaterRow.module.css';
 
-interface AnnotationRowProps {
+interface AnnotationRepeaterRowProps {
   index: number;
   removeItem?: () => void;
   onChange: (key: string | undefined, value: string | undefined) => void;
   values: { label: string | undefined; value: string | undefined };
 }
 
-const AnnotationRow = ({
+const AnnotationRepeaterRow = ({
   index,
   removeItem = undefined,
   onChange,
   values,
-}: AnnotationRowProps) => {
+}: AnnotationRepeaterRowProps) => {
   const annotation = ANNOTATIONS.find(
     annotation => annotation.key === values.label
   );
@@ -103,4 +103,4 @@ const AnnotationRow = ({
   );
 };
 
-export default AnnotationRow;
+export default AnnotationRepeaterRow;
