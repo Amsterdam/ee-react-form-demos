@@ -22,7 +22,7 @@ import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
-import LinksRepeater from './components/LinksRepeater/LinksRepeater';
+import LinksRepeater from './components/LinkRepeater/LinkRepeater';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import Loader from '@/components/Loader/Loader';
 import getOwners from '@/utils/getOwners';
