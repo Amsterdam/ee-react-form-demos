@@ -354,6 +354,7 @@ const CreateEntity = () => {
             name="name"
             value={formData.name}
             required
+            error={errors.name}
             onChange={handleChange}
             onBlur={handleBlur}
           />

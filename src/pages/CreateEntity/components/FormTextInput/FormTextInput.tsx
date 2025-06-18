@@ -11,6 +11,7 @@ interface FormTextInputProps {
   id: string;
   label: string;
   description?: ReactNode;
+  name: string;
   value: string;
   required?: boolean;
   error?: string;
@@ -21,6 +22,7 @@ const FormTextInput = ({
   id,
   label,
   description,
+  name,
   value,
   required = false,
   error,
@@ -39,9 +41,9 @@ const FormTextInput = ({
     <TextInput
       aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
       id={id}
+      name={name}
       value={value}
       invalid={!!error}
-      name="name"
       required={required}
       onChange={onChange}
     />

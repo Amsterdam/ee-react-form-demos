@@ -173,6 +173,7 @@ const CreateEntity = () => {
             id="name"
             label="Name"
             description="The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
+            name="name"
             value={formData.name}
             required
             onChange={handleChange}
