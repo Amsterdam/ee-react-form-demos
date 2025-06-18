@@ -18,6 +18,7 @@ interface InputAutoSelectProps {
     newValue: ReactSelectValue,
     actionMeta: ActionMeta<ReactSelectOption>
   ) => void;
+  onBlur?: () => void;
 }
 
 // WARNING: The following prop types are unstyled and untested:
@@ -33,6 +34,8 @@ const InputAutoSelect = ({
   required = false,
   value = undefined,
   error,
+  onChange,
+  onBlur,
   ...eventHandlers
 }: InputAutoSelectProps) => (
   <Select
@@ -55,6 +58,8 @@ const InputAutoSelect = ({
     name={name}
     required={required}
     value={value}
+    onChange={onChange}
+    onBlur={onBlur}
     {...eventHandlers}
     styles={{
       container: (baseStyles, state) => ({

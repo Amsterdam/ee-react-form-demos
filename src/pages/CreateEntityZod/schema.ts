@@ -1,9 +1,9 @@
 import z from 'zod/v4';
 
-const specSchema = z
+export const specSchema = z
   .object({
     // Avoid the property name `type`, as RHF uses this
-    componentType: z.string().min(1, 'Type is required'),
+    type: z.string().min(1, 'Type is required'),
     lifecycle: z.string().min(1, 'Lifecycle is required'),
     owner: z.string().min(1, 'Owner is required'),
     hasSystem: z.boolean().default(false),
@@ -35,7 +35,7 @@ const entityFormSchema = z.object({
       z.object({
         url: z.string().url('Must be a valid URL'),
         title: z.string().min(1, 'Title is required'),
-        icon: z.string().min(1, 'Title is required'),
+        icon: z.string().min(1, 'Icon is required'),
       })
     )
     .default([]),
@@ -43,5 +43,11 @@ const entityFormSchema = z.object({
 });
 
 export type EntityFormData = z.infer<typeof entityFormSchema>;
+export type FieldErrors = Partial<
+  Record<
+    keyof EntityFormData | `spec.${keyof z.infer<typeof specSchema>}`,
+    string
+  >
+>;
 
 export default entityFormSchema;

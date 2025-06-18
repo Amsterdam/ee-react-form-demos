@@ -4,31 +4,35 @@ import {
   Field,
   Label,
   Paragraph,
-  TextInput,
+  Select,
 } from '@amsterdam/design-system-react';
 
-interface FormTextInputProps {
+interface FormSelectProps {
   id: string;
   label: string;
   description?: ReactNode;
   name: string;
-  value: string;
+  options: Record<string, string>;
+  initialValue?: string;
   required?: boolean;
   error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (name: string, value: string) => void;
+  onBlur?: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const FormTextInput = ({
+const FormSelect = ({
   id,
   label,
   description,
   name,
-  value,
+  options,
+  initialValue = undefined,
   required = false,
   error,
   onChange,
-}: FormTextInputProps) => (
-  <Field className="ams-mb-m" invalid={!!error}>
+  onBlur,
+}: FormSelectProps) => (
+  <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
     {typeof description === 'string' ? (
       <Paragraph id={`${id}-description`} size="small">
@@ -38,16 +42,25 @@ const FormTextInput = ({
       description
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
-    <TextInput
+    <Select
       aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
       id={id}
       name={name}
-      value={value}
-      invalid={!!error}
+      value={initialValue}
       required={required}
-      onChange={onChange}
-    />
+      invalid={!!error}
+      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+        onChange(name, e.target.options[e.target.selectedIndex].value)
+      }
+      onBlur={onBlur}
+    >
+      {Object.keys(options).map((value, index) => (
+        <Select.Option value={value} key={`form-select-${index}`}>
+          {options[value]}
+        </Select.Option>
+      ))}
+    </Select>
   </Field>
 );
 
-export default FormTextInput;
+export default FormSelect;

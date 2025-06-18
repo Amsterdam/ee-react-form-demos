@@ -11,20 +11,24 @@ interface FormTextareaProps {
   id: string;
   label: string;
   description?: ReactNode;
+  name: string;
   value: string;
   required?: boolean;
   error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const FormTextarea = ({
   id,
   label,
   description,
+  name,
   value,
   required = false,
   error,
   onChange,
+  onBlur,
 }: FormTextareaProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
@@ -42,9 +46,11 @@ const FormTextarea = ({
       }
       id={id}
       rows={4}
+      name={name}
       value={value}
       required={required}
       onChange={onChange}
+      onBlur={onBlur}
     />
   </Field>
 );

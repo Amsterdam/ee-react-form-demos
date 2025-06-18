@@ -8,8 +8,6 @@ import {
   Row,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { ActionMeta } from 'react-select';
-import { EntityFormData } from '@/types';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextarea from './components/FormTextarea/FormTextarea';
@@ -23,12 +21,20 @@ import getOwners from '@/utils/getOwners';
 import getSystems from '@/utils/getSystems';
 import getTags from '@/utils/getTags';
 import sortAlphabetically from '@/utils/sortAlphabetically';
-import styles from './CreateEntity.module.css';
+import styles from './CreateEntityZod.module.css';
+import entityFormSchema, {
+  EntityFormData as ZodEntityFormData,
+  FieldErrors,
+  specSchema,
+} from './schema';
+import z from 'zod/v4';
+import { EntityFormData } from '@/types';
+import findRelevantError from './utils/findRelevantError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO validation - variant of CreateEntity (plain) with zod validation?
+// TODO align props order - FormAutoSelect vs FormTextInput FormTextarea
 // TODO document results
 // - Check shared GitHub examples (in Slack)
 // - README/storybook setup?
@@ -43,12 +49,21 @@ const CreateEntity = () => {
     name: 'ee-docs',
     description: 'The primary app for developers.amsterdam',
     tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
-    annotations: {
-      'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
-      'github.com/project-slug': 'amsterdam/ee-docs',
-      'github.com/team-slug': 'amsterdam/engineering-enablement',
-      'lighthouse.com/website-url': 'https://developers.amsterdam',
-    },
+    annotations: [
+      {
+        key: 'backstage.io/source-location',
+        value: 'https://github.com/amsterdam/ee-docs/',
+      },
+      { key: 'github.com/project-slug', value: 'amsterdam/ee-docs' },
+      {
+        key: 'github.com/team-slug',
+        value: 'amsterdam/engineering-enablement',
+      },
+      {
+        key: 'lighthouse.com/website-url',
+        value: 'https://developers.amsterdam',
+      },
+    ],
     links: [
       {
         url: 'https://developers.amsterdam/',
@@ -73,43 +88,172 @@ const CreateEntity = () => {
       hasSystem: true,
       system: 'dii-ee-developers-amsterdam',
     },
-  } as EntityFormData);
+  } as ZodEntityFormData);
+
+  const [errors, setErrors] = useState<FieldErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
+  // Validate a single field
+  // We should use `value: unknown` but as this argument is being passed straight
+  // to Zod for validation (and type checking) `any` is acceptable
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const validateField = (fieldPath: string, value: any) => {
+    try {
+      // This flow is usually simpler if your form has no repeater child object/array fields
+      const updatedFormData = buildFormDataWithNewValue(fieldPath, value);
+      entityFormSchema.parse(updatedFormData);
+      clearFieldError(fieldPath);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const fieldError = findRelevantError(error, fieldPath);
+        if (fieldError) {
+          setFieldError(fieldPath, fieldError.message);
+        }
+      }
+    }
+  };
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+  // Build a form data object with the updated value
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const buildFormDataWithNewValue = (fieldPath: string, value: any) => {
+    if (fieldPath.startsWith('links.')) {
+      return buildFormDataWithLinksUpdate(fieldPath, value);
+    }
+
+    if (fieldPath.startsWith('spec.')) {
+      return buildFormDataWithSpecUpdate(fieldPath, value);
+    }
+
+    // Top-level field update
+    return { ...formData, [fieldPath]: value };
+  };
+
+  // Build the form data object's 'links' array
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const buildFormDataWithLinksUpdate = (fieldPath: string, value: any) => {
+    const pathParts = fieldPath.split('.');
+
+    // A link row consists of 3 fields - URL, title and icon
+    if (pathParts.length === 3) {
+      // Single link row field (e.g., links.0.url)
+      const [, indexStr, fieldName] = pathParts;
+      const index = parseInt(indexStr, 10);
+
+      if (!isNaN(index) && formData.links?.[index]) {
+        const updatedLinks = [...(formData.links || [])];
+        updatedLinks[index] = { ...updatedLinks[index], [fieldName]: value };
+        return { ...formData, links: updatedLinks };
+      }
+    }
+
+    // Entire links array update
+    return { ...formData, links: value };
+  };
+
+  // Build the form data object's 'spec' object
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const buildFormDataWithSpecUpdate = (fieldPath: string, value: any) => {
+    const specField = fieldPath.split('.')[1] as keyof z.infer<
+      typeof specSchema
+    >;
+    const updatedSpec = { ...formData.spec, [specField]: value };
+    return { ...formData, spec: updatedSpec };
+  };
+
+  const clearFieldError = (fieldPath: string) => {
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[fieldPath as keyof FieldErrors];
+      return newErrors;
+    });
+  };
+
+  const setFieldError = (fieldPath: string, message: string) => {
+    setErrors(prev => ({ ...prev, [fieldPath]: message }));
+  };
+
+  // Validate entire form
+  const validateForm = (): boolean => {
+    try {
+      entityFormSchema.parse(formData);
+      setErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: FieldErrors = {};
+
+        error.issues.forEach(err => {
+          const path = err.path.join('.');
+          // Handle nested spec fields
+          if (err.path[0] === 'spec' && err.path.length > 1) {
+            newErrors[`spec.${String(err.path[1])}` as keyof FieldErrors] =
+              err.message;
+          } else {
+            newErrors[path as keyof FieldErrors] = err.message;
+          }
+        });
+
+        setErrors(newErrors);
+      }
+      return false;
+    }
+  };
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+    const checked =
+      type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
+
+    if (name.startsWith('spec.')) {
+      const specField = name.split('.')[1] as keyof z.infer<typeof specSchema>;
+      const newValue = type === 'checkbox' ? checked : value;
+
+      setFormData(prev => ({
+        ...prev,
+        spec: {
+          ...prev.spec,
+          [specField]: newValue,
+        },
+      }));
+
+      // Validate on change (optional - you might prefer on blur)
+      validateField(name, newValue);
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+      }));
+
+      // Validate on change (optional)
+      validateField(name, value);
+    }
+  };
+
+  const handleBlur = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+    const checked =
+      type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
+    const fieldValue = type === 'checkbox' ? checked : value;
+
+    // Validate on blur for better UX
+    validateField(name, fieldValue);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log({
-      formData,
-    });
+    // Validate entire form before submission
+    if (!validateForm()) {
+      console.log('Validation failed:', errors);
+      return;
+    }
 
-    // const formattedFormData = {
-    //   kind: formData.kind,
-    //   name: formData.name,
-    //   description: formData.description,
-    //   tags: formData.tags,
-    //   annotations: formData.annotations,
-    //   links: formData.links,
-    //   spec: {
-    //     type: formData.spec.type,
-    //     lifecycle: formData.spec.lifecycle,
-    //     owner: formData.spec.owner,
-    //     hasSystem: !!formData.spec.hasSystem,
-    //     system: formData.spec.system,
-    //   },
-    // };
+    console.log('Form data is valid:', formData);
 
     // Simulate API call
     // Here's where validation could happen
@@ -121,6 +265,25 @@ const CreateEntity = () => {
     }, 1500);
   };
 
+  const resetForm = () => {
+    setFormData({
+      kind: '',
+      name: '',
+      description: '',
+      tags: [],
+      annotations: [],
+      links: [],
+      spec: {
+        type: '',
+        lifecycle: '',
+        owner: '',
+        hasSystem: false,
+        system: '',
+      },
+    });
+    setErrors({});
+  };
+
   return (
     <Grid>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
@@ -128,7 +291,8 @@ const CreateEntity = () => {
           Create an entity
         </Heading>
 
-        <form onSubmit={handleSubmit}>
+        {/* Use noValidate so browser validation doesn't block zod */}
+        <form onSubmit={handleSubmit} noValidate>
           <FormSelect
             id="kind"
             label="Kind"
@@ -161,12 +325,15 @@ const CreateEntity = () => {
             }}
             initialValue={formData.kind}
             required
+            error={errors.kind}
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
                 kind: value,
               }));
+              validateField('kind', value);
             }}
+            onBlur={e => validateField('kind', e.target.value)}
           />
 
           <FormTextInput
@@ -176,22 +343,27 @@ const CreateEntity = () => {
             name="name"
             value={formData.name}
             required
+            error={errors.name}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
 
           <FormTextarea
             id="description"
             label="Description"
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
+            name="description"
             value={formData.description ?? ''}
+            error={errors.description}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
 
           <FormSelect
-            id="type"
+            id="spec-type"
             label="Type"
             description="The type of component as a string, e.g. `website`. This field is required."
-            name="type"
+            name="spec.type"
             options={{
               service: 'Service',
               website: 'Website',
@@ -200,7 +372,8 @@ const CreateEntity = () => {
             }}
             initialValue={formData.spec.type}
             required
-            onChange={(_name, value) => {
+            error={errors['spec.type']}
+            onChange={(name, value) => {
               setFormData(prev => ({
                 ...prev,
                 spec: {
@@ -208,14 +381,16 @@ const CreateEntity = () => {
                   type: value,
                 },
               }));
+              validateField(name, value);
             }}
+            onBlur={e => validateField('spec.type', e.target.value)}
           />
 
           <FormSelect
             id="lifecycle"
             label="Lifecycle"
             description="The lifecycle state of the component, e.g. `production`. This field is required."
-            name="lifecycle"
+            name="spec.lifecycle"
             options={{
               prototype: 'Prototype',
               alpha: 'Alpha',
@@ -226,7 +401,8 @@ const CreateEntity = () => {
             }}
             initialValue={formData.spec.lifecycle}
             required
-            onChange={(_name, value) => {
+            error={errors['spec.lifecycle']}
+            onChange={(name, value) => {
               setFormData(prev => ({
                 ...prev,
                 spec: {
@@ -234,7 +410,9 @@ const CreateEntity = () => {
                   lifecycle: value,
                 },
               }));
+              validateField(name, value);
             }}
+            onBlur={e => validateField('spec.lifecycle', e.target.value)}
           />
 
           <FormAutoSelect
@@ -258,15 +436,25 @@ const CreateEntity = () => {
             options={ownerOptions}
             initialValues={[formData.spec.owner]}
             required
+            error={errors['spec.owner']}
             onChange={newValue => {
               const option = Array.isArray(newValue) ? newValue[0] : newValue;
+              const ownerValue = option?.value ?? '';
+
+              // Update state
               setFormData(prev => ({
                 ...prev,
                 spec: {
                   ...prev.spec,
-                  owner: option?.value ?? '',
+                  owner: ownerValue,
                 },
               }));
+
+              // Validate immediately
+              validateField('spec.owner', ownerValue);
+            }}
+            onBlur={() => {
+              validateField('spec.owner', formData.spec.owner || '');
             }}
           />
 
@@ -305,17 +493,25 @@ const CreateEntity = () => {
                 </Paragraph>
               }
               options={systemOptions}
-              initialValues={[formData.spec.system]}
-              required
+              initialValues={[formData.spec.system || '']}
+              required={formData.spec.hasSystem}
+              error={errors['spec.system']}
               onChange={newValue => {
                 const option = Array.isArray(newValue) ? newValue[0] : newValue;
+                const systemValue = option?.value ?? '';
+
                 setFormData(prev => ({
                   ...prev,
                   spec: {
                     ...prev.spec,
-                    system: option?.value ?? '',
+                    system: systemValue,
                   },
                 }));
+
+                validateField('spec.system', systemValue);
+              }}
+              onBlur={() => {
+                validateField('spec.system', formData.spec.system || '');
               }}
             />
           )}
@@ -326,58 +522,61 @@ const CreateEntity = () => {
             name="tags"
             description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
             options={getTags()}
-            initialValues={formData.tags}
             isMulti
-            onChange={(
-              newValue,
-              actionMeta: ActionMeta<{
-                label: string;
-                value: string;
-              }>
-            ) => {
+            initialValues={formData.tags}
+            error={errors.tags}
+            onChange={newValue => {
+              const tagsValue = Array.isArray(newValue)
+                ? newValue?.map(({ value }: { value: string }) => value)
+                : [];
               setFormData(prev => ({
                 ...prev,
-                [actionMeta.name as string]: Array.isArray(newValue)
-                  ? newValue?.map(({ value }: { value: string }) => value)
-                  : [],
+                tags: tagsValue,
               }));
+
+              validateField('tags', tagsValue);
+            }}
+            onBlur={() => {
+              validateField('tags', formData.spec.system || '');
             }}
           />
 
           <AnnotationRepeater
-            initialValues={Object.keys(formData.annotations).map(
-              annotation => ({
-                key: annotation,
-                value: formData.annotations[annotation],
-              })
-            )}
+            initialValues={formData.annotations.map(annotation => ({
+              key: annotation.key,
+              value: annotation.value,
+            }))}
+            errors={errors}
             onChange={(
               annotations: {
                 label: string | undefined;
                 value: string | undefined;
               }[]
-            ) =>
-              setFormData({
-                ...formData,
-                annotations: annotations
-                  .filter(
-                    // We're not interested in values with no parent key value
-                    (a): a is { label: string; value: string | undefined } =>
-                      typeof a.label === 'string'
-                  )
-                  .reduce(
-                    (acc, { label, value }) => {
-                      acc[label] = value ?? '';
-                      return acc;
-                    },
-                    {} as Record<string, string | undefined>
-                  ),
-              })
-            }
-          />
+            ) => {
+              const newAnnotations = annotations
+                .filter(
+                  // We're not interested in values with no parent key value
+                  (a): a is { label: string; value: string | undefined } =>
+                    typeof a.label === 'string'
+                )
+                .map(({ label, value }) => ({
+                  key: label,
+                  value: value ?? '',
+                }));
 
+              setFormData(prev => ({
+                ...prev,
+                annotations: newAnnotations,
+              }));
+
+              // Validate the annotations array
+              validateField('annotations', newAnnotations);
+            }}
+          />
           <LinkRepeater
             items={formData?.links ?? []}
+            errors={errors}
+            onValidateField={validateField}
             onChange={links => {
               setFormData({
                 ...formData,
@@ -387,34 +586,35 @@ const CreateEntity = () => {
           />
 
           <Row>
-            <Button type="submit">Submit</Button>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => {
-                setFormData({
-                  kind: '',
-                  name: '',
-                  description: '',
-                  tags: [],
-                  annotations: {},
-                  links: [],
-                  spec: {
-                    type: '',
-                    lifecycle: '',
-                    owner: '',
-                    hasSystem: false,
-                    system: '',
-                  },
-                });
-              }}
-            >
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Submitting...' : 'Submit'}
+            </Button>
+            <Button type="button" variant="secondary" onClick={resetForm}>
               Reset
             </Button>
           </Row>
         </form>
       </Grid.Cell>
-      <SubmissionOutput formData={formData} />
+      <SubmissionOutput
+        formData={
+          {
+            ...formData,
+            annotations: formData.annotations
+              ? formData.annotations.reduce(
+                  (acc, curr) => {
+                    acc[curr.key] = curr.value;
+                    return acc;
+                  },
+                  {} as Record<string, string | undefined>
+                )
+              : {},
+            spec: {
+              ...formData.spec,
+              type: formData.spec.type,
+            },
+          } as EntityFormData
+        }
+      />
 
       {isLoading && (
         <div className={styles.loader}>

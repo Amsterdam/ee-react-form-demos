@@ -4,29 +4,32 @@ import {
   Field,
   Label,
   Paragraph,
-  TextArea,
+  TextInput,
 } from '@amsterdam/design-system-react';
 
-interface FormTextareaProps {
+interface FormTextInputProps {
   id: string;
   label: string;
   description?: ReactNode;
+  name: string;
   value: string;
   required?: boolean;
   error?: string;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FormTextarea = ({
+const FormTextInput = ({
   id,
   label,
   description,
+  name,
   value,
   required = false,
   error,
   onChange,
-}: FormTextareaProps) => (
-  <Field className="ams-mb-m">
+}: FormTextInputProps) => (
+  <Field className="ams-mb-m" invalid={!!error}>
     <Label htmlFor={id}>{label}</Label>
     {typeof description === 'string' ? (
       <Paragraph id={`${id}-description`} size="small">
@@ -36,17 +39,16 @@ const FormTextarea = ({
       description
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
-    <TextArea
-      aria-describedby={
-        description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
-      }
+    <TextInput
+      aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
       id={id}
-      rows={4}
+      name={name}
       value={value}
+      invalid={!!error}
       required={required}
       onChange={onChange}
     />
   </Field>
 );
 
-export default FormTextarea;
+export default FormTextInput;

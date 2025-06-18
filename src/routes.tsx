@@ -1,5 +1,6 @@
 import App from '@/containers/App/App';
 import CreateEntity from '@/pages/CreateEntity/CreateEntity';
+import CreateEntityZod from './pages/CreateEntityZod/CreateEntityZod';
 import ContactForm from './pages/ContactForm/ContactForm';
 import ContactFormLive from './pages/ContactFormLive/ContactFormLive';
 import RHFCreateEntity from '@/pages/ReactHookForm/CreateEntity/CreateEntity';
@@ -12,6 +13,10 @@ const routes = [
       {
         path: '/',
         element: <CreateEntity />,
+      },
+      {
+        path: '/zod',
+        element: <CreateEntityZod />,
       },
       {
         path: 'contact',

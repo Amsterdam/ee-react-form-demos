@@ -43,7 +43,6 @@ const processFormData = (formData: EntityFormData) => {
       type: formData.spec.type,
       lifecycle: formData.spec.lifecycle,
       owner: formData.spec.owner,
-      system: formData.spec.system,
     },
   } as Entity;
 

@@ -11,7 +11,6 @@ interface FormSelectProps {
   id: string;
   label: string;
   description?: ReactNode;
-  name: string;
   options: Record<string, string>;
   value?: string;
   required?: boolean;
@@ -23,7 +22,6 @@ const FormSelect = ({
   id,
   label,
   description,
-  name,
   options,
   value = '',
   required = false,
@@ -43,7 +41,6 @@ const FormSelect = ({
     <Select
       aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
       id={id}
-      name={name}
       value={value}
       invalid={!!error}
       required={required}

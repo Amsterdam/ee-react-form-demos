@@ -22,7 +22,7 @@ import FormTextarea from './components/FormTextarea/FormTextarea';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
-import LinksRepeater from './components/LinksRepeater/LinksRepeater';
+import LinksRepeater from './components/LinkRepeater/LinkRepeater';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import Loader from '@/components/Loader/Loader';
 import getOwners from '@/utils/getOwners';
@@ -174,7 +174,6 @@ const CreateEntity = () => {
                     to also add entities of other kinds to the catalog.
                   </Paragraph>
                 }
-                name="kind"
                 options={{
                   API: 'API',
                   Component: 'Component',
@@ -231,7 +230,6 @@ const CreateEntity = () => {
                 id="type"
                 label="Type"
                 description="The type of component as a string, e.g. `website`. This field is required."
-                name="type"
                 options={{
                   service: 'Service',
                   website: 'Website',
@@ -254,7 +252,6 @@ const CreateEntity = () => {
                 id="lifecycle"
                 label="Lifecycle"
                 description="The lifecycle state of the component, e.g. `production`. This field is required."
-                name="lifecycle"
                 options={{
                   prototype: 'Prototype',
                   alpha: 'Alpha',
