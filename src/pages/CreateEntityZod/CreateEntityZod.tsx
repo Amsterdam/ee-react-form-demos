@@ -34,9 +34,10 @@ const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 // TODO validation - variant of CreateEntity (plain) with zod validation?
-//  - belongs to service checkbox doesnt remove from submissionoutput?
 //  - TextInput has invalid class but doesnt show invalid message
 //  - Can we replace `any` in `value: any`?
+//  - fix warnings
+//  - cleanup validation method
 
 // TODO document results
 // - Check shared GitHub examples (in Slack)
