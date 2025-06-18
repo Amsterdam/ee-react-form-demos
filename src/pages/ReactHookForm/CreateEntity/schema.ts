@@ -35,7 +35,7 @@ const entityFormSchema = z.object({
       z.object({
         url: z.string().url('Must be a valid URL'),
         title: z.string().min(1, 'Title is required'),
-        icon: z.string().optional(),
+        icon: z.string().min(1, 'Title is required'),
       })
     )
     .default([]),

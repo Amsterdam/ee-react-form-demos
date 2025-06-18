@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import CreateEntity from './CreateEntity';
+import CreateEntity from './CreateEntityZod';
 
 describe('CreateEntity', () => {
   it('renders the component', () => {

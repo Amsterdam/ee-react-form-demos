@@ -1,7 +1,7 @@
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
-import { FieldErrors } from 'react-hook-form';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
+import { FieldErrors } from '../../schema';
 import styles from './LinkRepeater.module.css';
 
 interface LinkRepeaterProps {
@@ -28,6 +28,7 @@ const LinkRepeater = ({
   errors,
   onValidateField,
 }: LinkRepeaterProps) => {
+  console.log({ items, errors });
   const addItem = () => {
     const newItems = [...items, { url: '', title: '', icon: 'dashboard' }];
     onChange(newItems);

@@ -7,8 +7,8 @@ import {
 } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
+import { FieldErrors } from '../../schema';
 import styles from './AnnotationRepeater.module.css';
-import { FieldErrors } from 'react-hook-form';
 
 type AnnotationItem = {
   id: string;
@@ -32,6 +32,7 @@ const AnnotationRepeater = ({
   errors,
   onChange,
 }: AnnotationRepeaterProps) => {
+  console.log({ errors });
   const idCounterRef = useRef(0);
   const itemIdsRef = useRef<Map<number, string>>(new Map());
 

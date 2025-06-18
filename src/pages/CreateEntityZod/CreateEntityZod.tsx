@@ -34,11 +34,7 @@ import findRelevantError from './utils/findRelevantError';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO validation - variant of CreateEntity (plain) with zod validation?
-//  - Can we replace `any` in `value: any`?
-//  - fix warnings
-//  - cleanup validation method
-
+// TODO align props order - FormAutoSelect vs FormTextInput FormTextarea
 // TODO document results
 // - Check shared GitHub examples (in Slack)
 // - README/storybook setup?

@@ -15,6 +15,7 @@ interface FormAutoSelectProps {
   options: ReactSelectOption[] | undefined;
   initialValues: string[];
   required?: boolean;
+  error?: string;
   isMulti?: boolean;
   onChange: (
     newValue: ReactSelectValue,

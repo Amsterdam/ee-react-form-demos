@@ -12,7 +12,7 @@ interface LinkRepeaterProps {
     title: string;
     icon?: string;
   }[];
-  append: (item: { url: string; title: string; icon?: string }) => void;
+  append: (item: { url: string; title: string; icon: string }) => void;
   remove: (index: number) => void;
   control: Control<RHFEntityFormData>;
   errors: FieldErrors<RHFEntityFormData>['links'];
