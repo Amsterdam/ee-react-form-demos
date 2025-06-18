@@ -145,7 +145,7 @@ const CreateEntity = () => {
             // This options format may look a bit overcomplicated. In this
             // example it is intended to demonstate select menus where the
             // value might be an ID or code and is, therefore, not useful
-            // to present to frontend users. GO to the 'Type' Select field for
+            // to present to frontend users. Go to the 'Type' Select field for
             // an example where this happens.
             options={{
               API: 'API',
@@ -336,6 +336,8 @@ const CreateEntity = () => {
                 value: string;
               }>
             ) => {
+              // This React-Select component uses isMulti so we need to
+              // handle an array of values
               setFormData(prev => ({
                 ...prev,
                 [actionMeta.name as string]: Array.isArray(newValue)

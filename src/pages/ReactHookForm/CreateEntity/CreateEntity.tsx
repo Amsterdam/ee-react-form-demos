@@ -181,6 +181,11 @@ const CreateEntity = () => {
                     to also add entities of other kinds to the catalog.
                   </Paragraph>
                 }
+                // This options format may look a bit overcomplicated. In this
+                // example it is intended to demonstate select menus where the
+                // value might be an ID or code and is, therefore, not useful
+                // to present to frontend users. Go to the 'Type' Select field
+                // for an example where this happens.
                 options={{
                   API: 'API',
                   Component: 'Component',
@@ -305,8 +310,10 @@ const CreateEntity = () => {
                   error={errors.spec?.owner?.message}
                   required
                   onChange={selectedOption => {
-                    // react-select + isMulti + typescript makes things a
-                    // bit overcomplicated
+                    // Handling react-select requires an extra step, as using
+                    // the isMulti prop as true, will return an array of values.
+                    // These minor prop differences can lead to some  complex
+                    // Type handling
                     const option = Array.isArray(selectedOption)
                       ? selectedOption[0]
                       : selectedOption;
@@ -392,6 +399,8 @@ const CreateEntity = () => {
                   error={errors.tags?.message}
                   isMulti
                   onChange={selectedOptions => {
+                    // This React-Select component uses isMulti so we need to
+                    // handle an array of values
                     field.onChange(
                       Array.isArray(selectedOptions)
                         ? selectedOptions.map(
@@ -405,12 +414,23 @@ const CreateEntity = () => {
             }}
           />
 
+          {/* An AnnotationRepeater field is a repeater field of two fields:
+          1. A select (react-select) field (the repeater field's 'key')
+          2. A corresponding input or select menu (the repeater field's
+          'value'). On change it returns an object 'annotations' of array of
+          { key: '', value: '' } */}
           <AnnotationRepeater
             control={control}
             errors={errors}
             setValue={setValue}
           />
 
+          {/* A linkRepeater field is a repeater field of three fields:
+          - an input for URL
+          - an input for Title
+          - a select menu for Icon
+          On change it returns an array of repeater fields - an array of
+          the three fields' values */}
           <Controller
             name="links"
             control={control}
@@ -457,12 +477,14 @@ const CreateEntity = () => {
         }
       />
 
+      {/* Fake loader to simulate API request */}
       {isLoading && (
         <div className={styles.loader}>
           <Loader />
         </div>
       )}
 
+      {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>
           <Alert

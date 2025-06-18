@@ -103,6 +103,7 @@ const CreateEntity = () => {
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldError = findRelevantError(error, fieldPath);
+
         if (fieldError) {
           setFieldError(fieldPath, fieldError.message);
         }
@@ -125,7 +126,7 @@ const CreateEntity = () => {
     return { ...formData, [fieldPath]: value };
   };
 
-  // Build the form data object's 'links' array
+  // Build the form data object's nested 'links' array
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const buildFormDataWithLinksUpdate = (fieldPath: string, value: any) => {
     const pathParts = fieldPath.split('.');
@@ -143,17 +144,17 @@ const CreateEntity = () => {
       }
     }
 
-    // Entire links array update
     return { ...formData, links: value };
   };
 
-  // Build the form data object's 'spec' object
+  // Build the form data object's nested 'spec' object
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const buildFormDataWithSpecUpdate = (fieldPath: string, value: any) => {
     const specField = fieldPath.split('.')[1] as keyof z.infer<
       typeof specSchema
     >;
     const updatedSpec = { ...formData.spec, [specField]: value };
+
     return { ...formData, spec: updatedSpec };
   };
 
@@ -161,6 +162,7 @@ const CreateEntity = () => {
     setErrors(prev => {
       const newErrors = { ...prev };
       delete newErrors[fieldPath as keyof FieldErrors];
+
       return newErrors;
     });
   };
@@ -169,11 +171,11 @@ const CreateEntity = () => {
     setErrors(prev => ({ ...prev, [fieldPath]: message }));
   };
 
-  // Validate entire form
   const validateForm = (): boolean => {
     try {
       entityFormSchema.parse(formData);
       setErrors({});
+
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -181,6 +183,7 @@ const CreateEntity = () => {
 
         error.issues.forEach(err => {
           const path = err.path.join('.');
+
           // Handle nested spec fields
           if (err.path[0] === 'spec' && err.path.length > 1) {
             newErrors[`spec.${String(err.path[1])}` as keyof FieldErrors] =
@@ -215,7 +218,6 @@ const CreateEntity = () => {
         },
       }));
 
-      // Validate on change (optional - you might prefer on blur)
       validateField(name, newValue);
     } else {
       setFormData(prev => ({
@@ -223,7 +225,6 @@ const CreateEntity = () => {
         [name]: value,
       }));
 
-      // Validate on change (optional)
       validateField(name, value);
     }
   };
@@ -236,14 +237,12 @@ const CreateEntity = () => {
       type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
     const fieldValue = type === 'checkbox' ? checked : value;
 
-    // Validate on blur for better UX
     validateField(name, fieldValue);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Validate entire form before submission
     if (!validateForm()) {
       return;
     }
@@ -438,6 +437,10 @@ const CreateEntity = () => {
             required
             error={errors['spec.owner']}
             onChange={newValue => {
+              // Handling react-select requires an extra step, as using
+              // the isMulti prop as true, will return an array of values.
+              // These minor prop differences can lead to some  complex
+              // Type handling
               const option = Array.isArray(newValue) ? newValue[0] : newValue;
               const ownerValue = option?.value ?? '';
 
@@ -526,6 +529,8 @@ const CreateEntity = () => {
             initialValues={formData.tags}
             error={errors.tags}
             onChange={newValue => {
+              // This React-Select component uses isMulti so we need to
+              // handle an array of values
               const tagsValue = Array.isArray(newValue)
                 ? newValue?.map(({ value }: { value: string }) => value)
                 : [];
@@ -541,6 +546,11 @@ const CreateEntity = () => {
             }}
           />
 
+          {/* An AnnotationRepeater field is a repeater field of two fields:
+          1. A select (react-select) field (the repeater field's 'key')
+          2. A corresponding input or select menu (the repeater field's
+          'value'). On change it returns an object 'annotations' of array of
+          { key: '', value: '' } */}
           <AnnotationRepeater
             initialValues={formData.annotations.map(annotation => ({
               key: annotation.key,
@@ -573,6 +583,13 @@ const CreateEntity = () => {
               validateField('annotations', newAnnotations);
             }}
           />
+
+          {/* A linkRepeater field is a repeater field of three fields:
+          - an input for URL
+          - an input for Title
+          - a select menu for Icon
+          On change it returns an array of repeater fields - an array of
+          the three fields' values */}
           <LinkRepeater
             items={formData?.links ?? []}
             errors={errors}
@@ -616,12 +633,14 @@ const CreateEntity = () => {
         }
       />
 
+      {/* Fake loader to simulate API request */}
       {isLoading && (
         <div className={styles.loader}>
           <Loader />
         </div>
       )}
 
+      {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>
           <Alert
