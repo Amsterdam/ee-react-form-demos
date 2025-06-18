@@ -9,7 +9,7 @@ import {
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { ActionMeta } from 'react-select';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '@/types/types';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextarea from './components/FormTextarea/FormTextarea';

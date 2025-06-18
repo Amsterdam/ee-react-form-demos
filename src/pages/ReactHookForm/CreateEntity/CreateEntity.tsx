@@ -32,7 +32,7 @@ import sortAlphabetically from '@/utils/sortAlphabetically';
 import entityFormSchema, {
   EntityFormData as RHFEntityFormData,
 } from './schema';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '@/types/types';
 import styles from './CreateEntity.module.css';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);

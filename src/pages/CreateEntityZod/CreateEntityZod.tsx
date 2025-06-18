@@ -28,7 +28,7 @@ import entityFormSchema, {
   specSchema,
 } from './schema';
 import z from 'zod/v4';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '@/types/types';
 import findRelevantError from './utils/findRelevantError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);

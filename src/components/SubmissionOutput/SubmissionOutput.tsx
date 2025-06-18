@@ -1,4 +1,4 @@
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '@/types/types';
 import { Grid, Heading } from '@amsterdam/design-system-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -15,7 +15,6 @@ const processFormData = (formData: EntityFormData) => {
       name: formData.name,
       description: formData?.description ?? '',
       tags: formData.tags,
-      // annotations: [],
       annotations: formData.annotations
         ? Object.entries(formData.annotations).reduce(
             (acc, [key, value]) => {
@@ -26,7 +25,7 @@ const processFormData = (formData: EntityFormData) => {
               // If key is empty skip the record
               if (key) {
                 if (rule?.type === 'url') {
-                  acc[key] = `url: ${value}`;
+                  acc[key] = `url:${value}`;
                 } else {
                   acc[key] = value ?? '';
                 }
@@ -63,7 +62,7 @@ interface SubmissionOutputProps {
   formData: EntityFormData;
 }
 
-// TODO annotations - with is link value with `url: ` in speech marks but not other values?
+// Display the submitted data as a valid Backstage entity in YAML format
 const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
   const codeString = yaml.dump(processFormData(formData));
 

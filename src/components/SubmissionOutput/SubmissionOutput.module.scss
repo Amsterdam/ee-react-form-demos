@@ -2,6 +2,7 @@
 
 @media screen and (min-width: $ams-breakpoint-wide) {
   .inner {
-    position: fixed;
+    position: sticky;
+    top: var(--ams-space-xl);
   }
 }
