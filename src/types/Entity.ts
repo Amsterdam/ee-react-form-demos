@@ -142,8 +142,8 @@ export type EntityMeta = JsonObject & {
   annotations?: Record<string, string>;
 
   /**
-   * A list of single-valued strings, to for example classify catalog entities in
-   * various ways.
+   * A list of single-valued strings, to for example classify catalog entities
+   * in various ways.
    */
   tags?: string[];
 

@@ -28,15 +28,6 @@ import styles from './CreateEntity.module.css';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO validation - variant of CreateEntity (plain) with zod validation?
-// TODO document results
-// - Check shared GitHub examples (in Slack)
-// - README/storybook setup?
-// - validation alert/header with invalid fields - Cannot accomplish with browser validation
-// - smaller forms - use react validation
-// - larger/dynamic forms - use browser validation
-// - react-hook-form to this migration path?
-// TODO tests
 const CreateEntity = () => {
   const [formData, setFormData] = useState({
     kind: 'Component',
@@ -90,35 +81,39 @@ const CreateEntity = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log({ formData });
 
-    console.log({
-      formData,
-    });
-
-    // const formattedFormData = {
-    //   kind: formData.kind,
-    //   name: formData.name,
-    //   description: formData.description,
-    //   tags: formData.tags,
-    //   annotations: formData.annotations,
-    //   links: formData.links,
-    //   spec: {
-    //     type: formData.spec.type,
-    //     lifecycle: formData.spec.lifecycle,
-    //     owner: formData.spec.owner,
-    //     hasSystem: !!formData.spec.hasSystem,
-    //     system: formData.spec.system,
-    //   },
-    // };
-
-    // Simulate API call
-    // Here's where validation could happen
+    /**
+     * Use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
+    //
     setIsLoading(true);
 
     setTimeout(() => {
       setIsLoading(false);
       setIsSubmitted(true);
     }, 1500);
+  };
+
+  const handleResetClick = () => {
+    setFormData({
+      kind: '',
+      name: '',
+      description: '',
+      tags: [],
+      annotations: {},
+      links: [],
+      spec: {
+        type: '',
+        lifecycle: '',
+        owner: '',
+        hasSystem: false,
+        system: '',
+      },
+    });
   };
 
   return (
@@ -148,8 +143,11 @@ const CreateEntity = () => {
               </Paragraph>
             }
             name="kind"
-            // This looks a bit weird but is intended because select menu values
-            // are often different to the labels (however, not in this example)
+            // This options format may look a bit overcomplicated. In this
+            // example it is intended to demonstate select menus where the
+            // value might be an ID or code and is, therefore, not useful
+            // to present to frontend users. GO to the 'Type' Select field for
+            // an example where this happens.
             options={{
               API: 'API',
               Component: 'Component',
@@ -183,6 +181,7 @@ const CreateEntity = () => {
             id="description"
             label="Description"
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
+            name="description"
             value={formData.description ?? ''}
             onChange={handleChange}
           />
@@ -259,6 +258,9 @@ const CreateEntity = () => {
             initialValues={[formData.spec.owner]}
             required
             onChange={newValue => {
+              // Handling react-select requires an extra step, as using the
+              // isMulti prop as true, will return an array of values. These
+              // minor prop differences can lead to some  complex Type handling
               const option = Array.isArray(newValue) ? newValue[0] : newValue;
               setFormData(prev => ({
                 ...prev,
@@ -344,6 +346,11 @@ const CreateEntity = () => {
             }}
           />
 
+          {/* An AnnotationRepeater field is a repeater field of two fields:
+          1. A select (react-select) field (the repeater field's 'key')
+          2. A corresponding input or select menu (the repeater field's
+          'value'). On change it returns an object 'annotations' of array of
+          { key: '', value: '' } */}
           <AnnotationRepeater
             initialValues={Object.keys(formData.annotations).map(
               annotation => ({
@@ -361,7 +368,7 @@ const CreateEntity = () => {
                 ...formData,
                 annotations: annotations
                   .filter(
-                    // We're not interested in values with no parent key value
+                    // Skip any repeater fields where the key is undefined
                     (a): a is { label: string; value: string | undefined } =>
                       typeof a.label === 'string'
                   )
@@ -376,6 +383,12 @@ const CreateEntity = () => {
             }
           />
 
+          {/* A linkRepeater field is a repeater field of three fields:
+          - an input for URL
+          - an input for Title
+          - a select menu for Icon
+          On change it returns an array of repeater fields - an array of
+          the three fields' values */}
           <LinkRepeater
             items={formData?.links ?? []}
             onChange={links => {
@@ -391,23 +404,7 @@ const CreateEntity = () => {
             <Button
               type="button"
               variant="secondary"
-              onClick={() => {
-                setFormData({
-                  kind: '',
-                  name: '',
-                  description: '',
-                  tags: [],
-                  annotations: {},
-                  links: [],
-                  spec: {
-                    type: '',
-                    lifecycle: '',
-                    owner: '',
-                    hasSystem: false,
-                    system: '',
-                  },
-                });
-              }}
+              onClick={handleResetClick}
             >
               Reset
             </Button>
@@ -416,12 +413,14 @@ const CreateEntity = () => {
       </Grid.Cell>
       <SubmissionOutput formData={formData} />
 
+      {/* Fake loader to simulate API request */}
       {isLoading && (
         <div className={styles.loader}>
           <Loader />
         </div>
       )}
 
+      {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>
           <Alert
