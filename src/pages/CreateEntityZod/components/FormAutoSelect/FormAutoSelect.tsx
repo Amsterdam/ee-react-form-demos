@@ -20,6 +20,7 @@ interface FormAutoSelectProps {
     newValue: ReactSelectValue,
     actionMeta: ActionMeta<ReactSelectOption>
   ) => void;
+  onBlur?: () => void;
 }
 
 const FormAutoSelect = ({
@@ -63,6 +64,7 @@ const FormAutoSelect = ({
         options={options}
         isMulti={isMulti}
         onChange={onChange}
+        onBlur={onBlur}
         name={name}
         required={required}
         value={selectValue}

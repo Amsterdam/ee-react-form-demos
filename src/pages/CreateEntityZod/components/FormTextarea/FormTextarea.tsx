@@ -15,7 +15,8 @@ interface FormTextareaProps {
   value: string;
   required?: boolean;
   error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const FormTextarea = ({
@@ -27,6 +28,7 @@ const FormTextarea = ({
   required = false,
   error,
   onChange,
+  onBlur,
 }: FormTextareaProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
@@ -48,6 +50,7 @@ const FormTextarea = ({
       value={value}
       required={required}
       onChange={onChange}
+      onBlur={onBlur}
     />
   </Field>
 );

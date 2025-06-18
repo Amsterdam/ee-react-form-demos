@@ -29,12 +29,12 @@ import entityFormSchema, {
 } from './schema';
 import z from 'zod/v4';
 import { EntityFormData } from '@/types';
+import findRelevantError from './utils/findRelevantError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 // TODO validation - variant of CreateEntity (plain) with zod validation?
-//  - TextInput has invalid class but doesnt show invalid message
 //  - Can we replace `any` in `value: any`?
 //  - fix warnings
 //  - cleanup validation method
@@ -99,89 +99,82 @@ const CreateEntity = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Validate a single field
+  // We should use `value: unknown` but as this argument is being passed straight
+  // to Zod for validation (and type checking) `any` is acceptable
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const validateField = (fieldPath: string, value: any) => {
     try {
-      // Handle nested link fields like links.0.url
-      if (fieldPath.startsWith('links.')) {
-        const pathParts = fieldPath.split('.');
-
-        if (pathParts.length === 3) {
-          // Individual field validation (e.g., links.0.url)
-          const [, indexStr, fieldName] = pathParts;
-          const index = parseInt(indexStr, 10);
-
-          if (!isNaN(index) && formData.links?.[index]) {
-            const testLinks = [...(formData.links || [])];
-            testLinks[index] = {
-              ...testLinks[index],
-              [fieldName]: value,
-            };
-
-            const testData = { ...formData, links: testLinks };
-            entityFormSchema.parse(testData);
-          }
-        } else if (pathParts.length === 1) {
-          // Entire links array validation
-          const testData = { ...formData, links: value };
-          entityFormSchema.parse(testData);
-        }
-      } else if (fieldPath.startsWith('spec.')) {
-        // Existing spec field validation...
-        const specField = fieldPath.split('.')[1] as keyof z.infer<
-          typeof specSchema
-        >;
-        const specData = { ...formData.spec, [specField]: value };
-        specSchema.parse(specData);
-      } else {
-        // Existing top-level field validation...
-        const testData = { ...formData, [fieldPath]: value };
-        entityFormSchema.parse(testData);
-      }
-
-      // Clear error if validation passes
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[fieldPath as keyof FieldErrors];
-        return newErrors;
-      });
+      // This flow is usually simpler if your form has no repeater child object/array fields
+      const updatedFormData = buildFormDataWithNewValue(fieldPath, value);
+      entityFormSchema.parse(updatedFormData);
+      clearFieldError(fieldPath);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        // Handle link-specific errors
-        if (fieldPath.startsWith('links.')) {
-          const linkError = error.issues.find(err => {
-            const errorPath = err.path.join('.');
-            return (
-              errorPath.includes('links') &&
-              (errorPath === fieldPath ||
-                errorPath.endsWith(fieldPath.split('.').pop() || ''))
-            );
-          });
-
-          if (linkError) {
-            setErrors(prev => ({
-              ...prev,
-              [fieldPath]: linkError.message,
-            }));
-          }
-        } else {
-          // Existing error handling for other fields...
-          const fieldError = error.issues.find(
-            err =>
-              err.path.join('.') === fieldPath ||
-              (fieldPath.startsWith('spec.') &&
-                err.path.join('.') === fieldPath.split('.')[1])
-          );
-
-          if (fieldError) {
-            setErrors(prev => ({
-              ...prev,
-              [fieldPath]: fieldError.message,
-            }));
-          }
+        const fieldError = findRelevantError(error, fieldPath);
+        if (fieldError) {
+          setFieldError(fieldPath, fieldError.message);
         }
       }
     }
+  };
+
+  // Build a form data object with the updated value
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const buildFormDataWithNewValue = (fieldPath: string, value: any) => {
+    if (fieldPath.startsWith('links.')) {
+      return buildFormDataWithLinksUpdate(fieldPath, value);
+    }
+
+    if (fieldPath.startsWith('spec.')) {
+      return buildFormDataWithSpecUpdate(fieldPath, value);
+    }
+
+    // Top-level field update
+    return { ...formData, [fieldPath]: value };
+  };
+
+  // Build the form data object's 'links' array
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const buildFormDataWithLinksUpdate = (fieldPath: string, value: any) => {
+    const pathParts = fieldPath.split('.');
+
+    // A link row consists of 3 fields - URL, title and icon
+    if (pathParts.length === 3) {
+      // Single link row field (e.g., links.0.url)
+      const [, indexStr, fieldName] = pathParts;
+      const index = parseInt(indexStr, 10);
+
+      if (!isNaN(index) && formData.links?.[index]) {
+        const updatedLinks = [...(formData.links || [])];
+        updatedLinks[index] = { ...updatedLinks[index], [fieldName]: value };
+        return { ...formData, links: updatedLinks };
+      }
+    }
+
+    // Entire links array update
+    return { ...formData, links: value };
+  };
+
+  // Build the form data object's 'spec' object
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const buildFormDataWithSpecUpdate = (fieldPath: string, value: any) => {
+    const specField = fieldPath.split('.')[1] as keyof z.infer<
+      typeof specSchema
+    >;
+    const updatedSpec = { ...formData.spec, [specField]: value };
+    return { ...formData, spec: updatedSpec };
+  };
+
+  const clearFieldError = (fieldPath: string) => {
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[fieldPath as keyof FieldErrors];
+      return newErrors;
+    });
+  };
+
+  const setFieldError = (fieldPath: string, message: string) => {
+    setErrors(prev => ({ ...prev, [fieldPath]: message }));
   };
 
   // Validate entire form

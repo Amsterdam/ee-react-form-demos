@@ -16,6 +16,7 @@ interface FormTextInputProps {
   required?: boolean;
   error?: string;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FormTextInput = ({
