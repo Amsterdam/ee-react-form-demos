@@ -11,7 +11,6 @@ interface FormTextareaProps {
   id: string;
   label: string;
   description?: ReactNode;
-  name: string;
   value: string;
   required?: boolean;
   error?: string;
@@ -22,7 +21,6 @@ const FormTextarea = ({
   id,
   label,
   description,
-  name,
   value,
   required = false,
   error,
@@ -44,7 +42,6 @@ const FormTextarea = ({
       }
       id={id}
       rows={4}
-      name={name}
       value={value}
       required={required}
       onChange={onChange}

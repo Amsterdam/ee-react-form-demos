@@ -33,6 +33,7 @@ const FormAutoSelect = ({
   required = false,
   isMulti = false,
   onChange,
+  onBlur,
   ...props
 }: FormAutoSelectProps) => {
   // Filter out empty strings and find matching options
