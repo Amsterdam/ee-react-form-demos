@@ -19,6 +19,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, Resolver, useForm } from 'react-hook-form';
 import contactFormSchema, { ContactFormData } from './schema';
 
+// This is a simple React Hook Form example that validates using a Zod schema
+// on change
 const ContactForm = () => {
   const {
     control,
@@ -33,14 +35,19 @@ const ContactForm = () => {
     },
   });
 
-  // Fake submission state
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // onSubmit will only fire if the form is valid
   const onSubmit = (data: ContactFormData) => {
-    console.log({ data });
+    console.log('Form data:', data);
 
-    // Form is valid, proceed with submission
+    /**
+     * If form is valid use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     setIsLoading(true);
     setTimeout(() => {
       setIsSubmitted(true);

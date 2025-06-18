@@ -23,6 +23,8 @@ import getTags from '@/utils/getTags';
 import sortAlphabetically from '@/utils/sortAlphabetically';
 import styles from './CreateEntityZod.module.css';
 import entityFormSchema, {
+  // We renamed this as we still need the original EntityFormData type shape for
+  // the SubmissionOutput component
   EntityFormData as ZodEntityFormData,
   FieldErrors,
   specSchema,
@@ -35,14 +37,7 @@ const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 // TODO align props order - FormAutoSelect vs FormTextInput FormTextarea
-// TODO document results
-// - Check shared GitHub examples (in Slack)
-// - README/storybook setup?
-// - validation alert/header with invalid fields - Cannot accomplish with browser validation
-// - smaller forms - use react validation
-// - larger/dynamic forms - use browser validation
-// - react-hook-form to this migration path?
-// TODO tests
+// TODO document validation methods
 const CreateEntity = () => {
   const [formData, setFormData] = useState({
     kind: 'Component',
@@ -95,12 +90,13 @@ const CreateEntity = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Validate a single field
-  // We should use `value: unknown` but as this argument is being passed straight
-  // to Zod for validation (and type checking) `any` is acceptable
+  // We should use `value: unknown` but as this argument is being passed
+  // straight to Zod for validation (and type checking) `any` is acceptable
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const validateField = (fieldPath: string, value: any) => {
     try {
-      // This flow is usually simpler if your form has no repeater child object/array fields
+      // This flow is usually simpler if your form has no repeater
+      // child object/array fields
       const updatedFormData = buildFormDataWithNewValue(fieldPath, value);
       entityFormSchema.parse(updatedFormData);
       clearFieldError(fieldPath);
@@ -249,14 +245,17 @@ const CreateEntity = () => {
 
     // Validate entire form before submission
     if (!validateForm()) {
-      console.log('Validation failed:', errors);
       return;
     }
 
-    console.log('Form data is valid:', formData);
+    console.log('Form data:', formData);
 
-    // Simulate API call
-    // Here's where validation could happen
+    /**
+     * Use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     setIsLoading(true);
 
     setTimeout(() => {
@@ -265,6 +264,7 @@ const CreateEntity = () => {
     }, 1500);
   };
 
+  // Reset the form to a blank state
   const resetForm = () => {
     setFormData({
       kind: '',

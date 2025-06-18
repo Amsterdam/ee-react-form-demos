@@ -81,7 +81,7 @@ const CreateEntity = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ formData });
+    console.log('Form data:', formData);
 
     /**
      * Use setTimeout to Simulate API call
@@ -89,7 +89,6 @@ const CreateEntity = () => {
      * - Here's where you can show a post-submission success component
      * or redirect the user to a new page
      */
-    //
     setIsLoading(true);
 
     setTimeout(() => {

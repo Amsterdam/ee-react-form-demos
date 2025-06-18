@@ -1,4 +1,3 @@
-import Loader from '@/components/Loader/Loader';
 import {
   Alert,
   Button,
@@ -14,10 +13,13 @@ import {
 } from '@amsterdam/design-system-react';
 import { FormEvent, useState } from 'react';
 import { z } from 'zod/v4';
-import styles from './ContactForm.module.css';
+import Loader from '@/components/Loader/Loader';
 import t, { translations } from './utils/translate';
 import ContactFormSchema from './schema';
+import styles from './ContactForm.module.css';
 
+// This is a simple HTML5 form example that validates on submission using a
+// Zod schema
 const ContactForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
@@ -29,20 +31,15 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const validateForm = (formData: FormData): Record<string, string> => {
-    // TODO can we use this flow?
-    // const form = e.target as HTMLFormElement;
-    // const formData = new FormData(form);
-    // const data = Object.fromEntries(formData);
-
     const data = {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
-      body: formData.get('body') as string, // Note: your schema uses 'body' but form uses 'message'
+      body: formData.get('body') as string,
     };
 
     try {
       ContactFormSchema.parse(data);
-      return {}; // No errors
+      return {};
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Record<string, string> = {};
@@ -67,8 +64,13 @@ const ContactForm = () => {
 
     setErrors(validationErrors);
 
+    /**
+     * If form is valid use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     if (Object.keys(validationErrors).length === 0) {
-      // Form is valid, proceed with submission
       setIsLoading(true);
       setTimeout(() => {
         setIsSubmitted(true);

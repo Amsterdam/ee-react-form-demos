@@ -30,6 +30,8 @@ import getSystems from '@/utils/getSystems';
 import getTags from '@/utils/getTags';
 import sortAlphabetically from '@/utils/sortAlphabetically';
 import entityFormSchema, {
+  // We renamed this as we still need the original EntityFormData type shape for
+  // the SubmissionOutput component
   EntityFormData as RHFEntityFormData,
 } from './schema';
 import { EntityFormData } from '@/types/types';
@@ -48,6 +50,7 @@ const CreateEntity = () => {
     setValue,
     watch,
   } = useForm<RHFEntityFormData>({
+    // Resolvers allows you to use any external validation library (like Zod)
     resolver: zodResolver(entityFormSchema) as Resolver<RHFEntityFormData>,
     defaultValues: {
       kind: 'Component',
@@ -95,36 +98,39 @@ const CreateEntity = () => {
       },
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // useFieldArray for repeater fields. This is also used in the
+  // AnnotationRepeater component
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'links',
   });
 
-  const formData = watch();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
   // Watch the hasSystem field to conditionally show system field
   const hasSystem = useWatch({ control, name: 'spec.hasSystem' });
+  const formData = watch();
 
+  // onSubmit will only fire if the form is valid
   const onSubmit = (data: RHFEntityFormData) => {
-    // Mock API call
     console.log('Form data:', data);
 
-    // Simulate API call
+    /**
+     * Use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     setIsLoading(true);
 
     setTimeout(() => {
       setIsLoading(false);
       setIsSubmitted(true);
     }, 1500);
-
-    // Handle success (you might want to show a success message here)
-    console.log('Form submitted successfully');
   };
 
+  // Reset the form to a blank state
   const resetForm = () => {
     reset({
       kind: 'API',
@@ -150,7 +156,8 @@ const CreateEntity = () => {
           Create an entity
         </Heading>
 
-        {/* Use noValidate so browser validation doesn't block react-hook-form + zod */}
+        {/* Use noValidate so browser validation doesn't block react-hook-form
+        + zod */}
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Controller
             name="kind"
@@ -298,7 +305,8 @@ const CreateEntity = () => {
                   error={errors.spec?.owner?.message}
                   required
                   onChange={selectedOption => {
-                    // react-select + isMulti + typescript makes things a bit overcomplicated
+                    // react-select + isMulti + typescript makes things a
+                    // bit overcomplicated
                     const option = Array.isArray(selectedOption)
                       ? selectedOption[0]
                       : selectedOption;
