@@ -65,7 +65,6 @@ interface SubmissionOutputProps {
 
 // TODO annotations - with is link value with `url: ` in speech marks but not other values?
 const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
-  console.log({ formData });
   const codeString = yaml.dump(processFormData(formData));
 
   return (
