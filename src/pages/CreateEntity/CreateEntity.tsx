@@ -7,7 +7,7 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { ActionMeta } from 'react-select';
 import { EntityFormData } from '@/types/types';
 import FormSelect from './components/FormSelect/FormSelect';
@@ -34,12 +34,6 @@ const CreateEntity = () => {
     name: 'ee-docs',
     description: 'The primary app for developers.amsterdam',
     tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
-    // annotations: {
-    //   'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
-    //   'github.com/project-slug': 'amsterdam/ee-docs',
-    //   'github.com/team-slug': 'amsterdam/engineering-enablement',
-    //   'lighthouse.com/website-url': 'https://developers.amsterdam',
-    // },
     annotations: [
       {
         key: 'backstage.io/source-location',
@@ -93,6 +87,16 @@ const CreateEntity = () => {
       [name]: value,
     }));
   };
+
+  const handleAnnotationsChange = useCallback(
+    (annotations: { key: string; value: string | undefined }[]) => {
+      setFormData(prev => ({
+        ...prev,
+        annotations: annotations,
+      }));
+    },
+    []
+  );
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -369,12 +373,7 @@ const CreateEntity = () => {
           { key: '', value: '' } */}
           <AnnotationRepeater
             initialValues={formData.annotations}
-            onChange={annotations =>
-              setFormData({
-                ...formData,
-                annotations: annotations,
-              })
-            }
+            onChange={handleAnnotationsChange}
           />
 
           {/* A linkRepeater field is a repeater field of three fields:

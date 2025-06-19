@@ -15,6 +15,8 @@ const processFormData = (formData: EntityFormData) => {
       name: formData.name,
       description: formData?.description ?? '',
       tags: formData.tags,
+      // Convert annotations from array of key, value objects to Backstage
+      // annotation object
       annotations: formData.annotations
         ? formData.annotations.reduce(
             (acc, curr) => {

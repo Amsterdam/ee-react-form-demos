@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
@@ -39,14 +39,13 @@ const AnnotationRepeater = ({
     }))
   );
 
-  // Update parent when items change
-  useEffect(() => {
-    const newAnnotations = items.map(item => ({
+  // Helper function to convert items to annotations format
+  const itemsToAnnotations = (itemsArray: AnnotationItem[]) => {
+    return itemsArray.map(item => ({
       key: item.label || '',
       value: item.value,
     }));
-    onChange(newAnnotations);
-  }, [items, onChange]);
+  };
 
   // Add a new repeater row
   const addItem = () => {
@@ -56,12 +55,16 @@ const AnnotationRepeater = ({
       value: '',
     };
 
-    setItems(prev => [...prev, newItem]);
+    const newItems = [...items, newItem];
+    setItems(newItems);
+    onChange(itemsToAnnotations(newItems));
   };
 
   // Remove a repeater row
   const removeItem = (index: number) => {
-    setItems(prev => prev.filter((_, i) => i !== index));
+    const newItems = items.filter((_, i) => i !== index);
+    setItems(newItems);
+    onChange(itemsToAnnotations(newItems));
   };
 
   const updateItem = (
@@ -69,9 +72,11 @@ const AnnotationRepeater = ({
     label: string | undefined,
     value: string | undefined
   ) => {
-    setItems(prev =>
-      prev.map((item, i) => (i === index ? { ...item, label, value } : item))
+    const newItems = items.map((item, i) =>
+      i === index ? { ...item, label, value } : item
     );
+    setItems(newItems);
+    onChange(itemsToAnnotations(newItems));
   };
 
   return (
