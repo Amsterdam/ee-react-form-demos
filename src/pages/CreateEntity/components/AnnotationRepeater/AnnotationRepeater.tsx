@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
@@ -14,7 +14,7 @@ interface AnnotationRepeaterProps {
   initialValues: { key: string; value: string | undefined }[];
   onChange: (
     annotations: {
-      label: string | undefined;
+      key: string;
       value: string | undefined;
     }[]
   ) => void;
@@ -31,20 +31,22 @@ const AnnotationRepeater = ({
 }: AnnotationRepeaterProps) => {
   // Keep a reference of IDs to prevent updating previously deleted indexes
   const idCounterRef = useRef(0);
-  const itemIdsRef = useRef<Map<number, string>>(new Map());
-
-  const items: AnnotationItem[] = initialValues.map(({ key, value }, index) => {
-    // Get or create a stable ID for this index
-    if (!itemIdsRef.current.has(index)) {
-      itemIdsRef.current.set(index, `annotation-${++idCounterRef.current}`);
-    }
-
-    return {
-      id: itemIdsRef.current.get(index)!,
+  const [items, setItems] = useState<AnnotationItem[]>(() =>
+    initialValues.map(({ key, value }) => ({
+      id: `annotation-${++idCounterRef.current}`,
       label: key,
       value,
-    };
-  });
+    }))
+  );
+
+  // Update parent when items change
+  useEffect(() => {
+    const newAnnotations = items.map(item => ({
+      key: item.label || '',
+      value: item.value,
+    }));
+    onChange(newAnnotations);
+  }, [items, onChange]);
 
   // Add a new repeater row
   const addItem = () => {
@@ -54,38 +56,12 @@ const AnnotationRepeater = ({
       value: '',
     };
 
-    // Merge back into the original annotation values
-    const newItems = [...items, newItem];
-    const newAnnotations = newItems.map(item => ({
-      label: item.label,
-      value: item.value,
-    }));
-
-    onChange(newAnnotations);
+    setItems(prev => [...prev, newItem]);
   };
 
-  // Remove a repeater row and the corresponding data
+  // Remove a repeater row
   const removeItem = (index: number) => {
-    // Clean up the ID ref
-    itemIdsRef.current.delete(index);
-    // Refresh the array to prevent updating incorrect key indexes
-    const entries = Array.from(itemIdsRef.current.entries());
-    itemIdsRef.current.clear();
-    entries.forEach(([idx, id]) => {
-      if (idx > index) {
-        itemIdsRef.current.set(idx - 1, id);
-      } else if (idx < index) {
-        itemIdsRef.current.set(idx, id);
-      }
-    });
-
-    const newItems = items.filter((_, i) => i !== index);
-    const newAnnotations = newItems.map(item => ({
-      label: item.label,
-      value: item.value,
-    }));
-
-    onChange(newAnnotations);
+    setItems(prev => prev.filter((_, i) => i !== index));
   };
 
   const updateItem = (
@@ -93,16 +69,9 @@ const AnnotationRepeater = ({
     label: string | undefined,
     value: string | undefined
   ) => {
-    const newItems = items.map((item, i) =>
-      i === index ? { ...item, label, value } : item
+    setItems(prev =>
+      prev.map((item, i) => (i === index ? { ...item, label, value } : item))
     );
-
-    const newAnnotations = newItems.map(item => ({
-      label: item.label,
-      value: item.value,
-    }));
-
-    onChange(newAnnotations);
   };
 
   return (

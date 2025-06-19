@@ -1,6 +1,4 @@
-import { ChangeEvent } from 'react';
-import ANNOTATIONS from '@/utils/getAnnotations';
-import InputAutoSelect from '../../../../components/InputAutoSelect/InputAutoSelect';
+import { ChangeEvent, useCallback, useMemo } from 'react';
 import {
   Button,
   Field,
@@ -10,6 +8,8 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
+import ANNOTATIONS from '@/utils/getAnnotations';
+import InputAutoSelect from '../../../../components/InputAutoSelect/InputAutoSelect';
 import styles from './AnnotationRepeaterRow.module.css';
 
 interface AnnotationRepeaterRowProps {
@@ -32,32 +32,46 @@ const AnnotationRepeaterRow = ({
   const annotation = ANNOTATIONS.find(
     annotation => annotation.key === values.label
   );
+  const keyOptions = useMemo(
+    () =>
+      ANNOTATIONS.map(({ key, label }) => ({
+        value: key,
+        label,
+      })),
+    []
+  );
+  const keyValue = useMemo(
+    () =>
+      ANNOTATIONS.map(({ key, label }) => ({
+        value: key,
+        label,
+      })).find(option => option.value === values.label),
+    [values]
+  );
+  const keyOnChange = useCallback((newValue: unknown | null) => {
+    if (newValue) {
+      const selectedKey = (newValue as { value: string }).value;
+      const rule = ANNOTATIONS.find(a => a.key === selectedKey);
+      const defaultValue = rule?.values ? rule.values[0] : undefined;
+
+      onChange(selectedKey, defaultValue);
+    } else {
+      onChange(undefined, undefined);
+    }
+  }, []);
 
   return (
     <Field className={styles.container} invalid={!!keyError || !!valueError}>
       <Heading level={4}>Annotation {index + 1}</Heading>
       <Label htmlFor={`annotation-type-${index}`}>Type</Label>
       <InputAutoSelect
-        options={ANNOTATIONS.map(({ key, label }) => ({ value: key, label }))}
+        options={keyOptions}
         id={`annotation-type-${index}`}
-        value={ANNOTATIONS.map(({ key, label }) => ({
-          value: key,
-          label,
-        })).find(option => option.value === values.label)}
+        value={keyValue}
         required
         error={keyError}
         aria-describedby={`annotations-description ${keyError ? `annotation-type-${index}-error` : ''}`}
-        onChange={(newValue: unknown | null) => {
-          if (newValue) {
-            const selectedKey = (newValue as { value: string }).value;
-            const rule = ANNOTATIONS.find(a => a.key === selectedKey);
-            const defaultValue = rule?.values ? rule.values[0] : undefined;
-
-            onChange(selectedKey, defaultValue);
-          } else {
-            onChange(undefined, undefined);
-          }
-        }}
+        onChange={keyOnChange}
       />
 
       <Label htmlFor={`annotation-value-${index}`}>Value</Label>

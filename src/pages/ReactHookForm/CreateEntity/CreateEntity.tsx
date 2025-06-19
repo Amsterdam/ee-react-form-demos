@@ -417,8 +417,7 @@ const CreateEntity = () => {
           {/* An AnnotationRepeater field is a repeater field of two fields:
           1. A select (react-select) field (the repeater field's 'key')
           2. A corresponding input or select menu (the repeater field's
-          'value'). On change it returns an object 'annotations' of array of
-          { key: '', value: '' } */}
+          'value'). */}
           <AnnotationRepeater
             control={control}
             errors={errors}
@@ -460,15 +459,6 @@ const CreateEntity = () => {
         formData={
           {
             ...formData,
-            annotations: formData.annotations
-              ? formData.annotations.reduce(
-                  (acc, curr) => {
-                    acc[curr.key] = curr.value;
-                    return acc;
-                  },
-                  {} as Record<string, string | undefined>
-                )
-              : {},
             spec: {
               ...formData.spec,
               type: formData.spec.componentType,

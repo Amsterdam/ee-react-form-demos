@@ -38,30 +38,28 @@ const FormAutoSelect = ({
   error,
   onChange,
   ...props
-}: FormAutoSelectProps) => {
-  return (
-    <Field className="ams-mb-m" invalid={!!error}>
-      <Label htmlFor={id}>{label}</Label>
-      {typeof description === 'string' ? (
-        <Paragraph id={`${id}-description`} size="small">
-          {description}
-        </Paragraph>
-      ) : (
-        description
-      )}
-      {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
-      <InputAutoSelect
-        id={id}
-        options={options}
-        isMulti={isMulti}
-        required={required}
-        value={value}
-        error={error}
-        onChange={onChange}
-        {...props}
-      />
-    </Field>
-  );
-};
+}: FormAutoSelectProps) => (
+  <Field className="ams-mb-m" invalid={!!error}>
+    <Label htmlFor={id}>{label}</Label>
+    {typeof description === 'string' ? (
+      <Paragraph id={`${id}-description`} size="small">
+        {description}
+      </Paragraph>
+    ) : (
+      description
+    )}
+    {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
+    <InputAutoSelect
+      id={id}
+      options={options}
+      isMulti={isMulti}
+      required={required}
+      value={value}
+      error={error}
+      onChange={onChange}
+      {...props}
+    />
+  </Field>
+);
 
 export default FormAutoSelect;

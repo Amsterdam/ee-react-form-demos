@@ -16,24 +16,24 @@ const processFormData = (formData: EntityFormData) => {
       description: formData?.description ?? '',
       tags: formData.tags,
       annotations: formData.annotations
-        ? Object.entries(formData.annotations).reduce(
-            (acc, [key, value]) => {
+        ? formData.annotations.reduce(
+            (acc, curr) => {
               const rule = ANNOTATIONS.find(
-                annotation => annotation.key === key
+                annotation => annotation.key === curr.key
               );
 
               // If key is empty skip the record
-              if (key) {
+              if (!curr.key || curr.key === '') {
                 if (rule?.type === 'url') {
-                  acc[key] = `url:${value}`;
+                  acc[curr.key] = `url:${curr.value}`;
                 } else {
-                  acc[key] = value ?? '';
+                  acc[curr.key] = curr.value ?? '';
                 }
               }
-
+              acc[curr.key] = curr.value;
               return acc;
             },
-            {} as Record<string, string>
+            {} as Record<string, string | undefined>
           )
         : {},
       links: formData.links,

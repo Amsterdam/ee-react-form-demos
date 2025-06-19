@@ -36,7 +36,8 @@ const AnnotationRepeaterRow = ({
   errors,
   setValue,
 }: AnnotationRepeaterRowProps) => {
-  // Watch the current annotation key to determine what type of value input to show
+  // Watch the current annotation key to determine what type of value input to
+  // show
   const annotationKey = useWatch({
     control,
     name: `annotations.${index}.key`,

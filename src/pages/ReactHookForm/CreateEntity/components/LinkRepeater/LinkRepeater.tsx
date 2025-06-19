@@ -18,6 +18,10 @@ interface LinkRepeaterProps {
   errors: FieldErrors<RHFEntityFormData>['links'];
 }
 
+// A linkRepeater field is a repeater field of three fields:
+// - an input for URL
+// - an input for Title
+// - a select menu for Icon
 const LinkRepeater = ({
   fields,
   append,

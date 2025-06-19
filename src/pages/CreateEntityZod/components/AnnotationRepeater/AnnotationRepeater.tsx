@@ -27,12 +27,17 @@ interface AnnotationRepeaterProps {
   ) => void;
 }
 
+// An AnnotationRepeater field is a repeater field of two fields:
+// 1. A select (react-select) field (the repeater field's 'key')
+// 2. A corresponding input or select menu (the repeater field's
+// 'value'). On change it returns an object 'annotations' of array of
+// { key: '', value: '' }
 const AnnotationRepeater = ({
   initialValues,
   errors,
   onChange,
 }: AnnotationRepeaterProps) => {
-  console.log({ errors });
+  // Keep a reference of IDs to prevent updating previously deleted indexes
   const idCounterRef = useRef(0);
   const itemIdsRef = useRef<Map<number, string>>(new Map());
 
@@ -49,6 +54,7 @@ const AnnotationRepeater = ({
     };
   });
 
+  // Add a new repeater row
   const addItem = () => {
     const newItem: AnnotationItem = {
       id: `annotation-${++idCounterRef.current}`,
@@ -56,7 +62,7 @@ const AnnotationRepeater = ({
       value: '',
     };
 
-    // Convert back to the format expected by parent
+    // Merge back into the original annotation values
     const newItems = [...items, newItem];
     const newAnnotations = newItems.map(item => ({
       label: item.label,
@@ -66,10 +72,11 @@ const AnnotationRepeater = ({
     onChange(newAnnotations);
   };
 
+  // Remove a repeater row and the corresponding data
   const removeItem = (index: number) => {
-    // Clean up the ID mapping when removing
+    // Clean up the ID ref
     itemIdsRef.current.delete(index);
-    // Shift down all higher indices
+    // Refresh the array to prevent updating incorrect key indexes
     const entries = Array.from(itemIdsRef.current.entries());
     itemIdsRef.current.clear();
     entries.forEach(([idx, id]) => {

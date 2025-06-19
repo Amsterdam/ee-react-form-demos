@@ -563,16 +563,10 @@ const CreateEntity = () => {
                 value: string | undefined;
               }[]
             ) => {
-              const newAnnotations = annotations
-                .filter(
-                  // We're not interested in values with no parent key value
-                  (a): a is { label: string; value: string | undefined } =>
-                    typeof a.label === 'string'
-                )
-                .map(({ label, value }) => ({
-                  key: label,
-                  value: value ?? '',
-                }));
+              const newAnnotations = annotations.map(({ label, value }) => ({
+                key: label ?? '',
+                value: value ?? '',
+              }));
 
               setFormData(prev => ({
                 ...prev,
@@ -616,15 +610,6 @@ const CreateEntity = () => {
         formData={
           {
             ...formData,
-            annotations: formData.annotations
-              ? formData.annotations.reduce(
-                  (acc, curr) => {
-                    acc[curr.key] = curr.value;
-                    return acc;
-                  },
-                  {} as Record<string, string | undefined>
-                )
-              : {},
             spec: {
               ...formData.spec,
               type: formData.spec.type,

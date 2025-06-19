@@ -11,7 +11,6 @@ interface FormTextareaProps {
   id: string;
   label: string;
   description?: ReactNode;
-  // name: string;
   value: string;
   required?: boolean;
   error?: string;

@@ -37,7 +37,7 @@ const FormAutoSelect = ({
   onBlur,
   ...props
 }: FormAutoSelectProps) => {
-  // Filter out empty strings and find matching options
+  // Filter to exclude empty strings and find any already selected key-values
   const validValues = initialValues.filter(val => val && val.trim() !== '');
   const selectedValue =
     options?.filter(option => validValues.includes(option.value)) || [];

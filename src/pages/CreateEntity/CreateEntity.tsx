@@ -34,12 +34,27 @@ const CreateEntity = () => {
     name: 'ee-docs',
     description: 'The primary app for developers.amsterdam',
     tags: ['docusaurus', 'nodejs', 'react', 'typescript'],
-    annotations: {
-      'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
-      'github.com/project-slug': 'amsterdam/ee-docs',
-      'github.com/team-slug': 'amsterdam/engineering-enablement',
-      'lighthouse.com/website-url': 'https://developers.amsterdam',
-    },
+    // annotations: {
+    //   'backstage.io/source-location': 'https://github.com/amsterdam/ee-docs/',
+    //   'github.com/project-slug': 'amsterdam/ee-docs',
+    //   'github.com/team-slug': 'amsterdam/engineering-enablement',
+    //   'lighthouse.com/website-url': 'https://developers.amsterdam',
+    // },
+    annotations: [
+      {
+        key: 'backstage.io/source-location',
+        value: 'https://github.com/amsterdam/ee-docs/',
+      },
+      { key: 'github.com/project-slug', value: 'amsterdam/ee-docs' },
+      {
+        key: 'github.com/team-slug',
+        value: 'amsterdam/engineering-enablement',
+      },
+      {
+        key: 'lighthouse.com/website-url',
+        value: 'https://developers.amsterdam',
+      },
+    ],
     links: [
       {
         url: 'https://developers.amsterdam/',
@@ -103,7 +118,7 @@ const CreateEntity = () => {
       name: '',
       description: '',
       tags: [],
-      annotations: {},
+      annotations: [],
       links: [],
       spec: {
         type: '',
@@ -353,33 +368,11 @@ const CreateEntity = () => {
           'value'). On change it returns an object 'annotations' of array of
           { key: '', value: '' } */}
           <AnnotationRepeater
-            initialValues={Object.keys(formData.annotations).map(
-              annotation => ({
-                key: annotation,
-                value: formData.annotations[annotation],
-              })
-            )}
-            onChange={(
-              annotations: {
-                label: string | undefined;
-                value: string | undefined;
-              }[]
-            ) =>
+            initialValues={formData.annotations}
+            onChange={annotations =>
               setFormData({
                 ...formData,
-                annotations: annotations
-                  .filter(
-                    // Skip any repeater fields where the key is undefined
-                    (a): a is { label: string; value: string | undefined } =>
-                      typeof a.label === 'string'
-                  )
-                  .reduce(
-                    (acc, { label, value }) => {
-                      acc[label] = value ?? '';
-                      return acc;
-                    },
-                    {} as Record<string, string | undefined>
-                  ),
+                annotations: annotations,
               })
             }
           />
