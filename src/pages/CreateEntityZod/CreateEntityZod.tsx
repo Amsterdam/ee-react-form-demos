@@ -7,7 +7,7 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextarea from './components/FormTextarea/FormTextarea';
@@ -29,11 +29,14 @@ import {
 } from './schema';
 import { EntityFormData } from '@/types/types';
 import useEntityFormValidation from './hooks/useEntityFormValidation';
+import scrollToFirstError from './utils/scrollToFirstError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 const CreateEntity = () => {
+  // The ref is only necessary if you want to scroll to the first error
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     kind: 'Component',
     name: 'ee-docs',
@@ -134,6 +137,7 @@ const CreateEntity = () => {
     e.preventDefault();
 
     if (!validateForm()) {
+      scrollToFirstError(formRef.current);
       return;
     }
 
@@ -180,8 +184,10 @@ const CreateEntity = () => {
           Create an entity
         </Heading>
 
+        {/* The ref is only necessary if you want to scroll to the first
+        error */}
         {/* Use noValidate so browser validation doesn't block zod */}
-        <form onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} ref={formRef} noValidate>
           <FormSelect
             id="kind"
             label="Kind"

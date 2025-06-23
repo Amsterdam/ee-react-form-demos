@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   useForm,
   Controller,
@@ -36,12 +36,15 @@ import entityFormSchema, {
 } from './schema';
 import { EntityFormData } from '@/types/types';
 import styles from './CreateEntity.module.css';
+import scrollToFirstError from './utils/scrollToFirstError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 // TODO scroll to first error
 const CreateEntity = () => {
+  // The ref is only necessary if you want to scroll to the first error
+  const formRef = useRef<HTMLFormElement>(null);
   const {
     control,
     handleSubmit,
@@ -130,6 +133,10 @@ const CreateEntity = () => {
     }, 1500);
   };
 
+  const onInvalid = () => {
+    scrollToFirstError(formRef.current);
+  };
+
   // Reset the form to a blank state
   const resetForm = () => {
     reset({
@@ -158,7 +165,12 @@ const CreateEntity = () => {
 
         {/* Use noValidate so browser validation doesn't block react-hook-form
         + zod */}
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form
+          onSubmit={handleSubmit(onSubmit, onInvalid)}
+          // The ref is only necessary if you want to scroll to the first error
+          ref={formRef}
+          noValidate
+        >
           <Controller
             name="kind"
             control={control}
