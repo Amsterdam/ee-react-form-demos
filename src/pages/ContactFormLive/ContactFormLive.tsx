@@ -29,6 +29,7 @@ import styles from './ContactFormLive.module.css';
 // on change
 const ContactFormLive = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  // Touched state handling enables active and passive validation handling
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitTouched, setSubmitTouched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -186,11 +187,15 @@ const ContactFormLive = () => {
           noValidate
           onSubmit={handleSubmit}
         >
+          {/* Fake loader to simulate API request */}
           {isLoading && (
             <div className={styles.loader}>
               <Loader />
             </div>
           )}
+          {/* Only display an error alert after user hits submit `active validation`,
+          fields will already have subtle styling (for example, a red border)
+          before this `passive validation` */}
           {submitTouched && hasErrors && (
             <Alert heading="Niet gelukt" headingLevel={2} severity="error">
               <Paragraph>Er was een fout met de volgende velden:</Paragraph>

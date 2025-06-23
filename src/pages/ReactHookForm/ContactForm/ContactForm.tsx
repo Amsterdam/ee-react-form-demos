@@ -94,6 +94,7 @@ const ContactForm = () => {
           noValidate
           onSubmit={handleSubmit(onSubmit)}
         >
+          {/* Fake loader to simulate API request */}
           {isLoading && (
             <div className={styles.loader}>
               <Loader />

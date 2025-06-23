@@ -41,11 +41,11 @@ const FormTextarea = ({
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextArea
+      rows={4}
       aria-describedby={
         description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
       }
       id={id}
-      rows={4}
       name={name}
       value={value}
       required={required}

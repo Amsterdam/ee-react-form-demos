@@ -249,8 +249,8 @@ const CreateEntity = () => {
                   'mobile-app': 'Mobile/Native App',
                 }}
                 value={field.value}
-                error={errors.spec?.componentType?.message}
                 required
+                error={errors.spec?.componentType?.message}
                 onChange={field.onChange}
               />
             )}
@@ -273,8 +273,8 @@ const CreateEntity = () => {
                   archived: 'Archived',
                 }}
                 value={field.value}
-                error={errors.spec?.lifecycle?.message}
                 required
+                error={errors.spec?.lifecycle?.message}
                 onChange={field.onChange}
               />
             )}
@@ -307,8 +307,8 @@ const CreateEntity = () => {
                   }
                   options={ownerOptions}
                   value={selectedOption}
-                  error={errors.spec?.owner?.message}
                   required
+                  error={errors.spec?.owner?.message}
                   onChange={selectedOption => {
                     // Handling react-select requires an extra step, as using
                     // the isMulti prop as true, will return an array of values.
@@ -396,8 +396,8 @@ const CreateEntity = () => {
                   description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
                   options={getTags()}
                   value={selectedOptions}
-                  error={errors.tags?.message}
                   isMulti
+                  error={errors.tags?.message}
                   onChange={selectedOptions => {
                     // This React-Select component uses isMulti so we need to
                     // handle an array of values

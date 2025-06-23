@@ -10,6 +10,7 @@ interface LinkRepeaterProps {
     title: string;
     icon: string;
   }[];
+  errors?: FieldErrors;
   onChange: (
     items: {
       url: string;
@@ -17,7 +18,6 @@ interface LinkRepeaterProps {
       icon: string;
     }[]
   ) => void;
-  errors?: FieldErrors;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onValidateField?: (fieldPath: string, value: any) => void;
 }

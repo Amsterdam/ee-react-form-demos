@@ -156,7 +156,7 @@ const CreateEntity = () => {
   };
 
   // Reset the form to a blank state
-  const resetForm = () => {
+  const handleResetClick = () => {
     setFormData({
       kind: '',
       name: '',
@@ -492,7 +492,11 @@ const CreateEntity = () => {
             <Button type="submit" disabled={isLoading}>
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
-            <Button type="button" variant="secondary" onClick={resetForm}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleResetClick}
+            >
               Reset
             </Button>
           </Row>
