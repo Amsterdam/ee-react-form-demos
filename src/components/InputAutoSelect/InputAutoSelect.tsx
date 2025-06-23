@@ -1,8 +1,8 @@
 import Select, { ActionMeta } from 'react-select';
 import ClearIndicator from './components/ClearIndicator';
 import DropdownIndicator from './components/DropdownIndicator';
-import './InputAutoSelect.scss';
 import { ReactSelectOption, ReactSelectValue } from './types';
+import './InputAutoSelect.scss';
 
 interface InputAutoSelectProps {
   isClearable?: boolean;
@@ -21,6 +21,8 @@ interface InputAutoSelectProps {
   onBlur?: () => void;
 }
 
+// This is a wrapper for React-Select with Amsterdam Design System styling
+// @see https://react-select.com/props for more props
 // WARNING: The following prop types are unstyled and untested:
 // - isLoading
 // - isRtl

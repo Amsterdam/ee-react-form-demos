@@ -18,11 +18,19 @@ interface LinkRepeaterProps {
   ) => void;
 }
 
+// A linkRepeater field is a repeater field of three fields:
+// - an input for URL
+// - an input for Title
+// - a select menu for Icon
+// On change it returns an array of repeater fields - an array of
+// the three fields' values
 const LinkRepeater = ({ items, onChange }: LinkRepeaterProps) => {
+  // Add a new repeater row
   const addItem = () => {
     onChange([...items, { url: '', title: '', icon: 'dashboard' }]);
   };
 
+  // Remove a repeater row
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
     onChange(newItems);
@@ -55,9 +63,9 @@ const LinkRepeater = ({ items, onChange }: LinkRepeaterProps) => {
       <div className="ams-mb-m">
         {items.map((item, index) => (
           <LinkRepeaterRow
-            removeItem={() => removeItem(index)}
             index={index}
             item={item}
+            removeItem={() => removeItem(index)}
             onChange={(name, value) => updateItem(index, name, value)}
             key={`lri-${index}`}
           />

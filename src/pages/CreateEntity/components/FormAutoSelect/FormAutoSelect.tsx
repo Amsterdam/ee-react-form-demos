@@ -10,8 +10,8 @@ import {
 interface FormAutoSelectProps {
   id: string;
   label: string;
-  name: string;
   description?: ReactNode;
+  name: string;
   options: ReactSelectOption[] | undefined;
   initialValues: string[];
   required?: boolean;
@@ -25,8 +25,8 @@ interface FormAutoSelectProps {
 const FormAutoSelect = ({
   id,
   label,
-  name,
   description,
+  name,
   options,
   initialValues,
   required = false,
@@ -34,7 +34,7 @@ const FormAutoSelect = ({
   onChange,
   ...props
 }: FormAutoSelectProps) => {
-  // Filter out empty strings and find matching options
+  // Filter to exclude empty strings and find any already selected key-values
   const validValues = initialValues.filter(val => val && val.trim() !== '');
   const selectedValue =
     options?.filter(option => validValues.includes(option.value)) || [];

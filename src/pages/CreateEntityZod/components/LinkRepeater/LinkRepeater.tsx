@@ -10,6 +10,7 @@ interface LinkRepeaterProps {
     title: string;
     icon: string;
   }[];
+  errors?: FieldErrors;
   onChange: (
     items: {
       url: string;
@@ -17,29 +18,37 @@ interface LinkRepeaterProps {
       icon: string;
     }[]
   ) => void;
-  errors?: FieldErrors;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onValidateField?: (fieldPath: string, value: any) => void;
 }
 
+// A linkRepeater field is a repeater field of three fields:
+// - an input for URL
+// - an input for Title
+// - a select menu for Icon
+// On change it returns an array of repeater fields - an array of
+// the three fields' values
 const LinkRepeater = ({
   items,
   onChange,
   errors,
   onValidateField,
 }: LinkRepeaterProps) => {
-  console.log({ items, errors });
+  // Add a new repeater row
   const addItem = () => {
     const newItems = [...items, { url: '', title: '', icon: 'dashboard' }];
     onChange(newItems);
-    // Validate the entire links array after adding
+
+    // Validate the links array after adding a new item
     onValidateField?.('links', newItems);
   };
 
+  // Remove a repeater row
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
     onChange(newItems);
-    // Validate the entire links array after removing
+
+    // Validate the links array after removing an item
     onValidateField?.('links', newItems);
   };
 
@@ -54,7 +63,7 @@ const LinkRepeater = ({
     );
     onChange(newItems);
 
-    // Validate the specific field and the entire links array
+    // Validate the single field and the entire links array
     onValidateField?.(`links.${index}.${name}`, value);
     onValidateField?.('links', newItems);
   };
@@ -82,9 +91,9 @@ const LinkRepeater = ({
       <div className="ams-mb-m">
         {items.map((item, index) => (
           <LinkRepeaterRow
-            removeItem={() => removeItem(index)}
             index={index}
             item={item}
+            removeItem={() => removeItem(index)}
             onChange={(name, value) => updateItem(index, name, value)}
             onBlur={(name, value) => handleBlur(index, name, value)}
             errors={errors}

@@ -1,5 +1,6 @@
 import { ReactSelectOption } from '@/components/InputAutoSelect/types';
 
+// Sort an array of objects by `label` property
 export default function sortAlphabetically(
   a: ReactSelectOption,
   b: ReactSelectOption

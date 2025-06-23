@@ -1,3 +1,4 @@
+// Prettify the labels
 export const translations = {
   name: 'Voornaam',
   email: 'E-mailadres',

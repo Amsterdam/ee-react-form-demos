@@ -16,6 +16,10 @@ interface AnnotationRepeaterProps {
   setValue: UseFormSetValue<EntityFormData>;
 }
 
+// An AnnotationRepeater field is a repeater field of two fields:
+// 1. A select (react-select) field (the repeater field's 'key')
+// 2. A corresponding input or select menu (the repeater field's
+// 'value').
 const AnnotationRepeater = ({
   control,
   errors,
@@ -26,6 +30,7 @@ const AnnotationRepeater = ({
     name: 'annotations',
   });
 
+  // Add a new repeater row
   const addItem = () => {
     append({
       key: '',

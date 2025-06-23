@@ -1,4 +1,4 @@
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '@/types/types';
 import { Grid, Heading } from '@amsterdam/design-system-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -15,26 +15,27 @@ const processFormData = (formData: EntityFormData) => {
       name: formData.name,
       description: formData?.description ?? '',
       tags: formData.tags,
-      // annotations: [],
+      // Convert annotations from array of key, value objects to Backstage
+      // annotation object
       annotations: formData.annotations
-        ? Object.entries(formData.annotations).reduce(
-            (acc, [key, value]) => {
+        ? formData.annotations.reduce(
+            (acc, curr) => {
               const rule = ANNOTATIONS.find(
-                annotation => annotation.key === key
+                annotation => annotation.key === curr.key
               );
 
               // If key is empty skip the record
-              if (key) {
+              if (!curr.key || curr.key === '') {
                 if (rule?.type === 'url') {
-                  acc[key] = `url: ${value}`;
+                  acc[curr.key] = `url:${curr.value}`;
                 } else {
-                  acc[key] = value ?? '';
+                  acc[curr.key] = curr.value ?? '';
                 }
               }
-
+              acc[curr.key] = curr.value;
               return acc;
             },
-            {} as Record<string, string>
+            {} as Record<string, string | undefined>
           )
         : {},
       links: formData.links,
@@ -63,7 +64,7 @@ interface SubmissionOutputProps {
   formData: EntityFormData;
 }
 
-// TODO annotations - with is link value with `url: ` in speech marks but not other values?
+// Display the submitted data as a valid Backstage entity in YAML format
 const SubmissionOutput = ({ formData }: SubmissionOutputProps) => {
   const codeString = yaml.dump(processFormData(formData));
 

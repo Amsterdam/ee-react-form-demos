@@ -1,4 +1,3 @@
-import Loader from '@/components/Loader/Loader';
 import {
   Alert,
   Button,
@@ -21,12 +20,16 @@ import {
 } from 'react';
 import { z } from 'zod/v4';
 import { debounce } from 'es-toolkit';
+import Loader from '@/components/Loader/Loader';
+import t, { translations } from '../ContactForm/utils/translate';
+import ContactFormLiveSchema from '../ContactForm/schema';
 import styles from './ContactFormLive.module.css';
-import t, { translations } from './utils/translate';
-import ContactFormLiveSchema from './schema';
 
+// This is a simple HTML5 form example that validates using a Zod schema
+// on change
 const ContactFormLive = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  // Touched state handling enables active and passive validation handling
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitTouched, setSubmitTouched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,25 +37,30 @@ const ContactFormLive = () => {
 
   const validateField = (name: string, value: string): string | null => {
     try {
-      // Create a partial schema for single field validation
+      // Extract a single schema property for the form field
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const fieldSchema = ContactFormLiveSchema.pick({ [name]: true } as any);
       fieldSchema.parse({ [name]: value });
-      return null; // No error
+
+      return null;
     } catch (error) {
       if (error instanceof z.ZodError) {
         return error.issues[0]?.message || 'Invalid input';
       }
+
       return null;
     }
   };
 
+  // Use debounce for smoother user interaction
   const debouncedValidate = useCallback(
     debounce((name: string, value: string) => {
       if (touched[name]) {
         const fieldError = validateField(name, value);
+
         setErrors(prev => {
           const newErrors = { ...prev };
+
           if (fieldError) {
             newErrors[name] = fieldError;
           } else {
@@ -61,20 +69,18 @@ const ContactFormLive = () => {
           return newErrors;
         });
       }
-    }, 300), // 300ms delay
+    }, 300),
     [touched]
   );
 
-  // Handle input changes
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
     debouncedValidate(name, value);
   };
 
-  // Handle when field loses focus (mark as touched)
+  // Handle when a field loses focus (and mark as touched)
   const handleBlur = (
     e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -84,6 +90,7 @@ const ContactFormLive = () => {
 
     // Validate the field when it's first touched
     const fieldError = validateField(name, value);
+
     if (fieldError) {
       setErrors(prev => ({ ...prev, [name]: fieldError }));
     }
@@ -93,12 +100,12 @@ const ContactFormLive = () => {
     const data = {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
-      body: formData.get('body') as string, // Note: your schema uses 'body' but form uses 'message'
+      body: formData.get('body') as string,
     };
 
     try {
       ContactFormLiveSchema.parse(data);
-      return {}; // No errors
+      return {};
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Record<string, string> = {};
@@ -121,11 +128,18 @@ const ContactFormLive = () => {
     const formData = new FormData(e.currentTarget);
     const validationErrors = validateForm(formData);
 
+    console.log('Form data:', formData);
+
     setErrors(validationErrors);
     setSubmitTouched(true);
 
+    /**
+     * If form is valid use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     if (Object.keys(validationErrors).length === 0) {
-      // Form is valid, proceed with submission
       setIsLoading(true);
       setTimeout(() => {
         setIsSubmitted(true);
@@ -160,7 +174,7 @@ const ContactFormLive = () => {
     <Grid>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
         <Heading level={1} size="level-3" className="ams-mb-m">
-          Contactformulier 2
+          Contactformulier
         </Heading>
 
         <Paragraph className="ams-mb-m">
@@ -173,11 +187,15 @@ const ContactFormLive = () => {
           noValidate
           onSubmit={handleSubmit}
         >
+          {/* Fake loader to simulate API request */}
           {isLoading && (
             <div className={styles.loader}>
               <Loader />
             </div>
           )}
+          {/* Only display an error alert after user hits submit `active validation`,
+          fields will already have subtle styling (for example, a red border)
+          before this `passive validation` */}
           {submitTouched && hasErrors && (
             <Alert heading="Niet gelukt" headingLevel={2} severity="error">
               <Paragraph>Er was een fout met de volgende velden:</Paragraph>

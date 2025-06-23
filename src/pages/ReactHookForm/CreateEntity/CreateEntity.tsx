@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   useForm,
   Controller,
@@ -30,16 +30,20 @@ import getSystems from '@/utils/getSystems';
 import getTags from '@/utils/getTags';
 import sortAlphabetically from '@/utils/sortAlphabetically';
 import entityFormSchema, {
+  // We renamed this as we still need the original EntityFormData type shape for
+  // the SubmissionOutput component
   EntityFormData as RHFEntityFormData,
 } from './schema';
-import { EntityFormData } from '@/types';
+import { EntityFormData } from '@/types/types';
 import styles from './CreateEntity.module.css';
+import scrollToFirstError from './utils/scrollToFirstError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO scroll to first error
 const CreateEntity = () => {
+  // The ref is only necessary if you want to scroll to the first error
+  const formRef = useRef<HTMLFormElement>(null);
   const {
     control,
     handleSubmit,
@@ -48,6 +52,7 @@ const CreateEntity = () => {
     setValue,
     watch,
   } = useForm<RHFEntityFormData>({
+    // Resolvers allows you to use any external validation library (like Zod)
     resolver: zodResolver(entityFormSchema) as Resolver<RHFEntityFormData>,
     defaultValues: {
       kind: 'Component',
@@ -95,36 +100,43 @@ const CreateEntity = () => {
       },
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // useFieldArray for repeater fields. This is also used in the
+  // AnnotationRepeater component
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'links',
   });
 
-  const formData = watch();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
   // Watch the hasSystem field to conditionally show system field
   const hasSystem = useWatch({ control, name: 'spec.hasSystem' });
+  const formData = watch();
 
+  // onSubmit will only fire if the form is valid
   const onSubmit = (data: RHFEntityFormData) => {
-    // Mock API call
     console.log('Form data:', data);
 
-    // Simulate API call
+    /**
+     * Use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     setIsLoading(true);
 
     setTimeout(() => {
       setIsLoading(false);
       setIsSubmitted(true);
     }, 1500);
-
-    // Handle success (you might want to show a success message here)
-    console.log('Form submitted successfully');
   };
 
+  const onInvalid = () => {
+    scrollToFirstError(formRef.current);
+  };
+
+  // Reset the form to a blank state
   const resetForm = () => {
     reset({
       kind: 'API',
@@ -150,8 +162,14 @@ const CreateEntity = () => {
           Create an entity
         </Heading>
 
-        {/* Use noValidate so browser validation doesn't block react-hook-form + zod */}
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        {/* Use noValidate so browser validation doesn't block react-hook-form
+        + zod */}
+        <form
+          onSubmit={handleSubmit(onSubmit, onInvalid)}
+          // The ref is only necessary if you want to scroll to the first error
+          ref={formRef}
+          noValidate
+        >
           <Controller
             name="kind"
             control={control}
@@ -174,6 +192,11 @@ const CreateEntity = () => {
                     to also add entities of other kinds to the catalog.
                   </Paragraph>
                 }
+                // This options format may look a bit overcomplicated. In this
+                // example it is intended to demonstate select menus where the
+                // value might be an ID or code and is, therefore, not useful
+                // to present to frontend users. Go to the 'Type' Select field
+                // for an example where this happens.
                 options={{
                   API: 'API',
                   Component: 'Component',
@@ -237,8 +260,8 @@ const CreateEntity = () => {
                   'mobile-app': 'Mobile/Native App',
                 }}
                 value={field.value}
-                error={errors.spec?.componentType?.message}
                 required
+                error={errors.spec?.componentType?.message}
                 onChange={field.onChange}
               />
             )}
@@ -261,8 +284,8 @@ const CreateEntity = () => {
                   archived: 'Archived',
                 }}
                 value={field.value}
-                error={errors.spec?.lifecycle?.message}
                 required
+                error={errors.spec?.lifecycle?.message}
                 onChange={field.onChange}
               />
             )}
@@ -295,10 +318,13 @@ const CreateEntity = () => {
                   }
                   options={ownerOptions}
                   value={selectedOption}
-                  error={errors.spec?.owner?.message}
                   required
+                  error={errors.spec?.owner?.message}
                   onChange={selectedOption => {
-                    // react-select + isMulti + typescript makes things a bit overcomplicated
+                    // Handling react-select requires an extra step, as using
+                    // the isMulti prop as true, will return an array of values.
+                    // These minor prop differences can lead to some  complex
+                    // Type handling
                     const option = Array.isArray(selectedOption)
                       ? selectedOption[0]
                       : selectedOption;
@@ -381,9 +407,11 @@ const CreateEntity = () => {
                   description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
                   options={getTags()}
                   value={selectedOptions}
-                  error={errors.tags?.message}
                   isMulti
+                  error={errors.tags?.message}
                   onChange={selectedOptions => {
+                    // This React-Select component uses isMulti so we need to
+                    // handle an array of values
                     field.onChange(
                       Array.isArray(selectedOptions)
                         ? selectedOptions.map(
@@ -397,12 +425,22 @@ const CreateEntity = () => {
             }}
           />
 
+          {/* An AnnotationRepeater field is a repeater field of two fields:
+          1. A select (react-select) field (the repeater field's 'key')
+          2. A corresponding input or select menu (the repeater field's
+          'value'). */}
           <AnnotationRepeater
             control={control}
             errors={errors}
             setValue={setValue}
           />
 
+          {/* A linkRepeater field is a repeater field of three fields:
+          - an input for URL
+          - an input for Title
+          - a select menu for Icon
+          On change it returns an array of repeater fields - an array of
+          the three fields' values */}
           <Controller
             name="links"
             control={control}
@@ -432,15 +470,6 @@ const CreateEntity = () => {
         formData={
           {
             ...formData,
-            annotations: formData.annotations
-              ? formData.annotations.reduce(
-                  (acc, curr) => {
-                    acc[curr.key] = curr.value;
-                    return acc;
-                  },
-                  {} as Record<string, string | undefined>
-                )
-              : {},
             spec: {
               ...formData.spec,
               type: formData.spec.componentType,
@@ -449,12 +478,14 @@ const CreateEntity = () => {
         }
       />
 
+      {/* Fake loader to simulate API request */}
       {isLoading && (
         <div className={styles.loader}>
           <Loader />
         </div>
       )}
 
+      {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>
           <Alert

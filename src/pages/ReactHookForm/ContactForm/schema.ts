@@ -24,6 +24,7 @@ const contactFormSchema = z.object({
     .min(1, { error: requiredError }),
 });
 
+// We can infer the types from the zod object rules
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default contactFormSchema;

@@ -7,7 +7,7 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextarea from './components/FormTextarea/FormTextarea';
@@ -22,28 +22,21 @@ import getSystems from '@/utils/getSystems';
 import getTags from '@/utils/getTags';
 import sortAlphabetically from '@/utils/sortAlphabetically';
 import styles from './CreateEntityZod.module.css';
-import entityFormSchema, {
+import {
+  // We renamed this as we still need the original EntityFormData type shape for
+  // the SubmissionOutput component
   EntityFormData as ZodEntityFormData,
-  FieldErrors,
-  specSchema,
 } from './schema';
-import z from 'zod/v4';
-import { EntityFormData } from '@/types';
-import findRelevantError from './utils/findRelevantError';
+import { EntityFormData } from '@/types/types';
+import useEntityFormValidation from './hooks/useEntityFormValidation';
+import scrollToFirstError from './utils/scrollToFirstError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO align props order - FormAutoSelect vs FormTextInput FormTextarea
-// TODO document results
-// - Check shared GitHub examples (in Slack)
-// - README/storybook setup?
-// - validation alert/header with invalid fields - Cannot accomplish with browser validation
-// - smaller forms - use react validation
-// - larger/dynamic forms - use browser validation
-// - react-hook-form to this migration path?
-// TODO tests
 const CreateEntity = () => {
+  // The ref is only necessary if you want to scroll to the first error
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     kind: 'Component',
     name: 'ee-docs',
@@ -90,115 +83,14 @@ const CreateEntity = () => {
     },
   } as ZodEntityFormData);
 
-  const [errors, setErrors] = useState<FieldErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Validate a single field
-  // We should use `value: unknown` but as this argument is being passed straight
-  // to Zod for validation (and type checking) `any` is acceptable
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const validateField = (fieldPath: string, value: any) => {
-    try {
-      // This flow is usually simpler if your form has no repeater child object/array fields
-      const updatedFormData = buildFormDataWithNewValue(fieldPath, value);
-      entityFormSchema.parse(updatedFormData);
-      clearFieldError(fieldPath);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const fieldError = findRelevantError(error, fieldPath);
-        if (fieldError) {
-          setFieldError(fieldPath, fieldError.message);
-        }
-      }
-    }
-  };
-
-  // Build a form data object with the updated value
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const buildFormDataWithNewValue = (fieldPath: string, value: any) => {
-    if (fieldPath.startsWith('links.')) {
-      return buildFormDataWithLinksUpdate(fieldPath, value);
-    }
-
-    if (fieldPath.startsWith('spec.')) {
-      return buildFormDataWithSpecUpdate(fieldPath, value);
-    }
-
-    // Top-level field update
-    return { ...formData, [fieldPath]: value };
-  };
-
-  // Build the form data object's 'links' array
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const buildFormDataWithLinksUpdate = (fieldPath: string, value: any) => {
-    const pathParts = fieldPath.split('.');
-
-    // A link row consists of 3 fields - URL, title and icon
-    if (pathParts.length === 3) {
-      // Single link row field (e.g., links.0.url)
-      const [, indexStr, fieldName] = pathParts;
-      const index = parseInt(indexStr, 10);
-
-      if (!isNaN(index) && formData.links?.[index]) {
-        const updatedLinks = [...(formData.links || [])];
-        updatedLinks[index] = { ...updatedLinks[index], [fieldName]: value };
-        return { ...formData, links: updatedLinks };
-      }
-    }
-
-    // Entire links array update
-    return { ...formData, links: value };
-  };
-
-  // Build the form data object's 'spec' object
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const buildFormDataWithSpecUpdate = (fieldPath: string, value: any) => {
-    const specField = fieldPath.split('.')[1] as keyof z.infer<
-      typeof specSchema
-    >;
-    const updatedSpec = { ...formData.spec, [specField]: value };
-    return { ...formData, spec: updatedSpec };
-  };
-
-  const clearFieldError = (fieldPath: string) => {
-    setErrors(prev => {
-      const newErrors = { ...prev };
-      delete newErrors[fieldPath as keyof FieldErrors];
-      return newErrors;
-    });
-  };
-
-  const setFieldError = (fieldPath: string, message: string) => {
-    setErrors(prev => ({ ...prev, [fieldPath]: message }));
-  };
-
-  // Validate entire form
-  const validateForm = (): boolean => {
-    try {
-      entityFormSchema.parse(formData);
-      setErrors({});
-      return true;
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: FieldErrors = {};
-
-        error.issues.forEach(err => {
-          const path = err.path.join('.');
-          // Handle nested spec fields
-          if (err.path[0] === 'spec' && err.path.length > 1) {
-            newErrors[`spec.${String(err.path[1])}` as keyof FieldErrors] =
-              err.message;
-          } else {
-            newErrors[path as keyof FieldErrors] = err.message;
-          }
-        });
-
-        setErrors(newErrors);
-      }
-      return false;
-    }
-  };
+  // Keep all the form validation in a hook for reusability and to keep this
+  // parent component clean. The formData handling could also be moved into a
+  // hook if this parent component contains extra custom logic
+  const { errors, validateField, validateForm, clearAllErrors } =
+    useEntityFormValidation(formData);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -208,7 +100,7 @@ const CreateEntity = () => {
       type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
 
     if (name.startsWith('spec.')) {
-      const specField = name.split('.')[1] as keyof z.infer<typeof specSchema>;
+      const specField = name.split('.')[1] as keyof EntityFormData['spec'];
       const newValue = type === 'checkbox' ? checked : value;
 
       setFormData(prev => ({
@@ -219,7 +111,6 @@ const CreateEntity = () => {
         },
       }));
 
-      // Validate on change (optional - you might prefer on blur)
       validateField(name, newValue);
     } else {
       setFormData(prev => ({
@@ -227,7 +118,6 @@ const CreateEntity = () => {
         [name]: value,
       }));
 
-      // Validate on change (optional)
       validateField(name, value);
     }
   };
@@ -240,23 +130,25 @@ const CreateEntity = () => {
       type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
     const fieldValue = type === 'checkbox' ? checked : value;
 
-    // Validate on blur for better UX
     validateField(name, fieldValue);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Validate entire form before submission
     if (!validateForm()) {
-      console.log('Validation failed:', errors);
+      scrollToFirstError(formRef.current);
       return;
     }
 
-    console.log('Form data is valid:', formData);
+    console.log('Form data:', formData);
 
-    // Simulate API call
-    // Here's where validation could happen
+    /**
+     * Use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     setIsLoading(true);
 
     setTimeout(() => {
@@ -265,7 +157,8 @@ const CreateEntity = () => {
     }, 1500);
   };
 
-  const resetForm = () => {
+  // Reset the form to a blank state
+  const handleResetClick = () => {
     setFormData({
       kind: '',
       name: '',
@@ -281,7 +174,7 @@ const CreateEntity = () => {
         system: '',
       },
     });
-    setErrors({});
+    clearAllErrors();
   };
 
   return (
@@ -291,8 +184,10 @@ const CreateEntity = () => {
           Create an entity
         </Heading>
 
+        {/* The ref is only necessary if you want to scroll to the first
+        error */}
         {/* Use noValidate so browser validation doesn't block zod */}
-        <form onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} ref={formRef} noValidate>
           <FormSelect
             id="kind"
             label="Kind"
@@ -438,6 +333,10 @@ const CreateEntity = () => {
             required
             error={errors['spec.owner']}
             onChange={newValue => {
+              // Handling react-select requires an extra step, as using
+              // the isMulti prop as true, will return an array of values.
+              // These minor prop differences can lead to some  complex
+              // Type handling
               const option = Array.isArray(newValue) ? newValue[0] : newValue;
               const ownerValue = option?.value ?? '';
 
@@ -526,6 +425,8 @@ const CreateEntity = () => {
             initialValues={formData.tags}
             error={errors.tags}
             onChange={newValue => {
+              // This React-Select component uses isMulti so we need to
+              // handle an array of values
               const tagsValue = Array.isArray(newValue)
                 ? newValue?.map(({ value }: { value: string }) => value)
                 : [];
@@ -541,6 +442,11 @@ const CreateEntity = () => {
             }}
           />
 
+          {/* An AnnotationRepeater field is a repeater field of two fields:
+          1. A select (react-select) field (the repeater field's 'key')
+          2. A corresponding input or select menu (the repeater field's
+          'value'). On change it returns an object 'annotations' of array of
+          { key: '', value: '' } */}
           <AnnotationRepeater
             initialValues={formData.annotations.map(annotation => ({
               key: annotation.key,
@@ -553,16 +459,10 @@ const CreateEntity = () => {
                 value: string | undefined;
               }[]
             ) => {
-              const newAnnotations = annotations
-                .filter(
-                  // We're not interested in values with no parent key value
-                  (a): a is { label: string; value: string | undefined } =>
-                    typeof a.label === 'string'
-                )
-                .map(({ label, value }) => ({
-                  key: label,
-                  value: value ?? '',
-                }));
+              const newAnnotations = annotations.map(({ label, value }) => ({
+                key: label ?? '',
+                value: value ?? '',
+              }));
 
               setFormData(prev => ({
                 ...prev,
@@ -573,6 +473,13 @@ const CreateEntity = () => {
               validateField('annotations', newAnnotations);
             }}
           />
+
+          {/* A linkRepeater field is a repeater field of three fields:
+          - an input for URL
+          - an input for Title
+          - a select menu for Icon
+          On change it returns an array of repeater fields - an array of
+          the three fields' values */}
           <LinkRepeater
             items={formData?.links ?? []}
             errors={errors}
@@ -589,7 +496,11 @@ const CreateEntity = () => {
             <Button type="submit" disabled={isLoading}>
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
-            <Button type="button" variant="secondary" onClick={resetForm}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleResetClick}
+            >
               Reset
             </Button>
           </Row>
@@ -599,15 +510,6 @@ const CreateEntity = () => {
         formData={
           {
             ...formData,
-            annotations: formData.annotations
-              ? formData.annotations.reduce(
-                  (acc, curr) => {
-                    acc[curr.key] = curr.value;
-                    return acc;
-                  },
-                  {} as Record<string, string | undefined>
-                )
-              : {},
             spec: {
               ...formData.spec,
               type: formData.spec.type,
@@ -616,12 +518,14 @@ const CreateEntity = () => {
         }
       />
 
+      {/* Fake loader to simulate API request */}
       {isLoading && (
         <div className={styles.loader}>
           <Loader />
         </div>
       )}
 
+      {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>
           <Alert

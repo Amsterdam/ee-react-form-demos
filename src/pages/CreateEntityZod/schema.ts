@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 
-export const specSchema = z
+const specSchema = z
   .object({
     // Avoid the property name `type`, as RHF uses this
     type: z.string().min(1, 'Type is required'),
@@ -22,6 +22,7 @@ const entityFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
   tags: z.array(z.string()).default([]),
+  // With RHF - handle annoations as an array than object
   annotations: z
     .array(
       z.object({
@@ -42,6 +43,7 @@ const entityFormSchema = z.object({
   spec: specSchema,
 });
 
+// We can infer the types from the zod object rules
 export type EntityFormData = z.infer<typeof entityFormSchema>;
 export type FieldErrors = Partial<
   Record<

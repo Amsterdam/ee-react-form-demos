@@ -45,10 +45,10 @@ const FormTextarea = ({
         description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
       }
       id={id}
-      rows={4}
       name={name}
       value={value}
       required={required}
+      rows={4}
       onChange={onChange}
       onBlur={onBlur}
     />
