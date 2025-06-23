@@ -84,6 +84,10 @@ const CreateEntity = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Keep all the form validation in a hook for reusability and to keep this
+  // parent component clean. The formData handling could also be moved into a
+  // hook if this parent component contains extra custom logic
   const { errors, validateField, validateForm, clearAllErrors } =
     useEntityFormValidation(formData);
 
