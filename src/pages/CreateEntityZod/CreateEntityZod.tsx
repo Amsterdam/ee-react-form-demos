@@ -28,7 +28,7 @@ import {
   EntityFormData as ZodEntityFormData,
 } from './schema';
 import { EntityFormData } from '@/types/types';
-import useEntityFormValidation from './hooks/useEntityForm';
+import useEntityFormValidation from './hooks/useEntityFormValidation';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);

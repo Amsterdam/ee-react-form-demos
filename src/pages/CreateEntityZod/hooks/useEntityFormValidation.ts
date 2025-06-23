@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { z } from 'zod';
+import { ZodError } from 'zod/v4';
 import entityFormSchema, { EntityFormData, FieldErrors } from '../schema';
 
 const useEntityFormValidation = (formData: EntityFormData) => {
   const [errors, setErrors] = useState<FieldErrors>({});
 
   // Find specific error for a specific field
-  const findRelevantError = (error: z.ZodError, fieldPath: string) => {
+  const findRelevantError = (error: ZodError, fieldPath: string) => {
     return error.issues.find(issue => {
       const path = issue.path.join('.');
       return path === fieldPath || path.startsWith(`${fieldPath}.`);
@@ -23,7 +23,7 @@ const useEntityFormValidation = (formData: EntityFormData) => {
       entityFormSchema.parse(updatedFormData);
       clearFieldError(fieldPath);
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error instanceof ZodError) {
         const fieldError = findRelevantError(error, fieldPath);
         if (fieldError) {
           setFieldError(fieldPath, fieldError.message);
@@ -97,7 +97,7 @@ const useEntityFormValidation = (formData: EntityFormData) => {
       setErrors({});
       return true;
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error instanceof ZodError) {
         const newErrors: FieldErrors = {};
 
         // Parse the returned errors
