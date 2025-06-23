@@ -39,7 +39,6 @@ const FormTextarea = ({
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextArea
-      rows={4}
       aria-describedby={
         description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
       }
@@ -47,6 +46,7 @@ const FormTextarea = ({
       name={name}
       value={value}
       required={required}
+      rows={4}
       onChange={onChange}
     />
   </Field>

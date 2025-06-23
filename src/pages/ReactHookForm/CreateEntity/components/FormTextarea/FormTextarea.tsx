@@ -39,9 +39,9 @@ const FormTextarea = ({
         description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
       }
       id={id}
-      rows={4}
       value={value}
       required={required}
+      rows={4}
       onChange={e => onChange(e.target.value)}
     />
   </Field>

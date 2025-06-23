@@ -33,8 +33,6 @@ import useEntityFormValidation from './hooks/useEntityFormValidation';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO align props order - FormAutoSelect vs FormTextInput FormTextarea
-// TODO document validation methods
 const CreateEntity = () => {
   const [formData, setFormData] = useState({
     kind: 'Component',

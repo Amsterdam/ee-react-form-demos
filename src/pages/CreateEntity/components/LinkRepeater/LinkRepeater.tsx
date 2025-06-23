@@ -63,9 +63,9 @@ const LinkRepeater = ({ items, onChange }: LinkRepeaterProps) => {
       <div className="ams-mb-m">
         {items.map((item, index) => (
           <LinkRepeaterRow
-            removeItem={() => removeItem(index)}
             index={index}
             item={item}
+            removeItem={() => removeItem(index)}
             onChange={(name, value) => updateItem(index, name, value)}
             key={`lri-${index}`}
           />

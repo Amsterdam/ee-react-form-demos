@@ -91,9 +91,9 @@ const LinkRepeater = ({
       <div className="ams-mb-m">
         {items.map((item, index) => (
           <LinkRepeaterRow
-            removeItem={() => removeItem(index)}
             index={index}
             item={item}
+            removeItem={() => removeItem(index)}
             onChange={(name, value) => updateItem(index, name, value)}
             onBlur={(name, value) => handleBlur(index, name, value)}
             errors={errors}

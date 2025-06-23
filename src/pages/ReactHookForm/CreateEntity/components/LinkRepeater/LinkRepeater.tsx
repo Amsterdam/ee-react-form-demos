@@ -40,11 +40,11 @@ const LinkRepeater = ({
     <div className="ams-mb-m">
       {fields.map((field, index) => (
         <LinkRepeaterRow
-          key={field.id}
           index={index}
           control={control}
           remove={remove}
           errors={errors?.[index]}
+          key={field.id}
         />
       ))}
     </div>

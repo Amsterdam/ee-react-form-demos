@@ -1,8 +1,0 @@
-.row {
-  align-items: center;
-  display: flex;
-}
-
-.row button {
-  margin-left: var(--ams-space-xs);
-}
