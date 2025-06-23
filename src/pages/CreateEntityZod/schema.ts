@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 
-export const specSchema = z
+const specSchema = z
   .object({
     // Avoid the property name `type`, as RHF uses this
     type: z.string().min(1, 'Type is required'),
