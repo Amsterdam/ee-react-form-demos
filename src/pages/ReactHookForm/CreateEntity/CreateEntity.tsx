@@ -41,7 +41,6 @@ import scrollToFirstError from './utils/scrollToFirstError';
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
-// TODO scroll to first error
 const CreateEntity = () => {
   // The ref is only necessary if you want to scroll to the first error
   const formRef = useRef<HTMLFormElement>(null);
