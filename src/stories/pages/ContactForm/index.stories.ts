@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CreateEntity from '@/pages/CreateEntity/CreateEntity';
+import ContactForm from '@/pages/ContactForm/ContactForm';
 
 const meta = {
-  title: 'Plain HTML5/CreateEntity',
-  component: CreateEntity,
+  title: 'Plain HTML5/ContactForm (on Submit; Validation using Zod)',
+  component: ContactForm,
   parameters: {
     layout: 'fullscreen',
     options: {
@@ -11,7 +11,7 @@ const meta = {
       bottomPanelHeight: 0,
     },
   },
-} satisfies Meta<typeof CreateEntity>;
+} satisfies Meta<typeof ContactForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

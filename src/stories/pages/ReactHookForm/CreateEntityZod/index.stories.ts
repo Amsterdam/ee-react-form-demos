@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CreateEntity from '@/pages/CreateEntity/CreateEntity';
+import CreateEntity from '@/pages/ReactHookForm/CreateEntity/CreateEntity';
 
 const meta = {
-  title: 'Plain HTML5/CreateEntity',
+  title: 'ReactHookForm/CreateEntity',
   component: CreateEntity,
   parameters: {
     layout: 'fullscreen',
