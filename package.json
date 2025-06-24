@@ -15,9 +15,17 @@
     "format:styles": "stylelint ./**/*.{css,scss} --fix",
     "format": "npm run format:scripts && npm run format:styles",
     "prepare": "husky",
-    "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky"
+    "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky",
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "^8.6.14",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "8.6.14",
+    "@storybook/addon-themes": "8.6.14",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/react-vite": "^8.6.14",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/js-yaml": "^4.0.9",
@@ -43,6 +51,7 @@
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "sass-embedded": "^1.89.0",
+    "storybook": "^8.3.5",
     "stylelint": "^16.19.1",
     "stylelint-config-recommended": "^16.0.0",
     "stylelint-config-sass-guidelines": "^12.1.0",
@@ -50,7 +59,7 @@
     "stylelint-prettier": "^5.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "vite": "^6.3.4",
+    "vite": "^5.4.19",
     "vite-plugin-svgr": "^4.3.0",
     "vitest": "^3.1.2"
   },
