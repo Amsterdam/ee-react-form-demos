@@ -103,7 +103,11 @@ const ContactForm = () => {
 
   return (
     <Grid>
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
+      <Grid.Cell
+        paddingTop="large"
+        span={{ narrow: 4, medium: 8, wide: 6 }}
+        className="ams-mb-xl"
+      >
         <Heading level={1} size="level-3" className="ams-mb-m">
           Contactformulier
         </Heading>

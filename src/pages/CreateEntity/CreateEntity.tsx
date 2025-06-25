@@ -307,7 +307,7 @@ const CreateEntity = () => {
 
           {formData.spec.hasSystem && (
             <FormAutoSelect
-              id="hasSystem"
+              id="system"
               label="System"
               name="system"
               description={

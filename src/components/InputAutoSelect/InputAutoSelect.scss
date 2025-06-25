@@ -23,25 +23,29 @@
 
 // Some styles for this class are defined in the component to ensure priority
 .react-select__container {
-  box-shadow: var(--ams-text-input-box-shadow);
+  border-color: var(--ams-select-border-color);
+  border-style: var(--ams-select-border-style);
+  border-width: var(--ams-select-border-width);
   outline-offset: var(--ams-text-area-outline-offset);
   width: 100%;
 
   &:hover {
-    box-shadow: var(--ams-text-input-hover-box-shadow);
+    box-shadow: var(--ams-select-hover-box-shadow);
 
     &:has(input:last-of-type:invalid) {
-      box-shadow: var(--ams-text-input-invalid-hover-box-shadow);
+      border-color: var(--ams-select-invalid-hover-border-color);
+      box-shadow: var(--ams-select-invalid-hover-box-shadow);
     }
   }
 
   &--is-focused {
-    box-shadow: var(--ams-text-input-hover-box-shadow);
+    box-shadow: var(--ams-select-hover-box-shadow);
   }
 
   /* stylelint-disable-next-line selector-no-qualifying-type */
   &:has(input:last-of-type:invalid) {
-    box-shadow: var(--ams-text-input-invalid-box-shadow);
+    border-color: var(--ams-select-invalid-border-color);
+    /* box-shadow: var(--ams-select-invalid-hover-box-shadow); */
   }
 }
 
@@ -92,13 +96,15 @@
 
 .react-select__menu {
   background: #fff;
-  box-shadow: var(--ams-text-input-box-shadow);
+  border-color: var(--ams-select-border-color);
+  border-style: var(--ams-select-border-style);
+  border-width: var(--ams-select-border-width);
   padding: 1px;
 }
 
 // Some styles for this class are defined in the component to ensure priority
 .react-select__option {
-  box-shadow: 0 var(--ams-text-input-hover-box-shadow);
+  box-shadow: 0 var(--ams-select-hover-box-shadow);
   font-family: var(--ams-text-input-font-family);
   font-size: var(--ams-text-input-font-size);
   font-weight: var(--ams-text-input-font-weight);
@@ -165,6 +171,7 @@
   border-radius: 2px;
   box-sizing: border-box;
   display: flex;
+  font-family: var(--ams-typography-font-family);
   // comment if not using design-system compact mode
   margin: 1px 8px 1px -2px;
   // uncomment if not using design-system compact mode

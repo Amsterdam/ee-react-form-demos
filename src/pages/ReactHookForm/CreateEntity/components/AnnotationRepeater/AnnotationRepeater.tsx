@@ -1,5 +1,5 @@
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
-import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
+import { PlusIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
 import {
   Control,
@@ -63,7 +63,7 @@ const AnnotationRepeater = ({
       </div>
 
       <Button
-        icon={<EnlargeIcon />}
+        icon={<PlusIcon />}
         iconBefore
         variant="tertiary"
         onClick={addItem}

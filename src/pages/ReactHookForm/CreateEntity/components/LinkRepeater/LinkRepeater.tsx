@@ -1,6 +1,6 @@
 import { Control, FieldErrors } from 'react-hook-form';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
-import { EnlargeIcon } from '@amsterdam/design-system-react-icons';
+import { PlusIcon } from '@amsterdam/design-system-react-icons';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
 import { EntityFormData as RHFEntityFormData } from '../../schema';
 import styles from './LinkRepeater.module.css';
@@ -50,7 +50,7 @@ const LinkRepeater = ({
     </div>
 
     <Button
-      icon={<EnlargeIcon />}
+      icon={<PlusIcon />}
       iconBefore
       variant="tertiary"
       onClick={() => append({ url: '', title: '', icon: 'dashboard' })}

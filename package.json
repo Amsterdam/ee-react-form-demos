@@ -63,11 +63,11 @@
     "vitest": "^3.1.2"
   },
   "dependencies": {
-    "@amsterdam/design-system-assets": "^0.3.0",
-    "@amsterdam/design-system-css": "^0.16.0",
-    "@amsterdam/design-system-react": "^0.16.0",
-    "@amsterdam/design-system-react-icons": "^0.1.14",
-    "@amsterdam/design-system-tokens": "^0.16.0",
+    "@amsterdam/design-system-assets": "^1.0.0",
+    "@amsterdam/design-system-css": "1.0.1",
+    "@amsterdam/design-system-react": "^1.1.0",
+    "@amsterdam/design-system-react-icons": "^1.0.0",
+    "@amsterdam/design-system-tokens": "^1.0.0",
     "@hookform/resolvers": "^5.1.1",
     "es-toolkit": "^1.39.3",
     "install": "^0.13.0",

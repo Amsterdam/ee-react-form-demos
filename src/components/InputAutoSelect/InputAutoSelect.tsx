@@ -56,7 +56,7 @@ const InputAutoSelect = ({
       DropdownIndicator,
     }}
     noOptionsMessage={() => 'Geen opties'}
-    id={id}
+    inputId={id}
     name={name}
     required={required}
     value={value}
