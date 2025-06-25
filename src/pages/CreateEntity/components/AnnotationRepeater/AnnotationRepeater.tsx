@@ -1,23 +1,14 @@
-import { useRef, useState } from 'react';
+import { RefObject } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { PlusIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
+import { AnnotationItem } from '@/types/types';
 import styles from './AnnotationRepeater.module.css';
 
-type AnnotationItem = {
-  id: string;
-  label: string | undefined;
-  value: string | undefined;
-};
-
 interface AnnotationRepeaterProps {
-  initialValues: { key: string; value: string | undefined }[];
-  onChange: (
-    annotations: {
-      key: string;
-      value: string | undefined;
-    }[]
-  ) => void;
+  items: AnnotationItem[];
+  onChange: (annotations: AnnotationItem[]) => void;
+  idCounterRef: RefObject<number>;
 }
 
 // An AnnotationRepeater field is a repeater field of two fields:
@@ -26,27 +17,10 @@ interface AnnotationRepeaterProps {
 // 'value'). On change it returns an object 'annotations' of array of
 // { key: '', value: '' }
 const AnnotationRepeater = ({
-  initialValues,
+  items,
   onChange,
+  idCounterRef,
 }: AnnotationRepeaterProps) => {
-  // Keep a reference of IDs to prevent updating previously deleted indexes
-  const idCounterRef = useRef(0);
-  const [items, setItems] = useState<AnnotationItem[]>(() =>
-    initialValues.map(({ key, value }) => ({
-      id: `annotation-${++idCounterRef.current}`,
-      label: key,
-      value,
-    }))
-  );
-
-  // Helper function to convert items to annotations format
-  const itemsToAnnotations = (itemsArray: AnnotationItem[]) => {
-    return itemsArray.map(item => ({
-      key: item.label || '',
-      value: item.value,
-    }));
-  };
-
   // Add a new repeater row
   const addItem = () => {
     const newItem: AnnotationItem = {
@@ -56,15 +30,13 @@ const AnnotationRepeater = ({
     };
 
     const newItems = [...items, newItem];
-    setItems(newItems);
-    onChange(itemsToAnnotations(newItems));
+    onChange(newItems);
   };
 
   // Remove a repeater row
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
-    onChange(itemsToAnnotations(newItems));
+    onChange(newItems);
   };
 
   const updateItem = (
@@ -75,8 +47,7 @@ const AnnotationRepeater = ({
     const newItems = items.map((item, i) =>
       i === index ? { ...item, label, value } : item
     );
-    setItems(newItems);
-    onChange(itemsToAnnotations(newItems));
+    onChange(newItems);
   };
 
   return (

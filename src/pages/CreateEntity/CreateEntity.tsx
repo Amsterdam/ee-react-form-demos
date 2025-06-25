@@ -7,9 +7,9 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react';
 import { ActionMeta } from 'react-select';
-import { EntityFormData } from '@/types/types';
+import { AnnotationItem, EntityFormData } from '@/types/types';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextarea from './components/FormTextarea/FormTextarea';
@@ -74,6 +74,19 @@ const CreateEntity = () => {
       system: 'dii-ee-developers-amsterdam',
     },
   } as EntityFormData);
+
+  // TODO why is LinkRepeater handling easier?
+  // Annotations state handling
+  // Keep a reference of IDs to prevent updating previously deleted indexes
+  const annotationIdCounterRef = useRef(0);
+  const [annotationItems, setAnnotationItems] = useState<AnnotationItem[]>(() =>
+    formData.annotations.map(({ key, value }) => ({
+      id: `annotation-${++annotationIdCounterRef.current}`,
+      label: key,
+      value,
+    }))
+  );
+
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -88,15 +101,18 @@ const CreateEntity = () => {
     }));
   };
 
-  const handleAnnotationsChange = useCallback(
-    (annotations: { key: string; value: string | undefined }[]) => {
-      setFormData(prev => ({
-        ...prev,
-        annotations: annotations,
-      }));
-    },
-    []
-  );
+  const handleAnnotationsChange = useCallback((items: AnnotationItem[]) => {
+    setAnnotationItems(items);
+    // Update formData with the converted annotations
+    const annotations = items.map(item => ({
+      key: item.label || '',
+      value: item.value,
+    }));
+    setFormData(prev => ({
+      ...prev,
+      annotations,
+    }));
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -132,6 +148,7 @@ const CreateEntity = () => {
         system: '',
       },
     });
+    setAnnotationItems([]);
   };
 
   return (
@@ -372,8 +389,9 @@ const CreateEntity = () => {
           'value'). On change it returns an object 'annotations' of array of
           { key: '', value: '' } */}
           <AnnotationRepeater
-            initialValues={formData.annotations}
+            items={annotationItems}
             onChange={handleAnnotationsChange}
+            idCounterRef={annotationIdCounterRef}
           />
 
           {/* A linkRepeater field is a repeater field of three fields:

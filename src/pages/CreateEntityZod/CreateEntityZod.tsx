@@ -133,6 +133,26 @@ const CreateEntity = () => {
     validateField(name, fieldValue);
   };
 
+  const handleAnnotationsChange = (
+    annotations: {
+      label: string | undefined;
+      value: string | undefined;
+    }[]
+  ) => {
+    const newAnnotations = annotations.map(({ label, value }) => ({
+      key: label ?? '',
+      value: value ?? '',
+    }));
+
+    setFormData(prev => ({
+      ...prev,
+      annotations: newAnnotations,
+    }));
+
+    // Validate the annotations array
+    validateField('annotations', newAnnotations);
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -453,25 +473,7 @@ const CreateEntity = () => {
               value: annotation.value,
             }))}
             errors={errors}
-            onChange={(
-              annotations: {
-                label: string | undefined;
-                value: string | undefined;
-              }[]
-            ) => {
-              const newAnnotations = annotations.map(({ label, value }) => ({
-                key: label ?? '',
-                value: value ?? '',
-              }));
-
-              setFormData(prev => ({
-                ...prev,
-                annotations: newAnnotations,
-              }));
-
-              // Validate the annotations array
-              validateField('annotations', newAnnotations);
-            }}
+            onChange={handleAnnotationsChange}
           />
 
           {/* A linkRepeater field is a repeater field of three fields:

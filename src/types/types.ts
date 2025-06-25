@@ -17,3 +17,9 @@ export type EntityFormData = {
     system: string;
   };
 };
+
+export type AnnotationItem = {
+  id: string;
+  label: string | undefined;
+  value: string | undefined;
+};
