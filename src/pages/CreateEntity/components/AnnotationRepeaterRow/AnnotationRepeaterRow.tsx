@@ -15,8 +15,8 @@ import styles from './AnnotationRepeaterRow.module.css';
 interface AnnotationRepeaterRowProps {
   index: number;
   removeItem?: () => void;
-  onChange: (key: string | undefined, value: string | undefined) => void;
-  values: { label: string | undefined; value: string | undefined };
+  onChange: (key: string, value: string) => void;
+  values: { label: string; value: string };
 }
 
 const AnnotationRepeaterRow = ({
@@ -45,11 +45,11 @@ const AnnotationRepeaterRow = ({
       if (newValue) {
         const selectedKey = (newValue as { value: string }).value;
         const rule = ANNOTATIONS.find(a => a.key === selectedKey);
-        const defaultValue = rule?.values ? rule.values[0] : undefined;
+        const defaultValue = rule?.values ? rule.values[0] : '';
 
         onChange(selectedKey, defaultValue);
       } else {
-        onChange(undefined, undefined);
+        onChange('', '');
       }
     },
     [onChange]
@@ -78,7 +78,7 @@ const AnnotationRepeaterRow = ({
           required
           aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            onChange(values.label, e.target.value || undefined);
+            onChange(values.label ?? '', e.target.value || '');
           }}
         >
           {annotation.values.map((value, valueIndex) => (
@@ -97,7 +97,7 @@ const AnnotationRepeaterRow = ({
           className="ams-mb-m"
           aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            onChange(values.label, e.target.value || undefined);
+            onChange(values.label ?? '', e.target.value || '');
           }}
         />
       )}

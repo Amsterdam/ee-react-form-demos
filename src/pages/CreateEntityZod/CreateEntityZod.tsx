@@ -468,10 +468,7 @@ const CreateEntity = () => {
           'value'). On change it returns an object 'annotations' of array of
           { key: '', value: '' } */}
           <AnnotationRepeater
-            initialValues={formData.annotations.map(annotation => ({
-              key: annotation.key,
-              value: annotation.value,
-            }))}
+            initialValues={formData.annotations}
             errors={errors}
             onChange={handleAnnotationsChange}
           />
