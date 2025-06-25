@@ -82,11 +82,8 @@ const ContactForm = () => {
 
   if (isSubmitted) {
     return (
-      <Grid>
-        <Grid.Cell
-          span={{ narrow: 4, medium: 8, wide: 6 }}
-          className="ams-mb-xl"
-        >
+      <Grid paddingBottom="x-large" paddingTop="large">
+        <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
           <Heading level={1} size="level-3" className="ams-mb-m">
             Contactformulier
           </Heading>
@@ -102,12 +99,8 @@ const ContactForm = () => {
   }
 
   return (
-    <Grid>
-      <Grid.Cell
-        paddingTop="large"
-        span={{ narrow: 4, medium: 8, wide: 6 }}
-        className="ams-mb-xl"
-      >
+    <Grid paddingBottom="x-large" paddingTop="large">
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
         <Heading level={1} size="level-3" className="ams-mb-m">
           Contactformulier
         </Heading>
@@ -166,14 +159,14 @@ const ContactForm = () => {
               id="email"
               name="email"
               placeholder="E-mailadres"
-              aria-describedby={errors.name ? 'error-email' : ''}
-              invalid={!!errors.name}
+              aria-describedby={errors.email ? 'error-email' : ''}
+              invalid={!!errors.email}
               onChange={e =>
                 setFormData({ ...formData, [e.target.name]: e.target.value })
               }
             />
           </Field>
-          <Field invalid={!!errors.email}>
+          <Field invalid={!!errors.body}>
             <Label htmlFor="body">Bericht</Label>
             {errors.email && (
               <ErrorMessage id={`error-body`}>{errors.body}</ErrorMessage>

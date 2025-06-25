@@ -151,7 +151,7 @@ const ContactFormLive = () => {
 
   if (isSubmitted) {
     return (
-      <Grid>
+      <Grid paddingBottom="x-large" paddingTop="large">
         <Grid.Cell
           span={{ narrow: 4, medium: 8, wide: 6 }}
           className="ams-mb-xl"
@@ -171,8 +171,8 @@ const ContactFormLive = () => {
   }
 
   return (
-    <Grid>
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
+    <Grid paddingBottom="x-large" paddingTop="large">
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
         <Heading level={1} size="level-3" className="ams-mb-m">
           Contactformulier
         </Heading>
@@ -237,16 +237,16 @@ const ContactFormLive = () => {
               name="email"
               placeholder="E-mailadres"
               aria-describedby={
-                submitTouched && errors.name ? 'error-email' : ''
+                submitTouched && errors.email ? 'error-email' : ''
               }
-              invalid={!!errors.name}
+              invalid={!!errors.email}
               onChange={handleInputChange}
               onBlur={handleBlur}
             />
           </Field>
-          <Field invalid={submitTouched && !!errors.email}>
+          <Field invalid={submitTouched && !!errors.body}>
             <Label htmlFor="body">Bericht</Label>
-            {submitTouched && errors.email && (
+            {submitTouched && errors.body && (
               <ErrorMessage id={`error-body`}>{errors.body}</ErrorMessage>
             )}
             <TextArea

@@ -58,7 +58,7 @@ const ContactForm = () => {
 
   if (isSubmitted) {
     return (
-      <Grid>
+      <Grid paddingBottom="x-large" paddingTop="large">
         <Grid.Cell
           span={{ narrow: 4, medium: 8, wide: 6 }}
           className="ams-mb-xl"
@@ -78,7 +78,7 @@ const ContactForm = () => {
   }
 
   return (
-    <Grid>
+    <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className="ams-mb-xl">
         <Heading level={1} size="level-3" className="ams-mb-m">
           Contactformulier 2

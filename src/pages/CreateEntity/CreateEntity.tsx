@@ -135,8 +135,8 @@ const CreateEntity = () => {
   };
 
   return (
-    <Grid>
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }} className="ams-mb-xl">
+    <Grid paddingBottom="x-large" paddingTop="large">
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
         <Heading level={1} size="level-3">
           Create an entity
         </Heading>
