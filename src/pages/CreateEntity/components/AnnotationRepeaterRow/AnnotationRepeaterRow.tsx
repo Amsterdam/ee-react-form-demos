@@ -41,9 +41,9 @@ const AnnotationRepeaterRow = ({
     [values]
   );
   const keyOnChange = useCallback(
-    (newValue: unknown | null) => {
-      if (newValue) {
-        const selectedKey = (newValue as { value: string }).value;
+    (selectedOption: unknown | null) => {
+      if (selectedOption) {
+        const selectedKey = (selectedOption as { value: string }).value;
         const rule = ANNOTATIONS.find(a => a.key === selectedKey);
         const defaultValue = rule?.values ? rule.values[0] : '';
 

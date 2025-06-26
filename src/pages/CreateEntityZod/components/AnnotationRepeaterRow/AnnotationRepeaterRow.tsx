@@ -15,8 +15,8 @@ import styles from './AnnotationRepeaterRow.module.css';
 interface AnnotationRepeaterRowProps {
   index: number;
   removeItem?: () => void;
-  onChange: (key: string | undefined, value: string | undefined) => void;
-  values: { label: string | undefined; value: string | undefined };
+  onChange: (key: string, value: string) => void;
+  values: { label: string; value: string };
   keyError?: string;
   valueError?: string;
 }
@@ -48,17 +48,20 @@ const AnnotationRepeaterRow = ({
       })).find(option => option.value === values.label),
     [values]
   );
-  const keyOnChange = useCallback((newValue: unknown | null) => {
-    if (newValue) {
-      const selectedKey = (newValue as { value: string }).value;
-      const rule = ANNOTATIONS.find(a => a.key === selectedKey);
-      const defaultValue = rule?.values ? rule.values[0] : undefined;
+  const keyOnChange = useCallback(
+    (selectedOption: unknown | null) => {
+      if (selectedOption) {
+        const selectedKey = (selectedOption as { value: string }).value;
+        const rule = ANNOTATIONS.find(a => a.key === selectedKey);
+        const defaultValue = rule?.values ? rule.values[0] : '';
 
-      onChange(selectedKey, defaultValue);
-    } else {
-      onChange(undefined, undefined);
-    }
-  }, []);
+        onChange(selectedKey, defaultValue);
+      } else {
+        onChange('', '');
+      }
+    },
+    [onChange]
+  );
 
   return (
     <Field className={styles.container} invalid={!!keyError || !!valueError}>
@@ -85,7 +88,7 @@ const AnnotationRepeaterRow = ({
           invalid={!!valueError}
           aria-describedby={`annotations-description ${valueError ? `annotation-value-${index}-error` : ''}`}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            onChange(values.label, e.target.value || undefined);
+            onChange(values.label, e.target.value || '');
           }}
         >
           {annotation.values.map((value, valueIndex) => (
@@ -105,7 +108,7 @@ const AnnotationRepeaterRow = ({
           className="ams-mb-m"
           aria-describedby={`annotations-description ${valueError ? `annotation-value-${index}-error` : ''}`}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            onChange(values.label, e.target.value || undefined);
+            onChange(values.label, e.target.value || '');
           }}
         />
       )}
