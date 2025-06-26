@@ -10,13 +10,14 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
+import { AnnotationItem } from '@/types/types';
 import styles from './AnnotationRepeaterRow.module.css';
 
 interface AnnotationRepeaterRowProps {
   index: number;
   removeItem?: () => void;
-  onChange: (key: string | undefined, value: string | undefined) => void;
-  values: { label: string | undefined; value: string | undefined };
+  onChange: (key: string, value: string) => void;
+  values: AnnotationItem;
 }
 
 const AnnotationRepeaterRow = ({
@@ -26,7 +27,7 @@ const AnnotationRepeaterRow = ({
   values,
 }: AnnotationRepeaterRowProps) => {
   const annotation = ANNOTATIONS.find(
-    annotation => annotation.key === values.label
+    annotation => annotation.key === values.key
   );
   const keyOptions = useMemo(
     () => ANNOTATIONS.map(({ key, label }) => ({ value: key, label })),
@@ -37,19 +38,19 @@ const AnnotationRepeaterRow = ({
       ANNOTATIONS.map(({ key, label }) => ({
         value: key,
         label,
-      })).find(option => option.value === values.label),
+      })).find(option => option.value === values.key),
     [values]
   );
   const keyOnChange = useCallback(
-    (newValue: unknown | null) => {
-      if (newValue) {
-        const selectedKey = (newValue as { value: string }).value;
+    (selectedOption: unknown | null) => {
+      if (selectedOption) {
+        const selectedKey = (selectedOption as { value: string }).value;
         const rule = ANNOTATIONS.find(a => a.key === selectedKey);
-        const defaultValue = rule?.values ? rule.values[0] : undefined;
+        const defaultValue = rule?.values ? rule.values[0] : '';
 
         onChange(selectedKey, defaultValue);
       } else {
-        onChange(undefined, undefined);
+        onChange('', '');
       }
     },
     [onChange]
@@ -78,11 +79,11 @@ const AnnotationRepeaterRow = ({
           required
           aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            onChange(values.label, e.target.value || undefined);
+            onChange(values.key ?? '', e.target.value || '');
           }}
         >
           {annotation.values.map((value, valueIndex) => (
-            <Select.Option value={value} key={`${values.label}-${valueIndex}`}>
+            <Select.Option value={value} key={`${values.key}-${valueIndex}`}>
               {value}
             </Select.Option>
           ))}
@@ -97,7 +98,7 @@ const AnnotationRepeaterRow = ({
           className="ams-mb-m"
           aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            onChange(values.label, e.target.value || undefined);
+            onChange(values.key ?? '', e.target.value || '');
           }}
         />
       )}

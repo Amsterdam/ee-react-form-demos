@@ -1,4 +1,3 @@
-import { RefObject } from 'react';
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { PlusIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
@@ -8,7 +7,6 @@ import styles from './AnnotationRepeater.module.css';
 interface AnnotationRepeaterProps {
   items: AnnotationItem[];
   onChange: (annotations: AnnotationItem[]) => void;
-  idCounterRef: RefObject<number>;
 }
 
 // An AnnotationRepeater field is a repeater field of two fields:
@@ -16,21 +14,10 @@ interface AnnotationRepeaterProps {
 // 2. A corresponding input or select menu (the repeater field's
 // 'value'). On change it returns an object 'annotations' of array of
 // { key: '', value: '' }
-const AnnotationRepeater = ({
-  items,
-  onChange,
-  idCounterRef,
-}: AnnotationRepeaterProps) => {
+const AnnotationRepeater = ({ items, onChange }: AnnotationRepeaterProps) => {
   // Add a new repeater row
   const addItem = () => {
-    const newItem: AnnotationItem = {
-      id: `annotation-${++idCounterRef.current}`,
-      label: '',
-      value: '',
-    };
-
-    const newItems = [...items, newItem];
-    onChange(newItems);
+    onChange([...items, { key: '', value: '' }]);
   };
 
   // Remove a repeater row
@@ -39,13 +26,15 @@ const AnnotationRepeater = ({
     onChange(newItems);
   };
 
-  const updateItem = (
-    index: number,
-    label: string | undefined,
-    value: string | undefined
-  ) => {
+  const updateItem = (index: number, key: string, value: string) => {
     const newItems = items.map((item, i) =>
-      i === index ? { ...item, label, value } : item
+      i === index
+        ? {
+            ...item,
+            key,
+            value,
+          }
+        : item
     );
     onChange(newItems);
   };
@@ -66,9 +55,9 @@ const AnnotationRepeater = ({
           <AnnotationRepeaterRow
             removeItem={() => removeItem(index)}
             index={index}
-            values={{ label: item.label, value: item.value }}
-            key={item.id}
-            onChange={(label, value) => updateItem(index, label, value)}
+            values={item}
+            key={`ari-${index}`}
+            onChange={(key, value) => updateItem(index, key, value)}
           />
         ))}
       </div>

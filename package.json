@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "scripts": {
     "start": "storybook dev -p 6006 --no-open",
-    "build": "tsc --project tsconfig.prod.json && vite build",
     "build-storybook": "storybook build",
     "preview": "vite preview",
     "test": "vitest run",

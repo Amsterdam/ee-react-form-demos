@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import {
   Button,
   ErrorMessage,
@@ -9,22 +8,12 @@ import { PlusIcon } from '@amsterdam/design-system-react-icons';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
 import { FieldErrors } from '../../schema';
 import styles from './AnnotationRepeater.module.css';
-
-type AnnotationItem = {
-  id: string;
-  label: string | undefined;
-  value: string | undefined;
-};
+import { AnnotationItem } from '@/types/types';
 
 interface AnnotationRepeaterProps {
-  initialValues: { key: string; value: string | undefined }[];
+  items: AnnotationItem[];
   errors: FieldErrors;
-  onChange: (
-    annotations: {
-      label: string | undefined;
-      value: string | undefined;
-    }[]
-  ) => void;
+  onChange: (annotations: AnnotationItem[]) => void;
 }
 
 // An AnnotationRepeater field is a repeater field of two fields:
@@ -33,84 +22,32 @@ interface AnnotationRepeaterProps {
 // 'value'). On change it returns an object 'annotations' of array of
 // { key: '', value: '' }
 const AnnotationRepeater = ({
-  initialValues,
+  items,
   errors,
   onChange,
 }: AnnotationRepeaterProps) => {
-  // Keep a reference of IDs to prevent updating previously deleted indexes
-  const idCounterRef = useRef(0);
-  const itemIdsRef = useRef<Map<number, string>>(new Map());
-
-  const items: AnnotationItem[] = initialValues.map(({ key, value }, index) => {
-    // Get or create a stable ID for this index
-    if (!itemIdsRef.current.has(index)) {
-      itemIdsRef.current.set(index, `annotation-${++idCounterRef.current}`);
-    }
-
-    return {
-      id: itemIdsRef.current.get(index)!,
-      label: key,
-      value,
-    };
-  });
-
   // Add a new repeater row
   const addItem = () => {
-    const newItem: AnnotationItem = {
-      id: `annotation-${++idCounterRef.current}`,
-      label: '',
-      value: '',
-    };
-
-    // Merge back into the original annotation values
-    const newItems = [...items, newItem];
-    const newAnnotations = newItems.map(item => ({
-      label: item.label,
-      value: item.value,
-    }));
-
-    onChange(newAnnotations);
+    onChange([...items, { key: '', value: '' }]);
   };
 
-  // Remove a repeater row and the corresponding data
+  // Remove a repeater row
   const removeItem = (index: number) => {
-    // Clean up the ID ref
-    itemIdsRef.current.delete(index);
-    // Refresh the array to prevent updating incorrect key indexes
-    const entries = Array.from(itemIdsRef.current.entries());
-    itemIdsRef.current.clear();
-    entries.forEach(([idx, id]) => {
-      if (idx > index) {
-        itemIdsRef.current.set(idx - 1, id);
-      } else if (idx < index) {
-        itemIdsRef.current.set(idx, id);
-      }
-    });
-
     const newItems = items.filter((_, i) => i !== index);
-    const newAnnotations = newItems.map(item => ({
-      label: item.label,
-      value: item.value,
-    }));
-
-    onChange(newAnnotations);
+    onChange(newItems);
   };
 
-  const updateItem = (
-    index: number,
-    label: string | undefined,
-    value: string | undefined
-  ) => {
+  const updateItem = (index: number, key: string, value: string) => {
     const newItems = items.map((item, i) =>
-      i === index ? { ...item, label, value } : item
+      i === index
+        ? {
+            ...item,
+            key,
+            value,
+          }
+        : item
     );
-
-    const newAnnotations = newItems.map(item => ({
-      label: item.label,
-      value: item.value,
-    }));
-
-    onChange(newAnnotations);
+    onChange(newItems);
   };
 
   const annotationsError = errors.annotations;
@@ -137,13 +74,13 @@ const AnnotationRepeater = ({
           <AnnotationRepeaterRow
             removeItem={() => removeItem(index)}
             index={index}
-            values={{ label: item.label, value: item.value }}
-            key={item.id}
+            values={item}
+            key={`ari-${index}`}
             keyError={errors[`annotations.${index}.key` as keyof FieldErrors]}
             valueError={
               errors[`annotations.${index}.value` as keyof FieldErrors]
             }
-            onChange={(label, value) => updateItem(index, label, value)}
+            onChange={(key, value) => updateItem(index, key, value)}
           />
         ))}
       </div>

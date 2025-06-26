@@ -31,4 +31,4 @@ jobs:
       - name: Test application
         run: npm run test
       - name: Build application
-        run: npm run build
+        run: npm run build-storybook
