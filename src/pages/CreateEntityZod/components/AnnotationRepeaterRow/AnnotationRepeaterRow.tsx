@@ -11,12 +11,13 @@ import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
 import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '../../../../components/InputAutoSelect/InputAutoSelect';
 import styles from './AnnotationRepeaterRow.module.css';
+import { AnnotationItem } from '@/types/types';
 
 interface AnnotationRepeaterRowProps {
   index: number;
   removeItem?: () => void;
   onChange: (key: string, value: string) => void;
-  values: { label: string; value: string };
+  values: AnnotationItem;
   keyError?: string;
   valueError?: string;
 }
@@ -30,7 +31,7 @@ const AnnotationRepeaterRow = ({
   valueError,
 }: AnnotationRepeaterRowProps) => {
   const annotation = ANNOTATIONS.find(
-    annotation => annotation.key === values.label
+    annotation => annotation.key === values.key
   );
   const keyOptions = useMemo(
     () =>
@@ -45,7 +46,7 @@ const AnnotationRepeaterRow = ({
       ANNOTATIONS.map(({ key, label }) => ({
         value: key,
         label,
-      })).find(option => option.value === values.label),
+      })).find(option => option.value === values.key),
     [values]
   );
   const keyOnChange = useCallback(
@@ -88,11 +89,11 @@ const AnnotationRepeaterRow = ({
           invalid={!!valueError}
           aria-describedby={`annotations-description ${valueError ? `annotation-value-${index}-error` : ''}`}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            onChange(values.label, e.target.value || '');
+            onChange(values.key, e.target.value || '');
           }}
         >
           {annotation.values.map((value, valueIndex) => (
-            <Select.Option value={value} key={`${values.label}-${valueIndex}`}>
+            <Select.Option value={value} key={`${values.key}-${valueIndex}`}>
               {value}
             </Select.Option>
           ))}
@@ -108,7 +109,7 @@ const AnnotationRepeaterRow = ({
           className="ams-mb-m"
           aria-describedby={`annotations-description ${valueError ? `annotation-value-${index}-error` : ''}`}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            onChange(values.label, e.target.value || '');
+            onChange(values.key, e.target.value || '');
           }}
         />
       )}

@@ -10,13 +10,14 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
+import { AnnotationItem } from '@/types/types';
 import styles from './AnnotationRepeaterRow.module.css';
 
 interface AnnotationRepeaterRowProps {
   index: number;
   removeItem?: () => void;
   onChange: (key: string, value: string) => void;
-  values: { label: string; value: string };
+  values: AnnotationItem;
 }
 
 const AnnotationRepeaterRow = ({
@@ -26,7 +27,7 @@ const AnnotationRepeaterRow = ({
   values,
 }: AnnotationRepeaterRowProps) => {
   const annotation = ANNOTATIONS.find(
-    annotation => annotation.key === values.label
+    annotation => annotation.key === values.key
   );
   const keyOptions = useMemo(
     () => ANNOTATIONS.map(({ key, label }) => ({ value: key, label })),
@@ -37,7 +38,7 @@ const AnnotationRepeaterRow = ({
       ANNOTATIONS.map(({ key, label }) => ({
         value: key,
         label,
-      })).find(option => option.value === values.label),
+      })).find(option => option.value === values.key),
     [values]
   );
   const keyOnChange = useCallback(
@@ -78,11 +79,11 @@ const AnnotationRepeaterRow = ({
           required
           aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            onChange(values.label ?? '', e.target.value || '');
+            onChange(values.key ?? '', e.target.value || '');
           }}
         >
           {annotation.values.map((value, valueIndex) => (
-            <Select.Option value={value} key={`${values.label}-${valueIndex}`}>
+            <Select.Option value={value} key={`${values.key}-${valueIndex}`}>
               {value}
             </Select.Option>
           ))}
@@ -97,7 +98,7 @@ const AnnotationRepeaterRow = ({
           className="ams-mb-m"
           aria-describedby="annotations-description"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            onChange(values.label ?? '', e.target.value || '');
+            onChange(values.key ?? '', e.target.value || '');
           }}
         />
       )}

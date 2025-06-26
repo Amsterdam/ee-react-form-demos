@@ -55,8 +55,7 @@ const AnnotationRepeater = ({ items, onChange }: AnnotationRepeaterProps) => {
           <AnnotationRepeaterRow
             removeItem={() => removeItem(index)}
             index={index}
-            // TODO cleanup values shape
-            values={{ label: item.key, value: item.value }}
+            values={item}
             key={`ari-${index}`}
             onChange={(key, value) => updateItem(index, key, value)}
           />

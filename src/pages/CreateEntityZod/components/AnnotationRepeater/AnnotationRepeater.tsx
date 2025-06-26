@@ -74,8 +74,7 @@ const AnnotationRepeater = ({
           <AnnotationRepeaterRow
             removeItem={() => removeItem(index)}
             index={index}
-            // TODO cleanup values shape
-            values={{ label: item.key, value: item.value }}
+            values={item}
             key={`ari-${index}`}
             keyError={errors[`annotations.${index}.key` as keyof FieldErrors]}
             valueError={
