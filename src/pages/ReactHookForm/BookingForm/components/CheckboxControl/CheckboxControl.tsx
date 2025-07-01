@@ -50,12 +50,13 @@ const CheckboxControl = <T,>({
             )}
 
             {hasError && (
-              <ErrorMessage id={errorId}>{formState.errors[name]}</ErrorMessage>
+              <ErrorMessage id={errorId}>
+                {formState.errors[name].message}
+              </ErrorMessage>
             )}
 
             <Checkbox
               aria-describedby={`${descriptionId} ${errorId}`}
-              name={name}
               {...register(name, registerOptions as RegisterOptions)}
               data-testid={identifier}
               id={identifier}

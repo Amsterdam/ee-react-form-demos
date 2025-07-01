@@ -403,11 +403,7 @@ const CreateEntity = () => {
       <SubmissionOutput formData={formData} />
 
       {/* Fake loader to simulate API request */}
-      {isLoading && (
-        <div className={styles.loader}>
-          <Loader />
-        </div>
-      )}
+      {isLoading && <Loader />}
 
       {/* Fake placeholder for post-submission state */}
       {isSubmitted && (

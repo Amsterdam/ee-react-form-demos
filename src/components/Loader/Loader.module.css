@@ -1,5 +1,16 @@
+.root {
+  background: rgba(255, 255, 255, 0.6);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
 .loader {
-  animation: l2 1s infinite linear;
+  animation: loader 1s infinite linear;
   aspect-ratio: 1;
   border: 8px solid var(--ams-color-separator);
   border-radius: 50%;
@@ -7,7 +18,7 @@
   width: 50px;
 }
 
-@keyframes l2 {
+@keyframes loader {
   to {
     transform: rotate(1turn);
   }

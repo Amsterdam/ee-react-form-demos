@@ -479,12 +479,7 @@ const CreateEntity = () => {
       />
 
       {/* Fake loader to simulate API request */}
-      {isLoading && (
-        <div className={styles.loader}>
-          <Loader />
-        </div>
-      )}
-
+      {isLoading && <Loader />}
       {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>

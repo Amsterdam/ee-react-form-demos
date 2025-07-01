@@ -59,11 +59,12 @@ const TimeControl = <T,>({
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>{formState.errors[name]}</ErrorMessage>
+              <ErrorMessage id={errorId}>
+                {formState.errors[name].message}
+              </ErrorMessage>
             )}
             <TimeInput
               aria-describedby={`${descriptionId} ${errorId}`}
-              name={name}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
               data-testid={identifier}

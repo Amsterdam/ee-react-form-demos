@@ -33,7 +33,7 @@ const TextInputControl = <T,>({
     <FormControl>
       {({ register, formState }) => {
         const hasError = !!formState.errors[name];
-
+console.log('input', { registerOptions, formState });
         return (
           <Field
             className="ams-mb-m"
@@ -59,16 +59,18 @@ const TextInputControl = <T,>({
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>{formState.errors[name]}</ErrorMessage>
+              <ErrorMessage id={errorId}>
+                {formState.errors[name].message}
+              </ErrorMessage>
             )}
             <TextInput
               aria-describedby={`${descriptionId} ${errorId}`}
-              name={name}
+              {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
               data-testid={identifier}
               invalid={hasError}
-              {...attributes}
+              required={!!required}
             />
           </Field>
         );

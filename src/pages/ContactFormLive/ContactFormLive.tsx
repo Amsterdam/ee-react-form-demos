@@ -188,11 +188,7 @@ const ContactFormLive = () => {
           onSubmit={handleSubmit}
         >
           {/* Fake loader to simulate API request */}
-          {isLoading && (
-            <div className={styles.loader}>
-              <Loader />
-            </div>
-          )}
+          {isLoading && <Loader />}
           {/* Only display an error alert after user hits submit `active validation`,
           fields will already have subtle styling (for example, a red border)
           before this `passive validation` */}

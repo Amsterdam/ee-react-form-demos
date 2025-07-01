@@ -61,11 +61,12 @@ const TextAreaControl = <TFieldValues extends FieldValues = FieldValues>({
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>{formState.errors[name]}</ErrorMessage>
+              <ErrorMessage id={errorId}>
+                {formState.errors[name].message}
+              </ErrorMessage>
             )}
 
             <TextArea
-              name={name}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
               data-testid={identifier}

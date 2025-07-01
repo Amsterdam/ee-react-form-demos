@@ -5,10 +5,89 @@ import CheckboxControl from './components/CheckboxControl/CheckboxControl';
 import TextAreaControl from './components/TextAreaControl/TextAreaControl';
 import DateControl from './components/DateControl/DateControl';
 import TimeControl from './components/TimeControl/TimeControl';
+import { useCallback, useMemo } from 'react';
+import FormProvider from './FormProvider';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import FormRow from './components/FormFieldset/FormRow';
+
+interface BookingFormData {
+  name: string;
+  email: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  remote: boolean;
+  comments: string;
+}
 
 const BookingForm = () => {
+  const now = new Date();
+  // const startDate = now.toISOString().split('T')[0];
+  // console.log({ now, startDate });
+  // For example, maxLength is 1 week (from the todayDate)
+  // const endDate = useMemo(() => now.setDate(now.getDate() + 7), [startDate]);
+
+  const methods = useForm<BookingFormData>({
+    values: {
+      name: '',
+      email: '',
+      startDate: now.toISOString().split('T')[0],
+      startTime: now.toISOString().split('T')[0],
+      endDate: now.toISOString().split('T')[0],
+      endTime: now.toISOString().split('T')[0],
+      remote: false,
+      comments: '',
+    },
+  });
+  const [startDate, startTime, endDate, endTime] = methods.watch([
+    'startDate',
+    'startTime',
+    'endDate',
+    'endTime',
+  ]);
+  const startDateTime = useMemo(() => {
+    if (!startDate || !startTime) return null;
+
+    return new Date(`${startDate}T${startTime}`);
+  }, [startDate, startTime]);
+  const endDateTime = useMemo(() => {
+    if (!endDate || !endTime) return null;
+
+    return new Date(`${endDate}T${endTime}`);
+  }, [endDate, endTime]);
+  const isValidTimeRange = useMemo(() => {
+    if (!startDateTime || !endDateTime) return true; // Skip validation if incomplete
+
+    return endDateTime.getTime() > startDateTime.getTime(); // Simple numeric comparison!
+  }, [startDateTime, endDateTime]);
+
+  const onValid: SubmitHandler<BookingFormData> = useCallback(async () => {
+    // if (!dirtyFields.surveyedOn) {
+    //   // make sure we keep the original value
+    //   dataFromForm.surveyedOn = dateValueToIsoString(
+    //     spanInstallationSurvey.surveyedOn
+    //   );
+    // }
+
+    try {
+      console.log('submit!');
+      // await handleSurveyCompletionSubmit(surveyId, dataFromForm);
+      // showToastMessage(translate('survey.submitSuccess'), {
+      //   type: TYPE.SUCCESS,
+      // });
+      // dispatch(fetchSpanInstallationSurvey(surveyId));
+    } catch (error) {
+      console.log('form error!', error);
+      // showToastMessage(translate('survey.submitError'), {
+      // type: TYPE.ERROR,
+      // });
+    }
+  }, []);
+
   return (
-    <BookingFormProvider>
+    // <BookingFormProvider>
+    <FormProvider methods={methods} onValidSubmit={onValid}>
       <Grid paddingBottom="x-large" paddingTop="large">
         <Grid.Cell
           span={{ narrow: 4, medium: 8, wide: 8 }}
@@ -23,7 +102,9 @@ const BookingForm = () => {
             name="name"
             description="Your first or full name"
             testId="booking-create-name"
-            registerOptions={{ required: true }}
+            registerOptions={{
+              required: true,
+            }}
           />
 
           <TextInputControl<{ email: string }>
@@ -34,12 +115,15 @@ const BookingForm = () => {
             registerOptions={{ required: true }}
           />
 
-          <Row>
+          {/* TODO: Move error handling above components to avoid
+          alignment issues between date + time if one is invalid and the other not */}
+          <FormRow>
             <DateControl<{ startDate: string }>
               label="Start date"
               name="startDate"
               testId="booking-create-start-date"
               registerOptions={{ required: true }}
+              min={startDate}
             />
 
             <TimeControl<{ startTime: string }>
@@ -48,20 +132,27 @@ const BookingForm = () => {
               testId="booking-create-start-time"
               registerOptions={{ required: true }}
             />
-          </Row>
+          </FormRow>
           <Row>
             <DateControl<{ endDate: string }>
               label="End date"
               name="endDate"
               testId="booking-create-end-date"
-              registerOptions={{ required: true }}
+              registerOptions={{
+                required: true,
+                validate: () => isValidTimeRange,
+             }}
+              max={endDate}
             />
 
             <TimeControl<{ endTime: string }>
               label="End time"
               name="endTime"
               testId="booking-create-end-time"
-              registerOptions={{ required: true }}
+              registerOptions={{
+                required: true,
+                validate: () => isValidTimeRange,
+              }}
             />
           </Row>
 
@@ -78,10 +169,13 @@ const BookingForm = () => {
             className="ams-mb-m"
           />
 
-          <Button variant="primary">Submit</Button>
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
         </Grid.Cell>
       </Grid>
-    </BookingFormProvider>
+      {/* </BookingFormProvider> */}
+    </FormProvider>
   );
 };
 

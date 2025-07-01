@@ -21,7 +21,7 @@ const FormTextInput = ({
   id,
   label,
   description,
-  value,
+  // value,
   required = false,
   error,
   onChange,
@@ -39,7 +39,7 @@ const FormTextInput = ({
     <TextInput
       aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
       id={id}
-      value={value}
+      // value={value}
       invalid={!!error}
       name={id}
       required={required}

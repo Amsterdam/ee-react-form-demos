@@ -59,16 +59,19 @@ const DateControl = <T,>({
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>{formState.errors[name]}</ErrorMessage>
+              <ErrorMessage id={errorId}>
+                {formState.errors[name].message}
+              </ErrorMessage>
             )}
             <DateInput
               aria-describedby={`${descriptionId} ${errorId}`}
-              name={name}
+              // name={name}
+              {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
               data-testid={identifier}
               invalid={hasError}
-              {...attributes}
+              required={!!required}
             />
           </Field>
         );
