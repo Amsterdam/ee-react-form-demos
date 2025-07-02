@@ -1,11 +1,5 @@
 import Loader from '@/components/Loader/Loader';
-import {
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import {
   DeepPartialSkipArrayKey,
   FieldErrors,
@@ -36,8 +30,8 @@ const FormController = <T extends FieldValues>({
   // const validatingFormsContext = useContext(ValidatingFormsContext);
   // Important: the isLoading is only applicable to async defaultValues, see https://react-hook-form.com/docs/useform/formstate
   const { dirtyFields, isDirty, isLoading } = methods.formState;
-  const [isRealyDirty, setIsRealyDirty] = useState(false);
-  const uniqueKeyRef = useRef(`form-${crypto.randomUUID()}`);
+  // const [isRealyDirty, setIsRealyDirty] = useState(false);
+  // const uniqueKeyRef = useRef(`form-${crypto.randomUUID()}`);
 
   const loadingFormData = loading ?? isLoading;
   const { handleSubmit, control } = methods;

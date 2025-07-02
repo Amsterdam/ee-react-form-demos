@@ -1,14 +1,14 @@
-import { Button, Grid, Heading, Row } from '@amsterdam/design-system-react';
-import BookingFormProvider from './BookingFormProvider';
+import { useCallback, useMemo } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Button, Grid, Heading } from '@amsterdam/design-system-react';
+// import BookingFormProvider from './BookingFormProvider';
 import TextInputControl from './components/TextInputControl/TextInputControl';
 import CheckboxControl from './components/CheckboxControl/CheckboxControl';
 import TextAreaControl from './components/TextAreaControl/TextAreaControl';
 import DateControl from './components/DateControl/DateControl';
 import TimeControl from './components/TimeControl/TimeControl';
-import { useCallback, useMemo } from 'react';
 import FormProvider from './FormProvider';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import FormRow from './components/FormFieldset/FormRow';
+import DateTimeFieldset from './components/DateTimeFieldset/DateTimeFieldset';
 
 interface BookingFormData {
   name: string;
@@ -21,21 +21,38 @@ interface BookingFormData {
   comments: string;
 }
 
+// TODO fields display as invalid on load (HTML5 required)
+// TODO validation messages
+// TODO typescript issues in controls
+// TODO zod variant
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import { z } from 'zod';
+
+// const bookingSchema = z.object({
+//   name: z.string().min(1, 'Name is required'),
+//   email: z.string().email('Invalid email'),
+//   // ... other fields
+// });
+
+// const methods = useForm({
+//   resolver: zodResolver(bookingSchema),
+//   defaultValues: { /* ... */ }
+// });
 const BookingForm = () => {
-  const now = new Date();
-  // const startDate = now.toISOString().split('T')[0];
+  const nowDateTime = new Date();
+  const nowDate = new Date().toISOString().split('T')[0];
   // console.log({ now, startDate });
   // For example, maxLength is 1 week (from the todayDate)
   // const endDate = useMemo(() => now.setDate(now.getDate() + 7), [startDate]);
 
   const methods = useForm<BookingFormData>({
-    values: {
+    defaultValues: {
       name: '',
       email: '',
-      startDate: now.toISOString().split('T')[0],
-      startTime: now.toISOString().split('T')[0],
-      endDate: now.toISOString().split('T')[0],
-      endTime: now.toISOString().split('T')[0],
+      startDate: nowDateTime.toISOString().split('T')[0],
+      startTime: nowDateTime.toISOString().split('T')[1],
+      endDate: nowDateTime.toISOString().split('T')[0],
+      endTime: nowDateTime.toISOString().split('T')[1],
       remote: false,
       comments: '',
     },
@@ -46,20 +63,31 @@ const BookingForm = () => {
     'endDate',
     'endTime',
   ]);
+
   const startDateTime = useMemo(() => {
     if (!startDate || !startTime) return null;
-
+    console.log(`${startDate}T${startTime}`);
     return new Date(`${startDate}T${startTime}`);
   }, [startDate, startTime]);
+
   const endDateTime = useMemo(() => {
     if (!endDate || !endTime) return null;
-
+    console.log(`${endDate}T${endTime}`);
     return new Date(`${endDate}T${endTime}`);
   }, [endDate, endTime]);
-  const isValidTimeRange = useMemo(() => {
-    if (!startDateTime || !endDateTime) return true; // Skip validation if incomplete
 
-    return endDateTime.getTime() > startDateTime.getTime(); // Simple numeric comparison!
+  const isValidDateRange = useMemo(() => {
+    // Skip validation if values are incomplete
+    if (!startDateTime || !endDateTime) return true;
+
+    // TODO add check for if Date
+    return new Date(endDate).getTime() >= new Date(startDate).getTime();
+  }, [startDateTime, endDateTime]);
+
+  const isValidTimeRange = useMemo(() => {
+    // Skip validation if values are incomplete
+    if (!startDateTime || !endDateTime) return true;
+    return endDateTime.getTime() > startDateTime.getTime();
   }, [startDateTime, endDateTime]);
 
   const onValid: SubmitHandler<BookingFormData> = useCallback(async () => {
@@ -97,6 +125,8 @@ const BookingForm = () => {
             Booking Form
           </Heading>
 
+          {/* This component is 'uncontrolled' (in ReactHookForm terms), as it
+          uses register inside the TextInput */}
           <TextInputControl<{ name: string }>
             label="Name"
             name="name"
@@ -117,13 +147,18 @@ const BookingForm = () => {
 
           {/* TODO: Move error handling above components to avoid
           alignment issues between date + time if one is invalid and the other not */}
-          <FormRow>
+          <DateTimeFieldset
+            legend="Start date and time"
+            fields={['startDate', 'startTime']}
+          >
             <DateControl<{ startDate: string }>
               label="Start date"
               name="startDate"
               testId="booking-create-start-date"
-              registerOptions={{ required: true }}
-              min={startDate}
+              registerOptions={{
+                required: true,
+              }}
+              min={nowDate}
             />
 
             <TimeControl<{ startTime: string }>
@@ -132,17 +167,20 @@ const BookingForm = () => {
               testId="booking-create-start-time"
               registerOptions={{ required: true }}
             />
-          </FormRow>
-          <Row>
+          </DateTimeFieldset>
+          <DateTimeFieldset
+            legend="End date and time"
+            fields={['endDate', 'endTime']}
+          >
             <DateControl<{ endDate: string }>
               label="End date"
               name="endDate"
               testId="booking-create-end-date"
               registerOptions={{
                 required: true,
-                validate: () => isValidTimeRange,
-             }}
-              max={endDate}
+                validate: () => isValidDateRange,
+              }}
+              min={startDate}
             />
 
             <TimeControl<{ endTime: string }>
@@ -154,7 +192,7 @@ const BookingForm = () => {
                 validate: () => isValidTimeRange,
               }}
             />
-          </Row>
+          </DateTimeFieldset>
 
           <CheckboxControl<{ remote: boolean }>
             label="Is the meeting remote?"

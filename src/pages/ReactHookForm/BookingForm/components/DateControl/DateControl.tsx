@@ -35,11 +35,7 @@ const DateControl = <T,>({
         const hasError = !!formState.errors[name];
 
         return (
-          <Field
-            className="ams-mb-m"
-            invalid={hasError}
-            data-testid={`${identifier}-text-input-wrapper`}
-          >
+          <Field data-testid={`${identifier}-text-input-wrapper`}>
             {label && (
               <Label
                 htmlFor={identifier}
@@ -57,11 +53,6 @@ const DateControl = <T,>({
               >
                 {description}
               </Paragraph>
-            )}
-            {hasError && (
-              <ErrorMessage id={errorId}>
-                {formState.errors[name].message}
-              </ErrorMessage>
             )}
             <DateInput
               aria-describedby={`${descriptionId} ${errorId}`}

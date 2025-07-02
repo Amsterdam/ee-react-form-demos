@@ -33,7 +33,14 @@ const TextInputControl = <T,>({
     <FormControl>
       {({ register, formState }) => {
         const hasError = !!formState.errors[name];
-console.log('input', { registerOptions, formState });
+        console.log('input', {
+          name,
+          registerOptions,
+          formState,
+          hasError,
+          attributes,
+          register: register(name, registerOptions as RegisterOptions),
+        });
         return (
           <Field
             className="ams-mb-m"
@@ -68,7 +75,6 @@ console.log('input', { registerOptions, formState });
               {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
-              data-testid={identifier}
               invalid={hasError}
               required={!!required}
             />
