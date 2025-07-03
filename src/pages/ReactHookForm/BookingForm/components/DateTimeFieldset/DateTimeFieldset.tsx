@@ -17,7 +17,7 @@ const DateTimeFieldset = ({
   const hasError = fields.some(
     field => formState.errors[field] && formState.errors[field]?.message
   );
-console.log({ hasError });
+
   return (
     <FieldSet legend={legend} className="ams-mb-m" invalid={!!hasError}>
       <Row>{children}</Row>

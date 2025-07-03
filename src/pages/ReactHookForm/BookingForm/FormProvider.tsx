@@ -95,7 +95,7 @@ const FormController = <T extends FieldValues>({
           // On reset, mark form as not dirty
           // validatingFormsContext?.setIsDirty(uniqueKeyRef.current, false);
         }}
-        noValidate
+        // noValidate
         role="form"
         {...(loadingFormData ? { 'aria-busy': true } : {})}
         {...(loadingFormData ? { 'aria-describedby': 'loading-icon' } : {})}

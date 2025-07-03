@@ -50,9 +50,9 @@ const BookingForm = () => {
       name: '',
       email: '',
       startDate: nowDateTime.toISOString().split('T')[0],
-      startTime: nowDateTime.toISOString().split('T')[1],
-      endDate: nowDateTime.toISOString().split('T')[0],
-      endTime: nowDateTime.toISOString().split('T')[1],
+      startTime: '',
+      endDate: '',
+      endTime: '',
       remote: false,
       comments: '',
     },
@@ -114,7 +114,6 @@ const BookingForm = () => {
   }, []);
 
   return (
-    // <BookingFormProvider>
     <FormProvider methods={methods} onValidSubmit={onValid}>
       <Grid paddingBottom="x-large" paddingTop="large">
         <Grid.Cell
@@ -145,8 +144,6 @@ const BookingForm = () => {
             registerOptions={{ required: true }}
           />
 
-          {/* TODO: Move error handling above components to avoid
-          alignment issues between date + time if one is invalid and the other not */}
           <DateTimeFieldset
             legend="Start date and time"
             fields={['startDate', 'startTime']}
@@ -212,7 +209,6 @@ const BookingForm = () => {
           </Button>
         </Grid.Cell>
       </Grid>
-      {/* </BookingFormProvider> */}
     </FormProvider>
   );
 };

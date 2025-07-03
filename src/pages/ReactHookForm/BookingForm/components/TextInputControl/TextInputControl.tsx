@@ -33,14 +33,7 @@ const TextInputControl = <T,>({
     <FormControl>
       {({ register, formState }) => {
         const hasError = !!formState.errors[name];
-        console.log('input', {
-          name,
-          registerOptions,
-          formState,
-          hasError,
-          attributes,
-          register: register(name, registerOptions as RegisterOptions),
-        });
+
         return (
           <Field
             className="ams-mb-m"
@@ -76,7 +69,10 @@ const TextInputControl = <T,>({
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
               invalid={hasError}
-              required={!!required}
+              // Avoid the `required` prop when using ReactHookForm otherwise
+              // the user is presented :invalid form fields on load before
+              // touching the fields and gets inconsistent validation UX
+              // required={!!required}
             />
           </Field>
         );

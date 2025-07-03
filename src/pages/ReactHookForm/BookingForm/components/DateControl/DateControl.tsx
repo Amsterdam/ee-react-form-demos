@@ -56,13 +56,11 @@ const DateControl = <T,>({
             )}
             <DateInput
               aria-describedby={`${descriptionId} ${errorId}`}
-              // name={name}
               {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
               data-testid={identifier}
               invalid={hasError}
-              required={!!required}
             />
           </Field>
         );
