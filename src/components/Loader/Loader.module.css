@@ -15,6 +15,10 @@
   border: 8px solid var(--ams-color-separator);
   border-radius: 50%;
   border-right-color: var(--ams-button-primary-background-color);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  translate: -50%;
   width: 50px;
 }
 

@@ -1,7 +1,12 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button, Grid, Heading } from '@amsterdam/design-system-react';
-// import BookingFormProvider from './BookingFormProvider';
+import {
+  Alert,
+  Button,
+  Grid,
+  Heading,
+  Paragraph,
+} from '@amsterdam/design-system-react';
 import TextInputControl from './components/TextInputControl/TextInputControl';
 import CheckboxControl from './components/CheckboxControl/CheckboxControl';
 import TextAreaControl from './components/TextAreaControl/TextAreaControl';
@@ -9,6 +14,8 @@ import DateControl from './components/DateControl/DateControl';
 import TimeControl from './components/TimeControl/TimeControl';
 import FormProvider from './FormProvider';
 import DateTimeFieldset from './components/DateTimeFieldset/DateTimeFieldset';
+import Loader from '@/components/Loader/Loader';
+import styles from './BookingForm.module.css';
 
 interface BookingFormData {
   name: string;
@@ -21,10 +28,11 @@ interface BookingFormData {
   comments: string;
 }
 
-// TODO fields display as invalid on load (HTML5 required)
 // TODO validation messages
+// TODO touched handling?
 // TODO typescript issues in controls
 // TODO zod variant
+// TODO onchange variant
 // import { zodResolver } from '@hookform/resolvers/zod';
 // import { z } from 'zod';
 
@@ -39,6 +47,9 @@ interface BookingFormData {
 //   defaultValues: { /* ... */ }
 // });
 const BookingForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const nowDateTime = new Date();
   const nowDate = new Date().toISOString().split('T')[0];
   // console.log({ now, startDate });
@@ -80,7 +91,7 @@ const BookingForm = () => {
     // Skip validation if values are incomplete
     if (!startDateTime || !endDateTime) return true;
 
-    // TODO add check for if Date
+    // TODO add check for if valid Date
     return new Date(endDate).getTime() >= new Date(startDate).getTime();
   }, [startDateTime, endDateTime]);
 
@@ -100,6 +111,18 @@ const BookingForm = () => {
 
     try {
       console.log('submit!');
+      /**
+       * Use setTimeout to Simulate API call
+       * - Here's where validation can happen
+       * - Here's where you can show a post-submission success component
+       * or redirect the user to a new page
+       */
+      setIsLoading(true);
+
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsSubmitted(true);
+      }, 1500);
       // await handleSurveyCompletionSubmit(surveyId, dataFromForm);
       // showToastMessage(translate('survey.submitSuccess'), {
       //   type: TYPE.SUCCESS,
@@ -114,12 +137,9 @@ const BookingForm = () => {
   }, []);
 
   return (
-    <FormProvider methods={methods} onValidSubmit={onValid}>
-      <Grid paddingBottom="x-large" paddingTop="large">
-        <Grid.Cell
-          span={{ narrow: 4, medium: 8, wide: 8 }}
-          className="ams-mb-xl"
-        >
+    <Grid paddingBottom="x-large" paddingTop="large">
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className="ams-mb-xl">
+        <FormProvider methods={methods} onValidSubmit={onValid}>
           <Heading level={1} size="level-3" className="ams-mb-m">
             Booking Form
           </Heading>
@@ -207,9 +227,32 @@ const BookingForm = () => {
           <Button type="submit" variant="primary">
             Submit
           </Button>
-        </Grid.Cell>
-      </Grid>
-    </FormProvider>
+        </FormProvider>
+
+        {/* Fake loader to simulate API request */}
+        {isLoading && <Loader />}
+        {/* Fake placeholder for post-submission state */}
+        {isSubmitted && (
+          <div className={styles.success}>
+            <Alert
+              closeable
+              heading="Gelukt"
+              headingLevel={2}
+              severity="success"
+              onClose={() => {
+                setIsLoading(false);
+                setIsSubmitted(false);
+              }}
+            >
+              <Paragraph>
+                Het formulier is verzonden. We hebben uw gegevens goed
+                ontvangen.
+              </Paragraph>
+            </Alert>
+          </div>
+        )}
+      </Grid.Cell>
+    </Grid>
   );
 };
 
