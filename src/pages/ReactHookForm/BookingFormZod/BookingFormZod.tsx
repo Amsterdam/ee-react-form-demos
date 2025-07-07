@@ -33,6 +33,9 @@ const BookingFormZod = () => {
 
   const methods = useForm<BookingFormData>({
     resolver: zodResolver(bookingFormSchema) as Resolver<BookingFormData>,
+
+    // Uncomment for validation onChange
+    // mode: 'onChange',
     defaultValues: {
       name: '',
       email: '',

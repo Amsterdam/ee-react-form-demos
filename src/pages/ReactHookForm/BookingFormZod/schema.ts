@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// TODO zod compare start + end datetimes
 const bookingFormSchema = z
   .object({
     name: z.string().min(1, 'Name is required'),

@@ -28,6 +28,9 @@ const ContactForm = () => {
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
+
+    // Uncomment for validation onChange
+    // mode: 'onChange',
     defaultValues: {
       name: '',
       email: '',

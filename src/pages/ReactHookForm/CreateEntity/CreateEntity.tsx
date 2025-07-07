@@ -54,6 +54,9 @@ const CreateEntity = () => {
   } = useForm<RHFEntityFormData>({
     // Resolvers allows you to use any external validation library (like Zod)
     resolver: zodResolver(entityFormSchema) as Resolver<RHFEntityFormData>,
+
+    // Uncomment for validation onChange
+    // mode: 'onChange',
     defaultValues: {
       kind: 'Component',
       name: 'ee-docs',

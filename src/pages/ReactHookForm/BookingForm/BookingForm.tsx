@@ -28,7 +28,6 @@ interface BookingFormData {
   comments: string;
 }
 
-// TODO onchange variant
 const BookingForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -37,6 +36,8 @@ const BookingForm = () => {
   const nowDate = new Date().toISOString().split('T')[0];
 
   const methods = useForm<BookingFormData>({
+    // Uncomment for validation onChange
+    // mode: 'onChange',
     defaultValues: {
       name: '',
       email: '',
