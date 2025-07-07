@@ -10,11 +10,12 @@ import {
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
+// Merge design-system and react-hook-form types
 export type TextAreaControlProps<
   TFieldValues extends FieldValues = FieldValues,
 > = TextAreaProps & FormControlBase<TFieldValues>;
 
-const TextAreaControl = <TFieldValues extends FieldValues = FieldValues>({
+const TextAreaControl = <T extends FieldValues>({
   name,
   label,
   description,
@@ -23,7 +24,7 @@ const TextAreaControl = <TFieldValues extends FieldValues = FieldValues>({
   testId,
   cols,
   ...attributes
-}: TextAreaControlProps<TFieldValues>) => {
+}: TextAreaControlProps<T>) => {
   const identifier = testId || id || name;
   const descriptionId = `${identifier}-description`;
   const errorId = `${identifier}-error`;
@@ -34,7 +35,8 @@ const TextAreaControl = <TFieldValues extends FieldValues = FieldValues>({
   return (
     <FormControl>
       {({ register, formState }) => {
-        const hasError = !!formState.errors[name];
+        const errorMessage = formState.errors[name]?.message?.toString();
+        const hasError = !!errorMessage;
 
         return (
           <Field
@@ -61,9 +63,7 @@ const TextAreaControl = <TFieldValues extends FieldValues = FieldValues>({
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>
-                {formState.errors[name].message}
-              </ErrorMessage>
+              <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>
             )}
 
             <TextArea

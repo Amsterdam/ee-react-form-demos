@@ -9,10 +9,11 @@ import {
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
+// Merge design-system and react-hook-form types
 export type CheckboxControlProps<TFieldValues extends FieldValues> =
   CheckboxProps & FormControlBase<TFieldValues>;
 
-const CheckboxControl = <T,>({
+const CheckboxControl = <T extends FieldValues>({
   name,
   label,
   description,
@@ -31,7 +32,8 @@ const CheckboxControl = <T,>({
   return (
     <FormControl>
       {({ register, formState }) => {
-        const hasError = !!formState.errors[name];
+        const errorMessage = formState.errors[name]?.message?.toString();
+        const hasError = !!errorMessage;
 
         return (
           <Field
@@ -50,9 +52,7 @@ const CheckboxControl = <T,>({
             )}
 
             {hasError && (
-              <ErrorMessage id={errorId}>
-                {formState.errors[name].message}
-              </ErrorMessage>
+              <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>
             )}
 
             <Checkbox

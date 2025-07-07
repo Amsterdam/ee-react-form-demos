@@ -10,10 +10,11 @@ import type { FieldValues, RegisterOptions } from 'react-hook-form';
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
+// Merge design-system and react-hook-form types
 export type TextInputControlProps<TFieldValues extends FieldValues> =
   TextInputProps & FormControlBase<TFieldValues>;
 
-const TextInputControl = <T,>({
+const TextInputControl = <T extends FieldValues>({
   name,
   label,
   description,
@@ -32,7 +33,15 @@ const TextInputControl = <T,>({
   return (
     <FormControl>
       {({ register, formState }) => {
-        const hasError = !!formState.errors[name];
+        const errorMessage = formState.errors[name]?.message?.toString();
+        const hasError = !!errorMessage;
+
+        const ariaDescribedBy = [
+          description ? descriptionId : null,
+          hasError ? errorId : null,
+        ]
+          .filter(Boolean)
+          .join(' ');
 
         return (
           <Field
@@ -59,12 +68,10 @@ const TextInputControl = <T,>({
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>
-                {formState.errors[name].message}
-              </ErrorMessage>
+              <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>
             )}
             <TextInput
-              aria-describedby={`${descriptionId} ${errorId}`}
+              aria-describedby={ariaDescribedBy || undefined}
               {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}

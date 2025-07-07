@@ -28,7 +28,6 @@ interface BookingFormData {
   comments: string;
 }
 
-// TODO typescript issues in controls
 // TODO zod variant
 // TODO onchange variant
 // import { zodResolver } from '@hookform/resolvers/zod';
@@ -217,6 +216,7 @@ const BookingForm = () => {
 
         {/* Fake loader to simulate API request */}
         {isLoading && <Loader />}
+
         {/* Fake placeholder for post-submission state */}
         {isSubmitted && (
           <div className={styles.success}>

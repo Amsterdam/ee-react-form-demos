@@ -9,10 +9,11 @@ import type { FieldValues, RegisterOptions } from 'react-hook-form';
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
+// Merge design-system and react-hook-form types
 export type TimeControlProps<TFieldValues extends FieldValues> =
   TimeInputProps & FormControlBase<TFieldValues>;
 
-const TimeControl = <T,>({
+const TimeControl = <T extends FieldValues>({
   name,
   label,
   description,
