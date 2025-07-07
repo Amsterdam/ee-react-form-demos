@@ -28,8 +28,6 @@ interface BookingFormData {
   comments: string;
 }
 
-// TODO validation messages
-// TODO touched handling?
 // TODO typescript issues in controls
 // TODO zod variant
 // TODO onchange variant
@@ -77,13 +75,11 @@ const BookingForm = () => {
 
   const startDateTime = useMemo(() => {
     if (!startDate || !startTime) return null;
-    console.log(`${startDate}T${startTime}`);
     return new Date(`${startDate}T${startTime}`);
   }, [startDate, startTime]);
 
   const endDateTime = useMemo(() => {
     if (!endDate || !endTime) return null;
-    console.log(`${endDate}T${endTime}`);
     return new Date(`${endDate}T${endTime}`);
   }, [endDate, endTime]);
 
@@ -98,7 +94,12 @@ const BookingForm = () => {
   const isValidTimeRange = useMemo(() => {
     // Skip validation if values are incomplete
     if (!startDateTime || !endDateTime) return true;
-    return endDateTime.getTime() > startDateTime.getTime();
+    // return endDateTime.getTime() > startDateTime.getTime();
+    if (endDateTime.getTime() > startDateTime.getTime()) {
+      return true;
+    }
+
+    return 'This field has an invalid value.';
   }, [startDateTime, endDateTime]);
 
   const onValid: SubmitHandler<BookingFormData> = useCallback(async () => {

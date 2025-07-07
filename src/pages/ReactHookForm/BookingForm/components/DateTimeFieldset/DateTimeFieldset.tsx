@@ -14,24 +14,47 @@ const DateTimeFieldset = ({
   fields,
 }: DateTimeFieldsetProps & PropsWithChildren) => {
   const { formState } = useFormContext();
+
   const hasError = fields.some(
     field => formState.errors[field] && formState.errors[field]?.message
   );
 
   const errorMessage = useMemo(() => {
-    const erroredFields = fields.filter(field => formState.errors?.[field]);
+    const requiredFields: string[] = [];
+    const invalidFields: string[] = [];
 
-    if (erroredFields.length === 1) {
-      return `The ${erroredFields[0]} field is required.`;
-    } else if (erroredFields.length > 1) {
-      const lastField = erroredFields.pop();
-      return `The fields ${erroredFields.join(', ')} and ${lastField} are required.`;
+    for (const field of fields) {
+      const type = formState.errors?.[field]?.type;
+
+      if (!type) continue;
+
+      if (type === 'required') {
+        requiredFields.push(field);
+      } else {
+        invalidFields.push(field);
+      }
     }
 
-    return undefined;
-  }, [formState.errors]);
+    const formatFields = (fields: string[]) => {
+      if (fields.length === 0) return '';
 
-  console.log({ formState });
+      if (fields.length === 1) {
+        return `The ${fields[0]} field is required.`;
+      }
+
+      const last = fields.pop();
+      return `The fields ${fields.join(', ')} and ${last} are required.`;
+    };
+
+    if (invalidFields.length) {
+      return 'The end date and time must be later than the start date and time.';
+    }
+
+    const requiredMsg = formatFields(requiredFields);
+
+    return requiredMsg || undefined;
+  }, [formState]);
+
   return (
     <FieldSet legend={legend} className="ams-mb-m" invalid={!!hasError}>
       {hasError && (
