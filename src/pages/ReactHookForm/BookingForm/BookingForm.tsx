@@ -49,9 +49,6 @@ const BookingForm = () => {
 
   const nowDateTime = new Date();
   const nowDate = new Date().toISOString().split('T')[0];
-  // console.log({ now, startDate });
-  // For example, maxLength is 1 week (from the todayDate)
-  // const endDate = useMemo(() => now.setDate(now.getDate() + 7), [startDate]);
 
   const methods = useForm<BookingFormData>({
     defaultValues: {

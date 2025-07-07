@@ -2,6 +2,13 @@ import { PropsWithChildren, useMemo } from 'react';
 import { ErrorMessage, FieldSet, Row } from '@amsterdam/design-system-react';
 import { useFormContext } from 'react-hook-form';
 
+const fieldNameMap = {
+  startDate: 'Start date',
+  startTime: 'Start time',
+  endDate: 'End date',
+  endTime: 'End time',
+};
+
 interface DateTimeFieldsetProps {
   errorFields?: string[]; // Array of field names to check for errors
   legend: string;
@@ -39,11 +46,10 @@ const DateTimeFieldset = ({
       if (fields.length === 0) return '';
 
       if (fields.length === 1) {
-        return `The ${fields[0]} field is required.`;
+        return `The ${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} field is required.`;
       }
 
-      const last = fields.pop();
-      return `The fields ${fields.join(', ')} and ${last} are required.`;
+      return `The fields ${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} and ${fieldNameMap[fields[1] as keyof typeof fieldNameMap]} are required.`;
     };
 
     if (invalidFields.length) {
