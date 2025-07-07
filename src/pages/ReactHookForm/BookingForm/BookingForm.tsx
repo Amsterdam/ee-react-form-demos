@@ -102,13 +102,6 @@ const BookingForm = () => {
   }, [startDateTime, endDateTime]);
 
   const onValid: SubmitHandler<BookingFormData> = useCallback(async () => {
-    // if (!dirtyFields.surveyedOn) {
-    //   // make sure we keep the original value
-    //   dataFromForm.surveyedOn = dateValueToIsoString(
-    //     spanInstallationSurvey.surveyedOn
-    //   );
-    // }
-
     try {
       console.log('submit!');
       /**
@@ -123,16 +116,8 @@ const BookingForm = () => {
         setIsLoading(false);
         setIsSubmitted(true);
       }, 1500);
-      // await handleSurveyCompletionSubmit(surveyId, dataFromForm);
-      // showToastMessage(translate('survey.submitSuccess'), {
-      //   type: TYPE.SUCCESS,
-      // });
-      // dispatch(fetchSpanInstallationSurvey(surveyId));
     } catch (error) {
       console.log('form error!', error);
-      // showToastMessage(translate('survey.submitError'), {
-      // type: TYPE.ERROR,
-      // });
     }
   }, []);
 
@@ -152,7 +137,7 @@ const BookingForm = () => {
             description="Your first or full name"
             testId="booking-create-name"
             registerOptions={{
-              required: true,
+              required: 'This field is required.',
             }}
           />
 
@@ -161,7 +146,7 @@ const BookingForm = () => {
             name="email"
             type="email"
             testId="booking-create-email"
-            registerOptions={{ required: true }}
+            registerOptions={{ required: 'This field is required.' }}
           />
 
           <DateTimeFieldset
@@ -173,7 +158,7 @@ const BookingForm = () => {
               name="startDate"
               testId="booking-create-start-date"
               registerOptions={{
-                required: true,
+                required: 'This field is required.',
               }}
               min={nowDate}
             />
@@ -182,7 +167,7 @@ const BookingForm = () => {
               label="Start time"
               name="startTime"
               testId="booking-create-start-time"
-              registerOptions={{ required: true }}
+              registerOptions={{ required: 'This field is required.' }}
             />
           </DateTimeFieldset>
           <DateTimeFieldset
@@ -194,7 +179,7 @@ const BookingForm = () => {
               name="endDate"
               testId="booking-create-end-date"
               registerOptions={{
-                required: true,
+                required: 'This field is required.',
                 validate: () => isValidDateRange,
               }}
               min={startDate}
@@ -205,7 +190,7 @@ const BookingForm = () => {
               name="endTime"
               testId="booking-create-end-time"
               registerOptions={{
-                required: true,
+                required: 'This field is required.',
                 validate: () => isValidTimeRange,
               }}
             />
