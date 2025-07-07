@@ -1,5 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { useCallback, useState } from 'react';
+import {
+  FormProvider,
+  Resolver,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Alert,
   Button,
@@ -15,21 +21,10 @@ import DateControl from './components/DateControl/DateControl';
 import TimeControl from './components/TimeControl/TimeControl';
 import DateTimeFieldset from './components/DateTimeFieldset/DateTimeFieldset';
 import Loader from '@/components/Loader/Loader';
-import styles from './BookingForm.module.css';
+import styles from './BookingFormZod.module.css';
+import bookingFormSchema, { BookingFormData } from './schema';
 
-interface BookingFormData {
-  name: string;
-  email: string;
-  startDate: string;
-  startTime: string;
-  endDate: string;
-  endTime: string;
-  remote: boolean;
-  comments: string;
-}
-
-// TODO onchange variant
-const BookingForm = () => {
+const BookingFormZod = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -37,6 +32,7 @@ const BookingForm = () => {
   const nowDate = new Date().toISOString().split('T')[0];
 
   const methods = useForm<BookingFormData>({
+    resolver: zodResolver(bookingFormSchema) as Resolver<BookingFormData>,
     defaultValues: {
       name: '',
       email: '',
@@ -48,41 +44,7 @@ const BookingForm = () => {
       comments: '',
     },
   });
-  const [startDate, startTime, endDate, endTime] = methods.watch([
-    'startDate',
-    'startTime',
-    'endDate',
-    'endTime',
-  ]);
-
-  const startDateTime = useMemo(() => {
-    if (!startDate || !startTime) return null;
-    return new Date(`${startDate}T${startTime}`);
-  }, [startDate, startTime]);
-
-  const endDateTime = useMemo(() => {
-    if (!endDate || !endTime) return null;
-    return new Date(`${endDate}T${endTime}`);
-  }, [endDate, endTime]);
-
-  const isValidDateRange = useMemo(() => {
-    // Skip validation if values are incomplete
-    if (!startDateTime || !endDateTime) return true;
-
-    // It would logical to use a library like dayjs to validate date strings
-    return new Date(endDate).getTime() >= new Date(startDate).getTime();
-  }, [startDateTime, endDateTime]);
-
-  const isValidTimeRange = useMemo(() => {
-    // Skip validation if values are incomplete
-    if (!startDateTime || !endDateTime) return true;
-    // return endDateTime.getTime() > startDateTime.getTime();
-    if (endDateTime.getTime() > startDateTime.getTime()) {
-      return true;
-    }
-
-    return 'This field has an invalid value.';
-  }, [startDateTime, endDateTime]);
+  const [startDate] = methods.watch(['startDate']);
 
   const onValidSubmit: SubmitHandler<BookingFormData> =
     useCallback(async () => {
@@ -168,7 +130,6 @@ const BookingForm = () => {
                 testId="booking-create-end-date"
                 registerOptions={{
                   required: 'This field is required.',
-                  validate: () => isValidDateRange,
                 }}
                 min={startDate}
               />
@@ -179,7 +140,6 @@ const BookingForm = () => {
                 testId="booking-create-end-time"
                 registerOptions={{
                   required: 'This field is required.',
-                  validate: () => isValidTimeRange,
                 }}
               />
             </DateTimeFieldset>
@@ -237,4 +197,4 @@ const BookingForm = () => {
   );
 };
 
-export default BookingForm;
+export default BookingFormZod;
