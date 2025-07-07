@@ -28,6 +28,9 @@ const ContactForm = () => {
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
+
+    // Uncomment for validation onChange
+    // mode: 'onChange',
     defaultValues: {
       name: '',
       email: '',
@@ -95,11 +98,7 @@ const ContactForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           {/* Fake loader to simulate API request */}
-          {isLoading && (
-            <div className={styles.loader}>
-              <Loader />
-            </div>
-          )}
+          {isLoading && <Loader />}
           {hasErrors && (
             <Alert heading="Niet gelukt" headingLevel={2} severity="error">
               <Paragraph>Er was een fout met de volgende velden:</Paragraph>
