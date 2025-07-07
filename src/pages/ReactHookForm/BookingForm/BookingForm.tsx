@@ -6,6 +6,7 @@ import {
   Grid,
   Heading,
   Paragraph,
+  Row,
 } from '@amsterdam/design-system-react';
 import TextInputControl from './components/TextInputControl/TextInputControl';
 import CheckboxControl from './components/CheckboxControl/CheckboxControl';
@@ -213,9 +214,18 @@ const BookingForm = () => {
               className="ams-mb-m"
             />
 
-            <Button type="submit" variant="primary">
-              Submit
-            </Button>
+            <Row>
+              <Button type="submit" variant="primary">
+                Submit
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => methods.reset()}
+              >
+                Reset
+              </Button>
+            </Row>
           </form>
         </FormProvider>
 
