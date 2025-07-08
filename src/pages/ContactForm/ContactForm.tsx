@@ -115,11 +115,7 @@ const ContactForm = () => {
           noValidate
           onSubmit={handleSubmit}
         >
-          {isLoading && (
-            <div className={styles.loader}>
-              <Loader />
-            </div>
-          )}
+          {isLoading && <Loader />}
           {hasErrors && (
             <Alert heading="Niet gelukt" headingLevel={2} severity="error">
               <Paragraph>Er was een fout met de volgende velden:</Paragraph>
