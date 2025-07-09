@@ -50,11 +50,17 @@ export const parameters = {
   html: {
     root: '.ams-page',
   },
-  // options: {
-  //   storySort: {
-  //     order: [],
-  //   },
-  // },
+  options: {
+    storySort: {
+      order: [
+        'Introduction',
+        'Accessibility*',
+        'Alternatives*',
+        'Terminologies*',
+        'Validation*',
+      ],
+    },
+  },
   viewMode: 'docs',
   viewport: {
     viewports,
