@@ -130,6 +130,10 @@ const ContactForm = () => {
                   aria-describedby={errors.name?.message ? 'error-name' : ''}
                   invalid={!!errors.name}
                   onChange={field.onChange}
+                  value={field.value}
+                  // You can also use the spread operator to pass all field
+                  // values
+                  // {...field} // This spreads value, onChange, onBlur, etc.
                 />
               </Field>
             )}
@@ -152,7 +156,11 @@ const ContactForm = () => {
                   placeholder="naam@email.nl"
                   aria-describedby={errors.email?.message ? 'error-email' : ''}
                   invalid={!!errors.email}
+                  value={field.value}
                   onChange={field.onChange}
+                  // You can also use the spread operator to pass all field
+                  // values
+                  // {...field} // This spreads value, onChange, onBlur, etc.
                 />
               </Field>
             )}
@@ -174,7 +182,11 @@ const ContactForm = () => {
                   placeholder="Bericht"
                   aria-describedby={errors.body?.message ? 'error-body' : ''}
                   invalid={!!errors.body}
+                  value={field.value}
                   onChange={field.onChange}
+                  // You can also use the spread operator to pass all field
+                  // values
+                  // {...field} // This spreads value, onChange, onBlur, etc.
                 />
               </Field>
             )}
