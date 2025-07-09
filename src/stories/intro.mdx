@@ -1,7 +1,323 @@
 import { Meta } from '@storybook/blocks';
 
+import Github from './assets/github.svg';
+import DocumentCheckmark from './assets/DocumentCheckmark.svg';
+
+export const RightArrow = () => <svg
+    viewBox="0 0 14 14"
+    width="8px"
+    height="14px"
+    style={{
+      marginLeft: '4px',
+      display: 'inline-block',
+      shapeRendering: 'inherit',
+      verticalAlign: 'middle',
+      fill: 'currentColor',
+      'path fill': 'currentColor'
+    }}
+>
+  <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
+</svg>
+
 <Meta title="Introduction" />
 
 # Gemeente Amsterdam Form Demos
 
+> **Warning**
+> This project is a work in progress so will likely change in the future.
+
 This project aims to include demos and examples of common use-cases of forms for Gemeente Amsterdam. Forms can be built with either HTML5 and extended further with React Hook Forms. Frontend applications use the component library [React](https://react.dev/).
+
+## Examples
+
+Form examples are split into two categories:
+
+- Using HTML5 and [React](https://react.dev/)
+- Using [React Hook Form](https://www.react-hook-form.com/) and [React](https://react.dev/)
+
+### HTML5
+
+#### Simple validation on submit - [ContactForm](./?path=/story/plain-html5-contactform-on-submit-validation-using-zod--base)
+
+- This is a **simple** example
+- Validation using [Zod](https://zod.dev/) schema
+- Validation happens on form submit
+
+#### Simple validation on change - [ContactForm](./?path=/story/plain-html5-contactform-on-change-validation-using-zod--base)
+
+- This is a **simple** example
+- Validation using [Zod](https://zod.dev/) schema
+- Validation happens on form change
+
+#### Create a Backstage Entity (Plain) - [CreateEntity](./?path=/story/plain-html5-createentity--base)
+
+- This is an **advanced** example
+- Validation using HTML5 browser validation
+- Validation happens on form submit
+
+#### Create a Backstage Entity (Validation using Zod) - [CreateEntity (Validation using Zod)](./?path=/story/plain-html5-createentity-validation-using-zod--base)
+
+- This is an **advanced** example
+- Validation using [Zod](https://zod.dev/) schema
+- Validation happens on form submit
+
+### React Hook Form
+
+#### Booking Form (Plain) - [BookingForm](./?path=/story/reacthookform-bookingform--base)
+
+- This is a **simple** example
+- Validation using HTML5 and TypeScript
+- Validation happens on form submit
+
+#### Booking Form (Validation using Zod) - [BookingForm (Validation using Zod)](./?path=/story/reacthookform-bookingformzod--base)
+
+- This is a **simple** example
+- Validation using [Zod](https://zod.dev/) schema
+- Validation happens on form submit
+
+#### Contact Form (Validation using Zod) - [ContactForm](./?path=/story/reacthookform-contactform--base)
+
+- This is a **simple** example
+- Validation using [Zod](https://zod.dev/) schema
+- Validation happens on form submit
+
+#### Create a Backstage Entity (Validation using Zod) - [CreateEntity (Validation using Zod)](./?path=/story/reacthookform-createentity--base)
+
+- This is an **advanced** example
+- Validation using [Zod](https://zod.dev/) schema
+- Validation happens on form submit
+
+## Documentation
+
+## Todos
+
+- Documentation
+  -  Data Structures
+    - Importance on form data flat data (no objects as children)?
+      - Easier to serialize/POST to API
+      - Form field naming for child array fields (e.g. `user[0].email`)
+  - Terminologies
+  - JSX Markup for form fields
+    - attribute setup differing from HTML5 form elements - defaultValue, currentValue vs value
+    - `<form>` onSubmit
+    - `<label>` htmlFor
+  - Common strategies
+    - Setting initial data (from server/async methods)
+      - (RHF) Reset form when data loads
+      - (RHF) Change defaultValues to values
+    - Submission state
+      - Loader
+      - Disable submit/fields
+    - Form state vs UI state (what goes in a form, what belongs in app state)
+      - no need to use input hidden in react
+    - Backend/Security
+      - File handling
+      - CSRF
+        - How backend uses this to validate frontend origin
+      - XSS
+        - Never trust frontend input
+          - manipulate browser via javascript
+          - malicious sql queries etc.
+          - Sanitize! but don't convert/overwrite user inputs
+        - XSS use CSP headers
+      - API requests
+        - Data-type: multipart/form-data / JSON
+        - File uploads: multipart/form-data vs base64 vs presigned URLs?
+  - Common UX Patterns
+    - Multi-step forms
+    - "Unsaved changes" prompts
+    - Form autosuggestions/autocomplete (e.g., `<input autocomplete="email">`)
+  - Form accessbility
+  - Alternative libraries
+  - Testing
+    - Validation
+    - Mocking backend response
+  - Reference real examples using forms?
+    - BOR-AIP
+    - AmsterdamApp
+
+## Feedback
+
+Contributions and feedback are highly appreciated, if you have spotted something that you think is incorrect or unsure about please <a href="https://github.com/Amsterdam/ee-react-form-demos/issues/new" target="_blank">create an issue</a> in the <a href="https://github.com/Amsterdam/ee-react-form-demos" target="_blank">GitHub repository</a>. Missing an example you think is necessary? Think an improvement can be made to an existing demo? Feel free to <a href="https://github.com/Amsterdam/ee-react-form-demos/compare" target="_blank">make a pull request</a>!
+
+Otherwise if you have any questions or other matters regarding implementing forms or a demo here, you can contact us via Slack (#engineering-enablement) or Teams (DV - Engineering Enablement).
+
+<div className="sb-section sb-socials">
+    <div className="sb-section-item">
+      <img src={Github} alt="Github logo" className="sb-explore-image"/>
+      This project's repository.
+
+      <a
+        href="https://github.com/Amsterdam/ee-react-form-demos"
+        target="_blank"
+      >Browse on GitHub<RightArrow /></a>
+    </div>
+    <div className="sb-section-item">
+      <img src={DocumentCheckmark} alt="A book" className="sb-explore-image"/>
+      <p>Browse the City of Amsterdam technology standards and guidance.</p>
+
+      <a
+          href="https://developers.amsterdam/"
+          target="_blank"
+        >developers.amsterdam<RightArrow /></a>
+    </div>
+</div>
+
+
+<style>
+  {`
+  .sb-container {
+    margin-bottom: 48px;
+  }
+
+  .sb-section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  img {
+    object-fit: cover;
+  }
+
+  .sb-section-title {
+    margin-bottom: 32px;
+  }
+
+  .sb-section a:not(h1 a, h2 a, h3 a) {
+    font-size: 14px;
+  }
+
+  .sb-section-item, .sb-grid-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sb-section-item-heading {
+    padding-top: 20px !important;
+    padding-bottom: 5px !important;
+    margin: 0 !important;
+  }
+  .sb-section-item-paragraph {
+    margin: 0;
+    padding-bottom: 10px;
+  }
+
+  .sb-chevron {
+    margin-left: 5px;
+  }
+
+  .sb-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 32px 20px;
+  }
+
+  .sb-socials {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sb-socials p {
+    margin-bottom: 10px;
+  }
+
+  .sb-explore-image {
+    max-height: 32px;
+    align-self: flex-start;
+  }
+
+  .sb-addon {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: #EEF3F8;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: #EEF3F8;
+    height: 180px;
+    margin-bottom: 48px;
+    overflow: hidden;
+  }
+
+  .sb-addon-text {
+    padding-left: 48px;
+    max-width: 240px;
+  }
+
+  .sb-addon-text h4 {
+    padding-top: 0px;
+  }
+
+  .sb-addon-img {
+    position: absolute;
+    left: 345px;
+    top: 0;
+    height: 100%;
+    width: 200%;
+    overflow: hidden;
+  }
+
+  .sb-addon-img img {
+    width: 650px;
+    transform: rotate(-15deg);
+    margin-left: 40px;
+    margin-top: -72px;
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0);
+    backface-visibility: hidden;
+  }
+
+  @media screen and (max-width: 800px) {
+    .sb-addon-img {
+      left: 300px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .sb-section {
+      flex-direction: column;
+    }
+
+    .sb-features-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .sb-socials {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sb-addon {
+      height: 280px;
+      align-items: flex-start;
+      padding-top: 32px;
+      overflow: hidden;
+    }
+
+    .sb-addon-text {
+      padding-left: 24px;
+    }
+
+    .sb-addon-img {
+      right: 0;
+      left: 0;
+      top: 130px;
+      bottom: 0;
+      overflow: hidden;
+      height: auto;
+      width: 124%;
+    }
+
+    .sb-addon-img img {
+      width: 1200px;
+      transform: rotate(-12deg);
+      margin-left: 0;
+      margin-top: 48px;
+      margin-bottom: -40px;
+      margin-left: -24px;
+    }
+  }
+  `}
+</style>
