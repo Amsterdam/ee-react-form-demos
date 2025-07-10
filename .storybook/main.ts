@@ -5,6 +5,7 @@ const config: StorybookConfig = {
     '../src/stories/Intro.mdx',
     '../src/stories/Accessibility.mdx',
     '../src/stories/Alternatives.mdx',
+    '../src/stories/React19.mdx',
     '../src/stories/Terminologies.mdx',
     '../src/stories/Validation.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
