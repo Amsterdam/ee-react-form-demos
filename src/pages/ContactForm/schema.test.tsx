@@ -22,6 +22,7 @@ describe('ContactFormSchema', () => {
 
     const result = ContactFormSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
+
     if (!result.success) {
       const nameError = result.error.issues.find(
         issue => issue.path[0] === 'name'
@@ -39,6 +40,7 @@ describe('ContactFormSchema', () => {
 
     const result = ContactFormSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
+
     if (!result.success) {
       const nameError = result.error.issues.find(
         issue => issue.path[0] === 'name'
@@ -56,6 +58,7 @@ describe('ContactFormSchema', () => {
 
     const result = ContactFormSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
+
     if (!result.success) {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
@@ -75,6 +78,7 @@ describe('ContactFormSchema', () => {
 
     const result = ContactFormSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
+
     if (!result.success) {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
@@ -93,6 +97,7 @@ describe('ContactFormSchema', () => {
 
     const result = ContactFormSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
+
     if (!result.success) {
       const bodyError = result.error.issues.find(
         issue => issue.path[0] === 'body'
@@ -110,6 +115,7 @@ describe('ContactFormSchema', () => {
 
     const result = ContactFormSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
+
     if (!result.success) {
       expect(result.error.issues).toHaveLength(3);
     }

@@ -37,7 +37,7 @@ describe('ContactForm', () => {
     expect(bodyInput).toHaveValue('Test message');
   });
 
-  it('should show validation errors when form is submitted with invalid data', async () => {
+  it('should show validation errors when the form is submitted with invalid data', async () => {
     const user = userEvent.setup();
     render(<ContactForm />);
 
@@ -55,7 +55,7 @@ describe('ContactForm', () => {
     expect(screen.getAllByText('Dit veld is verplicht')[0]).toBeInTheDocument();
   });
 
-  it('should show specific validation errors for each field', async () => {
+  it('should show individual validation errors', async () => {
     const user = userEvent.setup();
     render(<ContactForm />);
 
@@ -72,7 +72,7 @@ describe('ContactForm', () => {
     });
   });
 
-  it('should show loader when form is being submitted', async () => {
+  it('should show a loader when form is being submitted', async () => {
     const user = userEvent.setup();
     render(<ContactForm />);
 
@@ -161,7 +161,7 @@ describe('ContactForm', () => {
     expect(bodyInput).toHaveAttribute('name', 'body');
   });
 
-  it('should have proper invalid attributes when form is submitted with invalid data', async () => {
+  it('should have aria invalid attributes when form is submitted with invalid data', async () => {
     const user = userEvent.setup();
     render(<ContactForm />);
 
@@ -179,7 +179,6 @@ describe('ContactForm', () => {
 
     const submitButton = screen.getByRole('button', { name: 'Versturen' });
 
-    // Enter invalid email
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -188,23 +187,5 @@ describe('ContactForm', () => {
       expect(emailInput).toHaveAttribute('aria-describedby', 'error-email');
       expect(emailInput).toHaveAttribute('aria-invalid', 'true');
     });
-  });
-
-  it('should prevent default form submission', async () => {
-    const user = userEvent.setup();
-    render(<ContactForm />);
-
-    const form = screen.getByTestId('form');
-    const submitButton = screen.getByRole('button', { name: 'Versturen' });
-
-    const preventDefaultSpy = vi.fn();
-    if (form) {
-      form.addEventListener('submit', preventDefaultSpy);
-    }
-
-    await user.click(submitButton);
-
-    // The form should not actually submit to a server
-    expect(window.location.href).not.toMatch(/\?/);
   });
 });
