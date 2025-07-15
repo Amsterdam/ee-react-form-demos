@@ -46,6 +46,7 @@ const FormTextInput = ({
       invalid={!!error}
       required={required}
       onChange={onChange}
+      data-testid="input"
     />
   </Field>
 );
