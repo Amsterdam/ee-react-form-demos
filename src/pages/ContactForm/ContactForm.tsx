@@ -117,8 +117,8 @@ const ContactForm = () => {
         <form
           className={`${styles.form} ams-gap-m`}
           noValidate
-          data-testid="form"
           onSubmit={handleSubmit}
+          data-testid="form"
         >
           {isLoading && <Loader />}
           {hasErrors && (
