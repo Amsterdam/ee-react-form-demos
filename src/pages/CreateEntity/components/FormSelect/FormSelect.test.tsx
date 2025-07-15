@@ -18,7 +18,6 @@ describe('FormSelect', () => {
   it('renders with label, select and options', () => {
     render(<FormSelect {...defaultProps} />);
 
-    expect(screen.getByLabelText('Test Label')).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
       'id',
@@ -60,7 +59,7 @@ describe('FormSelect', () => {
     expect(screen.getByTestId('custom-description')).toBeInTheDocument();
   });
 
-  it('shows description in aria-describedby', () => {
+  it('shows description id in aria-describedby', () => {
     const description = 'This is a description';
     render(<FormSelect {...defaultProps} description={description} required />);
 

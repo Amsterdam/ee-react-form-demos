@@ -14,7 +14,6 @@ describe('FormTextInput', () => {
   it('renders with label and input', () => {
     render(<FormTextInput {...defaultProps} />);
 
-    expect(screen.getByLabelText('Test Label')).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
       'id',
@@ -72,7 +71,7 @@ describe('FormTextInput', () => {
     );
   });
 
-  it('shows description in aria-describedby', () => {
+  it('shows description id in aria-describedby', () => {
     const description = 'This is a description';
     render(
       <FormTextInput {...defaultProps} description={description} required />
