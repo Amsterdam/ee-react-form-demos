@@ -15,16 +15,22 @@ describe('FormTextInput', () => {
     render(<FormTextInput {...defaultProps} />);
 
     expect(screen.getByLabelText('Test Label')).toBeInTheDocument();
-    expect(screen.getByTestId('input')).toBeInTheDocument();
-    expect(screen.getByTestId('input')).toHaveAttribute('id', 'test-input');
-    expect(screen.getByTestId('input')).toHaveAttribute('name', 'testInput');
+    expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
+    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
+      'id',
+      'test-input'
+    );
+    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
+      'name',
+      'testInput'
+    );
   });
 
   it('handles user input', () => {
     const mockOnChange = vi.fn();
     render(<FormTextInput {...defaultProps} onChange={mockOnChange} />);
 
-    const input = screen.getByTestId('input');
+    const input = screen.getByLabelText(defaultProps.label);
     fireEvent.change(input, { target: { value: 'test value' } });
 
     expect(mockOnChange).toHaveBeenCalledTimes(1);
@@ -35,7 +41,7 @@ describe('FormTextInput', () => {
     render(<FormTextInput {...defaultProps} error={errorMessage} />);
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    expect(screen.getByTestId('input')).toHaveAttribute(
+    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
       'aria-describedby',
       expect.stringContaining('test-input-error')
     );
@@ -59,7 +65,7 @@ describe('FormTextInput', () => {
   it('sets invalid state when error is present', () => {
     render(<FormTextInput {...defaultProps} error="Error message" />);
 
-    const input = screen.getByTestId('input');
+    const input = screen.getByLabelText(defaultProps.label);
     expect(input).toHaveAttribute(
       'aria-describedby',
       expect.stringContaining('test-input-error')
@@ -72,18 +78,13 @@ describe('FormTextInput', () => {
       <FormTextInput {...defaultProps} description={description} required />
     );
 
-    const input = screen.getByTestId('input');
+    const input = screen.getByLabelText(defaultProps.label);
 
-    // Check required attribute
     expect(input).toHaveAttribute('required');
-
-    // Check aria-describedby includes description
     expect(input).toHaveAttribute(
       'aria-describedby',
       expect.stringContaining('test-input-description')
     );
-
-    // Check description is rendered with correct id
     expect(screen.getByText(description)).toHaveAttribute(
       'id',
       'test-input-description'
@@ -99,7 +100,7 @@ describe('FormTextInput', () => {
       />
     );
 
-    const input = screen.getByTestId('input');
+    const input = screen.getByLabelText(defaultProps.label);
     const describedBy = input.getAttribute('aria-describedby');
 
     expect(describedBy).toContain('test-input-description');

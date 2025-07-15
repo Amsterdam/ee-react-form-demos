@@ -45,7 +45,6 @@ const FormSelect = ({
       onChange={(e: ChangeEvent<HTMLSelectElement>) =>
         onChange(name, e.target.options[e.target.selectedIndex].value)
       }
-      data-testid="select"
     >
       {Object.keys(options).map((value, index) => (
         <Select.Option value={value} key={`form-select-${index}`}>

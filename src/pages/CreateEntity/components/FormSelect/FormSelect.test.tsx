@@ -19,9 +19,15 @@ describe('FormSelect', () => {
     render(<FormSelect {...defaultProps} />);
 
     expect(screen.getByLabelText('Test Label')).toBeInTheDocument();
-    expect(screen.getByTestId('select')).toBeInTheDocument();
-    expect(screen.getByTestId('select')).toHaveAttribute('id', 'test-select');
-    expect(screen.getByTestId('select')).toHaveAttribute('name', 'testSelect');
+    expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
+    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
+      'id',
+      'test-select'
+    );
+    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
+      'name',
+      'testSelect'
+    );
     expect(screen.getByText('Option 1')).toBeInTheDocument();
     expect(screen.getByText('Option 2')).toBeInTheDocument();
     expect(screen.getByText('Option 3')).toBeInTheDocument();
@@ -31,7 +37,7 @@ describe('FormSelect', () => {
     const mockOnChange = vi.fn();
     render(<FormSelect {...defaultProps} onChange={mockOnChange} />);
 
-    const select = screen.getByTestId('select');
+    const select = screen.getByLabelText(defaultProps.label);
     fireEvent.change(select, { target: { selectedIndex: 1 } });
 
     expect(mockOnChange).toHaveBeenCalledTimes(1);
@@ -41,7 +47,7 @@ describe('FormSelect', () => {
   it('renders with initial value', () => {
     render(<FormSelect {...defaultProps} initialValue="option2" />);
 
-    const select = screen.getByTestId('select');
+    const select = screen.getByLabelText(defaultProps.label);
     expect(select).toHaveValue('option2');
   });
 
@@ -58,7 +64,7 @@ describe('FormSelect', () => {
     const description = 'This is a description';
     render(<FormSelect {...defaultProps} description={description} required />);
 
-    const select = screen.getByTestId('select');
+    const select = screen.getByLabelText(defaultProps.label);
 
     expect(select).toHaveAttribute('required');
     expect(select).toHaveAttribute(
