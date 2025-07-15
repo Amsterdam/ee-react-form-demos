@@ -39,9 +39,7 @@ const FormTextarea = ({
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextArea
-      aria-describedby={
-        description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
-      }
+      aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
       id={id}
       name={name}
       value={value}
