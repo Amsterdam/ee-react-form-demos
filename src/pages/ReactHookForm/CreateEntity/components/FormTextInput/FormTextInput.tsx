@@ -6,6 +6,7 @@ import {
   Paragraph,
   TextInput,
 } from '@amsterdam/design-system-react';
+import clsx from 'clsx';
 
 interface FormTextInputProps {
   id: string;
@@ -38,7 +39,10 @@ const FormTextInput = ({
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextInput
-      aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
+      aria-describedby={clsx(
+        { [`${id}-description`]: !!description },
+        { [`${id}-error`]: !!error }
+      )}
       id={id}
       value={value}
       invalid={!!error}

@@ -6,6 +6,7 @@ import {
   type DateInputProps,
 } from '@amsterdam/design-system-react';
 import type { FieldValues, RegisterOptions } from 'react-hook-form';
+import clsx from 'clsx';
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
@@ -55,7 +56,10 @@ const DateControl = <T extends FieldValues>({
               </Paragraph>
             )}
             <DateInput
-              aria-describedby={`${descriptionId} ${errorId}`}
+              aria-describedby={clsx(
+                { [descriptionId]: !!descriptionId },
+                { [errorId]: hasError }
+              )}
               {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}

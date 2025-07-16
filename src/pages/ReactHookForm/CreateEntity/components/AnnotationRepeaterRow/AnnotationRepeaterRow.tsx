@@ -11,7 +11,6 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
-import styles from './AnnotationRepeaterRow.module.css';
 import {
   Control,
   Controller,
@@ -19,6 +18,8 @@ import {
   UseFormSetValue,
   useWatch,
 } from 'react-hook-form';
+import clsx from 'clsx';
+import styles from './AnnotationRepeaterRow.module.css';
 import { EntityFormData as RHFEntityFormData } from '../../schema';
 
 interface AnnotationRepeaterRowProps {
@@ -79,7 +80,10 @@ const AnnotationRepeaterRow = ({
                 value={selectedOption}
                 error={errors.annotations?.[index]?.key?.message}
                 required
-                aria-describedby={`annotations-description ${errors.annotations?.[index]?.key ? `annotation-key-${index}-error` : ''}`}
+                aria-describedby={clsx('annotations-description', {
+                  [`annotation-key-${index}-error`]:
+                    errors.annotations?.[index]?.key,
+                })}
                 onChange={(newValue: unknown | null) => {
                   if (newValue) {
                     const selectedKey = (newValue as { value: string }).value;
@@ -119,7 +123,10 @@ const AnnotationRepeaterRow = ({
                 value={field.value}
                 invalid={!!errors.annotations?.[index]?.value}
                 required
-                aria-describedby={`annotations-description ${errors.annotations?.[index]?.value ? `annotation-value-${index}-error` : ''}`}
+                aria-describedby={clsx('annotations-description', {
+                  [`annotation-value-${index}-error`]:
+                    errors.annotations?.[index]?.value,
+                })}
                 onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                   field.onChange(e.target.value);
                 }}
@@ -144,7 +151,10 @@ const AnnotationRepeaterRow = ({
                 invalid={!!errors.annotations?.[index]?.value}
                 required
                 className="style-mb-m"
-                aria-describedby={`annotations-description ${errors.annotations?.[index]?.value ? `annotation-value-${index}-error` : ''}`}
+                aria-describedby={clsx('annotations-description', {
+                  [`annotation-value-${index}-error`]:
+                    errors.annotations?.[index]?.value,
+                })}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   field.onChange(e.target.value);
                 }}

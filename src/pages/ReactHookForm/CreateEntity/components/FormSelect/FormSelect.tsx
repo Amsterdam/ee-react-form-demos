@@ -6,6 +6,7 @@ import {
   Paragraph,
   Select,
 } from '@amsterdam/design-system-react';
+import clsx from 'clsx';
 
 interface FormSelectProps {
   id: string;
@@ -39,7 +40,10 @@ const FormSelect = ({
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <Select
-      aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
+      aria-describedby={clsx(
+        { [`${id}-description`]: description },
+        { [`${id}-error`]: error }
+      )}
       id={id}
       value={value}
       invalid={!!error}
