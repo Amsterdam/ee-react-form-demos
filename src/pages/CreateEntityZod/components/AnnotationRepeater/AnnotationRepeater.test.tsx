@@ -30,7 +30,6 @@ describe('AnnotationRepeater', () => {
       ),
     }));
 
-    // Dynamically import AFTER mocking
     const { default: AnnotationRepeater } = await import(
       './AnnotationRepeater'
     );
@@ -48,11 +47,11 @@ describe('AnnotationRepeater', () => {
   });
 
   it('adds new annotation on button click', async () => {
-    const onChange = vi.fn();
+    const onChangeMock = vi.fn();
     const items = [{ key: 'foo', value: 'bar' }];
 
     render(
-      <AnnotationRepeater items={items} errors={{}} onChange={onChange} />
+      <AnnotationRepeater items={items} errors={{}} onChange={onChangeMock} />
     );
 
     const addButton = screen.getByRole('button', {
@@ -60,7 +59,10 @@ describe('AnnotationRepeater', () => {
     });
     await userEvent.click(addButton);
 
-    expect(onChange).toHaveBeenCalledWith([...items, { key: '', value: '' }]);
+    expect(onChangeMock).toHaveBeenCalledWith([
+      ...items,
+      { key: '', value: '' },
+    ]);
   });
 
   it('calls onChange with item removed', async () => {
