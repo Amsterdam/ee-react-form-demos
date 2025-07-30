@@ -85,7 +85,7 @@ const LinkRepeater = ({
       </Paragraph>
 
       {errors?.links && typeof errors.links === 'string' && (
-        <div className="error-message style-mb-s">{errors.links}</div>
+        <div className="error-message ams-mb-s">{errors.links}</div>
       )}
 
       <div className="ams-mb-m">
