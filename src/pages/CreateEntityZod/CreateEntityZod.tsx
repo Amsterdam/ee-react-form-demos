@@ -331,7 +331,6 @@ const CreateEntity = () => {
             options={ownerOptions}
             initialValues={[formData.spec.owner]}
             required
-            error={errors['spec.owner']}
             onChange={newValue => {
               // Handling react-select requires an extra step, as using
               // the isMulti prop as true, will return an array of values.
@@ -394,7 +393,6 @@ const CreateEntity = () => {
               options={systemOptions}
               initialValues={[formData.spec.system || '']}
               required={formData.spec.hasSystem}
-              error={errors['spec.system']}
               onChange={newValue => {
                 const option = Array.isArray(newValue) ? newValue[0] : newValue;
                 const systemValue = option?.value ?? '';
@@ -423,7 +421,6 @@ const CreateEntity = () => {
             options={getTags()}
             isMulti
             initialValues={formData.tags}
-            error={errors.tags}
             onChange={newValue => {
               // This React-Select component uses isMulti so we need to
               // handle an array of values
