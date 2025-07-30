@@ -86,7 +86,7 @@ const AnnotationRepeaterRow = ({
       {annotation?.values ? (
         <Select
           id={`annotation-value-${index}`}
-          className="ams-mb-m"
+          className="style-mb-m"
           value={values.value}
           required
           invalid={!!valueError}
@@ -111,7 +111,7 @@ const AnnotationRepeaterRow = ({
           value={values.value ?? ''}
           required
           invalid={!!valueError}
-          className="ams-mb-m"
+          className="style-mb-m"
           aria-describedby={clsx('annotations-description', {
             [`annotation-value-${index}-error`]: valueError,
           })}
@@ -121,7 +121,7 @@ const AnnotationRepeaterRow = ({
         />
       )}
 
-      <div className="ams-mb-m">
+      <div className="style-mb-m">
         <Button
           icon={TrashBinIcon}
           iconBefore
