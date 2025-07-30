@@ -18,7 +18,12 @@ const FormCheckboxInput = ({
 }: FormCheckboxInputProps) => (
   <Field className="ams-mb-m">
     {description && (
-      <Paragraph id={`${id}-description`} className="ams-mb-s" size="small">
+      <Paragraph
+        id={`${id}-description`}
+        data-testid={`${id}-description`}
+        className="ams-mb-s"
+        size="small"
+      >
         {description}
       </Paragraph>
     )}
