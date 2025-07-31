@@ -91,7 +91,7 @@ const CreateEntity = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    // console.log('Form data:', formData);
 
     /**
      * Use setTimeout to Simulate API call

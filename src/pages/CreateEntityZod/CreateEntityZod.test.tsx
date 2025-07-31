@@ -104,7 +104,6 @@ describe('CreateEntityZod', () => {
 
     await waitFor(() => {
       const successMessage = screen.queryByText(/het formulier is verzonden/i);
-      console.log('Success message found:', !!successMessage);
       return expect(successMessage).toBeInTheDocument();
     });
   });
