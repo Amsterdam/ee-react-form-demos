@@ -1,4 +1,3 @@
-import Loader from '@/components/Loader/Loader';
 import {
   Alert,
   Button,
@@ -13,11 +12,12 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { useState } from 'react';
-import styles from './ContactForm.module.css';
-import t, { translations } from './utils/translate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, Resolver, useForm } from 'react-hook-form';
+import t, { translations } from './utils/translate';
 import contactFormSchema, { ContactFormData } from './schema';
+import Loader from '@/components/Loader/Loader';
+import styles from './ContactForm.module.css';
 
 // This is a simple React Hook Form example that validates using a Zod schema
 // on change
@@ -52,7 +52,9 @@ const ContactForm = () => {
      * or redirect the user to a new page
      */
     setIsLoading(true);
+    console.log(" submit 1 ");
     setTimeout(() => {
+      console.log(" submit 2 ");
       setIsSubmitted(true);
     }, 1500);
   };
