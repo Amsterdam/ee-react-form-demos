@@ -1,16 +1,41 @@
+import { vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
+
+vi.mock('./hooks/useEntityFormValidation', () => ({
+  default: () => ({
+    validateForm: vi.fn(() => true),
+    validateField: vi.fn(),
+    clearAllErrors: vi.fn(),
+    errors: {},
+  }),
+}));
+
 import CreateEntity from './CreateEntityZod';
 
-// vi.mock('./hooks/useEntityFormValidation', () => ({
-//     default: () => ({
-//       validateForm: vi.fn(() => true),
-//       validateField: vi.fn(),
-//       clearAllErrors: vi.fn(),
-//       errors: {},
-//     }),
-//   }));
-describe('CreateEntity', () => {
+describe('CreateEntityZod', () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+
+    // Reset and restore the original mock before each test
+    vi.resetAllMocks();
+    vi.resetModules();
+
+    // Re-establish the default mock
+    vi.doMock('./hooks/useEntityFormValidation', () => ({
+      default: () => ({
+        validateForm: vi.fn(() => true),
+        validateField: vi.fn(),
+        clearAllErrors: vi.fn(),
+        errors: {},
+      }),
+    }));
+  });
+
   afterEach(() => {
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+    vi.resetAllMocks();
     vi.resetModules();
   });
 
@@ -32,21 +57,63 @@ describe('CreateEntity', () => {
 
     const checkbox = screen.getByLabelText(/entity belongs to a system/i);
 
-    // TODO check if next field is tags
-    expect(screen.queryByTestId('hasSystem')).not.toBeInTheDocument();
+    expect(
+      checkbox.parentElement?.parentElement?.nextElementSibling
+        ?.querySelector('label')
+        ?.textContent?.trim()
+    ).toEqual('System');
 
+    // Uncheck the checkbox
     fireEvent.click(checkbox);
     await waitFor(async () =>
-      // TODO check if next field is system
-      expect(screen.getByTestId('hasSystem')).toBeInTheDocument()
+      expect(
+        checkbox.parentElement?.parentElement?.nextElementSibling
+          ?.querySelector('label')
+          ?.textContent?.trim()
+      ).toEqual('Tags')
     );
   });
 
   it('disables the submit button and shows submitting text after submit', async () => {
+    render(<CreateEntity />);
+
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+
+    act(() => fireEvent.click(submitButton));
+
+    // This waits for the button text to change
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: /submitting/i })).toBeDisabled()
+    );
+  });
+
+  it('submits form and shows loader + success alert', async () => {
+    render(<CreateEntity />);
+
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+
+    act(() => fireEvent.click(submitButton));
+
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled();
+    });
+
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    await waitFor(() => {
+      const successMessage = screen.queryByText(/het formulier is verzonden/i);
+      console.log('Success message found:', !!successMessage);
+      return expect(successMessage).toBeInTheDocument();
+    });
+  });
+
+  it('does not submit form when validation fails', async () => {
     vi.resetModules();
     vi.doMock('./hooks/useEntityFormValidation', () => ({
       default: () => ({
-        validateForm: vi.fn(() => true),
+        validateForm: vi.fn(() => false),
         validateField: vi.fn(),
         clearAllErrors: vi.fn(),
         errors: {},
@@ -54,52 +121,6 @@ describe('CreateEntity', () => {
     }));
 
     const { default: CreateEntity } = await import('./CreateEntityZod');
-
-    render(<CreateEntity />);
-
-    const submitButton = screen.getByRole('button', { name: /submit/i });
-
-    fireEvent.click(submitButton);
-
-    // This waits for the button text to change
-    await waitFor(() =>
-      expect(
-        screen.queryByRole('button', { name: /submitting/i })
-      ).toBeDisabled()
-    );
-  });
-
-  // it('submits form and shows loader + success alert', async () => {
-  //   render(<CreateEntity />);
-
-  //   const submitButton = screen.getByRole('button', { name: /submit/i });
-  //   fireEvent.click(submitButton);
-
-  //   await waitFor(async () =>
-  //     expect(
-  //       await screen.findByRole('button', { name: /submitting/i })
-  //     ).toBeInTheDocument()
-  //   );
-  //   // await waitFor(async () => {
-  //   // expect(
-  //   //   await screen.findByRole('button', { name: /submitting/i })
-  //   // ).toBeInTheDocument();
-  //   // expect(
-  //   //   screen.queryByText(/het formulier is verzonden/i, {})
-  //   // ).toBeInTheDocument();
-  //   // });
-  // });
-
-  vi.mock('./hooks/useEntityFormValidation', () => ({
-    default: () => ({
-      validateForm: vi.fn(() => false),
-      validateField: vi.fn(),
-      clearAllErrors: vi.fn(),
-      errors: {},
-    }),
-  }));
-
-  it('does not submit form when validation fails', () => {
     render(<CreateEntity />);
 
     const submitButton = screen.getByRole('button', { name: /submit/i });

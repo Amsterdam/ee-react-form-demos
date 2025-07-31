@@ -140,8 +140,7 @@ const CreateEntity = () => {
       scrollToFirstError(formRef.current);
       return;
     }
-
-    console.log('Form data:', formData);
+    // console.log('Form data:', formData);
 
     /**
      * Use setTimeout to Simulate API call
