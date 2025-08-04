@@ -65,12 +65,12 @@ const TextInputControl = <T extends FieldValues>({
               <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>
             )}
             <TextInput
+              {...register(name, registerOptions as RegisterOptions)}
+              {...attributes}
               aria-describedby={clsx(
                 { [descriptionId]: !!descriptionId },
                 { [errorId]: hasError }
               )}
-              {...attributes}
-              {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
               invalid={hasError}
               // Avoid the `required` prop when using ReactHookForm otherwise
