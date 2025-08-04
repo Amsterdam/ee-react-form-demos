@@ -52,7 +52,6 @@ const BookingFormZod = () => {
   const onValidSubmit: SubmitHandler<BookingFormData> =
     useCallback(async () => {
       try {
-        console.log('submit!');
         /**
          * Use setTimeout to Simulate API call
          * - Here's where validation can happen
