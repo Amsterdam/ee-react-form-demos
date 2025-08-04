@@ -42,7 +42,7 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // onSubmit will only fire if the form is valid
-  const onSubmit = (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     console.log('Form data:', data);
 
     /**
@@ -52,9 +52,8 @@ const ContactForm = () => {
      * or redirect the user to a new page
      */
     setIsLoading(true);
-    console.log(" submit 1 ");
+
     setTimeout(() => {
-      console.log(" submit 2 ");
       setIsSubmitted(true);
     }, 1500);
   };
