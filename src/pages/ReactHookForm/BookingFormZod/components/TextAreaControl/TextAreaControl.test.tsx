@@ -31,6 +31,8 @@ describe('TextAreaControl', () => {
       </Wrapper>
     );
 
+    // Use regex lookup as textArea label can include (whitespace and
+    // `(niet verplicht)`)
     const textarea = screen.getByLabelText(/Your Message/i);
     expect(textarea).toBeInTheDocument();
   });
@@ -46,7 +48,11 @@ describe('TextAreaControl', () => {
       </Wrapper>
     );
 
-    const textarea = screen.getByLabelText(/Your Message/i) as HTMLInputElement;
+    // Use regex lookup as textArea label can include (whitespace and
+    // `(niet verplicht)`)
+    const textarea = screen.getByLabelText(
+      /Your Message/i
+    ) as HTMLTextAreaElement;
     expect(textarea.value).toBe('');
 
     await userEvent.type(
@@ -74,7 +80,11 @@ describe('TextAreaControl', () => {
       </Wrapper>
     );
 
-    const textarea = screen.getByLabelText(/Your Message/i) as HTMLInputElement;
+    // Use regex lookup as textArea label can include (whitespace and
+    // `(niet verplicht)`)
+    const textarea = screen.getByLabelText(
+      /Your Message/i
+    ) as HTMLTextAreaElement;
     expect(textarea.value).toBe(
       'A placeat harum est sint eaque et aperiam quis et voluptas deleniti id expedita modi aut magnam minima. Vel quaerat dolores ut explicabo similique aut expedita molestiae quo doloremque temporibus ut veniam quos.'
     );
@@ -109,6 +119,8 @@ describe('TextAreaControl', () => {
       </Wrapper>
     );
 
+    // Use regex lookup as textArea label can include (whitespace and
+    // `(niet verplicht)`)
     const textarea = screen.getByLabelText(/Your Message/i);
     const describedBy = textarea.getAttribute('aria-describedby');
     expect(describedBy).toMatch(/message-description/);
@@ -148,7 +160,9 @@ describe('TextAreaControl', () => {
 
     expect(await screen.findByText(/Message is required/i)).toBeVisible();
 
-    const input = screen.getByLabelText(/Your Message/i);
-    expect(input.getAttribute('aria-describedby')).toMatch(/message-error/);
+    // Use regex lookup as textArea label can include (whitespace and
+    // `(niet verplicht)`)
+    const textarea = screen.getByLabelText(/Your Message/i);
+    expect(textarea.getAttribute('aria-describedby')).toMatch(/message-error/);
   });
 });

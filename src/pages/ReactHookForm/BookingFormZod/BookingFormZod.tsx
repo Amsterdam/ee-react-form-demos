@@ -50,7 +50,7 @@ const BookingFormZod = () => {
   const [startDate] = methods.watch(['startDate']);
 
   const onValidSubmit: SubmitHandler<BookingFormData> =
-    useCallback(async () => {
+    useCallback(async (data) => {
       try {
         /**
          * Use setTimeout to Simulate API call
@@ -59,8 +59,11 @@ const BookingFormZod = () => {
          * or redirect the user to a new page
          */
         setIsLoading(true);
+        console.log({ data })
+        console.log('success 1');
 
         setTimeout(() => {
+          console.log('success 2');
           setIsLoading(false);
           setIsSubmitted(true);
         }, 1500);
