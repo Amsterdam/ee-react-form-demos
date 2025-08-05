@@ -118,8 +118,10 @@ const CreateEntity = () => {
   const formData = watch();
 
   // onSubmit will only fire if the form is valid
+  // @ts-expect-error 'data' is defined but never used
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (data: RHFEntityFormData) => {
-    console.log('Form data:', data);
+    // console.log('Form data:', data);
 
     /**
      * Use setTimeout to Simulate API call
