@@ -128,8 +128,6 @@ const ContactFormLive = () => {
     const formData = new FormData(e.currentTarget);
     const validationErrors = validateForm(formData);
 
-    console.log('Form data:', formData);
-
     setErrors(validationErrors);
     setSubmitTouched(true);
 
@@ -173,7 +171,12 @@ const ContactFormLive = () => {
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
-        <Heading level={1} size="level-3" className="ams-mb-m">
+        <Heading
+          level={1}
+          size="level-3"
+          className="ams-mb-m"
+          data-testid="heading"
+        >
           Contactformulier
         </Heading>
 
@@ -186,6 +189,7 @@ const ContactFormLive = () => {
           className={`${styles.form} ams-gap-m`}
           noValidate
           onSubmit={handleSubmit}
+          data-testid="form"
         >
           {/* Fake loader to simulate API request */}
           {isLoading && <Loader />}
@@ -193,7 +197,12 @@ const ContactFormLive = () => {
           fields will already have subtle styling (for example, a red border)
           before this `passive validation` */}
           {submitTouched && hasErrors && (
-            <Alert heading="Niet gelukt" headingLevel={2} severity="error">
+            <Alert
+              heading="Niet gelukt"
+              headingLevel={2}
+              severity="error"
+              data-testid="alert"
+            >
               <Paragraph>Er was een fout met de volgende velden:</Paragraph>
               <OrderedList>
                 {Object.entries(errors).map(([field, message]) => (
@@ -208,7 +217,9 @@ const ContactFormLive = () => {
           <Field invalid={submitTouched && !!errors.name}>
             <Label htmlFor="name">Naam</Label>
             {submitTouched && errors.name && (
-              <ErrorMessage id={`error-name`}>{errors.name}</ErrorMessage>
+              <ErrorMessage id={`error-name`} data-testid="error-message">
+                {errors.name}
+              </ErrorMessage>
             )}
             <TextInput
               id="name"
@@ -225,7 +236,9 @@ const ContactFormLive = () => {
           <Field invalid={submitTouched && !!errors.email}>
             <Label htmlFor="email">E-mailadres</Label>
             {submitTouched && errors.email && (
-              <ErrorMessage id={`error-email`}>{errors.email}</ErrorMessage>
+              <ErrorMessage id={`error-email`} data-testid="error-message">
+                {errors.email}
+              </ErrorMessage>
             )}
             <TextInput
               type="email"
@@ -243,7 +256,9 @@ const ContactFormLive = () => {
           <Field invalid={submitTouched && !!errors.body}>
             <Label htmlFor="body">Bericht</Label>
             {submitTouched && errors.body && (
-              <ErrorMessage id={`error-body`}>{errors.body}</ErrorMessage>
+              <ErrorMessage id={`error-body`} data-testid="error-message">
+                {errors.body}
+              </ErrorMessage>
             )}
             <TextArea
               id="body"

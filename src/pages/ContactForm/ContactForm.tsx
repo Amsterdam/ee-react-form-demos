@@ -61,7 +61,6 @@ const ContactForm = () => {
 
     const formData = new FormData(e.currentTarget);
     const validationErrors = validateForm(formData);
-
     setErrors(validationErrors);
 
     /**
@@ -101,7 +100,12 @@ const ContactForm = () => {
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
-        <Heading level={1} size="level-3" className="ams-mb-m">
+        <Heading
+          level={1}
+          size="level-3"
+          className="ams-mb-m"
+          data-testid="heading"
+        >
           Contactformulier
         </Heading>
 
@@ -114,10 +118,16 @@ const ContactForm = () => {
           className={`${styles.form} ams-gap-m`}
           noValidate
           onSubmit={handleSubmit}
+          data-testid="form"
         >
           {isLoading && <Loader />}
           {hasErrors && (
-            <Alert heading="Niet gelukt" headingLevel={2} severity="error">
+            <Alert
+              heading="Niet gelukt"
+              headingLevel={2}
+              severity="error"
+              data-testid="alert"
+            >
               <Paragraph>Er was een fout met de volgende velden:</Paragraph>
               <OrderedList>
                 {Object.entries(errors).map(([field, message]) => (
@@ -132,7 +142,9 @@ const ContactForm = () => {
           <Field invalid={!!errors.name}>
             <Label htmlFor="name">Naam</Label>
             {errors.name && (
-              <ErrorMessage id={`error-name`}>{errors.name}</ErrorMessage>
+              <ErrorMessage id={`error-name`} data-testid="error-message">
+                {errors.name}
+              </ErrorMessage>
             )}
             <TextInput
               id="name"
@@ -148,7 +160,9 @@ const ContactForm = () => {
           <Field invalid={!!errors.email}>
             <Label htmlFor="email">E-mailadres</Label>
             {errors.email && (
-              <ErrorMessage id={`error-email`}>{errors.email}</ErrorMessage>
+              <ErrorMessage id={`error-email`} data-testid="error-message">
+                {errors.email}
+              </ErrorMessage>
             )}
             <TextInput
               type="email"
@@ -165,7 +179,9 @@ const ContactForm = () => {
           <Field invalid={!!errors.body}>
             <Label htmlFor="body">Bericht</Label>
             {errors.email && (
-              <ErrorMessage id={`error-body`}>{errors.body}</ErrorMessage>
+              <ErrorMessage id={`error-body`} data-testid="error-message">
+                {errors.body}
+              </ErrorMessage>
             )}
             <TextArea
               id="body"

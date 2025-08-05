@@ -6,8 +6,9 @@ import {
   Paragraph,
   TextArea,
 } from '@amsterdam/design-system-react';
+import clsx from 'clsx';
 
-interface FormTextareaProps {
+interface FormTextAreaProps {
   id: string;
   label: string;
   description?: ReactNode;
@@ -15,10 +16,11 @@ interface FormTextareaProps {
   value: string;
   required?: boolean;
   error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const FormTextarea = ({
+const FormTextArea = ({
   id,
   label,
   description,
@@ -27,7 +29,8 @@ const FormTextarea = ({
   required = false,
   error,
   onChange,
-}: FormTextareaProps) => (
+  onBlur,
+}: FormTextAreaProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
     {typeof description === 'string' ? (
@@ -39,17 +42,19 @@ const FormTextarea = ({
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextArea
-      aria-describedby={
-        description ? `${id}-description ${error ? `${id}-error` : ''}` : ''
-      }
+      aria-describedby={clsx(
+        { [`${id}-description`]: !!description },
+        { [`${id}-error`]: !!error }
+      )}
       id={id}
       name={name}
       value={value}
       required={required}
       rows={4}
       onChange={onChange}
+      onBlur={onBlur}
     />
   </Field>
 );
 
-export default FormTextarea;
+export default FormTextArea;

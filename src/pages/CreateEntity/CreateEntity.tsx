@@ -12,7 +12,7 @@ import { ActionMeta } from 'react-select';
 import { EntityFormData } from '@/types/types';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
-import FormTextarea from './components/FormTextarea/FormTextarea';
+import FormTextArea from './components/FormTextArea/FormTextArea';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
@@ -91,7 +91,7 @@ const CreateEntity = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    // console.log('Form data:', formData);
 
     /**
      * Use setTimeout to Simulate API call
@@ -186,7 +186,7 @@ const CreateEntity = () => {
             onChange={handleChange}
           />
 
-          <FormTextarea
+          <FormTextArea
             id="description"
             label="Description"
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
