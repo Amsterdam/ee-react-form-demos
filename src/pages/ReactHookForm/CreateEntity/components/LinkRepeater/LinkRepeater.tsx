@@ -42,7 +42,7 @@ const LinkRepeater = ({
         <LinkRepeaterRow
           index={index}
           control={control}
-          remove={remove}
+          removeItem={remove}
           errors={errors?.[index]}
           key={field.id}
         />

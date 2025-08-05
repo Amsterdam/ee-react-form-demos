@@ -83,7 +83,6 @@ describe('ContactFormSchema', () => {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
       );
-      console.log({ emailError });
       expect(emailError?.message).toBe('Dit veld is verplicht');
     }
   });

@@ -14,9 +14,9 @@ import styles from './LinkRepeaterRow.module.css';
 import clsx from 'clsx';
 
 interface LinkRepeaterRowProps {
-  index: number;
   control: Control<RHFEntityFormData>;
-  remove: (index: number) => void;
+  index: number;
+  removeItem: (index: number) => void;
   errors:
     | {
         url?: FieldError;
@@ -27,9 +27,9 @@ interface LinkRepeaterRowProps {
 }
 
 const LinkRepeaterRow = ({
-  index,
   control,
-  remove,
+  index,
+  removeItem,
   errors,
 }: LinkRepeaterRowProps) => {
   return (
@@ -105,7 +105,7 @@ const LinkRepeaterRow = ({
           icon={TrashBinIcon}
           iconBefore
           variant="tertiary"
-          onClick={() => remove(index)}
+          onClick={() => removeItem(index)}
         >
           Delete
         </Button>
