@@ -8,7 +8,7 @@ import {
 } from '@amsterdam/design-system-react';
 import clsx from 'clsx';
 
-interface FormTextareaProps {
+interface FormTextAreaProps {
   id: string;
   label: string;
   description?: ReactNode;
@@ -18,7 +18,7 @@ interface FormTextareaProps {
   onChange: (value: string) => void;
 }
 
-const FormTextarea = ({
+const FormTextArea = ({
   id,
   label,
   description,
@@ -26,7 +26,7 @@ const FormTextarea = ({
   required = false,
   error,
   onChange,
-}: FormTextareaProps) => (
+}: FormTextAreaProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
     {description && (
@@ -49,4 +49,4 @@ const FormTextarea = ({
   </Field>
 );
 
-export default FormTextarea;
+export default FormTextArea;

@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import FormTextarea from './FormTextarea';
+import FormTextArea from './FormTextArea';
 
-describe('FormTextarea', () => {
+describe('FormTextArea', () => {
   const defaultProps = {
     id: 'test-textarea',
     label: 'Test Label',
@@ -12,7 +12,7 @@ describe('FormTextarea', () => {
   };
 
   it('renders with label and textarea', () => {
-    render(<FormTextarea {...defaultProps} />);
+    render(<FormTextArea {...defaultProps} />);
 
     expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
@@ -31,7 +31,7 @@ describe('FormTextarea', () => {
 
   it('handles user input', () => {
     const mockOnChange = vi.fn();
-    render(<FormTextarea {...defaultProps} onChange={mockOnChange} />);
+    render(<FormTextArea {...defaultProps} onChange={mockOnChange} />);
 
     const textarea = screen.getByLabelText(defaultProps.label);
     fireEvent.change(textarea, { target: { value: 'test value' } });
@@ -41,7 +41,7 @@ describe('FormTextarea', () => {
 
   it('displays validation errors', () => {
     const errorMessage = 'This field is required';
-    render(<FormTextarea {...defaultProps} error={errorMessage} />);
+    render(<FormTextArea {...defaultProps} error={errorMessage} />);
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
@@ -51,7 +51,7 @@ describe('FormTextarea', () => {
   });
 
   it('renders with initial value', () => {
-    render(<FormTextarea {...defaultProps} value="initial textarea value" />);
+    render(<FormTextArea {...defaultProps} value="initial textarea value" />);
 
     expect(
       screen.getByDisplayValue('initial textarea value')
@@ -62,7 +62,7 @@ describe('FormTextarea', () => {
     const description = (
       <span data-testid="custom-description">Custom description</span>
     );
-    render(<FormTextarea {...defaultProps} description={description} />);
+    render(<FormTextArea {...defaultProps} description={description} />);
 
     expect(screen.getByTestId('custom-description')).toBeInTheDocument();
   });
@@ -70,7 +70,7 @@ describe('FormTextarea', () => {
   it('shows description id in aria-describedby', () => {
     const description = 'This is a description';
     render(
-      <FormTextarea {...defaultProps} description={description} required />
+      <FormTextArea {...defaultProps} description={description} required />
     );
 
     const textarea = screen.getByLabelText(defaultProps.label);
@@ -88,7 +88,7 @@ describe('FormTextarea', () => {
 
   it('combines description and error in aria-describedby', () => {
     render(
-      <FormTextarea {...defaultProps} description="Description" error="Error" />
+      <FormTextArea {...defaultProps} description="Description" error="Error" />
     );
 
     const textarea = screen.getByLabelText(defaultProps.label);

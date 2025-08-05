@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import FormTextarea from './FormTextarea';
+import FormTextArea from './FormTextArea';
 
-describe('FormTextarea', () => {
+describe('FormTextArea', () => {
   const defaultProps = {
     id: 'test-textarea',
     label: 'Test Label',
@@ -17,7 +17,7 @@ describe('FormTextarea', () => {
   });
 
   it('renders with label and textarea', () => {
-    render(<FormTextarea {...defaultProps} />);
+    render(<FormTextArea {...defaultProps} />);
 
     expect(screen.getByLabelText('Test Label')).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toBeInTheDocument();
@@ -25,7 +25,7 @@ describe('FormTextarea', () => {
 
   it('handles user input', () => {
     const mockOnChange = vi.fn();
-    render(<FormTextarea {...defaultProps} onChange={mockOnChange} />);
+    render(<FormTextArea {...defaultProps} onChange={mockOnChange} />);
 
     const textarea = screen.getByRole('textbox');
     fireEvent.change(textarea, { target: { value: 'test textarea content' } });
@@ -35,7 +35,7 @@ describe('FormTextarea', () => {
 
   it('handles onBlur event', () => {
     const mockOnBlur = vi.fn();
-    render(<FormTextarea {...defaultProps} onBlur={mockOnBlur} />);
+    render(<FormTextArea {...defaultProps} onBlur={mockOnBlur} />);
 
     const textarea = screen.getByRole('textbox');
     fireEvent.blur(textarea);
@@ -44,7 +44,7 @@ describe('FormTextarea', () => {
   });
 
   it('displays validation errors', () => {
-    render(<FormTextarea {...defaultProps} error="This is an error" />);
+    render(<FormTextArea {...defaultProps} error="This is an error" />);
 
     expect(screen.getByText('This is an error')).toBeInTheDocument();
     expect(screen.getByText('This is an error')).toHaveAttribute(
@@ -54,7 +54,7 @@ describe('FormTextarea', () => {
   });
 
   it('renders with initial value', () => {
-    render(<FormTextarea {...defaultProps} value="initial textarea value" />);
+    render(<FormTextArea {...defaultProps} value="initial textarea value" />);
 
     const textarea = screen.getByRole('textbox');
     expect(textarea).toHaveValue('initial textarea value');
@@ -62,7 +62,7 @@ describe('FormTextarea', () => {
 
   it('renders description when provided as string', () => {
     render(
-      <FormTextarea {...defaultProps} description="This is a description" />
+      <FormTextArea {...defaultProps} description="This is a description" />
     );
 
     expect(screen.getByText('This is a description')).toBeInTheDocument();
@@ -74,13 +74,13 @@ describe('FormTextarea', () => {
 
   it('renders description when provided as ReactNode', () => {
     const customDescription = <span>Custom description node</span>;
-    render(<FormTextarea {...defaultProps} description={customDescription} />);
+    render(<FormTextArea {...defaultProps} description={customDescription} />);
 
     expect(screen.getByText('Custom description node')).toBeInTheDocument();
   });
 
   it('shows description id in aria-describedby when description is provided', () => {
-    render(<FormTextarea {...defaultProps} description="Test description" />);
+    render(<FormTextArea {...defaultProps} description="Test description" />);
 
     const textarea = screen.getByRole('textbox');
     expect(textarea).toHaveAttribute(
@@ -90,7 +90,7 @@ describe('FormTextarea', () => {
   });
 
   it('shows error id in aria-describedby when error is provided', () => {
-    render(<FormTextarea {...defaultProps} error="Test error" />);
+    render(<FormTextArea {...defaultProps} error="Test error" />);
 
     const textarea = screen.getByRole('textbox');
     expect(textarea).toHaveAttribute('aria-describedby', 'test-textarea-error');
@@ -98,7 +98,7 @@ describe('FormTextarea', () => {
 
   it('combines description and error in aria-describedby when both are provided', () => {
     render(
-      <FormTextarea
+      <FormTextArea
         {...defaultProps}
         description="Test description"
         error="Test error"
@@ -113,14 +113,14 @@ describe('FormTextarea', () => {
   });
 
   it('sets required attribute when required prop is true', () => {
-    render(<FormTextarea {...defaultProps} required />);
+    render(<FormTextArea {...defaultProps} required />);
 
     const textarea = screen.getByRole('textbox');
     expect(textarea).toBeRequired();
   });
 
   it('sets rows attribute correctly', () => {
-    render(<FormTextarea {...defaultProps} />);
+    render(<FormTextArea {...defaultProps} />);
 
     const textarea = screen.getByRole('textbox');
     expect(textarea).toHaveAttribute('rows', '4');
@@ -128,7 +128,7 @@ describe('FormTextarea', () => {
 
   it('passes correct props to textarea element', () => {
     render(
-      <FormTextarea
+      <FormTextArea
         {...defaultProps}
         id="custom-id"
         name="customName"
