@@ -62,7 +62,9 @@ const TextInputControl = <T extends FieldValues>({
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>
+              <ErrorMessage id={errorId} data-testid={errorId}>
+                {errorMessage}
+              </ErrorMessage>
             )}
             <TextInput
               {...register(name, registerOptions as RegisterOptions)}
