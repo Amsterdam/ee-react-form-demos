@@ -2,6 +2,9 @@ import { Meta } from '@storybook/blocks';
 
 import Github from './assets/github.svg';
 import DocumentCheckmark from './assets/DocumentCheckmark.svg';
+import BookingForm0 from './assets/booking-form-0.png';
+import BookingForm1 from './assets/booking-form-1.png';
+import ContactForm0 from './assets/contact-form-0.png';
 
 export const RightArrow = () => <svg
     viewBox="0 0 14 14"
@@ -42,12 +45,87 @@ For each demo we also try to include documentation with the following structure:
 - Overview of the files required
 - And the code from each file
 
-## Examples
+## Starter Demos
 
-Form examples are split into two categories:
+<div className="sb-container">
+  <div className="sb-section">
+    <div className="sb-section-item">
+      <img src={ContactForm0} alt="An example of simple contact form" />
+      <div>
+        <h4 className="sb-section-item-heading">Contact form</h4>
+        <p className="sb-section-item-paragraph">A simple three-field contact form with schema validation on form submit.</p>
+        <div className="sb-section-item-links">
+          <a href="./?path=/docs/react-geojson--docs">Learn more (HTML5) <RightArrow /></a>
+          <a href="./?path=/docs/react-geojson--docs">Learn more (React Hook Form) <RightArrow /></a>
+        </div>
+      </div>
+    </div>
+    <div className="sb-section-item">
+      <img
+        src={BookingForm0}
+        alt="An example of a booking form"
+      />
+      <h4 className="sb-section-item-heading">Booking form (HTML5 validation)</h4>
+      <p className="sb-section-item-paragraph">A booking form with required contact, scheduling fields and native HTML5 validation.</p>
+      <div className="sb-section-item-links">
+        <a href="./?path=/docs/react-geojson--docs">Learn more (HTML5) <RightArrow /></a>
+        <a href="./?path=/docs/react-geojson--docs">Learn more (React Hook Form) <RightArrow /></a>
+      </div>
+    </div>
+    <div className="sb-section-item">
+      <img
+        src={BookingForm1}
+        alt="An example of simple contact form"
+      />
+      <h4 className="sb-section-item-heading">Booking form (Schema validation)</h4>
+      <p className="sb-section-item-paragraph">A booking form with required contact, scheduling fields and validation via a Zod schema.</p>
+      <div className="sb-section-item-links">
+        <a href="./?path=/docs/react-geojson--docs">Learn more (HTML5) <RightArrow /></a>
+        <a href="./?path=/docs/react-geojson--docs">Learn more (React Hook Form) <RightArrow /></a>
+      </div>
+    </div>
+  </div>
+</div>
 
-- Using HTML5 and [React](https://react.dev/)
-- Using [React Hook Form](https://www.react-hook-form.com/) and [React](https://react.dev/)
+## Advanced demos - Create an entity
+
+An advanced form for generating correctly formatted YAML for a Backstage entity, featuring repeater fields, conditional fields, auto-complete suggestions, and extensive validation.
+
+<div className="sb-container">
+  <div className="sb-section">
+    <div className="sb-section-item">
+      <img src={ContactForm0} alt="An example of simple contact form" />
+      <div>
+        <h4 className="sb-section-item-heading">Create an entity form (Plain HTML5)</h4>
+        <p className="sb-section-item-paragraph">Using only HTML5 features for validation, showcasing repeater fields, conditional inputs, and auto-complete suggestions.</p>
+          <a href="./?path=/docs/react-geojson--docs">Learn more <RightArrow /></a>
+      </div>
+    </div>
+    <div className="sb-section-item">
+      <img
+        src={BookingForm0}
+        alt="An example of a booking form"
+      />
+      <h4 className="sb-section-item-heading">Create an entity form (HTML5 with Schema validation)</h4>
+      <p className="sb-section-item-paragraph">With HTML5 inputs and Zod-based validation for stricter, more customizable field checks. Includes repeater fields, conditional inputs, and auto-complete suggestions.</p>
+      <div className="sb-section-item-links">
+        <a href="./?path=/docs/react-geojson--docs">Learn more <RightArrow /></a>
+      </div>
+    </div>
+    <div className="sb-section-item">
+      <img
+        src={BookingForm1}
+        alt="An example of simple contact form"
+      />
+      <h4 className="sb-section-item-heading">Create an entity form (React Hook Form with Schema validation)</h4>
+      <p className="sb-section-item-paragraph">Powered by React Hook Form and Zod validation, optimised for performance, flexibility, and complex input handling. Features repeater fields, conditional inputs, and auto-complete suggestions.</p>
+      <div className="sb-section-item-links">
+        <a href="./?path=/docs/react-geojson--docs">Learn more (HTML5) <RightArrow /></a>
+        <a href="./?path=/docs/react-geojson--docs">Learn more (React Hook Form) <RightArrow /></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 ### HTML5
 
@@ -217,6 +295,11 @@ Otherwise if you have any questions or other matters regarding implementing form
   .sb-section-item-paragraph {
     margin: 0;
     padding-bottom: 10px;
+  }
+
+  .sb-section-item-links {
+    display: flex;
+    flex-direction: column;
   }
 
   .sb-chevron {

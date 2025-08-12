@@ -178,7 +178,7 @@ const ContactForm = () => {
           </Field>
           <Field invalid={!!errors.body}>
             <Label htmlFor="body">Bericht</Label>
-            {errors.email && (
+            {errors.body && (
               <ErrorMessage id={`error-body`} data-testid="error-message">
                 {errors.body}
               </ErrorMessage>
