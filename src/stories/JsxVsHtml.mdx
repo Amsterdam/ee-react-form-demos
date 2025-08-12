@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="React (JSX) vs HTML" />
+
+# React (JSX) vs HTML
+
+Whereas React uses the same element naming as HTML, certain attributes differ.
+
+| Feature / Element              | **HTML**                                        | **JSX (React)**                                                                                                                 |
+| ------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `for` attribute in `<label>`   | `for="username"`                                | `htmlFor="username"`                                                        |
+| Input value binding            | `<input value="some text">`                     | Controlled: `value={state}` + `onChange`; Uncontrolled: `defaultValue="..."` |
+| Checkbox/radio state           | `<input type="checkbox" checked>`               | Controlled: `checked={state}` + `onChange`; for initial state: `defaultChecked` |
+| `<textarea>` content           | Wraps inner text: `<textarea>Hello</textarea>`  | Uses `value="..."` prop instead (value-only control via prop) |
+| Numeric attributes (len, etc.) | `maxlength="10"` (string)                       | `maxLength={10}` (camelCase prop, number) or `"10"` |
+| Self-closing form tags         | Can close `<input>` as `<input>` or `<input />` | Must use `<input />`, the self-closing slash is required |
+| Form data handling             | Browser submits directly (page reload)          | JS handles submission, data captured via state, refs, or `FormData` — more manual control                                       |
