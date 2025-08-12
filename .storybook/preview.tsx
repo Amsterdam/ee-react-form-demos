@@ -57,6 +57,7 @@ export const parameters = {
         'Terminologies*',
         'Form Flow',
         'JSXvsHtml*',
+        'RemoteData',
         'Accessibility*',
         'Alternatives*',
         'Validation*',

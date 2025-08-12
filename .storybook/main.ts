@@ -8,6 +8,7 @@ const config: StorybookConfig = {
     '../src/stories/Terminologies.mdx',
     '../src/stories/JsxVsHtml.mdx',
     '../src/stories/FormFlow.mdx',
+    '../src/stories/RemoteData.mdx',
     '../src/stories/Accessibility.mdx',
     '../src/stories/Alternatives.mdx',
     '../src/stories/React19.mdx',

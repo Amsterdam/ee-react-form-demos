@@ -1,0 +1,144 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Handling Remote Data" />
+
+# Handling Remote Data
+
+Sometimes you may need to preload data into your form that comes from a different application.
+
+**Pro tip** - Keep your form data object as flat and with as few child array/object values as possible to keep your components simple.
+
+## Plain HTML5 Form in React
+
+The key step here is calling the `setFormData()` function after fetch.
+
+```tsx
+import { useEffect, useState, FormEvent } from "react";
+
+type FormData = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+export default function ContactForm() {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  useEffect(() => {
+    async function fetchInitialData() {
+      // Simulated API call
+      const res = await fetch("/api/interesting-data");
+      const data: FormData = await res.json();
+      setFormData(data);
+    }
+    fetchInitialData();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Submitting", formData);
+    // Send to API...
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Name"
+      />
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="Email"
+      />
+      <textarea
+        name="message"
+        value={formData.message}
+        onChange={handleChange}
+        placeholder="Message"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+## React Hook Form
+
+The key step here is calling the `reset()` function after fetch.
+
+```tsx
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+
+type FormData = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+export default function ContactFormControlledRHF() {
+  const { control, handleSubmit, reset } = useForm<FormData>({
+    defaultValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+  });
+
+  useEffect(() => {
+    async function fetchInitialData() {
+      const res = await fetch("/api/interesting-data");
+      const data: FormData = await res.json();
+      reset(data); // prefill controlled fields
+    }
+    fetchInitialData();
+  }, [reset]);
+
+  const onSubmit = (data: FormData) => {
+    console.log("Submitting", data);
+    // Send to API...
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <input {...field} placeholder="Name" />
+        )}
+      />
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <input type="email" {...field} placeholder="Email" />
+        )}
+      />
+      <Controller
+        name="message"
+        control={control}
+        render={({ field }) => (
+          <textarea {...field} placeholder="Message" />
+        )}
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
