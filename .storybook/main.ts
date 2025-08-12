@@ -3,6 +3,7 @@ import type { StorybookConfig } from '@storybook/react-vite';
 const config: StorybookConfig = {
   stories: [
     '../src/stories/Intro.mdx',
+    '../src/stories/FormFlow.mdx',
     '../src/stories/Accessibility.mdx',
     '../src/stories/Alternatives.mdx',
     '../src/stories/React19.mdx',

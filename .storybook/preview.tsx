@@ -54,6 +54,7 @@ export const parameters = {
     storySort: {
       order: [
         'Introduction',
+        'Form Flow',
         'Accessibility*',
         'Alternatives*',
         'Terminologies*',
