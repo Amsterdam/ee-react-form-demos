@@ -54,10 +54,11 @@ export const parameters = {
     storySort: {
       order: [
         'Introduction',
+        'Terminologies*',
         'Form Flow',
+        'JSXvsHtml*',
         'Accessibility*',
         'Alternatives*',
-        'Terminologies*',
         'Validation*',
       ],
     },

@@ -1,20 +1,32 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import remarkGfm from 'remark-gfm';
+
 
 const config: StorybookConfig = {
   stories: [
     '../src/stories/Intro.mdx',
+    '../src/stories/Terminologies.mdx',
+    '../src/stories/JsxVsHtml.mdx',
     '../src/stories/FormFlow.mdx',
     '../src/stories/Accessibility.mdx',
     '../src/stories/Alternatives.mdx',
     '../src/stories/React19.mdx',
-    '../src/stories/Terminologies.mdx',
     '../src/stories/Validation.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
-    '@storybook/addon-docs',
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     '@storybook/addon-themes',
   ],
   framework: {
