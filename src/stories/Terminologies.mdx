@@ -76,7 +76,7 @@ React Hook Form’s docs also talk about **controlled vs uncontrolled**, but the
 
 RHF prefers uncontrolled inputs because it uses refs under the hood and lets the browser handle input state until you submit or trigger validation. This avoids re-renders on every keystroke.
 
-A controlled input in RHF means you integrate a field that doesn’t naturally expose a ref-based value (e.g. `react-select`, date pickers, Material UI inputs). In those cases, RHF needs a <Controller> wrapper to bridge the component’s value into RHF’s state management.
+A controlled input in RHF means you integrate a field that doesn’t naturally expose a ref-based value (e.g. `react-select`, date pickers, Material UI inputs). In those cases, RHF needs a `<Controller>` wrapper to bridge the component’s value into RHF’s state management.
 
 ### Repeater Fields / Field arrays
 
