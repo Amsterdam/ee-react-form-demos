@@ -35,5 +35,46 @@ An attacker injects malicious JavaScript or HTML into your site, which runs in t
 ### Use CSP (Content Security Policy) headers
 
 - CSP headers significantly reduce the XSS risk and damage by blocking inline/malicious scripts.
-- Backends can send a `Content-Security-Policy` header to enforce which scripts/styles/images can be loaded. For example:
-`Content-Security-Policy: default-src 'self'; script-src 'self';`
+- Backends can send a `Content-Security-Policy` header to enforce which scripts/styles/images can be loaded.
+  - For example with the header `Content-Security-Policy: default-src 'self'; script-src 'self';`, the browser will block an injection like `<script>alert("XSS!")</script>`.
+    - This is because the `script-src 'self'` only allows scripts loaded from the same origin as the page.
+      - `self` does **not** include inline scripts.
+      - `script-src 'self' 'unsafe-inline';` would enable inline scripts.
+    - If `script-src 'self';` was removed, the rule would still apply, as the browser will fallback to the `default-src 'self';` rule.
+
+## Examples
+
+Imagine the backend is not validating and sanitizing data properly and sends you a response like:
+
+```tsx
+const submissionData = {
+  id: 'b7a78513-ec75-4793-8d11-3a307e2002cf',
+  name: 'John',
+  email: 'john@email.com',
+  comment: "Hello i'm going to break your application! <script>alert(123);</script>",
+};
+```
+
+Note the malicious `<script>alert(123);</script>` in the `comment` property.
+
+### Unsafe - directly inserting the data into the HTML
+
+```tsx
+// BAD: This will execute <script>alert(1)</script>
+<div dangerouslySetInnerHTML={{ __html: submissionData.comment }} />
+```
+
+### Safe
+
+```tsx
+// Good: React automatically escapes values in JSX
+<div>{submissionData.comment}</div>
+```
+
+#### With sanitization library
+
+```tsx
+import DOMPurify from "dompurify";
+
+<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(submissionData.comment) }} />
+```
