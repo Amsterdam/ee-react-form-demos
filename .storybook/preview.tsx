@@ -58,7 +58,6 @@ export const parameters = {
         'Form Flow',
         'JSXvsHtml*',
         'RemoteData',
-        'Checklist*',
         'FormStateVsUiState*',
         'CSRF*',
         'FileHandling*',

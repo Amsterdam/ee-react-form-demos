@@ -9,7 +9,6 @@ const config: StorybookConfig = {
     '../src/stories/JsxVsHtml.mdx',
     '../src/stories/FormFlow.mdx',
     '../src/stories/RemoteData.mdx',
-    '../src/stories/Checklist.mdx',
     '../src/stories/FormStateVsUiState.mdx',
     '../src/stories/CSRF.mdx',
     '../src/stories/FileHandling.mdx',

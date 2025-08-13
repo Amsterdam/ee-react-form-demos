@@ -1,30 +1,52 @@
 import { Meta } from '@storybook/blocks';
 
-<Meta title="React 19 - Server Components" />
+<Meta title="React 19 - React Server Components (RSC) & Server Actions" />
 
-# React 19 - Server Components
+# React 19 - React Server Components (RSC) & Server Actions
 
-> **Warning**
-> This project is a work in progress so will likely change in the future.
+## What's New in React 19
 
-- React Server Components (RSC) / Next.js
-  - In React v19, `useActionState` was introduced.
-  - `useActionState` is a React hook that helps to manage the state of a form submission handled by an action function (for example, a server action). It helps manage things like:
-    - The form submitting state (for example: `isPending`, `isSubmitting`)
-    - The server's response/result
-  - Next.js popularized it by using it with server actions and form handling.
-  - In Next.js, forms can call server functions directly, for example:
-    `async function myServerAction(prevState, formData) { ... }`
-    `<form onSubmit={myServerAction}>...</form>`
-    This code works seamlessly with `useActionState`
-  - However, to run Server Components, the framework needs to know how to serialize and transport `myServerAction` to the server, which requires a special compiler and runtime support (React Server actions).
-  - Therefore, implementing these requires a bundler setup that supports Server Actions and React Server Components. This includes bundlers like Vite (still considered experimental) or framework like Next.js.
-    - This could also complicate your devops setup, if you are currently deploying your React based frontend as a static web application.
-    - If you also already have separate backend application that serves as an API, this makes the backend-frontend separation less clear. Introducing Server Actions is effectively a full-stack architecture change.
+React 19 introduced `useActionState`, a hook for managing the state of form submissions handled by an **action function** (such as a server action). It helps with:
 
-Tldr:
+- Tracking submission state (`isPending`, `isSubmitting`)
+- Handling the server's response or result
 
-- React 19 introduced powerful new tools like `useActionState` and Server Actions, which effectively enable backend-like functionality on the frontend. Howver, this depends on bundler and runtime support, which is currently only provided by Next.js App Router.
-  - Remix/react-router + Vite can do SSR but not the new RSC-based Server Actions model yet.
-- Adopting these features means the frontend is no longer 'frontend-only' - it requires Node-compatible runtimes and backend hosting environments.
-- Therefore, for now, Server Actions are an opt-in forward-looking feature - not a requirement to adopt across all projects.
+## Example (Next.js Server Action):
+
+```tsx
+async function myServerAction(prevState, formData) {
+  // server-side processing
+}
+
+<form action={myServerAction}>
+  ...
+</form>
+```
+
+In **Next.js**, this works seamlessly with `useActionState` because the framework can directly call server functions from the form.
+
+## Why This Works in Next.js
+
+- **Server Actions** require the framework/bundler to know how to serialize and transport the action function to the server.
+- This needs:
+  - **React Server Components (RSC)** support
+  - A special compiler/runtime that understands server actions
+- Currently (August 2025), stable support exists mainly in **Next.js App Router**.
+- Vite and other bundlers have experimental RSC support, but not full production-ready equivalents.
+
+## Why This Is Not a Drop-In for Our Non-Next.js Apps
+
+- Architecture changes:
+  - Requires a bundler/runtime that supports RSC and Server Actions
+  - Requires Node-compatible hosting (no longer purely static)
+- DevOps impact:
+  - Static hosting setups (e.g. S3 + CDN) won't work without introducing a backend runtime
+- Backend-frontend separation changes:
+  - Our existing apps often talk to a separate API backend - Server Actions blur this separation, making the frontend partially backend
+- Non-Next.js frameworks (React Router / Remix / Vite):
+  - Can do SSR, but not the new RSC + Server Actions model (yet)
+
+
+## Therefore
+
+For now, Server Actions are an opt-in forward-looking feature - not a requirement to adopt across all projects.
