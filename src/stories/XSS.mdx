@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Security - XSS" />
+
+# XSS (Cross-Site Scripting)
+
+> **Warning**
+> Frontend validation is only for UX, not security. It must be emphasised that much of the security enforcements needs to happen on the backend, however, frontend forms can help guide safe input and prevent common vulnerabilities.
+
+An attacker injects malicious JavaScript or HTML into your site, which runs in the victim's browser. This could:
+
+- Steal cookies/session tokens
+- Redirect users to phishing pages
+- Insert malicious SQL queries into vulnerable backends
+- Modify the DOM o mislead or trick the user
+
+## Principles
+
+### Never trust frontend input
+
+- Attackers can bypass the UI entirely (modified JS via DevTools, `cURL` requests)
+- All inputs must be validated and sanitized server-side - frontend validation is only for UX, not security.
+
+### Sanitize, don't overwrite
+
+- Sanitize data when displaying in the DOM (in React `dangerouslySetInnerHTML` is especially risky, hence the `dangerously` in its naming)
+- Don't 'convert' user content, this can make it lose meaning - just escape unsafe parts
+
+### Prevent DOM injection
+
+- Avoid string concatenation into HTML
+- Prefer `textContent` to `innerHTML`
+- When using `dangerouslySetInnerHTML` in React, always include comment(s) to justify its usage and safety.
+
+### Use CSP (Content Security Policy) headers
+
+- CSP headers significantly reduce the XSS risk and damage by blocking inline/malicious scripts.
+- Backends can send a `Content-Security-Policy` header to enforce which scripts/styles/images can be loaded. For example:
+`Content-Security-Policy: default-src 'self'; script-src 'self';`
