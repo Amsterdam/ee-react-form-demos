@@ -1,18 +1,20 @@
 import { Meta } from '@storybook/blocks';
 
-<Meta title="Terminologies" />
+<Meta title="Docs/Definitions & Terminologies" />
 
-# Terminologies
+# Definitions & Terminologies
 
-## Abbreviations
+## Definitions
+
+### Abbreviations
 
 - **RHF** - React Hook Form
 - **RSC** - React Server Components
 - **SPA** - Single Page Application
 
-## Definitions
+### Definitions
 
-### React Controlled Components
+#### React Controlled Components
 
 - The form field's value is fully managed by `React` state.
 - The `value` prop is set from state, and changes are pushed back into state via `onChange`.
@@ -29,18 +31,18 @@ return (
 );
 ```
 
-#### Pros
+##### Pros
 
 - Easy to keep multiple inputs in sync.
 - Validation and conditional logic can run on every change.
 - The source of truth is in JavaScript — predictable.
 
-#### Cons
+##### Cons
 
 - Can cause extra re-renders (performance cost for big forms).
 - More verbose setup.
 
-### React Uncontrolled Components
+#### React Uncontrolled Components
 
 - The form field stores its own value internally in the DOM.
 - You don’t pass a `value` prop; instead, you read the value when you need it (e.g. via a `ref` or `FormData`).
@@ -58,17 +60,17 @@ return (
 );
 ```
 
-#### Pros
+##### Pros
 
 - Less re-rendering → more performant for large forms.
 - Minimal boilerplate.
 
-#### Cons
+##### Cons
 
 - Harder to sync with other UI state.
 - Validation often requires manually reading the field values.
 
-### React Hook Form - Controlled vs Uncontrolled Component
+#### React Hook Form - Controlled vs Uncontrolled Component
 
 - **Controlled** = custom inputs that must be explicitly linked to RHF’s form state.
 - **Uncontrolled** = standard HTML inputs (RHF just grabs their values via ref).
@@ -79,11 +81,11 @@ RHF prefers uncontrolled inputs because it uses refs under the hood and lets the
 
 A controlled input in RHF means you integrate a field that doesn’t naturally expose a ref-based value (e.g. `react-select`, date pickers, Material UI inputs). In those cases, RHF needs a `<Controller>` wrapper to bridge the component’s value into RHF’s state management.
 
-### Repeater Fields / Field arrays
+#### Repeater Fields / Field arrays
 
 A repeater field lets the user dynamically add, remove or reorder a set of related inputs/fields that share the same structure. It's useful when you don't know in advance how many items a user will need to enter.
 
-#### Example
+##### Example
 
 For example, a job application form.
 
