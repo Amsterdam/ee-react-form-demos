@@ -4,10 +4,49 @@ import { Meta } from '@storybook/blocks';
 
 # Accessibility
 
-> **Warning**
-> This project is a work in progress so will likely change in the future.
+The following points provide a basic checklist into form accessibility.
 
-- Keyboard navigation (tab order)
-- highlight required fields
-- aria tags, role
-- use `id` attributes
+## 1. Labels and Instructions
+
+- Always use `<label>` (`<Label>` in [amsterdam-design-system](https://designsystem.amsterdam/)) linked to inputs via `for` (HTML) or `htmlFor` (JSX)
+- Don't rely on placeholder text alone - it disappears when typing and is hard for low-vision users.
+- Provide clear instructions for format (e.g. `DD/MM/YYYY`)
+
+## 2. Focus and Tab Order
+
+- Keep logical focus order - match the visual order.
+- Use `tabindex="0"` for custom components and avoid positive tabindex values, as this can break the natural flow.
+- Ensure modals returns focus to where the user originated from.
+
+## 3. ARIA for Additional Context
+
+- ARIA doesn't replace semantic HTML - it extends it when native elements aren't enough.
+- ARIA is supplemental, filling in gaps for custom components or dynamic changes.
+- Use ARIA to announce, describe, or mark states, not as your primary accessibility method.
+- `aria-required` if HTML `required` isn't possible.
+- `aria-invalid="true"` for fields with errors.
+- `aria-describedby` to link inputs to help text or error messages.
+- `role="alert"` for dynamic error messages so screen readers announce them immediately.
+
+## 4. Inline Validation and Colour
+
+- Don't rely only on green/red colour for success/error - use icons, text or patterns.
+- Use accessible color contrasts (WCAG 2.1 AA; at least 4.5:1 for text) - fortunately [amsterdam-design-system](https://designsystem.amsterdam/?path=/docs/brand-design-tokens-colour--docs) defines the colours internally.
+- Announce validation results via `aria-live="polite"` for screen reader users.
+
+## 5. Keyboard Accessibility
+
+- All form controls should be usable without a mouse.
+- Custom dropdowns, date pickers and toggles must support arrow keys, space, enter and escape.
+
+## 6. Error Prevention and Recovery
+
+- Show errors near the field and in a summary at the the top of the form for quick navigation.
+- Link each error to the field via `<a href="#field-id">`.
+- Don't clear entered data on error.
+
+## 7. Assistive Technology Testing
+
+- Test with keyboard only.
+- Test with screen readers (NVDA, VoiceOver).
+- Check with high contrast mode and zoom text to 200%.
