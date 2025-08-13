@@ -1,0 +1,82 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Testing - A Plan" />
+
+# Testing - A Plan
+
+Testing a large form can be quite confusing from where to start testing, avoiding duplicate tests, mocking external dependencies, timeouts, sever responses and more... For this example we use the `CreateEntity` form example. Here's an overview of the file structure:
+
+```text
+src/pages/CreateEntityZod/schema.ts
+src/pages/CreateEntityZod/CreateEntityZod.tsx
+src/pages/CreateEntityZod/schema.test.ts
+src/pages/CreateEntityZod/CreateEntityZod.module.css
+src/pages/CreateEntityZod/CreateEntityZod.test.tsx
+src/pages/CreateEntityZod/components/FormSelect/FormSelect.tsx
+src/pages/CreateEntityZod/components/FormSelect/FormSelect.test.tsx
+src/pages/CreateEntityZod/components/FormAutoSelect/FormAutoSelect.tsx
+src/pages/CreateEntityZod/components/FormAutoSelect/FormAutoSelect.test.tsx
+src/pages/CreateEntityZod/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx
+src/pages/CreateEntityZod/components/AnnotationRepeaterRow/AnnotationRepeaterRow.test.tsx
+src/pages/CreateEntityZod/components/AnnotationRepeaterRow/AnnotationRepeaterRow.module.css
+src/pages/CreateEntityZod/components/FormCheckboxInput/FormCheckboxInput.tsx
+src/pages/CreateEntityZod/components/FormCheckboxInput/FormCheckboxInput.test.tsx
+src/pages/CreateEntityZod/components/FormTextInput/FormTextInput.tsx
+src/pages/CreateEntityZod/components/FormTextInput/FormTextInput.test.tsx
+src/pages/CreateEntityZod/components/AnnotationRepeater/AnnotationRepeater.module.css
+src/pages/CreateEntityZod/components/AnnotationRepeater/AnnotationRepeater.test.tsx
+src/pages/CreateEntityZod/components/AnnotationRepeater/AnnotationRepeater.tsx
+src/pages/CreateEntityZod/components/LinkRepeaterRow/LinkRepeaterRow.tsx
+src/pages/CreateEntityZod/components/LinkRepeaterRow/LinkRepeaterRow.module.css
+src/pages/CreateEntityZod/components/LinkRepeaterRow/LinkRepeaterRow.test.tsx
+src/pages/CreateEntityZod/components/FormTextArea/FormTextArea.tsx
+src/pages/CreateEntityZod/components/FormTextArea/FormTextArea.test.tsx
+src/pages/CreateEntityZod/components/LinkRepeater/LinkRepeater.test.tsx
+src/pages/CreateEntityZod/components/LinkRepeater/LinkRepeater.module.css
+src/pages/CreateEntityZod/components/LinkRepeater/LinkRepeater.tsx
+src/pages/CreateEntityZod/hooks/useEntityFormValidation.test.ts
+src/pages/CreateEntityZod/hooks/useEntityFormValidation.ts
+src/pages/CreateEntityZod/utils/scrollToFirstError.test.ts
+src/pages/CreateEntityZod/utils/scrollToFirstError.ts
+```
+
+Most form fields use components from [amsterdam-design-system](https://designsystem.amsterdam/), however, we also have a wrapper around [react-select](https://react-select.com) - and some 'repeater' components (e.g. `AnnotationRepeaterRow`) between the [amsterdam-design-system](https://designsystem.amsterdam/) form component and our parent form.
+
+We adopted a **bottom-up approach** to writing the tests - meaning we test the individual components first and work up to the parent `CreateEntity.tsx` component. We followed this approach:
+
+## 1. Foundation components
+
+Begin with the individual form components since they're the building blocks:
+
+**Priority Order:**
+
+1. **FormTextInput, FormTextarea, FormSelect** - These are likely your most straightforward components
+2. **FormCheckboxInput, FormAutoSelect** - Slightly more complex but still isolated
+3. **AnnotationRepeaterRow, LinkRepeaterRow** - Test the row components before the containers
+4. **AnnotationRepeater, LinkRepeater** - Test the repeater logic after rows work
+
+**Testing Strategy for Components:**
+
+- Test props acceptance and rendering
+- Test user interactions (typing, selecting, checking)
+- Test validation states (if handled at component level)
+- Test accessibility (labels, ARIA attributes)
+- Mock any external dependencies
+
+## 2. Utilties and Hooks
+## 3. Integration Testing Strategy
+
+For the main `CreateEntity` container, create separate test suites:
+
+1. CreateEntity (HTML5 version) - Test basic form submission, field interactions
+2. CreateEntity (HTML5 + Zod) - Test schema validation integration
+3. CreateEntity (react-hook-form + Zod) - Test RHF integration
+
+The focus for testing the container should be on:
+
+- Form submission with valid data
+- Validation error handling and display
+- Field interactions and state updates
+- Repeater add/remove functionality
+- Error scrolling behavior
+

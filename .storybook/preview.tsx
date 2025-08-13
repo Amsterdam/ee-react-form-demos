@@ -63,6 +63,7 @@ export const parameters = {
         'CSRF*',
         'FileHandling*',
         'XSS*',
+        'Testing*',
         'UXPatterns*',
         'Accessibility*',
         'Alternatives*',
