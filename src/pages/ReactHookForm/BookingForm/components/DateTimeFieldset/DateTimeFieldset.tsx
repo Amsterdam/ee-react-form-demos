@@ -10,7 +10,6 @@ const fieldNameMap = {
 };
 
 interface DateTimeFieldsetProps {
-  errorFields?: string[]; // Array of field names to check for errors
   legend: string;
   fields: string[];
 }
