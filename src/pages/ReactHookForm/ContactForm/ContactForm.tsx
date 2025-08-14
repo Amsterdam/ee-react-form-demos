@@ -29,8 +29,9 @@ const ContactForm = () => {
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
 
-    // Uncomment for validation onChange
-    // mode: 'onChange',
+    // Uncomment for validation onChange or check the `reValidateMode` property
+    // mode: 'onChange', // Allowed values: onChange | onBlur | onSubmit
+    // | onTouched | all
     defaultValues: {
       name: '',
       email: '',
