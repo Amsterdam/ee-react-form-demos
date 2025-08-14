@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CreateEntity from '@/pages/CreateEntity/CreateEntity';
 
 const meta = {
-  title: 'Plain HTML5/CreateEntity',
+  title: 'Plain HTML5/CreateEntity (HTML5 Validation)',
   component: CreateEntity,
   parameters: {
     layout: 'fullscreen',

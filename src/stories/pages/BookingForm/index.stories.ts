@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import BookingForm from '@/pages/BookingForm/BookingForm';
 
 const meta = {
-  title: 'Plain HTML5/BookingForm',
+  title: 'Plain HTML5/BookingForm (HTML5 Validation)',
   component: BookingForm,
   parameters: {
     layout: 'fullscreen',
