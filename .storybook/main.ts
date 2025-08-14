@@ -5,23 +5,7 @@ import remarkGfm from 'remark-gfm';
 const config: StorybookConfig = {
   stories: [
     '../src/stories/docs/**/*.mdx',
-    // '../src/stories/Intro.mdx',
-    // '../src/stories/Terminologies.mdx',
-    // '../src/stories/JsxVsHtml.mdx',
-    // '../src/stories/FormFlow.mdx',
-    // '../src/stories/RemoteData.mdx',
-    // '../src/stories/FormStateVsUiState.mdx',
-    // '../src/stories/CSRF.mdx',
-    // '../src/stories/FileHandling.mdx',
-    // '../src/stories/XSS.mdx',
-    // '../src/stories/Testing.mdx',
-    // '../src/stories/TestingPlan.mdx',
-    // '../src/stories/UXPatterns.mdx',
-    // '../src/stories/Accessibility.mdx',
-    // '../src/stories/Alternatives.mdx',
-    // '../src/stories/React19.mdx',
-    // '../src/stories/Validation.mdx',
-    // '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../src/stories/pages/**/*.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx)'
   ],
   addons: [
@@ -41,7 +25,9 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: '@storybook/react-vite',
-    options: {},
+    options: {
+      strictMode: true,
+    },
   },
   docs: {
     autodocs: 'tag',

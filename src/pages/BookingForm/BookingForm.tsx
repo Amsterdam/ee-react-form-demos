@@ -170,7 +170,7 @@ const BookingForm = () => {
             This form is an example of a generic booking form. The key
             validation is with checking that the <strong>End date</strong> and{' '}
             <strong>End time</strong> fields are not older than the{' '}
-            <strong>Start date</strong> and <strong>Start time</strong>fields.
+            <strong>Start date</strong> and <strong>Start time</strong> fields.
           </Paragraph>
           <Paragraph className="ams-mb-m">
             This form&apos;s code, particularly the error state handling

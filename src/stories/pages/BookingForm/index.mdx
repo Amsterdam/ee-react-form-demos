@@ -1,8 +1,38 @@
 import { Canvas, Meta, Source, Story } from '@storybook/blocks';
 import * as BookingForm from './index.stories';
-//import BookingForm from '@/pages/BookingForm/BookingForm?raw';
 //import styles from '@/pages/BookingForm/BookingForm.module.css?raw';
 
 <Meta of={BookingForm} />
 
 # Booking Form
+
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/BookingForm" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Description](#description)
+- [Background](#background)
+- [How to implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- React
+
+## Description
+
+This form is an example of a generic booking form. The key validation is with checking that the End date and End time fields are not older than the Start date and Start timefields.
+
+This form's code, particularly the error state handling demonstrates how native HTML5 validation can quickly become cumbersome when you have a rule that dynamically targets more than one field.
+
+## Background
+
+## Usage
+
+The following files are required:
+
+### 1. React component
+
+#### - BookingForm.tsx
+

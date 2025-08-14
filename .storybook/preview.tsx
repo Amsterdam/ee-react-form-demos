@@ -67,6 +67,8 @@ export const parameters = {
           'Security',
           'Testing'
         ],
+        'Plain HTML5',
+        'ReactHookForm',
       ],
     },
   },
