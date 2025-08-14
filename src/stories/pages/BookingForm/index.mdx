@@ -1,8 +1,15 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import * as BookingForm from './index.stories';
-//import styles from '@/pages/BookingForm/BookingForm.module.css?raw';
+import * as BookingFormStories from './index.stories';
+import BookingForm from '@/pages/BookingForm/BookingForm?raw';
+import FormCheckboxInput from '@/pages/BookingForm/components/FormCheckboxInput/FormCheckboxInput?raw';
+import FormTextArea from '@/pages/BookingForm/components/FormTextArea/FormTextArea?raw';
+import FormDateInput from '@/pages/BookingForm/components/FormDateInput/FormDateInput?raw';
+import FormTimeInput from '@/pages/BookingForm/components/FormTimeInput/FormTimeInput?raw';
+import translate from '@/pages/BookingForm/utils/translate?raw';
+import Loader from '@/components/Loader/Loader?raw';
+import styles from '@/pages/BookingForm/BookingForm.module.css?raw';
 
-<Meta of={BookingForm} />
+<Meta of={BookingFormStories} />
 
 # Booking Form
 
@@ -18,7 +25,8 @@ import * as BookingForm from './index.stories';
 
 ## Requirements
 
-- React
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
 
 ## Description
 
@@ -28,6 +36,8 @@ This form's code, particularly the error state handling demonstrates how native 
 
 ## Background
 
+... The individual form fields could be refactored into reusable components.
+
 ## Usage
 
 The following files are required:
@@ -36,3 +46,36 @@ The following files are required:
 
 #### - BookingForm.tsx
 
+<Source code={BookingForm} />
+
+#### - FormCheckboxInput.tsx
+
+<Source code={FormCheckboxInput} />
+
+#### - FormTextArea.tsx
+
+<Source code={FormTextArea} />
+
+#### - FormDateInput.tsx
+
+<Source code={FormDateInput} />
+
+#### - FormTimeInput.tsx
+
+<Source code={FormTimeInput} />
+
+### 2. Utils
+
+#### - translate.ts
+
+<Source code={translate} />
+
+### 2. UI/Styling
+
+#### - BookingForm.module.css
+
+<Source code={styles} />
+
+#### - Loader.tsx
+
+<Source code={Loader} />

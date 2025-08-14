@@ -8,7 +8,7 @@ import {
 } from '@amsterdam/design-system-react';
 import clsx from 'clsx';
 
-interface TimeInputProps {
+interface FormTimeInputProps {
   id: string;
   label: string;
   description?: ReactNode;
@@ -19,7 +19,7 @@ interface TimeInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-const TimeInput = ({
+const FormTimeInput = ({
   id,
   label,
   description,
@@ -28,7 +28,7 @@ const TimeInput = ({
   required = false,
   error,
   onChange,
-}: TimeInputProps) => (
+}: FormTimeInputProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
     {typeof description === 'string' ? (
@@ -56,4 +56,4 @@ const TimeInput = ({
   </Field>
 );
 
-export default TimeInput;
+export default FormTimeInput;

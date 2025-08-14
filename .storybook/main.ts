@@ -9,16 +9,20 @@ const config: StorybookConfig = {
     '../src/**/*.stories.@(js|jsx|ts|tsx)'
   ],
 
-  addons: [{
-    name: '@storybook/addon-docs',
-    options: {
-      mdxPluginOptions: {
-        mdxCompileOptions: {
-          remarkPlugins: [remarkGfm],
+  addons: [
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
         },
       },
     },
-  }, '@storybook/addon-themes'],
+    '@storybook/addon-themes',
+    '@jls-digital/storybook-addon-code',
+  ],
 
   framework: {
     name: '@storybook/react-vite',

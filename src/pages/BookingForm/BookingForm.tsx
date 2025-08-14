@@ -13,13 +13,13 @@ import {
   TextInput,
   UnorderedList,
 } from '@amsterdam/design-system-react';
+import translate, { translations } from './utils/translate';
 import Loader from '@/components/Loader/Loader';
-import styles from './BookingForm.module.css';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import FormTextArea from './components/FormTextArea/FormTextArea';
-import DateInput from './components/DateInput/DateInput';
-import TimeInput from './components/TimeInput/TimeInput';
-import translate, { translations } from './utils/translate';
+import FormDateInput from './components/FormDateInput/FormDateInput';
+import FormTimeInput from './components/FormTimeInput/FormTimeInput';
+import styles from './BookingForm.module.css';
 
 const BookingForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -244,7 +244,7 @@ const BookingForm = () => {
             invalid={!!errors.startDate || !!errors.startTime}
           >
             <Row>
-              <DateInput
+              <FormDateInput
                 id="startDate"
                 name="startDate"
                 label="Start date"
@@ -254,7 +254,7 @@ const BookingForm = () => {
                 required
                 error={errors.startDate}
               />
-              <TimeInput
+              <FormTimeInput
                 id="startTime"
                 name="startTime"
                 label="Start time"
@@ -272,7 +272,7 @@ const BookingForm = () => {
             invalid={!!errors.endDate || !!errors.endTime}
           >
             <Row>
-              <DateInput
+              <FormDateInput
                 id="endDate"
                 name="endDate"
                 label="End date"
@@ -282,7 +282,7 @@ const BookingForm = () => {
                 required
                 error={errors.endDate}
               />
-              <TimeInput
+              <FormTimeInput
                 id="endTime"
                 name="endTime"
                 label="End time"

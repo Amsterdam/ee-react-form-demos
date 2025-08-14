@@ -9,7 +9,7 @@ import {
 
 import clsx from 'clsx';
 
-interface DateInputProps {
+interface FormDateInputProps {
   id: string;
   label: string;
   description?: ReactNode;
@@ -21,7 +21,7 @@ interface DateInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-const DateInput = ({
+const FormDateInput = ({
   id,
   label,
   description,
@@ -31,7 +31,7 @@ const DateInput = ({
   minValue = undefined,
   error,
   onChange,
-}: DateInputProps) => (
+}: FormDateInputProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
     {typeof description === 'string' ? (
@@ -60,4 +60,4 @@ const DateInput = ({
   </Field>
 );
 
-export default DateInput;
+export default FormDateInput;

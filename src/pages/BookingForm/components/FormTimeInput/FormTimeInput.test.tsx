@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import TimeInput from './TimeInput';
+import FormTimeInput from './FormTimeInput';
 
-describe('TimeInput', () => {
+describe('FormTimeInput', () => {
   const defaultProps = {
     id: 'test-time',
     label: 'Test Label',
@@ -12,7 +12,7 @@ describe('TimeInput', () => {
   };
 
   it('renders with label and input', () => {
-    render(<TimeInput {...defaultProps} />);
+    render(<FormTimeInput {...defaultProps} />);
 
     expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
@@ -27,7 +27,7 @@ describe('TimeInput', () => {
 
   it('handles user input', () => {
     const mockOnChange = vi.fn();
-    render(<TimeInput {...defaultProps} onChange={mockOnChange} />);
+    render(<FormTimeInput {...defaultProps} onChange={mockOnChange} />);
 
     const input = screen.getByLabelText(defaultProps.label);
     fireEvent.change(input, {
@@ -41,7 +41,7 @@ describe('TimeInput', () => {
 
   it('displays validation errors', () => {
     const errorMessage = 'This field is required';
-    render(<TimeInput {...defaultProps} error={errorMessage} />);
+    render(<FormTimeInput {...defaultProps} error={errorMessage} />);
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
@@ -52,7 +52,7 @@ describe('TimeInput', () => {
 
   it('renders with initial value', () => {
     const time = '09:00';
-    render(<TimeInput {...defaultProps} value={time} />);
+    render(<FormTimeInput {...defaultProps} value={time} />);
 
     expect(screen.getByDisplayValue(time)).toBeInTheDocument();
   });
@@ -61,14 +61,16 @@ describe('TimeInput', () => {
     const description = (
       <span data-testid="custom-description">Custom description</span>
     );
-    render(<TimeInput {...defaultProps} description={description} />);
+    render(<FormTimeInput {...defaultProps} description={description} />);
 
     expect(screen.getByTestId('custom-description')).toBeInTheDocument();
   });
 
   it('shows description id in aria-describedby', () => {
     const description = 'This is a description';
-    render(<TimeInput {...defaultProps} description={description} required />);
+    render(
+      <FormTimeInput {...defaultProps} description={description} required />
+    );
 
     const input = screen.getByLabelText(defaultProps.label);
 
@@ -85,7 +87,11 @@ describe('TimeInput', () => {
 
   it('combines description and error in aria-describedby', () => {
     render(
-      <TimeInput {...defaultProps} description="Description" error="Error" />
+      <FormTimeInput
+        {...defaultProps}
+        description="Description"
+        error="Error"
+      />
     );
 
     const input = screen.getByLabelText(defaultProps.label);

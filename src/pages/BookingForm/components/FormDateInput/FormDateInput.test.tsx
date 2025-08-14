@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import DateInput from './DateInput';
+import FormDateInput from './FormDateInput';
 
 describe('DateInput', () => {
   const defaultProps = {
@@ -12,7 +12,7 @@ describe('DateInput', () => {
   };
 
   it('renders with label and input', () => {
-    render(<DateInput {...defaultProps} />);
+    render(<FormDateInput {...defaultProps} />);
 
     expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
@@ -27,7 +27,7 @@ describe('DateInput', () => {
 
   it('handles user input', () => {
     const mockOnChange = vi.fn();
-    render(<DateInput {...defaultProps} onChange={mockOnChange} />);
+    render(<FormDateInput {...defaultProps} onChange={mockOnChange} />);
 
     const input = screen.getByLabelText(defaultProps.label);
     fireEvent.change(input, {
@@ -43,7 +43,7 @@ describe('DateInput', () => {
 
   it('displays validation errors', () => {
     const errorMessage = 'This field is required';
-    render(<DateInput {...defaultProps} error={errorMessage} />);
+    render(<FormDateInput {...defaultProps} error={errorMessage} />);
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
@@ -56,7 +56,7 @@ describe('DateInput', () => {
     const date = new Date(Date.now() + 24 * 60 * 60 * 1000)
       .toISOString()
       .split('T')[0];
-    render(<DateInput {...defaultProps} value={date} />);
+    render(<FormDateInput {...defaultProps} value={date} />);
 
     expect(screen.getByDisplayValue(date)).toBeInTheDocument();
   });
@@ -65,14 +65,16 @@ describe('DateInput', () => {
     const description = (
       <span data-testid="custom-description">Custom description</span>
     );
-    render(<DateInput {...defaultProps} description={description} />);
+    render(<FormDateInput {...defaultProps} description={description} />);
 
     expect(screen.getByTestId('custom-description')).toBeInTheDocument();
   });
 
   it('shows description id in aria-describedby', () => {
     const description = 'This is a description';
-    render(<DateInput {...defaultProps} description={description} required />);
+    render(
+      <FormDateInput {...defaultProps} description={description} required />
+    );
 
     const input = screen.getByLabelText(defaultProps.label);
 
@@ -89,7 +91,11 @@ describe('DateInput', () => {
 
   it('combines description and error in aria-describedby', () => {
     render(
-      <DateInput {...defaultProps} description="Description" error="Error" />
+      <FormDateInput
+        {...defaultProps}
+        description="Description"
+        error="Error"
+      />
     );
 
     const input = screen.getByLabelText(defaultProps.label);
