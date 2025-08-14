@@ -7,7 +7,7 @@ export const translations = {
   endDate: 'End date',
   endTime: 'End time',
   remote: 'Is the meeting remote?',
-  comments: 'Additonal comments',
+  comments: 'Additional comments',
 };
 
 const t = (input: keyof typeof translations) => {

@@ -6,6 +6,7 @@ describe('FormCheckboxInput', () => {
   const defaultProps = {
     id: 'test-input',
     label: 'Test Label',
+    name: 'testInput',
     value: false,
     onChange: vi.fn(),
   };

@@ -16,7 +16,7 @@ interface DateInputProps {
   name: string;
   value: string;
   required?: boolean;
-  minValue: string;
+  minValue?: string;
   error?: string;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
@@ -28,7 +28,7 @@ const DateInput = ({
   name,
   value,
   required = false,
-  minValue,
+  minValue = undefined,
   error,
   onChange,
 }: DateInputProps) => (
