@@ -167,6 +167,12 @@ const BookingForm = () => {
           </Heading>
 
           <Paragraph className="ams-mb-m">
+            This form is an example of a generic booking form. The key
+            validation is with checking that the <strong>End date</strong> and{' '}
+            <strong>End time</strong> fields are not older than the{' '}
+            <strong>Start date</strong> and <strong>Start time</strong>fields.
+          </Paragraph>
+          <Paragraph className="ams-mb-m">
             This form&apos;s code, particularly the error state handling
             demonstrates how native HTML5 validation can quickly become
             cumbersome when you have a rule that dynamically targets more than
