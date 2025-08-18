@@ -39,6 +39,13 @@ This demo implements a simple booking form with the following fields:
 - **Remote Meeting?** (optional checkbox)
 - **Comments** (optional textarea)
 
+### Validation Rules
+
+- Name, Email, Start Date/Time, End Date/Time are required.
+- Email must be a valid format.
+- End Date/Time must be later than Start Date/Time.
+- Remote Meeting? and Comments are optional.
+
 ## Purpose
 
 The goal of this demo is to illustrate how to handle cross-field validation in forms. While individual field rules (e.g. "email must be valid") are straightforward, checking relationships between multiple fields—such as ensuring the end of a booking is after the start—requires more advanced validation logic.

@@ -1,11 +1,126 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import * as BookingForm from './index.stories';
+import * as BookingFormStories from './index.stories';
+import BookingForm from '@/pages/ReactHookForm/BookingForm/BookingForm?raw';
+import TextInputControl from '@/pages/ReactHookForm/BookingForm/components/TextInputControl/TextInputControl?raw';
+import CheckboxControl from '@/pages/ReactHookForm/BookingForm/components/CheckboxControl/CheckboxControl?raw';
+import TextAreaControl from '@/pages/ReactHookForm/BookingForm/components/TextAreaControl/TextAreaControl?raw';
+import DateControl from '@/pages/ReactHookForm/BookingForm/components/DateControl/DateControl?raw';
+import TimeControl from '@/pages/ReactHookForm/BookingForm/components/TimeControl/TimeControl?raw';
+import DateTimeFieldset from '@/pages/ReactHookForm/BookingForm/components/DateTimeFieldset/DateTimeFieldset?raw';
+import styles from '@/pages/ReactHookForm/BookingForm/BookingForm.module.css?raw';
 
-<Meta of={BookingForm} />
+<Meta of={BookingFormStories} />
 
 # ReactHookForm - Booking Form
 
-1. Frame the motivation: why this form exists and what it demonstrates.
-2. Call out the "teaching points": conditional validation, UX pitfalls of HTML5-only validation, how react-hook-form makes it manageable.
-3. Walk through the form: field by field, but in a short narrative.
-4. Highlight gotchas / lessons learned.
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/ReactHookForm/BookingForm" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+
+## Overview
+
+This demo implements a simple booking form with the following fields:
+
+- **Name** (required)
+- **Email** (required, must be a valid email format)
+- **Start Date & Time** (required)
+- **End Date & Time** (required, must occur after Start Date/Time)
+- **Remote Meeting?** (optional checkbox)
+- **Comments** (optional textarea)
+
+### Validation Rules
+
+- Name, Email, Start Date/Time, End Date/Time are required.
+- Email must be a valid format.
+- End Date/Time must be later than Start Date/Time.
+- Remote Meeting? and Comments are optional.
+
+## Purpose
+
+This variant demonstrates how [React Hook Form](https://react-hook-form.com/) makes cross-field validation more straightforward and provides a smoother UX than native HTML5 validation.
+
+In this case, the form must ensure that the end date/time occurs after the start date/time. HTML5 alone cannot reliably enforce this, but with RHF (and optionally a Zod schema), the rule is expressed cleanly and enforced consistently.
+
+## Key Points
+
+- **Cross-field validation**: RHF integrates with schema validation or custom rules, making it easy to compare related fields (e.g. end vs start).
+- **Consistent UX**: Instead of browser tooltips, errors are displayed inline, styled with the design system.
+- **Error state management**: RHF automatically tracks touched/dirty states and surfaces errors in a predictable way.
+- **Cleaner developer experience**: With `zodResolver` or RHF’s built-in rules, validation logic is centralized and easier to maintain.
+
+- **Pro**: **Advanced validation support** – cross-field rules are expressed clearly and enforced consistently.
+- **Pro**: **Better UX** – inline errors are consistent, accessible, and not tied to browser quirks.
+- **Pro**: **Scalable** – adding more conditional fields or rules is straightforward.
+- **Pro**: **State handling built in** – RHF tracks touched, dirty, and error states without boilerplate.
+- **Con**: **Extra setup** – requires RHF setup and optional schema integration compared to HTML5 attributes.
+- **Con**: **Learning curve** – developers need to understand RHF concepts (e.g. register, watch, resolver).
+- **Con**: **Overhead for small forms** – for a very simple form, RHF may feel heavier than necessary.
+
+## How to Implement
+
+To implement this `BookingForm` there are six core files:
+
+1. The React components (7 files):
+    - [BookingForm.tsx](#--bookingformtsx)
+    - [TextInputControl](#--textinputcontroltsx)
+    - [CheckboxControl](#--checkboxcontroltsx)
+    - [TextAreaControl](#--textareacontroltsx)
+    - [DateControl](#--datecontroltsx)
+    - [TimeControl](#--timecontroltsx)
+    - [DateTimeFieldset](#--datetimefieldsettsx)
+2. The CSS styles (1 file)
+    - [BookingForm.module.css](#--bookingformmodulecss)
+
+*The `Loader` component is excluded from the docs, it is a generic preloader.*
+
+## Usage
+
+The following files are required:
+
+### 1. React Components
+
+#### - BookingForm.tsx
+
+<Source code={BookingForm} />
+
+#### - TextInputControl.tsx
+
+<Source code={TextInputControl} />
+
+#### - CheckboxControl.tsx
+
+<Source code={CheckboxControl} />
+
+#### - TextAreaControl.tsx
+
+<Source code={TextAreaControl} />
+
+#### - DateControl.tsx
+
+<Source code={DateControl} />
+
+#### - TimeControl.tsx
+
+<Source code={TimeControl} />
+
+#### - DateTimeFieldset.tsx
+
+<Source code={DateTimeFieldset} />
+
+### 2. CSS Styles
+
+#### - BookingForm.module.css
+
+<Source code={styles} />
