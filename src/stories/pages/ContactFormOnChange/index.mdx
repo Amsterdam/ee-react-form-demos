@@ -36,7 +36,7 @@ This demo shows a basic contact form with three required fields:
 
 ## Purpose
 
-This Cntact Form 'on Change' variant demonstrates a more user-friendly validation strategy by validating fields as the user interacts with them. It balances real-time feedback with preventing error “spam” by using two states:
+This Contact Form 'on Change' variant demonstrates a more user-friendly validation strategy by validating fields as the user interacts with them. It balances real-time feedback with preventing error “spam” by using two states:
 
 - **Touched**: whether an individual input has been interacted with.
 - **SubmitTouched**: whether the user has attempted to submit the form.
@@ -56,11 +56,14 @@ This Cntact Form 'on Change' variant demonstrates a more user-friendly validatio
 - **Clear error visibility**: The global error alert after submit ensures users can quickly identify all remaining issues in one place.
 - **Consistency**: Using both inline and summary errors supports different user preferences and improves accessibility.
 
+- **Extra state management**: Tracking both touched and submitTouched adds a small layer of complexity.
+- **Performance**: Real-time validation can be more demanding for very large forms — consider throttling validation if needed.
+
 ## How to Implement
 
 To implement this Contact Form, there are 4 core files:
 
-1. The React components (the `Loader` component is excluded from the docs, it is a generic preloader):
+1. The React components:
     - [ContactFormOnChange.tsx](#--contactformonchangetsx)
 2. Validation schema:
     - [schema.ts](#2-validation-schema)
@@ -68,6 +71,8 @@ To implement this Contact Form, there are 4 core files:
     - [ContactForm.module.css](#3-css-styles)
 4. Utils:
     - [translate.ts](#4-utils)
+
+*The `Loader` component is excluded from the docs, it is a generic preloader.*
 
 ## Usage
 
