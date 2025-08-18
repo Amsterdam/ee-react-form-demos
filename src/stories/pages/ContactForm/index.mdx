@@ -5,9 +5,46 @@ import * as ContactForm from './index.stories';
 
 <Meta of={ContactForm} />
 
-# Create Form with Validation on Submit
+# Contact Form (on Submit)
 
-1. Frame the motivation: why this form exists and what it demonstrates.
-2. Call out the "teaching points": conditional validation, UX pitfalls of HTML5-only validation, how react-hook-form makes it manageable.
-3. Walk through the form: field by field, but in a short narrative.
-4. Highlight gotchas / lessons learned.
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/ContactForm" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+
+## Overview
+
+This demo shows a basic contact form with three required fields:
+
+- **Name**
+- **Email** (must be valid format)
+- **Message**
+
+## Purpose
+
+This Contact Form 'on Submit' variant demonstrates the most basic validation strategy: all fields are validated only when the form is submitted. It’s often the simplest implementation and is commonly used in quick prototypes or small forms.
+
+- All fields must be filled out.
+- The email must be in a valid format.
+- Error messages are only displayed after the user clicks Submit.
+
+## Key Points
+
+- **Low friction while typing**: The user can fill in the form without any distractions from early validation messages.
+- **Batch feedback**: All validation errors are shown at once after the submit attempt.
+- **Simple implementation**: This approach is straightforward to wire up.
+
+- **Risk of frustration**: If multiple fields are incorrect, the user only finds out after completing the entire form.
+- **Delayed feedback**: Typos or mistakes aren’t caught until the end, which can increase the number of corrections needed.
+- **Best fit**: Works fine for short forms like this one, but becomes less ideal as forms grow in length or complexity.

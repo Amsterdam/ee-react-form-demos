@@ -22,12 +22,12 @@ import { z } from 'zod/v4';
 import { debounce } from 'es-toolkit';
 import Loader from '@/components/Loader/Loader';
 import t, { translations } from '../ContactForm/utils/translate';
-import ContactFormLiveSchema from '../ContactForm/schema';
-import styles from './ContactFormLive.module.css';
+import ContactFormOnChangeSchema from '../ContactForm/schema';
+import styles from './ContactFormOnChange.module.css';
 
 // This is a simple HTML5 form example that validates using a Zod schema
 // on change
-const ContactFormLive = () => {
+const ContactFormOnChange = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   // Touched state handling enables active and passive validation handling
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -38,8 +38,10 @@ const ContactFormLive = () => {
   const validateField = (name: string, value: string): string | null => {
     try {
       // Extract a single schema property for the form field
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const fieldSchema = ContactFormLiveSchema.pick({ [name]: true } as any);
+      const fieldSchema = ContactFormOnChangeSchema.pick({
+        [name]: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
       fieldSchema.parse({ [name]: value });
 
       return null;
@@ -104,7 +106,7 @@ const ContactFormLive = () => {
     };
 
     try {
-      ContactFormLiveSchema.parse(data);
+      ContactFormOnChangeSchema.parse(data);
       return {};
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -282,4 +284,4 @@ const ContactFormLive = () => {
   );
 };
 
-export default ContactFormLive;
+export default ContactFormOnChange;

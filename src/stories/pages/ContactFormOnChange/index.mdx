@@ -1,0 +1,54 @@
+import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as ContactFormOnChange from './index.stories';
+//import ContactFormOnChange from '@/pages/ContactFormOnChange/ContactFormOnChange?raw';
+//import styles from '@/pages/BaseLayer/styles.module.css?raw';
+
+<Meta of={ContactFormOnChange} />
+
+# Contact Form (on Change)
+
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/ContactFormOnChange" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+
+## Overview
+
+This demo shows a basic contact form with three required fields:
+
+- **Name**
+- **Email** (must be valid format)
+- **Message**
+
+## Purpose
+
+This Cntact Form 'on Change' variant demonstrates a more user-friendly validation strategy by validating fields as the user interacts with them. It balances real-time feedback with preventing error “spam” by using two states:
+
+- **Touched**: whether an individual input has been interacted with.
+- **SubmitTouched**: whether the user has attempted to submit the form.
+
+- All fields must be filled out.
+- The email must be in a valid format.
+- Inline errors appear once a field has been touched and contains invalid input.
+- A global error alert is shown only after the user attempts to submit.
+
+## Key Points
+
+- **Immediate feedback**: Users catch mistakes as they type, instead of waiting until the end.
+- **Error gating**: Errors aren’t shown prematurely — only once a field has been touched, or after a submit attempt.
+- **Balanced UX**: This approach avoids overwhelming the user with red error states before they’ve had a chance to provide input.
+
+- **Friendly experience**: Inline validation reduces frustration by pointing out errors at the moment they occur.
+- **Clear error visibility**: The global error alert after submit ensures users can quickly identify all remaining issues in one place.
+- **Consistency**: Using both inline and summary errors supports different user preferences and improves accessibility.
