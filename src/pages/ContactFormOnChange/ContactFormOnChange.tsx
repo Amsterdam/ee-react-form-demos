@@ -183,7 +183,15 @@ const ContactFormOnChange = () => {
         </Heading>
 
         <Paragraph className="ams-mb-m">
-          This form validates whilst you type.
+          This form is a simple contact form with three required fields. It
+          validates on change.
+        </Paragraph>
+
+        <Paragraph className="ams-mb-m">
+          The goal of this demo is to illustrate the most basic form validation
+          scenario. Each field is required, and the email must follow a valid
+          format. Unlike more complex forms, no cross-field rules are needed —
+          making it a clean example of straightforward validation.
         </Paragraph>
 
         {/* Use noValidate so browser validation doesn't block JS */}
