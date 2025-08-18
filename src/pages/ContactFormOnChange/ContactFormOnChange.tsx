@@ -21,8 +21,8 @@ import {
 import { z } from 'zod/v4';
 import { debounce } from 'es-toolkit';
 import Loader from '@/components/Loader/Loader';
-import t, { translations } from '../ContactForm/utils/translate';
-import ContactFormOnChangeSchema from '../ContactForm/schema';
+import t, { translations } from './utils/translate';
+import ContactFormOnChangeSchema from './schema';
 import styles from './ContactFormOnChange.module.css';
 
 // This is a simple HTML5 form example that validates using a Zod schema

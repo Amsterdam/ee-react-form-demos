@@ -1,9 +1,12 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import * as ContactFormOnChange from './index.stories';
-//import ContactFormOnChange from '@/pages/ContactFormOnChange/ContactFormOnChange?raw';
-//import styles from '@/pages/BaseLayer/styles.module.css?raw';
+import * as ContactFormOnChangeStories from './index.stories';
+import ContactFormOnChange from '@/pages/ContactFormOnChange/ContactFormOnChange?raw';
+import schema from '@/pages/ContactFormOnChange/schema?raw';
+import styles from '@/pages/ContactFormOnChange/ContactFormOnChange.module.css?raw';
+import translate from '@/pages/ContactFormOnChange/utils/translate.ts?raw';
 
-<Meta of={ContactFormOnChange} />
+
+<Meta of={ContactFormOnChangeStories} />
 
 # Contact Form (on Change)
 
@@ -52,3 +55,42 @@ This Cntact Form 'on Change' variant demonstrates a more user-friendly validatio
 - **Friendly experience**: Inline validation reduces frustration by pointing out errors at the moment they occur.
 - **Clear error visibility**: The global error alert after submit ensures users can quickly identify all remaining issues in one place.
 - **Consistency**: Using both inline and summary errors supports different user preferences and improves accessibility.
+
+## How to Implement
+
+To implement this Contact Form, there are 4 core files:
+
+1. The React components (the `Loader` component is excluded from the docs, it is a generic preloader):
+    - [ContactFormOnChange.tsx](#--contactformonchangetsx)
+2. Validation schema:
+    - [schema.ts](#2-validation-schema)
+3. The CSS styles
+    - [ContactForm.module.css](#3-css-styles)
+4. Utils:
+    - [translate.ts](#4-utils)
+
+## Usage
+
+The following files are required:
+
+### 1. React component
+
+#### - ContactFormOnChange.tsx
+
+<Source code={ContactFormOnChange} />
+
+### 2. Validation schema
+
+#### - schema.ts
+
+<Source code={schema} />
+
+### 3. CSS Styles
+
+<Source code={styles} />
+
+### 4. Utils
+
+#### - translate.ts
+
+<Source code={translate} />

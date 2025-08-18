@@ -1,9 +1,11 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import * as ContactForm from './index.stories';
-//import ContactForm from '@/pages/ContactForm/ContactForm?raw';
-//import styles from '@/pages/BaseLayer/styles.module.css?raw';
+import * as ContactFormStories from './index.stories';
+import ContactForm from '@/pages/ContactForm/ContactForm?raw';
+import schema from '@/pages/ContactForm/schema?raw';
+import styles from '@/pages/ContactForm/ContactForm.module.css?raw';
+import translate from '@/pages/ContactForm/utils/translate.ts?raw';
 
-<Meta of={ContactForm} />
+<Meta of={ContactFormStories} />
 
 # Contact Form (on Submit)
 
@@ -48,3 +50,44 @@ This Contact Form 'on Submit' variant demonstrates the most basic validation str
 - **Risk of frustration**: If multiple fields are incorrect, the user only finds out after completing the entire form.
 - **Delayed feedback**: Typos or mistakes aren’t caught until the end, which can increase the number of corrections needed.
 - **Best fit**: Works fine for short forms like this one, but becomes less ideal as forms grow in length or complexity.
+
+## How to Implement
+
+To implement this Contact Form, there are 4 core files:
+
+1. The React components:
+    - [ContactForm.tsx](#--contactformtsx)
+2. Validation schema:
+    - [schema.ts](#2-validation-schema)
+3. The CSS styles
+    - [ContactForm.module.css](#3-css-styles)
+4. Utils:
+    - [translate.ts](#4-utils)
+
+*The `Loader` component is excluded from the docs, it is a generic preloader.*
+
+## Usage
+
+The following files are required:
+
+### 1. React component
+
+#### - ContactForm.tsx
+
+<Source code={ContactForm} />
+
+### 2. Validation schema
+
+#### - schema.ts
+
+<Source code={schema} />
+
+### 3. CSS Styles
+
+<Source code={styles} />
+
+### 4. Utils
+
+#### - translate.ts
+
+<Source code={translate} />
