@@ -18,9 +18,10 @@ import styles from '@/pages/BookingForm/BookingForm.module.css?raw';
 #### Table of Contents
 
 - [Requirements](#requirements)
-- [Description](#description)
-- [Background](#background)
-- [How to implement](#how-to-implement)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
 - [Usage](#usage)
 
 ## Requirements
@@ -28,15 +29,44 @@ import styles from '@/pages/BookingForm/BookingForm.module.css?raw';
 - [React](https://react.dev)
 - [Amsterdam Design System](https://designsystem.amsterdam)
 
-## Description
+## Overview
 
-This form is an example of a generic booking form. The key validation is with checking that the End date and End time fields are not older than the Start date and Start timefields.
+This demo implements a simple booking form with the following fields:
 
-This form's code, particularly the error state handling demonstrates how native HTML5 validation can quickly become cumbersome when you have a rule that dynamically targets more than one field.
+- **Name** (required)
+- **Email** (required, must be a valid email format)
+- **Start Date & Time** (required)
+- **End Date & Time** (required, must occur after Start Date/Time)
+- **Remote Meeting?** (optional checkbox)
+- **Comments** (optional textarea)
 
-## Background
+## Purpose
 
-... The individual form fields could be refactored into reusable components.
+The goal of this demo is to illustrate how to handle cross-field validation in forms. While individual field rules (e.g. "email must be valid") are straightforward, checking relationships between multiple fields—such as ensuring the end of a booking is after the start—requires more advanced validation logic.
+
+This scenario is deliberately chosen because HTML5 validation alone struggles here. Native browser validation can flag missing values or malformed emails but it cannot easily express rules like `End time must be after Start time.` Even if you manage to wire it up, the resulting UX is inconsistent across browsers and hard to manage.
+
+## Key Points
+
+- **Conditional validation**: The `End Date` and `End Time` fields are validated against the chosen `Start Date` and `Start Time`. If the end occurs before the start, a custom error message is displayed.
+- **Improved UX**: Instead of relying on native validation popups (which vary by browser and cannot always be styled consistently), the demo shows how you can display validation errors inline, next to the relevant field(s), for a smoother experience.
+- **Error state handling**: This example highlights how `react-hook-form` makes it easier to manage complex rules and maintain a consistent error display across the form.
+
+## How to Implement
+
+To implement this `BookingForm` there are seven files:
+
+1. The React components:
+    - [BookingForm.tsx](#--bookingformtsx)
+    - [FormCheckboxInput.tsx](#--bookingformtsx)
+    - [FormDateInput.tsx](#--formcheckboxinputtsx)
+    - [FormTextArea.tsx](#--formtextareatsx)
+    - [FormTimeInput.tsx](#--formtimeinputtsx)
+    - [Loader.tsx](#--loadertsx)
+2. The CSS styles (1 file)
+    - [BookingForm.module.css](#2-uistyling)
+3. Utils (1 file)
+    - [translate.ts](#3-utils)
 
 ## Usage
 
@@ -64,11 +94,9 @@ The following files are required:
 
 <Source code={FormTimeInput} />
 
-### 2. Utils
+#### - Loader.tsx
 
-#### - translate.ts
-
-<Source code={translate} />
+<Source code={Loader} />
 
 ### 2. UI/Styling
 
@@ -76,6 +104,9 @@ The following files are required:
 
 <Source code={styles} />
 
-#### - Loader.tsx
+### 3. Utils
 
-<Source code={Loader} />
+#### - translate.ts
+
+<Source code={translate} />
+

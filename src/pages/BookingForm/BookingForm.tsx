@@ -173,10 +173,11 @@ const BookingForm = () => {
             <strong>Start date</strong> and <strong>Start time</strong> fields.
           </Paragraph>
           <Paragraph className="ams-mb-m">
-            This form&apos;s code, particularly the error state handling
-            demonstrates how native HTML5 validation can quickly become
-            cumbersome when you have a rule that dynamically targets more than
-            one field.
+            The goal of this demo is to illustrate how to handle cross-field
+            validation in forms. While individual field rules (e.g. &quot;email
+            must be valid&quot;) are straightforward, checking relationships
+            between multiple fields—such as ensuring the end of a booking is
+            after the start—requires more advanced validation logic.
           </Paragraph>
 
           {Object.keys(errors).length > 0 && (
