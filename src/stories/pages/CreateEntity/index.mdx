@@ -21,7 +21,7 @@ import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
 
 <Meta of={CreateEntityStories} />
 
-# Create Entity form
+# Create Entity Form
 
 **<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/CreateEntity" target="_blank">GitHub Repo URL</a>**
 
@@ -66,12 +66,18 @@ Fields
 
 This variant uses native HTML5 validation and unlike [Booking Form](../?path=/docs/plain-html5-bookingform-html5-validation--docs) it lets the browser handle all validation. Whilst this solution provides a clean frontend codebase, with large forms HTML5 validation shows its limitations with the UX. For example, users will only see the first error that the browser encounters - so multiple errors can require multiple submit attempts.
 
+- Required fields (Kind, Name, Type, Lifecycle, Owner).
+- `System` required if `Has System` is checked.
+- Repeater rows (Annotations and Links) must be valid for all added rows.
+- Each repeater item has its own required subfields.
+
 ## Key Points
 
-- **Built-in simplicity**: Using required, type=email/url, and pattern attributes provides quick wins with no extra libraries.
-- **Progressive blocking**: Browser validation halts at the first invalid field, forcing the user to fix issues one at a time.
-- **Poor UX scaling**: With so many fields, this quickly becomes frustrating and confusing for users.
-- **Dynamic arrays**: Adding repeater rows makes native validation even messier, as the browser only surfaces one invalid item at a time.
+- **Pro**: **Built-in simplicity**: Using required, type=email/url, and pattern attributes provides quick wins with no extra libraries.
+- **Con**: **Progressive blocking**: Browser validation halts at the first invalid field, forcing the user to fix issues one at a time.
+- **Con**: **Poor UX scaling**: With so many fields, this quickly becomes frustrating and confusing for users.
+- **Con**: **Dynamic arrays**: Adding repeater rows makes native validation even messier, as the browser only surfaces one invalid item at a time.
+- **Con**: **Dynamic repeaters** require custom scripting to ensure proper validation (HTML5 alone doesn’t handle them gracefully).
 
 ## How to Implement
 

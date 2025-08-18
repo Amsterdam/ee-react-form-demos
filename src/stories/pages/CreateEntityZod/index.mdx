@@ -1,13 +1,219 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import * as CreateEntityZod from './index.stories';
-//import CreateEntityZod from '@/pages/CreateEntityZod/CreateEntityZod?raw';
-//import styles from '@/pages/BaseLayer/styles.module.css?raw';
+import * as CreateEntityZodStories from './index.stories';
+import CreateEntityZod from '@/pages/CreateEntityZod/CreateEntityZod?raw';
+import styles from '@/pages/CreateEntityZod/CreateEntityZod.module.css?raw';
+import FormSelect from '@/pages/CreateEntityZod/components/FormSelect/FormSelect.tsx?raw';
+import FormTextInput from '@/pages/CreateEntityZod/components/FormTextInput/FormTextInput.tsx?raw';
+import FormTextArea from '@/pages/CreateEntityZod/components/FormTextArea/FormTextArea.tsx?raw';
+import FormCheckboxInput from '@/pages/CreateEntityZod/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
+import FormAutoSelect from '@/pages/CreateEntityZod/components/FormAutoSelect/FormAutoSelect.tsx?raw';
+import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect.tsx?raw';
+import types from '@/components/InputAutoSelect/types.ts?raw';
+import AnnotationRepeater from '@/pages/CreateEntityZod/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
+import AnnotationRepeaterRow from '@/pages/CreateEntityZod/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
+import LinkRepeater from '@/pages/CreateEntityZod/components/LinkRepeater/LinkRepeater.tsx?raw';
+import LinkRepeaterRow from '@/pages/CreateEntityZod/components/LinkRepeaterRow/LinkRepeaterRow.tsx?raw';
+import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput.tsx?raw';
+import getOwners from '@/utils/getOwners.ts?raw';
+import getSystems from '@/utils/getSystems.ts?raw';
+import getTags from '@/utils/getTags.ts?raw';
+import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
+import schema from '@/pages/CreateEntityZod/schema.ts?raw';
+import scrollToFirstError from '@/pages/CreateEntityZod/utils/scrollToFirstError.ts?raw';
 
-<Meta of={CreateEntityZod} />
+<Meta of={CreateEntityZodStories} />
 
-# Create Entity Form with Zod Validation
+# Create Entity Form (with Zod schema validation)
 
-1. Frame the motivation: why this form exists and what it demonstrates.
-2. Call out the "teaching points": conditional validation, UX pitfalls of HTML5-only validation, how react-hook-form makes it manageable.
-3. Walk through the form: field by field, but in a short narrative.
-4. Highlight gotchas / lessons learned.
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/CreateEntityZod" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+
+## Overview
+
+This demo implements a complex “Create Entity” form that collects data for generating a [Backstage](https://backstage.io/) entity YAML file.
+
+Fields
+
+- **Kind** – select menu (required)
+- **Name** – input (required)
+- **Description** – textarea
+- **Type** – select menu (required)
+- **Lifecycle** – select menu (required)
+- **Owner** – react-select (single value, required)
+- **Has System?** – checkbox
+- **System** – `react-select` (required only if `Has System` is checked)
+- **Tags** – `react-select` (multiple values)
+- **Annotation Repeater** – dynamic rows:
+  - Key – `react-select` (required)
+  - Value – input/select (required)
+- **Links Repeater** – dynamic rows:
+  - URL – input (required)
+  - Title – input (required)
+  - Icon – select (required)
+
+## Purpose
+
+This variant uses [Zod](https://zod.dev/) schema validation instead of native HTML5 validation, giving full control over error handling, conditional logic and repeatable fields.
+
+- Required fields (Kind, Name, Type, Lifecycle, Owner).
+- `System` required if `Has System` is checked.
+- Annotation rows: Key + Value required.
+- Link rows: URL, Title, Icon required.
+- All invalid fields are surfaced together after submit.
+
+## Key Points
+
+- **Full control over UX**: Validation messages are shown inline or in summary alerts, styled consistently with the design system.
+- **Better user flow**: Users can see all validation issues at once, instead of being blocked by the first error (as is the case in [CreateEntity (HTML5 Validation)](../?path=/docs/plain-html5-createentity-html5-validation--docs)).
+- **Schema-driven validation**: By defining validation rules in one place, the logic is easier to maintain, extend, and reason about.
+
+- **Pro**: **Scalable**: Works well as forms grow in complexity, or when repeaters allow dozens of dynamic items.
+- **Pro**: **Consistent messaging**: Errors are shown in a uniform style, independent of browser quirks.
+- **Pro**: **Future-proof**: Schema validation can be reused across frontend + backend, ensuring consistency.
+
+- **Con**: **Setup cost**: Requires extra code compared to just adding required attributes.
+- **Con**: **Performance**: Very large forms with many dynamic arrays might benefit from incremental validation instead of full schema checks every time.
+
+## How to Implement
+
+To implement this Create Entity Form, there are 21 core files:
+
+1. The React components (13 files):
+    - [CreateEntityZod.tsx](#--createentityzodtsx)
+    - [FormSelect.tsx](#--formselecttsx)
+    - [FormTextInput.tsx](#--formtextinputtsx)
+    - [FormTextArea.tsx](#--formtextareatsx)
+    - [FormCheckboxInput.tsx](#--formcheckboxinputtsx)
+    - [FormAutoSelect.tsx](#--formautoselecttsx)
+        - [InputAutoSelect.tsx](#--inputautoselecttsx)
+        - [InputAutoSelect/types.ts](#--inputautoselecttypests)
+    - [AnnotationRepeater.tsx](#--annotationrepeatertsx)
+        - [AnnotationRepeaterRow.tsx](#--annotationrepeaterrowtsx)
+    - [LinkRepeater.tsx](#--linkrepeatertsx)
+        - [LinkRepeaterRow.tsx](#--linkrepeaterrowtsx)
+    - [SubmissionOutput.tsx](#--submissionoutputtsx)
+2. Validation schema (1 file):
+    - [schema.ts](#--schemats)
+3. Types
+    - [types.ts](#--typests)
+4. The CSS styles (1 file):
+    - [CreateEntity.module.css](#--createentitymodulecss)
+5. Utils (4 files):
+    - [getOwners.ts](#--getownersts)
+    - [getSystems.ts](#--getsystemsts)
+    - [getTags.ts](#--gettagsts)
+    - [sortAlphabetically.ts](#--sortalphabeticallyts)
+    - [scrollToFirstError.ts](#--scrolltofirsterrorts)
+
+    *These `util` files are mostly static data for demo purposes. In a production environment they should be retrieved from an external service.*
+
+## Usage
+
+The following files are required:
+
+### 1. React components
+
+#### - CreateEntityZod.tsx
+
+<Source code={CreateEntityZod} />
+
+#### - FormSelect.tsx
+
+<Source code={FormSelect} />
+
+#### - FormTextInput.tsx
+
+<Source code={FormTextInput} />
+
+#### - FormTextArea.tsx
+
+<Source code={FormTextArea} />
+
+#### - FormCheckboxInput.tsx
+
+<Source code={FormCheckboxInput} />
+
+#### - FormAutoSelect.tsx
+
+<Source code={FormAutoSelect} />
+
+#### - InputAutoSelect.tsx
+
+<Source code={InputAutoSelect} />
+
+#### - InputAutoSelect/types.ts
+
+<Source code={types} />
+
+#### - AnnotationRepeater.tsx
+
+<Source code={AnnotationRepeater} />
+
+#### - AnnotationRepeaterRow.tsx
+
+<Source code={AnnotationRepeaterRow} />
+
+#### - LinkRepeater.tsx
+
+<Source code={LinkRepeater} />
+
+#### - LinkRepeaterRow.tsx
+
+<Source code={LinkRepeaterRow} />
+
+#### - SubmissionOutput.tsx
+
+<Source code={SubmissionOutput} />
+
+### 2. Validation schema
+
+#### - schema.ts
+
+<Source code={schema} />
+
+### 3. Types
+
+#### - types.ts
+
+<Source code={types} />
+
+### 4. CSS Styles
+
+#### - CreateEntity.module.css
+
+<Source code={styles} />
+
+### 5. Utils
+
+#### - getOwners.ts
+
+<Source code={getOwners} />
+
+#### - getSystems.ts
+
+<Source code={getSystems} />
+
+#### - getTags.ts
+
+<Source code={getTags} />
+
+#### - sortAlphabetically.ts
+
+<Source code={sortAlphabetically} />
+
+#### - scrollToFirstError.ts
+
+<Source code={scrollToFirstError} />
