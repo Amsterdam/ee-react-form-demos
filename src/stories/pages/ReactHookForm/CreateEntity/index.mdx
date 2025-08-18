@@ -1,31 +1,31 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import * as CreateEntityZodStories from './index.stories';
-import CreateEntityZod from '@/pages/CreateEntityZod/CreateEntityZod?raw';
-import styles from '@/pages/CreateEntityZod/CreateEntityZod.module.css?raw';
-import FormSelect from '@/pages/CreateEntityZod/components/FormSelect/FormSelect.tsx?raw';
-import FormTextInput from '@/pages/CreateEntityZod/components/FormTextInput/FormTextInput.tsx?raw';
-import FormTextArea from '@/pages/CreateEntityZod/components/FormTextArea/FormTextArea.tsx?raw';
-import FormCheckboxInput from '@/pages/CreateEntityZod/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
-import FormAutoSelect from '@/pages/CreateEntityZod/components/FormAutoSelect/FormAutoSelect.tsx?raw';
+import * as CreateEntityStories from './index.stories';
+import CreateEntity from '@/pages/ReactHookForm/CreateEntity/CreateEntity?raw';
+import styles from '@/pages/ReactHookForm/CreateEntity/CreateEntity.module.css?raw';
+import FormSelect from '@/pages/ReactHookForm/CreateEntity/components/FormSelect/FormSelect.tsx?raw';
+import FormTextInput from '@/pages/ReactHookForm/CreateEntity/components/FormTextInput/FormTextInput.tsx?raw';
+import FormTextArea from '@/pages/ReactHookForm/CreateEntity/components/FormTextArea/FormTextArea.tsx?raw';
+import FormCheckboxInput from '@/pages/ReactHookForm/CreateEntity/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
+import FormAutoSelect from '@/pages/ReactHookForm/CreateEntity/components/FormAutoSelect/FormAutoSelect.tsx?raw';
 import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect.tsx?raw';
 import types from '@/components/InputAutoSelect/types.ts?raw';
-import AnnotationRepeater from '@/pages/CreateEntityZod/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
-import AnnotationRepeaterRow from '@/pages/CreateEntityZod/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
-import LinkRepeater from '@/pages/CreateEntityZod/components/LinkRepeater/LinkRepeater.tsx?raw';
-import LinkRepeaterRow from '@/pages/CreateEntityZod/components/LinkRepeaterRow/LinkRepeaterRow.tsx?raw';
+import AnnotationRepeater from '@/pages/ReactHookForm/CreateEntity/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
+import AnnotationRepeaterRow from '@/pages/ReactHookForm/CreateEntity/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
+import LinkRepeater from '@/pages/ReactHookForm/CreateEntity/components/LinkRepeater/LinkRepeater.tsx?raw';
+import LinkRepeaterRow from '@/pages/ReactHookForm/CreateEntity/components/LinkRepeaterRow/LinkRepeaterRow.tsx?raw';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput.tsx?raw';
 import getOwners from '@/utils/getOwners.ts?raw';
 import getSystems from '@/utils/getSystems.ts?raw';
 import getTags from '@/utils/getTags.ts?raw';
 import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
-import schema from '@/pages/CreateEntityZod/schema.ts?raw';
-import scrollToFirstError from '@/pages/CreateEntityZod/utils/scrollToFirstError.ts?raw';
+import schema from '@/pages/ReactHookForm/CreateEntity/schema.ts?raw';
+import scrollToFirstError from '@/pages/ReactHookForm/CreateEntity/utils/scrollToFirstError.ts?raw';
 
-<Meta of={CreateEntityZodStories} />
+<Meta of={CreateEntityStories} />
 
-# Create Entity Form (with Zod schema validation)
+# ReactHookForm - Create Entity Form (with Zod schema validation)
 
-**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/CreateEntityZod" target="_blank">GitHub Repo URL</a>**
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/CreateEntity" target="_blank">GitHub Repo URL</a>**
 
 #### Table of Contents
 
@@ -66,35 +66,42 @@ Fields
 
 ## Purpose
 
-This variant uses [Zod](https://zod.dev/) schema validation instead of native HTML5 validation, giving full control over error handling, conditional logic and repeatable fields.
+This variant builds on the [HTML5 Zod validation example](../?path=/docs/plain-html5-createentity-zod-validation--docs) but integrates it directly with [React Hook Form](https://react-hook-form.com/) using `zodResolver`.
+
+The goal is to show how schema-based validation can be combined with a modern form library to:
+
+- Reduce boilerplate (state, refs, error handling are managed automatically).
+- Improve performance (fewer unnecessary re-renders).
+- Scale easily with complex, dynamic forms.
+- Provide a unified, ergonomic developer experience.
 
 ### Validation Rules
 
 - Required fields (Kind, Name, Type, Lifecycle, Owner).
-- `System` required if `Has System` is checked.
+- System required if Has System is checked.
 - Annotation rows: Key + Value required.
 - Link rows: URL, Title, Icon required.
-- All invalid fields are surfaced together after submit.
 
 ## Key Points
 
-- **Full control over UX**: Validation messages are shown inline or in summary alerts, styled consistently with the design system.
-- **Better user flow**: Users can see all validation issues at once, instead of being blocked by the first error (as is the case in [CreateEntity (HTML5 Validation)](../?path=/docs/plain-html5-createentity-html5-validation--docs)).
-- **Schema-driven validation**: By defining validation rules in one place, the logic is easier to maintain, extend, and reason about.
+- **RHF + Zod Integration**: Using the `zodResolver`, the schema drives validation while RHF handles form state.
+- **Cleaner state management**: No need to manually track touched/dirty states or error objects — RHF handles it.
+- **Dynamic arrays made easier**: Repeater fields use RHF’s `useFieldArray`, which integrates smoothly with Zod array schemas.
+- **Better performance**: RHF is designed to minimize re-renders, even in large/dynamic forms.
 
-- **Pro**: **Scalable**: Works well as forms grow in complexity, or when repeaters allow dozens of dynamic items.
-- **Pro**: **Consistent messaging**: Errors are shown in a uniform style, independent of browser quirks.
-- **Pro**: **Future-proof**: Schema validation can be reused across frontend + backend, ensuring consistency.
-
-- **Con**: **Setup cost**: Requires extra code compared to just adding required attributes.
-- **Con**: **Performance**: Very large forms with many dynamic arrays might benefit from incremental validation instead of full schema checks every time.
+- **Pro**: **Developer-friendly** – validation, touched state, and error handling are all unified under one system.
+- **Pro**: **Scalable** – easily extends to new fields and repeaters with minimal boilerplate.
+- **Pro**: **Consistent UX** – Zod ensures rules are declarative, RHF ensures errors are shown consistently.
+- **Pro**: **Optimized rendering** – large/dynamic forms stay responsive.
+- **Con**: **Learning curve** – requires understanding both RHF’s API and Zod schemas.
+- **Con**: **Setup cost** – slightly more code/config compared to plain HTML5 forms.
 
 ## How to Implement
 
 To implement this Create Entity Form, there are 21 core files:
 
 1. The React components (13 files):
-    - [CreateEntityZod.tsx](#--createentityzodtsx)
+    - [CreateEntity.tsx](#--createentitytsx)
     - [FormSelect.tsx](#--formselecttsx)
     - [FormTextInput.tsx](#--formtextinputtsx)
     - [FormTextArea.tsx](#--formtextareatsx)
@@ -128,9 +135,9 @@ The following files are required:
 
 ### 1. React components
 
-#### - CreateEntityZod.tsx
+#### - CreateEntity.tsx
 
-<Source code={CreateEntityZod} />
+<Source code={CreateEntity} />
 
 #### - FormSelect.tsx
 
@@ -219,3 +226,6 @@ The following files are required:
 #### - scrollToFirstError.ts
 
 <Source code={scrollToFirstError} />
+
+
+entity form data type?

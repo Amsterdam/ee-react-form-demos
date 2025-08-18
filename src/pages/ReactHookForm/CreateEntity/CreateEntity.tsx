@@ -167,12 +167,12 @@ const CreateEntity = () => {
           Create an entity
         </Heading>
 
-        {/* Use noValidate so browser validation doesn't block react-hook-form
-        + zod */}
         <form
           onSubmit={handleSubmit(onSubmit, onInvalid)}
           // The ref is only necessary if you want to scroll to the first error
           ref={formRef}
+          // Use noValidate so browser validation doesn't block react-hook-form
+          // + zod
           noValidate
         >
           <Controller
