@@ -8,7 +8,7 @@ import FormTextArea from '@/pages/ReactHookForm/CreateEntity/components/FormText
 import FormCheckboxInput from '@/pages/ReactHookForm/CreateEntity/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
 import FormAutoSelect from '@/pages/ReactHookForm/CreateEntity/components/FormAutoSelect/FormAutoSelect.tsx?raw';
 import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect.tsx?raw';
-import types from '@/components/InputAutoSelect/types.ts?raw';
+import inputAutoSelectTypes from '@/components/InputAutoSelect/types.ts?raw';
 import AnnotationRepeater from '@/pages/ReactHookForm/CreateEntity/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
 import AnnotationRepeaterRow from '@/pages/ReactHookForm/CreateEntity/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
 import LinkRepeater from '@/pages/ReactHookForm/CreateEntity/components/LinkRepeater/LinkRepeater.tsx?raw';
@@ -20,6 +20,7 @@ import getTags from '@/utils/getTags.ts?raw';
 import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
 import schema from '@/pages/ReactHookForm/CreateEntity/schema.ts?raw';
 import scrollToFirstError from '@/pages/ReactHookForm/CreateEntity/utils/scrollToFirstError.ts?raw';
+import types from '@/types/types?raw';
 
 <Meta of={CreateEntityStories} />
 
@@ -108,7 +109,6 @@ To implement this Create Entity Form, there are 21 core files:
     - [FormCheckboxInput.tsx](#--formcheckboxinputtsx)
     - [FormAutoSelect.tsx](#--formautoselecttsx)
         - [InputAutoSelect.tsx](#--inputautoselecttsx)
-        - [InputAutoSelect/types.ts](#--inputautoselecttypests)
     - [AnnotationRepeater.tsx](#--annotationrepeatertsx)
         - [AnnotationRepeaterRow.tsx](#--annotationrepeaterrowtsx)
     - [LinkRepeater.tsx](#--linkrepeatertsx)
@@ -118,6 +118,7 @@ To implement this Create Entity Form, there are 21 core files:
     - [schema.ts](#--schemats)
 3. Types
     - [types.ts](#--typests)
+    - [InputAutoSelect/types.ts](#--inputautoselecttypests)
 4. The CSS styles (1 file):
     - [CreateEntity.module.css](#--createentitymodulecss)
 5. Utils (4 files):
@@ -163,10 +164,6 @@ The following files are required:
 
 <Source code={InputAutoSelect} />
 
-#### - InputAutoSelect/types.ts
-
-<Source code={types} />
-
 #### - AnnotationRepeater.tsx
 
 <Source code={AnnotationRepeater} />
@@ -198,6 +195,10 @@ The following files are required:
 #### - types.ts
 
 <Source code={types} />
+
+#### - InputAutoSelect/types.ts
+
+<Source code={inputAutoSelectTypes} />
 
 ### 4. CSS Styles
 

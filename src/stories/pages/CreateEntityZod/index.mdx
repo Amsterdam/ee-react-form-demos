@@ -8,7 +8,7 @@ import FormTextArea from '@/pages/CreateEntityZod/components/FormTextArea/FormTe
 import FormCheckboxInput from '@/pages/CreateEntityZod/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
 import FormAutoSelect from '@/pages/CreateEntityZod/components/FormAutoSelect/FormAutoSelect.tsx?raw';
 import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect.tsx?raw';
-import types from '@/components/InputAutoSelect/types.ts?raw';
+import inputAutoSelectTypes from '@/components/InputAutoSelect/types.ts?raw';
 import AnnotationRepeater from '@/pages/CreateEntityZod/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
 import AnnotationRepeaterRow from '@/pages/CreateEntityZod/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
 import LinkRepeater from '@/pages/CreateEntityZod/components/LinkRepeater/LinkRepeater.tsx?raw';
@@ -20,6 +20,7 @@ import getTags from '@/utils/getTags.ts?raw';
 import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
 import schema from '@/pages/CreateEntityZod/schema.ts?raw';
 import scrollToFirstError from '@/pages/CreateEntityZod/utils/scrollToFirstError.ts?raw';
+import types from '@/types/types?raw';
 
 <Meta of={CreateEntityZodStories} />
 
@@ -101,7 +102,6 @@ To implement this Create Entity Form, there are 21 core files:
     - [FormCheckboxInput.tsx](#--formcheckboxinputtsx)
     - [FormAutoSelect.tsx](#--formautoselecttsx)
         - [InputAutoSelect.tsx](#--inputautoselecttsx)
-        - [InputAutoSelect/types.ts](#--inputautoselecttypests)
     - [AnnotationRepeater.tsx](#--annotationrepeatertsx)
         - [AnnotationRepeaterRow.tsx](#--annotationrepeaterrowtsx)
     - [LinkRepeater.tsx](#--linkrepeatertsx)
@@ -111,6 +111,7 @@ To implement this Create Entity Form, there are 21 core files:
     - [schema.ts](#--schemats)
 3. Types
     - [types.ts](#--typests)
+    - [InputAutoSelect/types.ts](#--inputautoselecttypests)
 4. The CSS styles (1 file):
     - [CreateEntity.module.css](#--createentitymodulecss)
 5. Utils (4 files):
@@ -191,6 +192,10 @@ The following files are required:
 #### - types.ts
 
 <Source code={types} />
+
+#### - InputAutoSelect/types.ts
+
+<Source code={inputAutoSelectTypes} />
 
 ### 4. CSS Styles
 
