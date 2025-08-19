@@ -3,6 +3,7 @@ import remarkGfm from 'remark-gfm';
 
 
 const config: StorybookConfig = {
+  staticDirs: ['./static'],
   stories: [
     '../src/stories/docs/**/*.mdx',
     '../src/stories/pages/**/*.mdx',
