@@ -63,9 +63,10 @@ export const parameters = {
           'Handling Remote Data',
           'UX Patterns',
           'Validation',
+          'Which Approach Should I Use?',
           'React',
           'Security',
-          'Testing'
+          'Testing',
         ],
         'Plain HTML5',
         'ReactHookForm',

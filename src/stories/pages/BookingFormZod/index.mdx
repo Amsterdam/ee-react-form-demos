@@ -51,9 +51,9 @@ This demo implements a simple booking form with the following fields:
 
 The goal of this demo is to show how to replace HTML5's built-in validation with a [Zod](https://zod.dev/) schema for a fully consistent, JavaScript-driven validation strategy.
 
-With [Zod](https://zod.dev/) you can centralize all rules—including cross-field checks like "end must be after start"—in one schema, and keep them framework-agnostic.
+With [Zod](https://zod.dev/) you can centralize all rules—including cross-field checks like "end must be after start"—in one schema and keep them framework-agnostic.
 
-Unlike the HTML5 variant, this form doesn’t rely on native browser validation popups. Instead, it validates on change using Zod’s safeParse, and displays inline errors as the user types. To avoid a disruptive UX with flashing alerts or layout shifts, the large error alert is only shown after a submit attempt. This keeps validation feedback present but subtle during typing, and more prominent only when it really matters.
+Unlike the HTML5 variant, this form doesn’t rely on native browser validation popups. Instead, it validates on change using Zod’s safeParse and displays inline errors as the user types. To avoid a disruptive UX with flashing alerts or layout shifts, the large error alert is only shown after a submit attempt. This keeps validation feedback present but subtle during typing and more prominent only when it really matters.
 
 ## Key Points
 

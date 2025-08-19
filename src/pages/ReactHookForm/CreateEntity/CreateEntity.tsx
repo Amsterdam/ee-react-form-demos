@@ -171,7 +171,7 @@ const CreateEntity = () => {
           This form is a complex “Create Entity” workflow, designed to generate
           Backstage entity YAML from user input. It showcases advanced
           validation with interdependent fields, dynamic repeatable sections
-          (annotations and links), and custom select components
+          (annotations and links) and custom select components
         </Paragraph>
 
         <form
@@ -233,7 +233,7 @@ const CreateEntity = () => {
               <FormTextInput
                 id="name"
                 label="Name"
-                description="The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
+                description="The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
                 value={field.value}
                 error={errors.name?.message}
                 required

@@ -189,7 +189,7 @@ const ContactFormOnChange = () => {
 
         <Paragraph className="ams-mb-m">
           The goal of this demo is to illustrate the most basic form validation
-          scenario. Each field is required, and the email must follow a valid
+          scenario. Each field is required and the email must follow a valid
           format. Unlike more complex forms, no cross-field rules are needed —
           making it a clean example of straightforward validation.
         </Paragraph>
