@@ -32,7 +32,11 @@ describe('BookingForm', () => {
     await userEvent.click(submitBtn);
 
     expect(screen.getByTestId('error-alert')).toBeInTheDocument();
-    expect(screen.getAllByTestId('error-message').length).toBeGreaterThan(0);
+    // expect(screen.getAllByTestId('error-message').length).toBeGreaterThan(5);
+    await waitFor(() => {
+      // name, email, 4 sets of datatime fields
+      expect(screen.getAllByText(/Invoerfout/i)).toHaveLength(5);
+    });
   });
 
   it('submits valid data and shows success alert after loading', async () => {
@@ -109,9 +113,6 @@ describe('BookingForm', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
-    await act(async () => {
-      vi.runAllTimers(); // simulate setTimeout call
-    });
     await waitFor(() => {
       expect(
         screen.getAllByText(content =>

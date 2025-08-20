@@ -125,16 +125,6 @@ const BookingFormZod = () => {
     setErrors({});
     setIsLoading(true);
 
-    // Extra: manual date/time range check
-    // if (startDateTime && endDateTime && endDateTime <= startDateTime) {
-    //   setErrors(prev => ({
-    //     ...prev,
-    //     endTime: 'End date/time must be after start date/time.',
-    //     endDate: 'End date/time must be after start date/time.',
-    //   }));
-    //   return;
-    // }
-
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
@@ -186,6 +176,7 @@ const BookingFormZod = () => {
               heading="Please fix the following:"
               headingLevel={2}
               className="ams-mb-m"
+              data-testid="error-alert"
             >
               <UnorderedList>
                 {Object.entries(errors).map(
@@ -202,7 +193,7 @@ const BookingFormZod = () => {
           )}
 
           <Field className="ams-mb-m" invalid={submitTouched && !!errors.name}>
-            <Label htmlFor="name">Naam</Label>
+            <Label htmlFor="name">Name</Label>
             {errors.name && (
               <ErrorMessage id={`error-name`} data-testid="error-message">
                 {errors.name}
