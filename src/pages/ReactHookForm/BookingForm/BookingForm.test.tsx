@@ -9,7 +9,6 @@ describe('BookingForm', () => {
   });
 
   afterEach(() => {
-    // vi.clearAllTimers();
     vi.runOnlyPendingTimers();
     vi.useRealTimers();
   });

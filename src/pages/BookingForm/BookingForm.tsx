@@ -186,6 +186,7 @@ const BookingForm = () => {
               heading="Please fix the following:"
               headingLevel={2}
               className="ams-mb-m"
+              data-testid="error-alert"
             >
               <UnorderedList>
                 {Object.entries(errors).map(
@@ -322,7 +323,7 @@ const BookingForm = () => {
         </form>
 
         {isSubmitted && (
-          <div className={styles.success}>
+          <div className={styles.success} data-testid="success-alert">
             <Alert
               closeable
               heading="Gelukt"
