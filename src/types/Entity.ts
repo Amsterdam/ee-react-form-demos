@@ -68,7 +68,7 @@ export type EntityMeta = JsonObject & {
   /**
    * A globally unique ID for the entity.
    *
-   * This field can not be set by the user at creation time, and the server
+   * This field can not be set by the user at creation time and the server
    * will reject an attempt to do so. The field will be populated in read
    * operations. The field can (optionally) be specified when performing
    * update or delete operations, but the server is free to reject requests
@@ -80,10 +80,10 @@ export type EntityMeta = JsonObject & {
    * An opaque string that changes for each update operation to any part of
    * the entity, including metadata.
    *
-   * This field can not be set by the user at creation time, and the server
+   * This field can not be set by the user at creation time and the server
    * will reject an attempt to do so. The field will be populated in read
    * operations. The field can (optionally) be specified when performing
-   * update or delete operations, and the server will then reject the
+   * update or delete operations and the server will then reject the
    * operation if it does not match the current stored value.
    */
   etag?: string;
@@ -93,8 +93,8 @@ export type EntityMeta = JsonObject & {
    *
    * Must be unique within the catalog at any given point in time, for any
    * given namespace + kind pair. This value is part of the technical
-   * identifier of the entity, and as such it will appear in URLs, database
-   * tables, entity references, and similar. It is subject to restrictions
+   * identifier of the entity and as such it will appear in URLs, database
+   * tables, entity references and similar. It is subject to restrictions
    * regarding what characters are allowed.
    *
    * If you want to use a different, more human readable string with fewer
@@ -114,11 +114,11 @@ export type EntityMeta = JsonObject & {
    * This field is sometimes useful when the `name` is cumbersome or ends up
    * being perceived as overly technical. The title generally does not have
    * as stringent format requirements on it, so it may contain special
-   * characters and be more explanatory. Do keep it very short though, and
+   * characters and be more explanatory. Do keep it very short though and
    * avoid situations where a title can be confused with the name of another
    * entity, or where two entities share a title.
    *
-   * Note that this is only for display purposes, and may be ignored by some
+   * Note that this is only for display purposes and may be ignored by some
    * parts of the code. Entity references still always make use of the `name`
    * property, not the title.
    */

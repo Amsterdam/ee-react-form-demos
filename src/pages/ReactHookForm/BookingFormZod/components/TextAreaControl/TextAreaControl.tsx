@@ -9,6 +9,7 @@ import {
 } from '@amsterdam/design-system-react';
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
+import clsx from 'clsx';
 
 // Merge design-system and react-hook-form types
 export type TextAreaControlProps<
@@ -68,11 +69,15 @@ const TextAreaControl = <T extends FieldValues>({
 
             <TextArea
               {...register(name, registerOptions as RegisterOptions)}
+              {...attributes}
+              aria-describedby={clsx(
+                { [descriptionId]: !!descriptionId },
+                { [errorId]: hasError }
+              )}
               id={identifier}
               data-testid={identifier}
               cols={cols}
               invalid={hasError}
-              {...attributes}
             />
           </Field>
         );

@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/React/React 19 - React Server Components (RSC) & Server Actions" />
+
+# React 19 - React Server Components (RSC) & Server Actions
+
+## What's New in React 19
+
+React 19 introduced `useActionState`, a hook for managing the state of form submissions handled by an **action function** (such as a server action). It helps with:
+
+- Tracking submission state (`isPending`, `isSubmitting`)
+- Handling the server's response or result
+
+## Example (Next.js Server Action):
+
+```tsx
+async function myServerAction(prevState, formData) {
+  // server-side processing
+}
+
+<form action={myServerAction}>
+  ...
+</form>
+```
+
+In **Next.js**, this works seamlessly with `useActionState` because the framework can directly call server functions from the form.
+
+## Why This Works in Next.js
+
+- **Server Actions** require the framework/bundler to know how to serialize and transport the action function to the server.
+- This needs:
+  - **React Server Components (RSC)** support
+  - A special compiler/runtime that understands server actions
+- Currently (August 2025), stable support exists mainly in **Next.js App Router**.
+- Vite and other bundlers have experimental RSC support, but not full production-ready equivalents.
+
+## Why This Is Not a Drop-In for Our Non-Next.js Apps
+
+- Architecture changes:
+  - Requires a bundler/runtime that supports RSC and Server Actions
+  - Requires Node-compatible hosting (no longer purely static)
+- DevOps impact:
+  - Static hosting setups (e.g. S3 + CDN) won't work without introducing a backend runtime
+- Backend-frontend separation changes:
+  - Our existing apps often talk to a separate API backend - Server Actions blur this separation, making the frontend partially backend
+- Non-Next.js frameworks (React Router / Remix / Vite):
+  - Can do SSR, but not the new RSC + Server Actions model (yet)
+
+
+## Therefore
+
+For now, Server Actions are an opt-in forward-looking feature - not a requirement to adopt across all projects.

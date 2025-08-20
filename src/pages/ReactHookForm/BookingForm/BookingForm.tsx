@@ -88,7 +88,6 @@ const BookingForm = () => {
   const onValidSubmit: SubmitHandler<BookingFormData> =
     useCallback(async () => {
       try {
-        console.log('submit!');
         /**
          * Use setTimeout to Simulate API call
          * - Here's where validation can happen
@@ -117,6 +116,22 @@ const BookingForm = () => {
             <Heading level={1} size="level-3" className="ams-mb-m">
               Booking Form
             </Heading>
+
+            <Paragraph className="ams-mb-m">
+              This form is an example of a generic booking form. The key
+              validation is with checking that the <strong>End date</strong> and{' '}
+              <strong>End time</strong> fields are not older than the{' '}
+              <strong>Start date</strong> and <strong>Start time</strong>{' '}
+              fields.
+            </Paragraph>
+            <Paragraph className="ams-mb-m">
+              The goal of this demo is to illustrate how to handle cross-field
+              validation in forms. While individual field rules (e.g.
+              &quot;email must be valid&quot;) are straightforward, checking
+              relationships between multiple fields—such as ensuring the end of
+              a booking is after the start—requires more advanced validation
+              logic.
+            </Paragraph>
 
             {/* This component is 'uncontrolled' (in ReactHookForm terms), as it
             uses register inside the TextInput */}

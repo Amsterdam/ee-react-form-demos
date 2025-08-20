@@ -47,7 +47,9 @@ const entityFormSchema = z.object({
 export type EntityFormData = z.infer<typeof entityFormSchema>;
 export type FieldErrors = Partial<
   Record<
-    keyof EntityFormData | `spec.${keyof z.infer<typeof specSchema>}`,
+    | keyof EntityFormData
+    | `spec.${keyof z.infer<typeof specSchema>}`
+    | `links.${number}.${string}`,
     string
   >
 >;

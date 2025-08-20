@@ -1,8 +1,203 @@
-import { Canvas, Meta, Source, Story } from '@storybook/blocks';
-import * as CreateEntity from './index.stories';
-//import CreateEntity from '@/pages/CreateEntity/CreateEntity?raw';
-//import styles from '@/pages/BaseLayer/styles.module.css?raw';
+import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as CreateEntityStories from './index.stories';
+import CreateEntity from '@/pages/CreateEntity/CreateEntity?raw';
+import styles from '@/pages/CreateEntity/CreateEntity.module.css?raw';
+import FormSelect from '@/pages/CreateEntity/components/FormSelect/FormSelect.tsx?raw';
+import FormTextInput from '@/pages/CreateEntity/components/FormTextInput/FormTextInput.tsx?raw';
+import FormTextArea from '@/pages/CreateEntity/components/FormTextArea/FormTextArea.tsx?raw';
+import FormCheckboxInput from '@/pages/CreateEntity/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
+import FormAutoSelect from '@/pages/CreateEntity/components/FormAutoSelect/FormAutoSelect.tsx?raw';
+import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect.tsx?raw';
+import types from '@/components/InputAutoSelect/types.ts?raw';
+import AnnotationRepeater from '@/pages/CreateEntity/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
+import AnnotationRepeaterRow from '@/pages/CreateEntity/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
+import LinkRepeater from '@/pages/CreateEntity/components/LinkRepeater/LinkRepeater.tsx?raw';
+import LinkRepeaterRow from '@/pages/CreateEntity/components/LinkRepeaterRow/LinkRepeaterRow.tsx?raw';
+import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput.tsx?raw';
+import getOwners from '@/utils/getOwners.ts?raw';
+import getSystems from '@/utils/getSystems.ts?raw';
+import getTags from '@/utils/getTags.ts?raw';
+import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
 
-<Meta of={CreateEntity} />
+<Meta of={CreateEntityStories} />
 
-# CreateEntityForm with Plain HTML5 Validation
+# Create Entity Form
+
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/CreateEntity" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+
+## Overview
+
+This demo implements a complex “Create Entity” form that collects data for generating a [Backstage](https://backstage.io/) entity YAML file.
+
+Fields
+
+- **Kind** – select menu (required)
+- **Name** – input (required)
+- **Description** – textarea
+- **Type** – select menu (required)
+- **Lifecycle** – select menu (required)
+- **Owner** – react-select (single value, required)
+- **Has System?** – checkbox
+- **System** – `react-select` (required only if `Has System` is checked)
+- **Tags** – `react-select` (multiple values)
+- **Annotation Repeater** – dynamic rows:
+  - Key – `react-select` (required)
+  - Value – input/select (required)
+- **Links Repeater** – dynamic rows:
+  - URL – input (required)
+  - Title – input (required)
+  - Icon – select (required)
+
+## Purpose
+
+This variant uses native HTML5 validation and unlike [Booking Form](../?path=/docs/plain-html5-bookingform-html5-validation--docs) it lets the browser handle all validation. Whilst this solution provides a clean frontend codebase, with large forms HTML5 validation shows its limitations with the UX. For example, users will only see the first error that the browser encounters - so multiple errors can require multiple submit attempts.
+
+- Required fields (Kind, Name, Type, Lifecycle, Owner).
+- `System` required if `Has System` is checked.
+- Repeater rows (Annotations and Links) must be valid for all added rows.
+- Each repeater item has its own required subfields.
+
+## Key Points
+
+- **Leverages native validation** - Relies on built-in HTML5 attributes (required, type, pattern) for most rules.
+- **Minimal custom logic** - Form code stays relatively clean since validation is delegated to the browser.
+- **Progressive blocking UX** - Browser stops at the first invalid field, so users must fix issues one by one.
+- **Scaling challenges** - With many fields, this approach quickly becomes cumbersome and frustrating for users.
+- **Dynamic repeaters are problematic** - Native validation doesn’t handle array fields (Annotations, Links) well, requiring extra scripting.
+
+### Pros
+
+- **Built-in simplicity** - Using `required`, `type=email/url` and `pattern` attributes provides quick wins with no extra libraries.
+
+### Cons
+
+- **Progressive blocking** - Browser validation halts at the first invalid field, forcing the user to fix issues one at a time.
+- **Poor UX scaling** - With so many fields, this quickly becomes frustrating and confusing for users.
+- **Dynamic arrays** - Adding repeater rows makes native validation even messier, as the browser only surfaces one invalid item at a time.
+- **Dynamic repeaters** - require custom scripting to ensure proper validation (HTML5 alone doesn’t handle them gracefully).
+
+## How to Implement
+
+To implement this Create Entity Form, there are 18 core files:
+
+1. The React components (13 files):
+    - [CreateEntity.tsx](#--createentitytsx)
+    - [FormSelect.tsx](#--formselecttsx)
+    - [FormTextInput.tsx](#--formtextinputtsx)
+    - [FormTextArea.tsx](#--formtextareatsx)
+    - [FormCheckboxInput.tsx](#--formcheckboxinputtsx)
+    - [FormAutoSelect.tsx](#--formautoselecttsx)
+        - [InputAutoSelect.tsx](#--inputautoselecttsx)
+        - [InputAutoSelect/types.ts](#--inputautoselecttypests)
+    - [AnnotationRepeater.tsx](#--annotationrepeatertsx)
+        - [AnnotationRepeaterRow.tsx](#--annotationrepeaterrowtsx)
+    - [LinkRepeater.tsx](#--linkrepeatertsx)
+        - [LinkRepeaterRow.tsx](#--linkrepeaterrowtsx)
+    - [SubmissionOutput.tsx](#--submissionoutputtsx)
+
+2. The CSS styles (1 file):
+    - [CreateEntity.module.css](#--createentitymodulecss)
+
+3. Utils (4 files):
+    - [getOwners.ts](#--getownersts)
+    - [getSystems.ts](#--getsystemsts)
+    - [getTags.ts](#--gettagsts)
+    - [sortAlphabetically.ts](#--sortalphabeticallyts)
+
+    *These `util/get*` files are mostly static data for demo purposes. In a production environment they should be retrieved from an external service.*
+
+## Usage
+
+The following files are required:
+
+### 1. React components
+
+#### - CreateEntity.tsx
+
+<Source code={CreateEntity} />
+
+#### - FormSelect.tsx
+
+<Source code={FormSelect} />
+
+#### - FormTextInput.tsx
+
+<Source code={FormTextInput} />
+
+#### - FormTextArea.tsx
+
+<Source code={FormTextArea} />
+
+#### - FormCheckboxInput.tsx
+
+<Source code={FormCheckboxInput} />
+
+#### - FormAutoSelect.tsx
+
+<Source code={FormAutoSelect} />
+
+#### - InputAutoSelect.tsx
+
+<Source code={InputAutoSelect} />
+
+#### - InputAutoSelect/types.ts
+
+<Source code={types} />
+
+#### - AnnotationRepeater.tsx
+
+<Source code={AnnotationRepeater} />
+
+#### - AnnotationRepeaterRow.tsx
+
+<Source code={AnnotationRepeaterRow} />
+
+#### - LinkRepeater.tsx
+
+<Source code={LinkRepeater} />
+
+#### - LinkRepeaterRow.tsx
+
+<Source code={LinkRepeaterRow} />
+
+#### - SubmissionOutput.tsx
+
+<Source code={SubmissionOutput} />
+
+### 2. CSS Styles
+
+#### - CreateEntity.module.css
+
+<Source code={styles} />
+
+### 3. Utils
+
+#### - getOwners.ts
+
+<Source code={getOwners} />
+
+#### - getSystems.ts
+
+<Source code={getSystems} />
+
+#### - getTags.ts
+
+<Source code={getTags} />
+
+#### - sortAlphabetically.ts
+
+<Source code={sortAlphabetically} />

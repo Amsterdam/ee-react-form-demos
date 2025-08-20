@@ -1,4 +1,3 @@
-import Loader from '@/components/Loader/Loader';
 import {
   Alert,
   Button,
@@ -13,11 +12,12 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { useState } from 'react';
-import styles from './ContactForm.module.css';
-import t, { translations } from './utils/translate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, Resolver, useForm } from 'react-hook-form';
+import t, { translations } from './utils/translate';
 import contactFormSchema, { ContactFormData } from './schema';
+import Loader from '@/components/Loader/Loader';
+import styles from './ContactForm.module.css';
 
 // This is a simple React Hook Form example that validates using a Zod schema
 // on change
@@ -29,8 +29,9 @@ const ContactForm = () => {
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
 
-    // Uncomment for validation onChange
-    // mode: 'onChange',
+    // Uncomment for validation onChange or check the `reValidateMode` property
+    // mode: 'onChange', // Allowed values: onChange | onBlur | onSubmit
+    // | onTouched | all
     defaultValues: {
       name: '',
       email: '',
@@ -42,7 +43,7 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // onSubmit will only fire if the form is valid
-  const onSubmit = (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     console.log('Form data:', data);
 
     /**
@@ -52,6 +53,7 @@ const ContactForm = () => {
      * or redirect the user to a new page
      */
     setIsLoading(true);
+
     setTimeout(() => {
       setIsSubmitted(true);
     }, 1500);
@@ -84,11 +86,19 @@ const ContactForm = () => {
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className="ams-mb-xl">
         <Heading level={1} size="level-3" className="ams-mb-m">
-          Contactformulier 2
+          Contactformulier
         </Heading>
 
         <Paragraph className="ams-mb-m">
-          This form uses React Hook Form.
+          This form is a simple contact form with three required fields. It
+          validates on submit.
+        </Paragraph>
+
+        <Paragraph className="ams-mb-m">
+          The goal of this demo is to illustrate the most basic form validation
+          scenario. Each field is required and the email must follow a valid
+          format. Unlike more complex forms, no cross-field rules are needed —
+          making it a clean example of straightforward validation.
         </Paragraph>
 
         {/* Use noValidate so browser validation doesn't block JS */}

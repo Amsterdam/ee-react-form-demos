@@ -6,6 +6,7 @@ import {
   type CheckboxProps,
   ErrorMessage,
 } from '@amsterdam/design-system-react';
+import clsx from 'clsx';
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
@@ -56,7 +57,10 @@ const CheckboxControl = <T extends FieldValues>({
             )}
 
             <Checkbox
-              aria-describedby={`${descriptionId} ${errorId}`}
+              aria-describedby={clsx(
+                { [descriptionId]: !!descriptionId },
+                { [errorId]: hasError }
+              )}
               {...register(name, registerOptions as RegisterOptions)}
               data-testid={identifier}
               id={identifier}

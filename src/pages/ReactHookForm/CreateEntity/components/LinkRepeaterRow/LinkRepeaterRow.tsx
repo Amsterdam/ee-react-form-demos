@@ -11,11 +11,12 @@ import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
 import { Control, Controller, FieldError } from 'react-hook-form';
 import { EntityFormData as RHFEntityFormData } from '../../schema';
 import styles from './LinkRepeaterRow.module.css';
+import clsx from 'clsx';
 
 interface LinkRepeaterRowProps {
-  index: number;
   control: Control<RHFEntityFormData>;
-  remove: (index: number) => void;
+  index: number;
+  removeItem: (index: number) => void;
   errors:
     | {
         url?: FieldError;
@@ -26,9 +27,9 @@ interface LinkRepeaterRowProps {
 }
 
 const LinkRepeaterRow = ({
-  index,
   control,
-  remove,
+  index,
+  removeItem,
   errors,
 }: LinkRepeaterRowProps) => {
   return (
@@ -52,7 +53,9 @@ const LinkRepeaterRow = ({
               {...field}
               required
               invalid={!!errors?.url?.message}
-              aria-describedby={`links-description ${errors?.url?.message ? `link-url-${index}-error` : ''}`}
+              aria-describedby={clsx('links-description', {
+                [`link-url-${index}-error`]: errors?.url?.message,
+              })}
             />
           )}
         />
@@ -74,7 +77,9 @@ const LinkRepeaterRow = ({
               {...field}
               required
               invalid={!!errors?.title?.message}
-              aria-describedby={`links-description ${errors?.title?.message ? `link-title-${index}-error` : ''}`}
+              aria-describedby={clsx('links-description', {
+                [`link-title-${index}-error`]: errors?.title?.message,
+              })}
             />
           )}
         />
@@ -100,7 +105,7 @@ const LinkRepeaterRow = ({
           icon={TrashBinIcon}
           iconBefore
           variant="tertiary"
-          onClick={() => remove(index)}
+          onClick={() => removeItem(index)}
         >
           Delete
         </Button>

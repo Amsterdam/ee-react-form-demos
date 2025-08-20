@@ -7,6 +7,7 @@ import {
   type TextInputProps,
 } from '@amsterdam/design-system-react';
 import type { FieldValues, RegisterOptions } from 'react-hook-form';
+import clsx from 'clsx';
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
@@ -36,13 +37,6 @@ const TextInputControl = <T extends FieldValues>({
         const errorMessage = formState.errors[name]?.message?.toString();
         const hasError = !!errorMessage;
 
-        const ariaDescribedBy = [
-          description ? descriptionId : null,
-          hasError ? errorId : null,
-        ]
-          .filter(Boolean)
-          .join(' ');
-
         return (
           <Field
             className="ams-mb-m"
@@ -71,9 +65,12 @@ const TextInputControl = <T extends FieldValues>({
               <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>
             )}
             <TextInput
-              aria-describedby={ariaDescribedBy || undefined}
-              {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
+              {...attributes}
+              aria-describedby={clsx(
+                { [descriptionId]: !!descriptionId },
+                { [errorId]: hasError }
+              )}
               id={identifier}
               invalid={hasError}
               // Avoid the `required` prop when using ReactHookForm otherwise

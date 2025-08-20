@@ -12,7 +12,7 @@ import { ActionMeta } from 'react-select';
 import { EntityFormData } from '@/types/types';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
-import FormTextarea from './components/FormTextarea/FormTextarea';
+import FormTextArea from './components/FormTextArea/FormTextArea';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
@@ -91,7 +91,7 @@ const CreateEntity = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    // console.log('Form data:', formData);
 
     /**
      * Use setTimeout to Simulate API call
@@ -128,9 +128,16 @@ const CreateEntity = () => {
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
-        <Heading level={1} size="level-3">
+        <Heading level={1} size="level-3" className="ams-mb-m">
           Create an entity
         </Heading>
+
+        <Paragraph className="ams-mb-m">
+          This form is a complex “Create Entity” workflow, designed to generate
+          Backstage entity YAML from user input. It showcases advanced
+          validation with interdependent fields, dynamic repeatable sections
+          (annotations and links) and custom select components
+        </Paragraph>
 
         <form onSubmit={handleSubmit}>
           <FormSelect
@@ -179,14 +186,14 @@ const CreateEntity = () => {
           <FormTextInput
             id="name"
             label="Name"
-            description="The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
+            description="The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
             name="name"
             value={formData.name}
             required
             onChange={handleChange}
           />
 
-          <FormTextarea
+          <FormTextArea
             id="description"
             label="Description"
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."

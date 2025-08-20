@@ -6,6 +6,7 @@ import {
   Paragraph,
   TextInput,
 } from '@amsterdam/design-system-react';
+import clsx from 'clsx';
 
 interface FormTextInputProps {
   id: string;
@@ -28,6 +29,7 @@ const FormTextInput = ({
   required = false,
   error,
   onChange,
+  onBlur,
 }: FormTextInputProps) => (
   <Field className="ams-mb-m" invalid={!!error}>
     <Label htmlFor={id}>{label}</Label>
@@ -40,13 +42,17 @@ const FormTextInput = ({
     )}
     {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <TextInput
-      aria-describedby={`${description ? `${id}-description` : ''} ${error ? `${id}-error` : ''}`}
+      aria-describedby={clsx(
+        { [`${id}-description`]: !!description },
+        { [`${id}-error`]: !!error }
+      )}
       id={id}
       name={name}
       value={value}
       invalid={!!error}
       required={required}
       onChange={onChange}
+      onBlur={onBlur}
     />
   </Field>
 );

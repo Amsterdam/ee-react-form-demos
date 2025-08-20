@@ -1,0 +1,115 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/Testing/Overview" />
+
+# Testing - Overview
+
+Forms are one of the most interactive parts of a web app, so testing them thoroughly ensures:
+
+- Fields validate correctly
+- UX patterns (autosave, multi-step) work as expected
+- Accessibility and keyboard navigation remain intact
+- API requests fire with correct payloads
+- Edge cases (empty fields, invalid input, file uploads) don’t break
+
+Testing strategy should combine unit/integration tests (fast, local) with end-to-end tests (realistic, slower).
+
+- **Unit/integration tests** with [Jest](https://jestjs.io)/[Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
+- **E2E tests** with [Cypress](https://www.cypress.io)/[Playwright](https://playwright.dev).
+
+## Common testing patterns
+
+- Mock API responses in unit/integration tests to avoid real network calls
+- Data-driven tests for validation (loop over valid/invalid cases)
+- Use userEvent instead of fireEvent to mimic real user interaction
+- Accessibility checks in E2E with tools like @axe-core/playwright
+- Visual regression for form layouts with [Playwright](https://playwright.dev) snapshots
+
+## Testing Priorities
+
+### High Priority:
+
+- Form submission happy path
+- Validation error handling
+- Critical user interactions (add/remove repeater items)
+
+### Medium Priority:
+
+- Edge cases in form components
+- Accessibility compliance
+- Error recovery scenarios
+
+### Lower Priority:
+
+- Complex interaction sequences
+- Performance-related tests
+- Visual regression tests
+
+## Unit and Integration Testing with Jest / Vitest and Testing Library
+
+| Topic                  | What to Test                             | Example                                                                                                     |
+| ---------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Rendering**          | Fields appear with correct defaults      | `expect(screen.getByLabelText(/Name/i)).toHaveValue('')`                                                    |
+| **Validation**         | Client-side rules trigger on blur/submit | `userEvent.type(nameInput, ''); userEvent.tab(); expect(screen.getByText(/required/i)).toBeInTheDocument()` |
+| **Submission**         | Correct payload is sent                  | Mock `fetch` or Axios, assert payload matches expected                                                      |
+| **Conditional Fields** | Fields show/hide correctly               | Simulate selecting "Remote" and check if "Meeting URL" appears                                              |
+| **Error Display**      | Server errors are shown properly         | Mock API returning `{ field: 'email', message: 'Already taken' }`                                           |
+| **Accessibility**      | Labels, roles, ARIA attributes present   | `expect(input).toHaveAccessibleName('Email')`                                                               |
+
+Example from `ContactFormLive.test.tsx`:
+
+```tsx
+it('should update form data when user types', async () => {
+  const user = userEvent.setup();
+  render(<ContactFormLive />);
+
+  const nameInput = screen.getByLabelText('Naam');
+  const emailInput = screen.getByLabelText('E-mailadres');
+  const bodyInput = screen.getByLabelText('Bericht');
+
+  await user.type(nameInput, 'John Doe');
+  await user.type(emailInput, 'john@example.com');
+  await user.type(bodyInput, 'Test message');
+
+  expect(nameInput).toHaveValue('John Doe');
+  expect(emailInput).toHaveValue('john@example.com');
+  expect(bodyInput).toHaveValue('Test message');
+});
+```
+
+## End-to-End Testing with Cypress/Playwright
+
+Test forms in a real browser environment, catching issues unit tests might miss — such as integration with the backend, CSS and actual navigation.
+
+### What E2E Covers
+
+- Full form flow (fill, submit, redirect)
+- Network requests and API integration
+- Accessibility and keyboard navigation
+- File uploads in a real environment
+- Edge cases with actual browser behavior
+
+Example using [Cypress](https://www.cypress.io):
+
+```tsx
+it('completes booking form and submits', () => {
+  cy.visit('/booking');
+  cy.findByLabelText(/Name/i).type('Jane Smith');
+  cy.findByLabelText(/Email/i).type('jane@example.com');
+  cy.findByLabelText(/Start Date/i).type('2025-08-20');
+  cy.findByLabelText(/Start Time/i).type('10:00');
+  cy.findByRole('button', { name: /Submit/i }).click();
+
+  cy.contains(/Booking confirmed/i).should('be.visible');
+});
+```
+
+Example using [Playwright](https://playwright.dev):
+
+```tsx
+test('shows validation error when email is missing', async ({ page }) => {
+  await page.goto('/contact');
+  await page.click('button[type=submit]');
+  await expect(page.getByText(/email is required/i)).toBeVisible();
+});
+```

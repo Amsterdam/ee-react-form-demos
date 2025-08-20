@@ -1,0 +1,89 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/Form Submission Flow" />
+
+# Form Submission Flow
+
+What happens when you submit a form in a browser?
+
+## Traditional form flow
+
+Traditionally in the browser, when a user clicks 'Submit' on a form, the following flow happens:
+
+1. The HTML `form` element specifies the target URL (`action` attribute) and HTTP method (`method` - usually `GET` or `POST`)
+  ```html
+    <form action="/submit" method="POST">
+      <input name="username" value="john">
+      <input name="email" value="john@example.com">
+      <button type="submit">Submit</button>
+    </form>
+  ```
+
+2. User clicks submit (or presses Enter), which triggers an event that the browser intercepts.
+3. The browser collects all the form field values and encodes them based on the form's `enctype`. The `enctype` can be:
+    - `application/x-www-form-urlencoded` (default): `username=john&email=john%40example.com`
+    - `multipart/form-data` (for file uploads): Creates `FormData` with boundaries
+    - `text/plain` (rarely used): Plain text format
+4. The browser constructs and sends a HTTP request:
+    - `GET` - Data goes in the URL query string
+    - `POST` - Data goes in the requst body
+    - Sets appropriate `Content-Type` header based on the encoding (#3)
+5. Browser navigates away from the current page and waits for the server (backend) response
+6. Server (backend) processes the request and can respond with:
+    - HTML page: Browser renders the new page
+    - Redirect (3xx status): Browser follows the redirect
+    - Error page: Browser displays the error
+
+## React form flow
+
+With a traditional browser flow, submitting a form triggers a full page reload, which clears all JavaScript state (#5 above). In modern single-page applications (SPAs) — including most React projects — we intercept the form submission in JavaScript, send the data asynchronously and update the UI without navigating away.
+
+Therefore, in React-based applications we commonly follow a flow like:
+
+1. Configure the HTML `form` element and attach a submit handler.
+    - The `onSubmit={handleSubmit}` tells form submission events to execute the `handleSubmit` function
+    - In `handleSubmit` we call `e.preventDefault();` to stop the browser's default form submission behaviour (and page reload).
+    ```tsx
+      const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+        const validationErrors = validateForm(formData);
+        setErrors(validationErrors);
+
+        ...
+      };
+
+      return (
+      <Grid paddingBottom="x-large" paddingTop="large">
+        <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
+          <Heading
+            level={1}
+            size="level-3"
+            className="ams-mb-m"
+            data-testid="heading"
+          >
+            Form title
+          </Heading>
+
+          {/* Use noValidate so browser validation doesn't block JS */}
+          <form
+            className={`${styles.form} ams-gap-m`}
+            onSubmit={handleSubmit}
+            data-testid="form"
+          >
+            {/* form fields */}
+          </form>
+    ```
+
+2. User clicks submit (or presses Enter), which triggers the `onSubmit` event, which executes the custom `handleSubmit` function.
+3. Collect and validate the form data
+    - Data can come from:
+        - The DOM via new `FormData(e.currentTarget)` (good for small/medium forms)
+        - `React` state (common when fields are fully controlled components).
+    - Perform client-side validation (e.g., with Zod, Yup, custom logic).
+4. Send the data to the backend
+    - Usually, make an API request with `fetch` or `Axios`:
+        - Use **JSON** for standard text-based payloads.
+        - Use `FormData` (with `multipart/form-data`) if uploading files or sending binary data.
+5. The frontend handles the successful response or error returned from the API.

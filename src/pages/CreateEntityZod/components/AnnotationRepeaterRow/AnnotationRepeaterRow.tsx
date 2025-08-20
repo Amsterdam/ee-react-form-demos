@@ -12,6 +12,7 @@ import ANNOTATIONS from '@/utils/getAnnotations';
 import InputAutoSelect from '../../../../components/InputAutoSelect/InputAutoSelect';
 import styles from './AnnotationRepeaterRow.module.css';
 import { AnnotationItem } from '@/types/types';
+import clsx from 'clsx';
 
 interface AnnotationRepeaterRowProps {
   index: number;
@@ -74,7 +75,9 @@ const AnnotationRepeaterRow = ({
         value={keyValue}
         required
         error={keyError}
-        aria-describedby={`annotations-description ${keyError ? `annotation-type-${index}-error` : ''}`}
+        aria-describedby={clsx('annotations-description', {
+          [`annotation-type-${index}-error`]: keyError,
+        })}
         onChange={keyOnChange}
       />
 
@@ -83,11 +86,13 @@ const AnnotationRepeaterRow = ({
       {annotation?.values ? (
         <Select
           id={`annotation-value-${index}`}
-          className="ams-mb-m"
+          className="style-mb-m"
           value={values.value}
           required
           invalid={!!valueError}
-          aria-describedby={`annotations-description ${valueError ? `annotation-value-${index}-error` : ''}`}
+          aria-describedby={clsx('annotations-description', {
+            [`annotation-value-${index}-error`]: valueError,
+          })}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
             onChange(values.key, e.target.value || '');
           }}
@@ -106,15 +111,17 @@ const AnnotationRepeaterRow = ({
           value={values.value ?? ''}
           required
           invalid={!!valueError}
-          className="ams-mb-m"
-          aria-describedby={`annotations-description ${valueError ? `annotation-value-${index}-error` : ''}`}
+          className="style-mb-m"
+          aria-describedby={clsx('annotations-description', {
+            [`annotation-value-${index}-error`]: valueError,
+          })}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             onChange(values.key, e.target.value || '');
           }}
         />
       )}
 
-      <div className="ams-mb-m">
+      <div className="style-mb-m">
         <Button
           icon={TrashBinIcon}
           iconBefore

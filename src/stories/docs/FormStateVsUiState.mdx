@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/React/Form State vs UI State" />
+
+# Form State vs UI State
+
+## Form State
+
+**Form state** is the collection of values that the user directly edits or submits — the payload to send to the backend.
+
+For example: Name, email, password, selected dropdown value, uploaded file
+
+## UI State
+
+**UI state** is everything else that’s purely about how the form is presented or interacted with in the current session — it doesn’t belong in the submitted data.
+
+For example: Preloader flag, modal open/close state, tab selection, current step in multi-step form
+
+## Conclusion
+
+If the backend doesn’t care about the value, it’s UI state.

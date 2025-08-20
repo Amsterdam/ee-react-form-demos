@@ -10,7 +10,7 @@ import {
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
-import FormTextarea from './components/FormTextarea/FormTextarea';
+import FormTextArea from './components/FormTextArea/FormTextArea';
 import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput';
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
@@ -140,8 +140,7 @@ const CreateEntity = () => {
       scrollToFirstError(formRef.current);
       return;
     }
-
-    console.log('Form data:', formData);
+    // console.log('Form data:', formData);
 
     /**
      * Use setTimeout to Simulate API call
@@ -180,9 +179,16 @@ const CreateEntity = () => {
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
-        <Heading level={1} size="level-3">
+        <Heading level={1} size="level-3" className="ams-mb-m">
           Create an entity
         </Heading>
+
+        <Paragraph className="ams-mb-m">
+          This form is a complex “Create Entity” workflow, designed to generate
+          Backstage entity YAML from user input. It showcases advanced
+          validation with interdependent fields, dynamic repeatable sections
+          (annotations and links) and custom select components
+        </Paragraph>
 
         {/* The ref is only necessary if you want to scroll to the first
         error */}
@@ -234,7 +240,7 @@ const CreateEntity = () => {
           <FormTextInput
             id="name"
             label="Name"
-            description="The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
+            description="The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
             name="name"
             value={formData.name}
             required
@@ -243,7 +249,7 @@ const CreateEntity = () => {
             onBlur={handleBlur}
           />
 
-          <FormTextarea
+          <FormTextArea
             id="description"
             label="Description"
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
@@ -331,7 +337,6 @@ const CreateEntity = () => {
             options={ownerOptions}
             initialValues={[formData.spec.owner]}
             required
-            error={errors['spec.owner']}
             onChange={newValue => {
               // Handling react-select requires an extra step, as using
               // the isMulti prop as true, will return an array of values.
@@ -394,7 +399,6 @@ const CreateEntity = () => {
               options={systemOptions}
               initialValues={[formData.spec.system || '']}
               required={formData.spec.hasSystem}
-              error={errors['spec.system']}
               onChange={newValue => {
                 const option = Array.isArray(newValue) ? newValue[0] : newValue;
                 const systemValue = option?.value ?? '';
@@ -423,7 +427,6 @@ const CreateEntity = () => {
             options={getTags()}
             isMulti
             initialValues={formData.tags}
-            error={errors.tags}
             onChange={newValue => {
               // This React-Select component uses isMulti so we need to
               // handle an array of values

@@ -1,0 +1,138 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/Alternative Solutions" />
+
+# Alternative Solutions
+
+HTML5 forms or [React Hook Form](https://react-hook-form.com) is the preferred forms solution by Gemeente Amsterdam.
+
+**HTML5 forms**: Best for small–medium forms where simplicity and browser-native validation is enough.
+**React Hook Form**: Best for larger, more complex or highly dynamic forms where performance & flexibility matter.
+Other libraries exist in legacy projects, but new work should generally stick to HTML5 or React Hook Form unless there’s a strong case otherwise.
+
+## NPM Trends  (August 2025)
+
+![alt text](/src/stories/assets/NPMTrends.png "Title")
+
+## 1. HTML5 Forms (Native Browser API)
+
+**Homepage**: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms
+
+**Description**:
+The built-in HTML `<form>` element with native input elements (`<input>`, `<select>`, `<textarea>`) and browser-managed validation.
+
+**Pros**:
+
+- Zero dependencies, widely supported
+- Built-in HTML5 validation attributes (`required`, `pattern`, `type=email`, etc.)
+- Works without JavaScript (progressive enhancement)
+- Simple for small forms
+
+**Cons**:
+
+- Limited customisation for validation messages
+- Harder to integrate with complex React state
+- No automatic state management
+- Poor support for highly dynamic fields
+
+## 2. React Hook Form
+
+**Homepage**: https://react-hook-form.com
+
+**Description**:
+A performant React form library that leverages uncontrolled components and refs for minimal re-renders. Integrates well with schema validators like Zod or Yup.
+
+**Pros**:
+
+- High performance even in large forms
+- Tiny bundle size compared to older libraries
+- Built-in field arrays & dynamic fields
+- Easy integration with validation schemas (Zod, Yup)
+- Good TypeScript support
+
+**Cons**:
+
+- API can be unfamiliar at first (e.g., register, watch)
+- Debugging controlled/uncontrolled issues can be tricky
+- More boilerplate than plain HTML5 for simple forms
+
+## 3. Formik
+
+**Homepage**: https://formik.org
+
+**Description**:
+One of the earliest popular React form libraries. Focuses on controlled components and centralised form state.
+
+**Pros**:
+
+- Mature ecosystem
+- Simple mental model (state in one place)
+- Good docs and examples
+
+**Cons**:
+
+- Project looks to be dying (August 2025 - no commit for 10 months)
+- Can be slower in large forms (controlled component model → more re-renders)
+- More verbose than modern alternatives
+- Bundle size larger than React Hook Form
+
+## 4. React Final Form
+
+**Homepage**: https://final-form.org/react
+
+**Description**:
+A minimal, subscription-based form state manager for React. Uses controlled components but optimises re-renders via field subscriptions.
+
+**Pros**:
+
+- Smaller API surface than Formik
+- More performant than fully controlled solutions
+- Flexible subscription-based updates
+
+**Cons**:
+
+- Project development has slowed down
+- Still no support for React 19
+- Less popular today → smaller ecosystem
+- API is more abstract, can feel low-level
+- Learning curve for subscriptions
+
+## 5. @jsonforms/react
+
+**Homepage**: https://jsonforms.io
+
+**Description**:
+Generates forms automatically from JSON Schema definitions. Useful for admin tools or highly dynamic forms.
+
+**Pros**:
+
+- Generates UI automatically from schema
+- Good for quick admin interfaces or schema-driven apps
+- Supports custom renderers
+
+**Cons**:
+
+- Less control over form layout without customisation
+- Bundle size heavier
+- Overkill for most hand-built forms
+- Steeper learning curve for customisation
+
+## 6. react-reactive-forms
+
+**Homepage**: https://github.com/bietkul/react-reactive-form
+
+**Description**:
+Angular Reactive Forms–style library for React, providing a strongly structured, model-driven approach.
+
+**Pros**:
+
+- Familiar for Angular devs
+- Strongly typed
+- Model-driven → easier to test form logic without UI
+
+**Cons**:
+
+- Project looks to be abandoned (August 2025 - no commit for 2 years)
+- Less idiomatic in React world
+- Smaller community
+- Boilerplate-heavy for simple forms

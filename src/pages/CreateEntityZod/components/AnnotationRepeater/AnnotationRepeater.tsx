@@ -64,7 +64,7 @@ const AnnotationRepeater = ({
       </Paragraph>
 
       {annotationsError && (
-        <ErrorMessage id="annotations-error" className="style-mb-s">
+        <ErrorMessage id="annotations-error" className="ams-mb-s">
           {annotationsError}
         </ErrorMessage>
       )}

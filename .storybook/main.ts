@@ -1,28 +1,37 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import remarkGfm from 'remark-gfm';
+
 
 const config: StorybookConfig = {
+  staticDirs: ['./static'],
   stories: [
-    '../src/stories/Intro.mdx',
-    '../src/stories/Accessibility.mdx',
-    '../src/stories/Alternatives.mdx',
-    '../src/stories/React19.mdx',
-    '../src/stories/Terminologies.mdx',
-    '../src/stories/Validation.mdx',
-    '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../src/stories/docs/**/*.mdx',
+    '../src/stories/pages/**/*.mdx',
+    '../src/**/*.stories.@(js|jsx|ts|tsx)'
   ],
+
   addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/addon-docs',
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     '@storybook/addon-themes',
+    '@jls-digital/storybook-addon-code',
   ],
+
   framework: {
     name: '@storybook/react-vite',
-    options: {},
+    options: {
+      strictMode: true,
+    },
   },
-  docs: {
-    autodocs: 'tag',
-  },
+
   typescript: {
     check: false,
     reactDocgen: 'react-docgen-typescript',
@@ -31,10 +40,11 @@ const config: StorybookConfig = {
       propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
     },
   },
+
   viteFinal: async (config) => {
     // Merge custom vite config if needed
     return config;
-  },
+  }
 };
 
 export default config;

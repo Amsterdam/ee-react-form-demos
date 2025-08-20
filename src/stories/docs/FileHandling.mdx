@@ -1,0 +1,67 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/Security/File Handling" />
+
+# File Handling
+
+> **Warning**
+> Frontend validation is only for UX, not security. It must be emphasised that much of the security enforcements needs to happen on the backend, however, frontend forms can help guide safe input and prevent common vulnerabilities.
+
+## Risks
+
+- Uploading dangerous files (for example, `.exe`, `.php`)
+- Malicious files disguised with a safe extension (`.jpg` containing script code)
+- Large files (DoS attempts)
+
+## Frontend best practices
+
+- Restrict file types in the `<input>`:
+```tsx
+<input type="file" accept=".jpg,.png,.pdf" />
+```
+- Provide file size checks via JavaScript before uploading.
+- Avoid reading file content in the browser.
+
+## Backend must
+
+- Validate file and MIME types server-side
+- Scan for malware
+- Store files outside of the public web root (to prevent [directory traversal attacks](https://en.wikipedia.org/wiki/Directory_traversal_attack))
+
+## Examples
+
+### Unsafe - trusting the browser's file picker (Breaks the rule: "Never trust frontend input")
+
+```tsx
+// BAD: Relies only on a basic browser check
+<input type="file" accept=".jpg,.png" />
+
+// User can still bypass and upload .exe via DevTools or cURL
+```
+
+### Safe - check the file type and size before sending to the backend
+
+```tsx
+function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const maxSizeMB = 2;
+  const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+
+  if (!allowedTypes.includes(file.type)) {
+    alert('Invalid file type');
+    return;
+  }
+
+  if (file.size > maxSizeMB * 1024 * 1024) {
+    alert(`File too large. Max size: ${maxSizeMB}MB`);
+    return;
+  }
+
+  // Send file to backend
+  // Backend validates file type, size and scans for malware
+}
+
+return <input type="file" onChange={handleFileChange} accept=".jpg,.png,.pdf" />;
+```
