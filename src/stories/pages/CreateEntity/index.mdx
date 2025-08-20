@@ -73,11 +73,22 @@ This variant uses native HTML5 validation and unlike [Booking Form](../?path=/do
 
 ## Key Points
 
-- **Pro**: **Built-in simplicity**: Using required, type=email/url and pattern attributes provides quick wins with no extra libraries.
-- **Con**: **Progressive blocking**: Browser validation halts at the first invalid field, forcing the user to fix issues one at a time.
-- **Con**: **Poor UX scaling**: With so many fields, this quickly becomes frustrating and confusing for users.
-- **Con**: **Dynamic arrays**: Adding repeater rows makes native validation even messier, as the browser only surfaces one invalid item at a time.
-- **Con**: **Dynamic repeaters** require custom scripting to ensure proper validation (HTML5 alone doesn’t handle them gracefully).
+- **Leverages native validation** - Relies on built-in HTML5 attributes (required, type, pattern) for most rules.
+- **Minimal custom logic** - Form code stays relatively clean since validation is delegated to the browser.
+- **Progressive blocking UX** - Browser stops at the first invalid field, so users must fix issues one by one.
+- **Scaling challenges** - With many fields, this approach quickly becomes cumbersome and frustrating for users.
+- **Dynamic repeaters are problematic** - Native validation doesn’t handle array fields (Annotations, Links) well, requiring extra scripting.
+
+### Pros
+
+- **Built-in simplicity** - Using `required`, `type=email/url` and `pattern` attributes provides quick wins with no extra libraries.
+
+### Cons
+
+- **Progressive blocking** - Browser validation halts at the first invalid field, forcing the user to fix issues one at a time.
+- **Poor UX scaling** - With so many fields, this quickly becomes frustrating and confusing for users.
+- **Dynamic arrays** - Adding repeater rows makes native validation even messier, as the browser only surfaces one invalid item at a time.
+- **Dynamic repeaters** - require custom scripting to ensure proper validation (HTML5 alone doesn’t handle them gracefully).
 
 ## How to Implement
 

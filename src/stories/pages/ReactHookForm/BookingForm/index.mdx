@@ -55,18 +55,23 @@ In this case, the form must ensure that the end date/time occurs after the start
 
 ## Key Points
 
-- **Cross-field validation**: RHF integrates with schema validation or custom rules, making it easy to compare related fields (e.g. end vs start).
-- **Consistent UX**: Instead of browser tooltips, errors are displayed inline, styled with the design system.
-- **Error state management**: RHF automatically tracks touched/dirty states and surfaces errors in a predictable way.
-- **Cleaner developer experience**: With `zodResolver` or RHF’s built-in rules, validation logic is centralized and easier to maintain.
+- **Cross-field validation** - RHF integrates with schema validation or custom rules, making it easy to compare related fields (e.g. end vs start).
+- **Consistent UX** - Instead of browser tooltips, errors are displayed inline, styled with the design system.
+- **Error state management** - RHF automatically tracks touched/dirty states and surfaces errors in a predictable way.
+- **Cleaner developer experience** - With `zodResolver` or RHF’s built-in rules, validation logic is centralized and easier to maintain.
 
-- **Pro**: **Advanced validation support** – cross-field rules are expressed clearly and enforced consistently.
-- **Pro**: **Better UX** – inline errors are consistent, accessible and not tied to browser quirks.
-- **Pro**: **Scalable** – adding more conditional fields or rules is straightforward.
-- **Pro**: **State handling built in** – RHF tracks touched, dirty and error states without boilerplate.
-- **Con**: **Extra setup** – requires RHF setup and optional schema integration compared to HTML5 attributes.
-- **Con**: **Learning curve** – developers need to understand RHF concepts (e.g. register, watch, resolver).
-- **Con**: **Overhead for small forms** – for a very simple form, RHF may feel heavier than necessary.
+### Pros
+
+- **Advanced validation support** – cross-field rules are expressed clearly and enforced consistently.
+- **Better UX** – inline errors are consistent, accessible and not tied to browser quirks.
+- **Scalable** – adding more conditional fields or rules is straightforward.
+- **State handling built in** – RHF tracks touched, dirty and error states without boilerplate.
+
+### Cons
+
+- **Extra setup** – requires RHF setup and optional schema integration compared to HTML5 attributes.
+- **Learning curve** – developers need to understand RHF concepts (e.g. register, watch, resolver).
+- **Overhead for small forms** – for a very simple form, RHF may feel heavier than necessary.
 
 ## How to Implement
 

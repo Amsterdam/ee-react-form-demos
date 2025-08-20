@@ -83,12 +83,16 @@ This variant uses [Zod](https://zod.dev/) schema validation instead of native HT
 - **Better user flow**: Users can see all validation issues at once, instead of being blocked by the first error (as is the case in [CreateEntity (HTML5 Validation)](../?path=/docs/plain-html5-createentity-html5-validation--docs)).
 - **Schema-driven validation**: By defining validation rules in one place, the logic is easier to maintain, extend and reason about.
 
-- **Pro**: **Scalable**: Works well as forms grow in complexity, or when repeaters allow dozens of dynamic items.
-- **Pro**: **Consistent messaging**: Errors are shown in a uniform style, independent of browser quirks.
-- **Pro**: **Future-proof**: Schema validation can be reused across frontend + backend, ensuring consistency.
+### Pros
 
-- **Con**: **Setup cost**: Requires extra code compared to just adding required attributes.
-- **Con**: **Performance**: Very large forms with many dynamic arrays might benefit from incremental validation instead of full schema checks every time.
+- **Scalable** - Works well as forms grow in complexity, or when repeaters allow dozens of dynamic items.
+- **Consistent messaging** - Errors are shown in a uniform style, independent of browser quirks.
+- **Future-proof** - Schema validation can be reused across frontend + backend, ensuring consistency.
+
+### Cons
+
+- **Setup cost** - Requires extra code compared to just adding required attributes.
+- **Performance** - Very large forms with many dynamic arrays might benefit from incremental validation instead of full schema checks every time.
 
 ## How to Implement
 

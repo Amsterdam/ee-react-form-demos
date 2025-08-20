@@ -48,16 +48,22 @@ This Contact Form 'on Change' variant demonstrates a more user-friendly validati
 
 ## Key Points
 
-- **Immediate feedback**: Users catch mistakes as they type, instead of waiting until the end.
-- **Error gating**: Errors aren’t shown prematurely — only once a field has been touched, or after a submit attempt.
-- **Balanced UX**: This approach avoids overwhelming the user with red error states before they’ve had a chance to provide input.
+- **Immediate feedback** - Users catch mistakes as they type, instead of waiting until the end.
+- **Error gating** - Errors aren’t shown prematurely — only once a field has been touched, or after a submit attempt.
+- **Balanced UX** - This approach avoids overwhelming the user with red error states before they’ve had a chance to provide input.
 
-- **Pro**: **Friendly experience**: Inline validation reduces frustration by pointing out errors at the moment they occur.
-- **Pro**: **Clear error visibility**: The global error alert after submit ensures users can quickly identify all remaining issues in one place.
-- **Pro**: **Consistency**: Using both inline and summary errors supports different user preferences and improves accessibility.
+### Pros
 
-- **Con**: **Extra state management**: Tracking both touched and submitTouched adds a small layer of complexity.
-- **Con**: **Performance**: Real-time validation can be more demanding for very large forms — consider throttling validation if needed.
+- **Friendly experience** - Inline validation reduces frustration by pointing out errors at the moment they occur.
+- **Lightweight & fast to build** – minimal boilerplate and validation logic required.
+- **Clear error visibility** - The global error alert after submit ensures users can quickly identify all remaining issues in one place.
+- **Consistency** - Using both inline and summary errors supports different user preferences and improves accessibility.
+
+### Cons
+
+- **Extra state management** - Tracking both touched and submitTouched adds a small layer of complexity.
+- **Performance** - Real-time validation can be more demanding for very large forms — consider throttling validation if needed.
+- **Doesn’t scale well** – as forms get longer or rules more complex, this approach becomes clunky.
 
 ## How to Implement
 

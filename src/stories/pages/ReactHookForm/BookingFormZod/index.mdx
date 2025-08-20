@@ -52,22 +52,27 @@ This demo implements a simple booking form with the following fields:
 
 This variant shows how [React Hook Form](https://react-hook-form.com/) and [Zod](https://zod.dev/) can work together to handle both simple and complex form validation.
 
-The Zod schema centralizes all rules, including the cross-field constraint that End Date/Time must occur after Start Date/Time. This approach improves maintainability, readability and scalability compared to either native HTML5 validation or RHF alone.
+The [Zod](https://zod.dev/) schema centralizes all rules, including the cross-field constraint that End Date/Time must occur after Start Date/Time. This approach improves maintainability, readability and scalability compared to either native HTML5 validation or RHF alone.
 
 ## Key Points
 
-- **Schema-driven validation**: All rules are defined in one Zod schema, keeping form logic clear and maintainable.
-- **Cross-field refinement**: The schema enforces that End Date/Time is after Start Date/Time, with a single, centralized rule.
-- **Tight integration**: Using RHF’s zodResolver, validation is automatic and errors flow naturally into RHF’s error state.
-- **Better dev experience**: By separating validation from rendering logic, the form is easier to reason about and extend.
+- **Schema-driven validation** - All rules are defined in one [Zod](https://zod.dev/) schema, keeping form logic clear and maintainable.
+- **Cross-field refinement** - The schema enforces that End Date/Time is after Start Date/Time, with a single, centralized rule.
+- **Tight integration** - Using RHF’s `zodResolver`, validation is automatic and errors flow naturally into RHF’s error state.
+- **Better dev experience** - By separating validation from rendering logic, the form is easier to reason about and extend.
 
-- **Pro**: **Centralized validation** – rules live in one place (the schema), reducing duplication and hidden logic.
-- **Pro**: **Expressive** – Zod allows complex, cross-field checks in a declarative style.
-- **Pro**: **Predictable UX** – errors are surfaced inline and consistently styled, avoiding browser inconsistencies.
-- **Pro**: **Scalable** – easily extended to handle more fields, relationships, or conditional logic.
-- **Con**: Extra dependency – adds Zod as well as RHF.
-- **Con**: **Schema complexity** – for developers unfamiliar with Zod, .refine() and custom error shaping may be a hurdle.
-- **Con**: **Overhead for tiny forms** – might feel heavier than needed for simple two-field forms.
+### Pros
+
+- **Centralized validation** – rules live in one place (the schema), reducing duplication and hidden logic.
+- **Expressive** – [Zod](https://zod.dev/) allows complex, cross-field checks in a declarative style.
+- **Predictable UX** – errors are surfaced inline and consistently styled, avoiding browser inconsistencies.
+- **Scalable** – easily extended to handle more fields, relationships, or conditional logic.
+
+### Cons
+
+- **Extra dependency** – adds [Zod](https://zod.dev/) as well as RHF.
+- **Schema complexity** – for developers unfamiliar with [Zod](https://zod.dev/), `.refine()` and custom error shaping may be a hurdle.
+- **Overhead for tiny forms** – might feel heavier than needed for simple two-field forms.
 
 ## How to Implement
 

@@ -47,16 +47,21 @@ Instead of relying on the browser’s built-in validation, the form uses a [Zod]
 
 ## Key Points
 
-- **Schema-driven**: Validation rules are centralized in a Zod schema, avoiding browser-specific quirks.
-- **RHF integration**: The zodResolver bridges Zod and React Hook Form, so errors are handled automatically.
-- **Same UX strategy**: Errors only appear on submit, keeping the typing experience distraction-free.
-- **Consistent messaging**: All validation errors follow the same format and styling, regardless of browser.
+- **Schema-driven** - Validation rules are centralized in a [Zod](https://zod.dev/) schema, avoiding browser-specific quirks.
+- **RHF integration** - The `zodResolver` bridges [Zod](https://zod.dev/) and React Hook Form, so errors are handled automatically.
+- **Same UX strategy** - Errors only appear on submit, keeping the typing experience distraction-free.
+- **Consistent messaging** - All validation errors follow the same format and styling, regardless of browser.
 
-- **Pro**: **Cleaner developer experience** – no need to wire up custom state or rely on browser tooltips.
-- **Pro**: **Easier to extend** – if more fields are added later, they can be slotted into the schema without changing form logic.
-- **Pro**: **Consistency** – using the same Zod schema for both frontend and backend is possible.
-- **Con**: **Extra setup** – requires RHF + Zod setup compared to the simplicity of required attributes.
-- **Con**: **Overhead for tiny forms** – might feel heavier than necessary for a very small form like this.
+### Pros
+
+- **Cleaner developer experience** – no need to wire up custom state or rely on browser tooltips.
+- **Easier to extend** – if more fields are added later, they can be slotted into the schema without changing form logic.
+- **Consistency** – using the same [Zod](https://zod.dev/) schema for both frontend and backend is possible.
+
+### Cons
+
+- **Extra setup** – requires RHF + [Zod](https://zod.dev/) setup compared to the simplicity of required attributes.
+- **Overhead for tiny forms** – might feel heavier than necessary for a very small form like this.
 
 ## How to Implement
 
