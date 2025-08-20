@@ -99,17 +99,19 @@ describe('ContactForm', () => {
   it('should show success message after successful submission', async () => {
     render(<ContactForm />);
 
-    fireEvent.change(screen.getByLabelText(/naam/i), {
-      target: { value: 'John' },
-    });
-    fireEvent.change(screen.getByLabelText(/e-mailadres/i), {
-      target: { value: 'john@example.com' },
-    });
-    fireEvent.change(screen.getByLabelText(/bericht/i), {
-      target: { value: 'Hello!' },
-    });
+    act(() => {
+      fireEvent.change(screen.getByLabelText(/naam/i), {
+        target: { value: 'John' },
+      });
+      fireEvent.change(screen.getByLabelText(/e-mailadres/i), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(screen.getByLabelText(/bericht/i), {
+        target: { value: 'Hello!' },
+      });
 
-    fireEvent.click(screen.getByRole('button', { name: /versturen/i }));
+      fireEvent.click(screen.getByRole('button', { name: /versturen/i }));
+    });
 
     // Capture first `setIsLoading(true)` render change
     await act(async () => {
