@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CreateEntityZod from '@/pages/CreateEntityZod/CreateEntityZod';
 
 const meta = {
-  title: 'Plain HTML5/CreateEntity (Validation using Zod)',
+  title: 'Plain HTML5/CreateEntity (Zod Validation)',
   component: CreateEntityZod,
   parameters: {
     layout: 'fullscreen',

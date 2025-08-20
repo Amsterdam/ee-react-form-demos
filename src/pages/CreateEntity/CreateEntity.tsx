@@ -128,9 +128,16 @@ const CreateEntity = () => {
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
-        <Heading level={1} size="level-3">
+        <Heading level={1} size="level-3" className="ams-mb-m">
           Create an entity
         </Heading>
+
+        <Paragraph className="ams-mb-m">
+          This form is a complex “Create Entity” workflow, designed to generate
+          Backstage entity YAML from user input. It showcases advanced
+          validation with interdependent fields, dynamic repeatable sections
+          (annotations and links) and custom select components
+        </Paragraph>
 
         <form onSubmit={handleSubmit}>
           <FormSelect
@@ -179,7 +186,7 @@ const CreateEntity = () => {
           <FormTextInput
             id="name"
             label="Name"
-            description="The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
+            description="The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
             name="name"
             value={formData.name}
             required

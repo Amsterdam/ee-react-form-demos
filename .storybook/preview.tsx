@@ -53,11 +53,23 @@ export const parameters = {
   options: {
     storySort: {
       order: [
-        'Introduction',
-        'Accessibility*',
-        'Alternatives*',
-        'Terminologies*',
-        'Validation*',
+        'Docs',
+        [
+          'Introduction',
+          'Accessibility',
+          'Alternative Solutions',
+          'Definitions & Terminologies',
+          'Form Submission Flow',
+          'Handling Remote Data',
+          'UX Patterns',
+          'Validation',
+          'Which Approach Should I Use?',
+          'React',
+          'Security',
+          'Testing',
+        ],
+        'Plain HTML5',
+        'ReactHookForm',
       ],
     },
   },

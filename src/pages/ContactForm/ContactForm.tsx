@@ -110,7 +110,15 @@ const ContactForm = () => {
         </Heading>
 
         <Paragraph className="ams-mb-m">
-          This form validates on submit.
+          This form is a simple contact form with three required fields. It
+          validates on submit.
+        </Paragraph>
+
+        <Paragraph className="ams-mb-m">
+          The goal of this demo is to illustrate the most basic form validation
+          scenario. Each field is required and the email must follow a valid
+          format. Unlike more complex forms, no cross-field rules are needed —
+          making it a clean example of straightforward validation.
         </Paragraph>
 
         {/* Use noValidate so browser validation doesn't block JS */}
@@ -178,7 +186,7 @@ const ContactForm = () => {
           </Field>
           <Field invalid={!!errors.body}>
             <Label htmlFor="body">Bericht</Label>
-            {errors.email && (
+            {errors.body && (
               <ErrorMessage id={`error-body`} data-testid="error-message">
                 {errors.body}
               </ErrorMessage>

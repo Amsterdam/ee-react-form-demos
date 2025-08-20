@@ -9,7 +9,7 @@ describe('LinkRepeater', () => {
     { url: 'https://b.com', title: 'B', icon: 'book' },
   ];
 
-  it('renders heading, description, and error', async () => {
+  it('renders heading, description and error', async () => {
     const onChangeMock = vi.fn();
     const onValidateFieldMock = vi.fn();
 

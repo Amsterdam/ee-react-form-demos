@@ -42,7 +42,7 @@ describe('CreateEntity', () => {
       fireEvent.change(screen.getByLabelText(/description/i), {
         target: {
           value:
-            'The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity',
+            'The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity',
         },
       });
       fireEvent.change(screen.getByLabelText(/lifecycle/i), {
@@ -52,7 +52,7 @@ describe('CreateEntity', () => {
 
     expect(screen.getByLabelText(/name/i)).toHaveValue('John');
     expect(screen.getByLabelText(/description/i)).toHaveValue(
-      'The name of the entity. This name is both meant for human eyes to recognize the entity, and for machines and other components to reference the entity'
+      'The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity'
     );
     expect(screen.getByLabelText(/lifecycle/i)).toHaveValue('beta');
   });

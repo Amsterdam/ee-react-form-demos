@@ -1,0 +1,107 @@
+import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as ContactFormOnChangeStories from './index.stories';
+import ContactFormOnChange from '@/pages/ContactFormOnChange/ContactFormOnChange?raw';
+import schema from '@/pages/ContactFormOnChange/schema?raw';
+import styles from '@/pages/ContactFormOnChange/ContactFormOnChange.module.css?raw';
+import translate from '@/pages/ContactFormOnChange/utils/translate.ts?raw';
+
+
+<Meta of={ContactFormOnChangeStories} />
+
+# Contact Form (on Change)
+
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/ContactFormOnChange" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+
+## Overview
+
+This demo shows a basic contact form with three required fields:
+
+- **Name**
+- **Email** (must be valid format)
+- **Message**
+
+## Purpose
+
+This Contact Form 'on Change' variant demonstrates a more user-friendly validation strategy by validating fields as the user interacts with them. It balances real-time feedback with preventing error “spam” by using two states:
+
+- **Touched**: whether an individual input has been interacted with.
+- **SubmitTouched**: whether the user has attempted to submit the form.
+
+- All fields must be filled out.
+- The email must be in a valid format.
+- Inline errors appear once a field has been touched and contains invalid input.
+- A global error alert is shown only after the user attempts to submit.
+
+## Key Points
+
+- **Immediate feedback** - Users catch mistakes as they type, instead of waiting until the end.
+- **Error gating** - Errors aren’t shown prematurely — only once a field has been touched, or after a submit attempt.
+- **Balanced UX** - This approach avoids overwhelming the user with red error states before they’ve had a chance to provide input.
+
+### Pros
+
+- **Friendly experience** - Inline validation reduces frustration by pointing out errors at the moment they occur.
+- **Lightweight & fast to build** – minimal boilerplate and validation logic required.
+- **Clear error visibility** - The global error alert after submit ensures users can quickly identify all remaining issues in one place.
+- **Consistency** - Using both inline and summary errors supports different user preferences and improves accessibility.
+
+### Cons
+
+- **Extra state management** - Tracking both touched and submitTouched adds a small layer of complexity.
+- **Performance** - Real-time validation can be more demanding for very large forms — consider throttling validation if needed.
+- **Doesn’t scale well** – as forms get longer or rules more complex, this approach becomes clunky.
+
+## How to Implement
+
+To implement this Contact Form, there are 4 core files:
+
+1. The React components:
+    - [ContactFormOnChange.tsx](#--contactformonchangetsx)
+2. Validation schema:
+    - [schema.ts](#2-validation-schema)
+3. The CSS styles
+    - [ContactForm.module.css](#3-css-styles)
+4. Utils:
+    - [translate.ts](#4-utils)
+
+*The `Loader` component is excluded from the docs, it is a generic preloader.*
+
+## Usage
+
+The following files are required:
+
+### 1. React component
+
+#### - ContactFormOnChange.tsx
+
+<Source code={ContactFormOnChange} />
+
+### 2. Validation schema
+
+#### - schema.ts
+
+<Source code={schema} />
+
+### 3. CSS Styles
+
+<Source code={styles} />
+
+### 4. Utils
+
+#### - translate.ts
+
+<Source code={translate} />

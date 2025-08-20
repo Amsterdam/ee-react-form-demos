@@ -1,8 +1,105 @@
-import { Canvas, Meta, Source, Story } from '@storybook/blocks';
-import * as ContactForm from './index.stories';
-//import ContactForm from '@/pages/ContactForm/ContactForm?raw';
-//import styles from '@/pages/BaseLayer/styles.module.css?raw';
+import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as ContactFormStories from './index.stories';
+import ContactForm from '@/pages/ContactForm/ContactForm?raw';
+import schema from '@/pages/ContactForm/schema?raw';
+import styles from '@/pages/ContactForm/ContactForm.module.css?raw';
+import translate from '@/pages/ContactForm/utils/translate.ts?raw';
 
-<Meta of={ContactForm} />
+<Meta of={ContactFormStories} />
 
-# Create Form with Validation on Submit
+# Contact Form (on Submit)
+
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/ContactForm" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+
+## Overview
+
+This demo shows a basic contact form with three required fields:
+
+- **Name**
+- **Email** (must be valid format)
+- **Message**
+
+## Purpose
+
+This Contact Form 'on Submit' variant demonstrates the most basic validation strategy: all fields are validated only when the form is submitted. It’s often the simplest implementation and is commonly used in quick prototypes or small forms.
+
+### Validation Rules
+
+- All fields must be filled out.
+- The email must be in a valid format.
+- Error messages are only displayed after the user clicks Submit.
+
+## Key Points
+
+- **Low friction while typing** - The user can fill in the form without any distractions from early validation messages.
+- **Batch feedback** - All validation errors are shown at once after the submit attempt.
+- **Simple implementation** - This approach is straightforward to wire up.
+
+### Pros
+
+- **Lightweight & fast to build** – minimal boilerplate and validation logic required.
+- **Great fit for short forms** – works well when there are only a few required fields.
+- **Less cognitive load** – users aren’t distracted by real-time errors while typing.
+- **Predictable UX** – users know exactly when validation happens (only on submit).
+- **Easier maintenance** – fewer moving parts compared to `onChange` validation.
+
+### Cons
+
+- **Risk of frustration** - If multiple fields are incorrect, the user only finds out after completing the entire form.
+- **Delayed feedback** - Typos or mistakes aren’t caught until the end, which can increase the number of corrections needed.
+- **Doesn’t scale well** – as forms get longer or rules more complex, this approach becomes clunky.
+
+## How to Implement
+
+To implement this Contact Form, there are 4 core files:
+
+1. The React components:
+    - [ContactForm.tsx](#--contactformtsx)
+2. Validation schema:
+    - [schema.ts](#2-validation-schema)
+3. The CSS styles
+    - [ContactForm.module.css](#3-css-styles)
+4. Utils:
+    - [translate.ts](#4-utils)
+
+*The `Loader` component is excluded from the docs, it is a generic preloader.*
+
+## Usage
+
+The following files are required:
+
+### 1. React component
+
+#### - ContactForm.tsx
+
+<Source code={ContactForm} />
+
+### 2. Validation schema
+
+#### - schema.ts
+
+<Source code={schema} />
+
+### 3. CSS Styles
+
+<Source code={styles} />
+
+### 4. Utils
+
+#### - translate.ts
+
+<Source code={translate} />

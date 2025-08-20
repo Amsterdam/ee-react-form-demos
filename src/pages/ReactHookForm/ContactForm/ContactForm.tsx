@@ -29,8 +29,9 @@ const ContactForm = () => {
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
 
-    // Uncomment for validation onChange
-    // mode: 'onChange',
+    // Uncomment for validation onChange or check the `reValidateMode` property
+    // mode: 'onChange', // Allowed values: onChange | onBlur | onSubmit
+    // | onTouched | all
     defaultValues: {
       name: '',
       email: '',
@@ -85,11 +86,19 @@ const ContactForm = () => {
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className="ams-mb-xl">
         <Heading level={1} size="level-3" className="ams-mb-m">
-          Contactformulier 2
+          Contactformulier
         </Heading>
 
         <Paragraph className="ams-mb-m">
-          This form uses React Hook Form.
+          This form is a simple contact form with three required fields. It
+          validates on submit.
+        </Paragraph>
+
+        <Paragraph className="ams-mb-m">
+          The goal of this demo is to illustrate the most basic form validation
+          scenario. Each field is required and the email must follow a valid
+          format. Unlike more complex forms, no cross-field rules are needed —
+          making it a clean example of straightforward validation.
         </Paragraph>
 
         {/* Use noValidate so browser validation doesn't block JS */}
