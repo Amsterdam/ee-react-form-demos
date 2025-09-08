@@ -38,9 +38,9 @@ With JavaScript-based validation, the frontend manually checks inputs - often us
 
 Example libraries:
 
-- **Zod**: TypeScript-first, easy to integrate with React Hook Form.
-- **Yup**: Popular in older codebases and with Formik.
-- **Superstruct**: Lightweight alternative to Zod.
+- **[Zod](https://zod.dev)**: TypeScript-first, easy to integrate with React Hook Form.
+- **[Yup](https://github.com/jquense/yup)**: Popular in older codebases and with Formik.
+- **[Superstruct](https://docs.superstructjs.org/)**: Lightweight alternative to Zod.
 
 ### Pros
 
@@ -76,7 +76,7 @@ In [React Hook Form](https://react-hook-form.com) the strategy can be configured
 
 ## 4. Conditional Validation
 
-Sometime rules depend on other fields. An example with Zod schema, from `CreateEntity`, where `hasSystem` is a checkbox, which when checked should display another field to select the `System`:
+Sometime rules depend on other fields. An example with Zod schema, from `CreateEntity`, where `hasSystem` is a checkbox that when checked displays another field to select the `system`:
 
 ```ts
 const specSchema = z
@@ -106,5 +106,5 @@ const specSchema = z
 ## 6. Our Recommendation
 
 - **HTML5 validation** for small-medium forms with simple independent fields.
-- **[React Hook Form](https://react-hook-form.com) + [Zod](https://zod.dev)** for larger, advanced or schema-driven forms.
+- **[React Hook Form](https://react-hook-form.com) (+ [Zod](https://zod.dev))** for medium-larger, advanced or schema-driven forms.
   - Always disable HTML5 validation (`noValidate`) when using JS-based schemas to avoid conflicts.

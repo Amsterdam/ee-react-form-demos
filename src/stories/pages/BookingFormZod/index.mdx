@@ -53,12 +53,12 @@ The goal of this demo is to show how to replace HTML5's built-in validation with
 
 With [Zod](https://zod.dev/) you can centralize all rules—including cross-field checks like "end must be after start"—in one schema and keep them framework-agnostic.
 
-Unlike the HTML5 variant, this form doesn’t rely on native browser validation popups. Instead, it validates on change using Zod’s safeParse and displays inline errors as the user types. To avoid a disruptive UX with flashing alerts or layout shifts, the large error alert is only shown after a submit attempt. This keeps validation feedback present but subtle during typing and more prominent only when it really matters.
+Unlike the HTML5 variant, this form doesn’t rely on native browser validation popups. Instead, it validates on change using Zod’s `safeParse` and displays inline errors as the user types. To avoid a disruptive UX with flashing alerts or layout shifts, the large error alert is only shown after a submit attempt. This keeps validation feedback present but subtle during typing and more prominent only when it really matters.
 
 ## Key Points
 
 - **Schema-driven validation** - A single [Zod](https://zod.dev/) schema defines both field-level and cross-field rules.
-- **Cross-field logic** - The schema .refine ensures that the end date/time always comes after the start date/time.
+- **Cross-field logic** - The schema `.refine` ensures that the end date/time always comes after the start date/time.
 - **Cleaner UX with `submitTouched`** - Errors are collected immediately as the user types, but only revealed once the user attempts submission—preventing verbose error messages from showing too early.
 - **Consistency across browsers** - Because validation is fully handled in JavaScript, the UX looks and behaves the same everywhere.
 

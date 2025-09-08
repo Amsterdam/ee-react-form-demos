@@ -7,7 +7,9 @@ import { Meta } from '@storybook/addon-docs/blocks';
 > **Warning**
 > Frontend validation is only for UX, not security. It must be emphasised that much of the security enforcements needs to happen on the backend, however, frontend forms can help guide safe input and prevent common vulnerabilities.
 
-An attacker injects malicious JavaScript or HTML into your site, which runs in the victim's browser. This could:
+XSS (Cross-Site Scripting) is a web security vulnerability - a client-side code injection attack where malicious code is attached to a legitimate website.
+
+For example, an attacker injects malicious JavaScript or HTML into your site, which runs in the victim's browser. This could:
 
 - Steal cookies/session tokens
 - Redirect users to phishing pages
@@ -24,7 +26,7 @@ An attacker injects malicious JavaScript or HTML into your site, which runs in t
 ### Sanitize, don't overwrite
 
 - Sanitize data when displaying in the DOM (in React `dangerouslySetInnerHTML` is especially risky, hence the `dangerously` in its naming)
-- Don't 'convert' user content, this can make it lose meaning - just escape unsafe parts
+- Don't 'convert' user content; this can make it lose meaning - just escape unsafe parts
 
 ### Prevent DOM injection
 

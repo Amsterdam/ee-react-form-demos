@@ -23,11 +23,12 @@ import translate from '@/pages/ReactHookForm/ContactForm/utils/translate.ts?raw'
 ## Requirements
 
 - [React](https://react.dev)
+- [React Hook Form](https://react-hook-form.com/)
 - [Amsterdam Design System](https://designsystem.amsterdam)
 
 ## Overview
 
-This demo extends the same [HTML 5 contact form example](../?path=/docs/reacthookform-contactform--docs), this time built with React Hook Form and a Zod schema for validation.
+This demo extends the same [HTML 5 contact form example](../?path=/docs/reacthookform-contactform--docs), this time built with [React Hook Form (RHF)](https://react-hook-form.com/) and a [Zod](https://zod.dev/) schema for validation.
 
 ### Validation Rules
 
@@ -41,7 +42,7 @@ This demo extends the same [HTML 5 contact form example](../?path=/docs/reacthoo
 
 ## Purpose
 
-This variant demonstrates how [React Hook Form (RHF)](https://react-hook-form.com/) and [Zod](https://zod.dev/) can work together to provide the same "validate on submit" (or alternatively, on change, via the `mode` option property) UX strategy as the HTML5 version but with a cleaner and more scalable developer experience.
+This variant demonstrates how [RHF](https://react-hook-form.com/) and [Zod](https://zod.dev/) can work together to provide the same "validate on submit" (or alternatively, on change, via the `mode` option property) UX strategy as the HTML5 version but with a cleaner and more scalable developer experience.
 
 Instead of relying on the browser’s built-in validation, the form uses a [Zod](https://zod.dev/) schema to define rules and RHF’s `zodResolver` to enforce them. This ensures consistent error messages, predictable validation flow and easier extension if the form grows.
 
@@ -95,6 +96,8 @@ The following files are required:
 <Source code={schema} />
 
 ### 3. CSS Styles
+
+#### - ContactForm.module.css
 
 <Source code={styles} />
 
