@@ -50,7 +50,9 @@ describe('ContactForm', () => {
     });
 
     // Check for specific error messages
-    expect(screen.getAllByText('Dit veld is verplicht')[0]).toBeInTheDocument();
+    expect(
+      screen.getAllByText('This field is required')[0]
+    ).toBeInTheDocument();
   });
 
   it('should show individual validation errors', async () => {

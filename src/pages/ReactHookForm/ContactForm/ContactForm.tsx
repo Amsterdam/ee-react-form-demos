@@ -72,7 +72,7 @@ const ContactForm = () => {
             Contact form
           </Heading>
 
-          <Alert heading="Gelukt" headingLevel={2} severity="success">
+          <Alert heading="Success!" headingLevel={2} severity="success">
             <Paragraph>
               The form has been sent. We have received your details.
             </Paragraph>

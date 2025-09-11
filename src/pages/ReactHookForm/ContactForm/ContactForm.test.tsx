@@ -70,15 +70,15 @@ describe('ContactForm', () => {
 
     await screen.findByText(/unsuccessful/i);
     expect(
-      screen.getByText(/first name: dit veld is verplicht/i)
+      screen.getByText(/first name: this field is required/i)
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        /email address: u hebt een ongeldige waarde ingevoerd voor dit veld/i
+        /email address: you have entered an invalid value for this field/i
       )
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/message: dit veld is verplicht/i)
+      screen.getByText(/message: this field is required/i)
     ).toBeInTheDocument();
   });
 
@@ -130,7 +130,7 @@ describe('ContactForm', () => {
     });
 
     await screen.findByText(/the form has been sent/i);
-    expect(screen.getByText(/gelukt/i)).toBeInTheDocument();
+    expect(screen.getByText(/success/i)).toBeInTheDocument();
   });
 
   it('should clear errors when form is resubmitted with valid data', async () => {
@@ -143,7 +143,7 @@ describe('ContactForm', () => {
 
     await screen.findByText(/unsuccessful/i);
     expect(
-      screen.getByText(/first name: Dit veld is verplicht/i)
+      screen.getByText(/first name: This field is required/i)
     ).toBeInTheDocument();
 
     // Submit with valid data

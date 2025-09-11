@@ -326,7 +326,7 @@ const BookingForm = () => {
           <div className={styles.success} data-testid="success-alert">
             <Alert
               closeable
-              heading="Gelukt"
+              heading="Success!"
               headingLevel={2}
               severity="success"
               onClose={() => setIsSubmitted(false)}

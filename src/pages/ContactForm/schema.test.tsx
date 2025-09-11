@@ -27,7 +27,7 @@ describe('ContactFormSchema', () => {
       const nameError = result.error.issues.find(
         issue => issue.path[0] === 'name'
       );
-      expect(nameError?.message).toBe('Dit veld is verplicht');
+      expect(nameError?.message).toBe('This field is required');
     }
   });
 
@@ -45,7 +45,7 @@ describe('ContactFormSchema', () => {
       const nameError = result.error.issues.find(
         issue => issue.path[0] === 'name'
       );
-      expect(nameError?.message).toBe('Dit veld is verplicht');
+      expect(nameError?.message).toBe('This field is required');
     }
   });
 
@@ -64,7 +64,7 @@ describe('ContactFormSchema', () => {
         issue => issue.path[0] === 'email'
       );
       expect(emailError?.message).toBe(
-        'U hebt een ongeldige waarde ingevoerd voor dit veld'
+        'You have entered an invalid value for this field'
       );
     }
   });
@@ -83,7 +83,7 @@ describe('ContactFormSchema', () => {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
       );
-      expect(emailError?.message).toBe('Dit veld is verplicht');
+      expect(emailError?.message).toBe('This field is required');
     }
   });
 
@@ -101,7 +101,7 @@ describe('ContactFormSchema', () => {
       const bodyError = result.error.issues.find(
         issue => issue.path[0] === 'body'
       );
-      expect(bodyError?.message).toBe('Dit veld is verplicht');
+      expect(bodyError?.message).toBe('This field is required');
     }
   });
 

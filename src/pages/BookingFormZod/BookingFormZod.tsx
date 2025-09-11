@@ -317,7 +317,7 @@ const BookingFormZod = () => {
           <div className={styles.success}>
             <Alert
               closeable
-              heading="Gelukt"
+              heading="Success!"
               headingLevel={2}
               severity="success"
               onClose={() => setIsSubmitted(false)}
