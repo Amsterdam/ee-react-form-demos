@@ -9,8 +9,8 @@ describe('translations', () => {
   });
 
   it('should return correct translations', () => {
-    expect(translations.name).toBe('Voornaam');
-    expect(translations.email).toBe('E-mailadres');
-    expect(translations.body).toBe('Bericht');
+    expect(translations.name).toBe('First name');
+    expect(translations.email).toBe('Email address');
+    expect(translations.body).toBe('Message');
   });
 });

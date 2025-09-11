@@ -203,7 +203,7 @@ const BookingForm = () => {
           )}
 
           <Field className="ams-mb-m" invalid={!!errors.name}>
-            <Label htmlFor="name">Naam</Label>
+            <Label htmlFor="name">Name</Label>
             {errors.name && (
               <ErrorMessage id={`error-name`} data-testid="error-message">
                 {errors.name}
@@ -213,7 +213,7 @@ const BookingForm = () => {
               id="name"
               name="name"
               value={formData.name}
-              placeholder="Voornaam"
+              placeholder="First name"
               required
               onChange={handleChange}
               onBlur={handleBlur}
@@ -221,7 +221,7 @@ const BookingForm = () => {
           </Field>
 
           <Field className="ams-mb-m" invalid={!!errors.email}>
-            <Label htmlFor="email">E-mailadres</Label>
+            <Label htmlFor="email">Email address</Label>
             {errors.email && (
               <ErrorMessage id={`error-email`} data-testid="error-message">
                 {errors.email}
@@ -232,7 +232,7 @@ const BookingForm = () => {
               id="email"
               name="email"
               value={formData.email}
-              placeholder="E-mailadres"
+              placeholder="Email address"
               aria-describedby={errors.email ? 'error-email' : ''}
               required
               invalid={!!errors.email}
@@ -326,14 +326,13 @@ const BookingForm = () => {
           <div className={styles.success} data-testid="success-alert">
             <Alert
               closeable
-              heading="Gelukt"
+              heading="Success!"
               headingLevel={2}
               severity="success"
               onClose={() => setIsSubmitted(false)}
             >
               <Paragraph>
-                Het formulier is verzonden. We hebben uw gegevens goed
-                ontvangen.
+                The form has been sent. We have received your details.
               </Paragraph>
             </Alert>
           </div>

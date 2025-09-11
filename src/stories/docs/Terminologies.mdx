@@ -75,7 +75,7 @@ return (
 - **Controlled** = custom inputs that must be explicitly linked to RHF’s form state.
 - **Uncontrolled** = standard HTML inputs (RHF just grabs their values via ref).
 
-React Hook Form’s docs also talk about **controlled vs uncontrolled**, but their angle is about integration with React’s reactivity.
+React Hook Form’s docs also talk about **controlled vs uncontrolled** but their angle is about integration with React’s reactivity.
 
 RHF prefers uncontrolled inputs because it uses refs under the hood and lets the browser handle input state until you submit or trigger validation. This avoids re-renders on every keystroke.
 

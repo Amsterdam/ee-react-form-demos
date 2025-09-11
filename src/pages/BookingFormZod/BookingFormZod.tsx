@@ -203,7 +203,7 @@ const BookingFormZod = () => {
               id="name"
               name="name"
               value={formData.name}
-              placeholder="Voornaam"
+              placeholder="First name"
               invalid={!!errors.name}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -211,7 +211,7 @@ const BookingFormZod = () => {
           </Field>
 
           <Field className="ams-mb-m" invalid={submitTouched && !!errors.email}>
-            <Label htmlFor="email">E-mailadres</Label>
+            <Label htmlFor="email">Email address</Label>
             {errors.email && (
               <ErrorMessage id={`error-email`} data-testid="error-message">
                 {errors.email}
@@ -222,7 +222,7 @@ const BookingFormZod = () => {
               id="email"
               name="email"
               value={formData.email}
-              placeholder="E-mailadres"
+              placeholder="Email address"
               aria-describedby={errors.email ? 'error-email' : ''}
               invalid={!!errors.email}
               onChange={handleChange}
@@ -317,14 +317,13 @@ const BookingFormZod = () => {
           <div className={styles.success}>
             <Alert
               closeable
-              heading="Gelukt"
+              heading="Success!"
               headingLevel={2}
               severity="success"
               onClose={() => setIsSubmitted(false)}
             >
               <Paragraph>
-                Het formulier is verzonden. We hebben uw gegevens goed
-                ontvangen.
+                The form has been sent. We have received your details.
               </Paragraph>
             </Alert>
           </div>

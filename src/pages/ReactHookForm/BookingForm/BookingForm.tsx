@@ -146,7 +146,7 @@ const BookingForm = () => {
             />
 
             <TextInputControl<{ email: string }>
-              label="E-mailadres"
+              label="Email address"
               name="email"
               type="email"
               testId="booking-create-email"
@@ -233,7 +233,7 @@ const BookingForm = () => {
           <div className={styles.success}>
             <Alert
               closeable
-              heading="Gelukt"
+              heading="Success!"
               headingLevel={2}
               severity="success"
               onClose={() => {
@@ -242,8 +242,7 @@ const BookingForm = () => {
               }}
             >
               <Paragraph>
-                Het formulier is verzonden. We hebben uw gegevens goed
-                ontvangen.
+                The form has been sent. We have received your details.
               </Paragraph>
             </Alert>
           </div>
