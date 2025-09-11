@@ -139,7 +139,7 @@ describe('CreateEntity', () => {
     });
 
     await waitFor(() => {
-      const successMessage = screen.queryByText(/het formulier is verzonden/i);
+      const successMessage = screen.queryByText(/the form has been sent/i);
       return expect(successMessage).toBeInTheDocument();
     });
   });

@@ -18,7 +18,7 @@ describe('BookingFormZod', () => {
     render(<BookingFormZod />);
 
     expect(screen.getByLabelText('Name')).toBeInTheDocument();
-    expect(screen.getByLabelText('E-mailadres')).toBeInTheDocument();
+    expect(screen.getByLabelText('Email address')).toBeInTheDocument();
     expect(screen.getByLabelText('Start date')).toBeInTheDocument();
     expect(screen.getByLabelText('Start time')).toBeInTheDocument();
     expect(screen.getByLabelText('End date')).toBeInTheDocument();
@@ -54,7 +54,7 @@ describe('BookingFormZod', () => {
     fireEvent.change(screen.getByLabelText('Name'), {
       target: { value: 'John Smith' },
     });
-    fireEvent.change(screen.getByLabelText('E-mailadres'), {
+    fireEvent.change(screen.getByLabelText('Email address'), {
       target: { value: 'john@example.com' },
     });
     fireEvent.change(screen.getByLabelText('Start date'), {
@@ -95,7 +95,7 @@ describe('BookingFormZod', () => {
     });
 
     expect(
-      await screen.findByText(/het formulier is verzonden/i)
+      await screen.findByText(/the form has been sent/i)
     ).toBeInTheDocument();
   });
 
@@ -116,7 +116,7 @@ describe('BookingFormZod', () => {
     fireEvent.change(screen.getByLabelText('Name'), {
       target: { value: 'John Smith' },
     });
-    fireEvent.change(screen.getByLabelText('E-mailadres'), {
+    fireEvent.change(screen.getByLabelText('Email address'), {
       target: { value: 'john@example.com' },
     });
     fireEvent.change(screen.getByLabelText('Start date'), {

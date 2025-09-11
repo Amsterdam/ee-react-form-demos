@@ -69,12 +69,12 @@ const ContactForm = () => {
           className="ams-mb-xl"
         >
           <Heading level={1} size="level-3" className="ams-mb-m">
-            Contactformulier
+            Contact form
           </Heading>
 
           <Alert heading="Gelukt" headingLevel={2} severity="success">
             <Paragraph>
-              Het formulier is verzonden. We hebben uw gegevens goed ontvangen.
+              The form has been sent. We have received your details.
             </Paragraph>
           </Alert>
         </Grid.Cell>
@@ -86,7 +86,7 @@ const ContactForm = () => {
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className="ams-mb-xl">
         <Heading level={1} size="level-3" className="ams-mb-m">
-          Contactformulier
+          Contact form
         </Heading>
 
         <Paragraph className="ams-mb-m">
@@ -110,8 +110,10 @@ const ContactForm = () => {
           {/* Fake loader to simulate API request */}
           {isLoading && <Loader />}
           {hasErrors && (
-            <Alert heading="Niet gelukt" headingLevel={2} severity="error">
-              <Paragraph>Er was een fout met de volgende velden:</Paragraph>
+            <Alert heading="Unsuccessful" headingLevel={2} severity="error">
+              <Paragraph>
+                There was an error with the following fields:
+              </Paragraph>
               <OrderedList>
                 {Object.entries(errors).map(([field, { message }]) => (
                   <OrderedList.Item key={`error-item-${field}`}>
@@ -127,7 +129,7 @@ const ContactForm = () => {
             control={control}
             render={({ field }) => (
               <Field invalid={!!errors.name}>
-                <Label htmlFor="name">Naam</Label>
+                <Label htmlFor="name">Name</Label>
                 {errors.name?.message && (
                   <ErrorMessage id={`error-name`}>
                     {errors.name.message}
@@ -136,7 +138,7 @@ const ContactForm = () => {
                 <TextInput
                   id="name"
                   name="name"
-                  placeholder="Voornaam"
+                  placeholder="First name"
                   aria-describedby={errors.name?.message ? 'error-name' : ''}
                   invalid={!!errors.name}
                   onChange={field.onChange}
@@ -153,7 +155,7 @@ const ContactForm = () => {
             control={control}
             render={({ field }) => (
               <Field invalid={!!errors.email}>
-                <Label htmlFor="email">E-mailadres</Label>
+                <Label htmlFor="email">Email address</Label>
                 {errors.email?.message && (
                   <ErrorMessage id={`error-email`}>
                     {errors.email.message}
@@ -180,7 +182,7 @@ const ContactForm = () => {
             control={control}
             render={({ field }) => (
               <Field invalid={!!errors.body}>
-                <Label htmlFor="body">Bericht</Label>
+                <Label htmlFor="body">Message</Label>
                 {errors.body?.message && (
                   <ErrorMessage id={`error-body`}>
                     {errors.body.message}
@@ -203,7 +205,7 @@ const ContactForm = () => {
           />
 
           <div>
-            <Button type="submit">Versturen</Button>
+            <Button type="submit">Submit</Button>
           </div>
         </form>
       </Grid.Cell>

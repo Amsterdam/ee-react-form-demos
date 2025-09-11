@@ -84,12 +84,12 @@ const ContactForm = () => {
       <Grid paddingBottom="x-large" paddingTop="large">
         <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
           <Heading level={1} size="level-3" className="ams-mb-m">
-            Contactformulier
+            Contact form
           </Heading>
 
-          <Alert heading="Gelukt" headingLevel={2} severity="success">
+          <Alert heading="Success!" headingLevel={2} severity="success">
             <Paragraph>
-              Het formulier is verzonden. We hebben uw gegevens goed ontvangen.
+              The form has been sent. We have received your details.
             </Paragraph>
           </Alert>
         </Grid.Cell>
@@ -106,7 +106,7 @@ const ContactForm = () => {
           className="ams-mb-m"
           data-testid="heading"
         >
-          Contactformulier
+          Contact form
         </Heading>
 
         <Paragraph className="ams-mb-m">
@@ -131,12 +131,14 @@ const ContactForm = () => {
           {isLoading && <Loader />}
           {hasErrors && (
             <Alert
-              heading="Niet gelukt"
+              heading="Unsuccessful"
               headingLevel={2}
               severity="error"
               data-testid="alert"
             >
-              <Paragraph>Er was een fout met de volgende velden:</Paragraph>
+              <Paragraph>
+                There was an error with the following fields:
+              </Paragraph>
               <OrderedList>
                 {Object.entries(errors).map(([field, message]) => (
                   <OrderedList.Item key={`error-item-${field}`}>
@@ -148,7 +150,7 @@ const ContactForm = () => {
           )}
 
           <Field invalid={!!errors.name}>
-            <Label htmlFor="name">Naam</Label>
+            <Label htmlFor="name">Name</Label>
             {errors.name && (
               <ErrorMessage id={`error-name`} data-testid="error-message">
                 {errors.name}
@@ -157,7 +159,7 @@ const ContactForm = () => {
             <TextInput
               id="name"
               name="name"
-              placeholder="Voornaam"
+              placeholder="First name"
               aria-describedby={errors.name ? 'error-name' : ''}
               invalid={!!errors.name}
               onChange={e =>
@@ -166,7 +168,7 @@ const ContactForm = () => {
             />
           </Field>
           <Field invalid={!!errors.email}>
-            <Label htmlFor="email">E-mailadres</Label>
+            <Label htmlFor="email">Email address</Label>
             {errors.email && (
               <ErrorMessage id={`error-email`} data-testid="error-message">
                 {errors.email}
@@ -176,7 +178,7 @@ const ContactForm = () => {
               type="email"
               id="email"
               name="email"
-              placeholder="E-mailadres"
+              placeholder="Email address"
               aria-describedby={errors.email ? 'error-email' : ''}
               invalid={!!errors.email}
               onChange={e =>
@@ -185,7 +187,7 @@ const ContactForm = () => {
             />
           </Field>
           <Field invalid={!!errors.body}>
-            <Label htmlFor="body">Bericht</Label>
+            <Label htmlFor="body">Message</Label>
             {errors.body && (
               <ErrorMessage id={`error-body`} data-testid="error-message">
                 {errors.body}
@@ -194,7 +196,7 @@ const ContactForm = () => {
             <TextArea
               id="body"
               name="body"
-              placeholder="Bericht"
+              placeholder="Message"
               aria-describedby={errors.body ? 'error-body' : ''}
               invalid={!!errors.body}
               onChange={e =>
@@ -204,7 +206,7 @@ const ContactForm = () => {
           </Field>
 
           <div>
-            <Button type="submit">Versturen</Button>
+            <Button type="submit">Submit</Button>
           </div>
         </form>
       </Grid.Cell>
