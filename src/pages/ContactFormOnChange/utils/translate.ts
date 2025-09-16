@@ -1,8 +1,8 @@
 // Prettify the labels
 export const translations = {
-  name: 'Voornaam',
-  email: 'E-mailadres',
-  body: 'Bericht',
+  name: 'First name',
+  email: 'Email address',
+  body: 'Message',
 };
 
 const t = (input: keyof typeof translations) => {

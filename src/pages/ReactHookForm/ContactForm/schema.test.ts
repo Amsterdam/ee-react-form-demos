@@ -21,7 +21,7 @@ describe('contactFormSchema', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.flatten().fieldErrors.name).toContain(
-        'Dit veld is verplicht'
+        'This field is required'
       );
     }
   });
@@ -42,7 +42,7 @@ describe('contactFormSchema', () => {
       )?.message;
 
       expect(emailError).toEqual(
-        'U hebt een ongeldige waarde ingevoerd voor dit veld'
+        'You have entered an invalid value for this field'
       );
     } else {
       throw new Error('Expected validation to fail');

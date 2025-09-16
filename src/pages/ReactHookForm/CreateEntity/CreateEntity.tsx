@@ -497,7 +497,7 @@ const CreateEntity = () => {
         <div className={styles.loader}>
           <Alert
             closeable
-            heading="Gelukt"
+            heading="Success!"
             headingLevel={2}
             severity="success"
             onClose={() => {
@@ -506,7 +506,7 @@ const CreateEntity = () => {
             }}
           >
             <Paragraph>
-              Het formulier is verzonden. We hebben uw gegevens goed ontvangen.
+              The form has been sent. We have received your details.
             </Paragraph>
           </Alert>
         </div>

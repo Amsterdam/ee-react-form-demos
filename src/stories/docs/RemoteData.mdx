@@ -6,11 +6,11 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 Sometimes you may need to preload data into your form that comes from a different application.
 
-**Pro tip** - Keep your form data object as flat and with as few child array/object values as possible to keep your components simple.
+**Pro tip** - Keep your form data object as flat and with as few child array/object values as possible to keep your components and state handling simple.
 
 ## Plain HTML5 Form in React
 
-The key step here is calling the `setFormData()` function after fetch.
+The key step here is calling the `setFormData()` function after the `fetch` call.
 
 ```tsx
 import { useEffect, useState, FormEvent } from "react";
@@ -79,7 +79,7 @@ export default function ContactForm() {
 
 ## React Hook Form
 
-The key step here is calling the `reset()` function after fetch.
+The key step here is calling the `reset()` function after the `fetch` call.
 
 ```tsx
 import { useEffect } from "react";

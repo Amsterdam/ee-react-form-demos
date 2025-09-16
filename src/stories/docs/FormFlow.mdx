@@ -8,16 +8,17 @@ What happens when you submit a form in a browser?
 
 ## Traditional form flow
 
-Traditionally in the browser, when a user clicks 'Submit' on a form, the following flow happens:
+Traditionally in the browser, when a user clicks 'Submit' in a form, the following flow happens:
 
 1. The HTML `form` element specifies the target URL (`action` attribute) and HTTP method (`method` - usually `GET` or `POST`)
-  ```html
-    <form action="/submit" method="POST">
-      <input name="username" value="john">
-      <input name="email" value="john@example.com">
-      <button type="submit">Submit</button>
-    </form>
-  ```
+
+```html
+<form action="/submit" method="POST">
+  <input name="username" value="john">
+  <input name="email" value="john@example.com">
+  <button type="submit">Submit</button>
+</form>
+```
 
 2. User clicks submit (or presses Enter), which triggers an event that the browser intercepts.
 3. The browser collects all the form field values and encodes them based on the form's `enctype`. The `enctype` can be:
@@ -36,7 +37,7 @@ Traditionally in the browser, when a user clicks 'Submit' on a form, the followi
 
 ## React form flow
 
-With a traditional browser flow, submitting a form triggers a full page reload, which clears all JavaScript state (#5 above). In modern single-page applications (SPAs) — including most React projects — we intercept the form submission in JavaScript, send the data asynchronously and update the UI without navigating away.
+With a traditional browser flow, submitting a form triggers a full page reload, which clears all JavaScript state (#5 above occurs). In modern single-page applications (SPAs) — including most React projects — we intercept the form submission in JavaScript, send the data asynchronously and update the UI without navigating away.
 
 Therefore, in React-based applications we commonly follow a flow like:
 
@@ -81,9 +82,9 @@ Therefore, in React-based applications we commonly follow a flow like:
     - Data can come from:
         - The DOM via new `FormData(e.currentTarget)` (good for small/medium forms)
         - `React` state (common when fields are fully controlled components).
-    - Perform client-side validation (e.g., with Zod, Yup, custom logic).
+    - Perform client-side validation (e.g., with [Zod](https://zod.dev/), [Yup](https://github.com/jquense/yup), custom logic).
 4. Send the data to the backend
-    - Usually, make an API request with `fetch` or `Axios`:
+    - Usually, make an API request with `fetch` or [Axios](https://axios-http.com/):
         - Use **JSON** for standard text-based payloads.
         - Use `FormData` (with `multipart/form-data`) if uploading files or sending binary data.
 5. The frontend handles the successful response or error returned from the API.

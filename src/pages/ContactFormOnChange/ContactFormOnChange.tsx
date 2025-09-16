@@ -157,12 +157,12 @@ const ContactFormOnChange = () => {
           className="ams-mb-xl"
         >
           <Heading level={1} size="level-3" className="ams-mb-m">
-            Contactformulier
+            Contact form
           </Heading>
 
-          <Alert heading="Gelukt" headingLevel={2} severity="success">
+          <Alert heading="Success!" headingLevel={2} severity="success">
             <Paragraph>
-              Het formulier is verzonden. We hebben uw gegevens goed ontvangen.
+              The form has been sent. We have received your details.
             </Paragraph>
           </Alert>
         </Grid.Cell>
@@ -179,7 +179,7 @@ const ContactFormOnChange = () => {
           className="ams-mb-m"
           data-testid="heading"
         >
-          Contactformulier
+          Contact form
         </Heading>
 
         <Paragraph className="ams-mb-m">
@@ -208,12 +208,14 @@ const ContactFormOnChange = () => {
           before this `passive validation` */}
           {submitTouched && hasErrors && (
             <Alert
-              heading="Niet gelukt"
+              heading="Unsuccessful"
               headingLevel={2}
               severity="error"
               data-testid="alert"
             >
-              <Paragraph>Er was een fout met de volgende velden:</Paragraph>
+              <Paragraph>
+                There was an error with the following fields:
+              </Paragraph>
               <OrderedList>
                 {Object.entries(errors).map(([field, message]) => (
                   <OrderedList.Item key={`error-item-${field}`}>
@@ -225,7 +227,7 @@ const ContactFormOnChange = () => {
           )}
 
           <Field invalid={submitTouched && !!errors.name}>
-            <Label htmlFor="name">Naam</Label>
+            <Label htmlFor="name">Name</Label>
             {submitTouched && errors.name && (
               <ErrorMessage id={`error-name`} data-testid="error-message">
                 {errors.name}
@@ -234,7 +236,7 @@ const ContactFormOnChange = () => {
             <TextInput
               id="name"
               name="name"
-              placeholder="Voornaam"
+              placeholder="First name"
               aria-describedby={
                 submitTouched && errors.name ? 'error-name' : ''
               }
@@ -244,7 +246,7 @@ const ContactFormOnChange = () => {
             />
           </Field>
           <Field invalid={submitTouched && !!errors.email}>
-            <Label htmlFor="email">E-mailadres</Label>
+            <Label htmlFor="email">Email address</Label>
             {submitTouched && errors.email && (
               <ErrorMessage id={`error-email`} data-testid="error-message">
                 {errors.email}
@@ -254,7 +256,7 @@ const ContactFormOnChange = () => {
               type="email"
               id="email"
               name="email"
-              placeholder="E-mailadres"
+              placeholder="Email address"
               aria-describedby={
                 submitTouched && errors.email ? 'error-email' : ''
               }
@@ -264,7 +266,7 @@ const ContactFormOnChange = () => {
             />
           </Field>
           <Field invalid={submitTouched && !!errors.body}>
-            <Label htmlFor="body">Bericht</Label>
+            <Label htmlFor="body">Message</Label>
             {submitTouched && errors.body && (
               <ErrorMessage id={`error-body`} data-testid="error-message">
                 {errors.body}
@@ -273,7 +275,7 @@ const ContactFormOnChange = () => {
             <TextArea
               id="body"
               name="body"
-              placeholder="Bericht"
+              placeholder="Message"
               aria-describedby={
                 submitTouched && errors.body ? 'error-body' : ''
               }
@@ -284,7 +286,7 @@ const ContactFormOnChange = () => {
           </Field>
 
           <div>
-            <Button type="submit">Versturen</Button>
+            <Button type="submit">Submit</Button>
           </div>
         </form>
       </Grid.Cell>

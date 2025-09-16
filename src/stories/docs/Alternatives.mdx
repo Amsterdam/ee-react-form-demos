@@ -4,21 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Alternative Solutions
 
-HTML5 forms or [React Hook Form](https://react-hook-form.com) is the preferred forms solution by Gemeente Amsterdam.
+Native HTML5 forms or [React Hook Form](https://react-hook-form.com) is the preferred forms solution by Gemeente Amsterdam.
 
-**HTML5 forms**: Best for small–medium forms where simplicity and browser-native validation is enough.
-**React Hook Form**: Best for larger, more complex or highly dynamic forms where performance & flexibility matter.
-Other libraries exist in legacy projects, but new work should generally stick to HTML5 or React Hook Form unless there’s a strong case otherwise.
+- **HTML5 forms**: Best for small–medium forms where simplicity and browser-native validation is enough.
+- **React Hook Form**: Best for larger, more complex or highly dynamic forms where performance & flexibility matter.
+- Other libraries exist in legacy projects, but new work should generally stick to HTML5 or React Hook Form unless there’s a strong case otherwise.
 
-## NPM Trends  (August 2025)
+## NPM Trends (August 2025)
 
-![alt text](/src/stories/assets/NPMTrends.png "Title")
+![alt text](/npmtrends.png "NPM Trends for React-based forms packages")
 
 ## 1. HTML5 Forms (Native Browser API)
 
 **Homepage**: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms
 
 **Description**:
+
 The built-in HTML `<form>` element with native input elements (`<input>`, `<select>`, `<textarea>`) and browser-managed validation.
 
 **Pros**:
@@ -40,19 +41,20 @@ The built-in HTML `<form>` element with native input elements (`<input>`, `<sele
 **Homepage**: https://react-hook-form.com
 
 **Description**:
-A performant React form library that leverages uncontrolled components and refs for minimal re-renders. Integrates well with schema validators like Zod or Yup.
+
+A performant React form library that leverages uncontrolled components and refs for minimal re-renders. Integrates well with schema validators like [Zod](https://zod.dev/) or [Yup](https://github.com/jquense/yup).
 
 **Pros**:
 
 - High performance even in large forms
 - Tiny bundle size compared to older libraries
 - Built-in field arrays & dynamic fields
-- Easy integration with validation schemas (Zod, Yup)
+- Easy integration with validation schemas ([Zod](https://zod.dev/), [Yup](https://github.com/jquense/yup))
 - Good TypeScript support
 
 **Cons**:
 
-- API can be unfamiliar at first (e.g., register, watch)
+- API can be unfamiliar at first (e.g. `register`, `watch`)
 - Debugging controlled/uncontrolled issues can be tricky
 - More boilerplate than plain HTML5 for simple forms
 
@@ -61,6 +63,7 @@ A performant React form library that leverages uncontrolled components and refs 
 **Homepage**: https://formik.org
 
 **Description**:
+
 One of the earliest popular React form libraries. Focuses on controlled components and centralised form state.
 
 **Pros**:
@@ -71,7 +74,7 @@ One of the earliest popular React form libraries. Focuses on controlled componen
 
 **Cons**:
 
-- Project looks to be dying (August 2025 - no commit for 10 months)
+- Project looks to be dying (September 2025 - no commit for 11 months)
 - Can be slower in large forms (controlled component model → more re-renders)
 - More verbose than modern alternatives
 - Bundle size larger than React Hook Form
@@ -81,6 +84,7 @@ One of the earliest popular React form libraries. Focuses on controlled componen
 **Homepage**: https://final-form.org/react
 
 **Description**:
+
 A minimal, subscription-based form state manager for React. Uses controlled components but optimises re-renders via field subscriptions.
 
 **Pros**:
@@ -102,6 +106,7 @@ A minimal, subscription-based form state manager for React. Uses controlled comp
 **Homepage**: https://jsonforms.io
 
 **Description**:
+
 Generates forms automatically from JSON Schema definitions. Useful for admin tools or highly dynamic forms.
 
 **Pros**:
@@ -122,6 +127,7 @@ Generates forms automatically from JSON Schema definitions. Useful for admin too
 **Homepage**: https://github.com/bietkul/react-reactive-form
 
 **Description**:
+
 Angular Reactive Forms–style library for React, providing a strongly structured, model-driven approach.
 
 **Pros**:
@@ -132,7 +138,7 @@ Angular Reactive Forms–style library for React, providing a strongly structure
 
 **Cons**:
 
-- Project looks to be abandoned (August 2025 - no commit for 2 years)
+- Project looks to be abandoned (September 2025 - no commit for 2 years)
 - Less idiomatic in React world
 - Smaller community
 - Boilerplate-heavy for simple forms

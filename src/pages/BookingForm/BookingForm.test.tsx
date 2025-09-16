@@ -16,8 +16,8 @@ describe('BookingForm', () => {
 
   it('renders all required inputs and buttons', () => {
     render(<BookingForm />);
-    expect(screen.getByLabelText(/Naam/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/E-mailadres/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Email address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Start date/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Start time/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/End date/i)).toBeInTheDocument();
@@ -42,9 +42,9 @@ describe('BookingForm', () => {
   it('submits valid data and shows success alert after loading', async () => {
     render(<BookingForm />);
     await act(async () => {
-      await userEvent.type(screen.getByLabelText(/Naam/i), 'John Doe');
+      await userEvent.type(screen.getByLabelText(/Name/i), 'John Doe');
       await userEvent.type(
-        screen.getByLabelText(/E-mailadres/i),
+        screen.getByLabelText(/Email address/i),
         'john@example.com'
       );
 
@@ -70,7 +70,7 @@ describe('BookingForm', () => {
 
   it('resets all fields when reset button is clicked', async () => {
     render(<BookingForm />);
-    const nameInput = screen.getByLabelText(/Naam/i);
+    const nameInput = screen.getByLabelText(/Name/i);
     await userEvent.type(nameInput, 'Jane Doe');
     expect(nameInput).toHaveValue('Jane Doe');
 
@@ -83,9 +83,9 @@ describe('BookingForm', () => {
 
   it('shows error when end time is before start time', async () => {
     render(<BookingForm />);
-    await userEvent.type(screen.getByLabelText(/Naam/i), 'John Doe');
+    await userEvent.type(screen.getByLabelText(/Name/i), 'John Doe');
     await userEvent.type(
-      screen.getByLabelText(/E-mailadres/i),
+      screen.getByLabelText(/Email address/i),
       'john@example.com'
     );
 

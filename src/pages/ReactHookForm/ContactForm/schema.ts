@@ -1,7 +1,7 @@
 import z from 'zod/v4';
 
-const invalidTypeError = 'U hebt een ongeldige waarde ingevoerd voor dit veld';
-const requiredError = 'Dit veld is verplicht';
+const invalidTypeError = 'You have entered an invalid value for this field';
+const requiredError = 'This field is required';
 
 const contactFormSchema = z.object({
   name: z

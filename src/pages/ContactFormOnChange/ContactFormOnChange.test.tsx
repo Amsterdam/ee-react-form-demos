@@ -11,22 +11,20 @@ describe('ContactFormLive', () => {
   it('should render the contact form correctly', () => {
     render(<ContactFormLive />);
 
-    expect(screen.getByTestId('heading')).toHaveTextContent('Contactformulier');
-    expect(screen.getByLabelText('Naam')).toBeInTheDocument();
-    expect(screen.getByLabelText('E-mailadres')).toBeInTheDocument();
-    expect(screen.getByLabelText('Bericht')).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Versturen' })
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('heading')).toHaveTextContent('Contact form');
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByLabelText('Email address')).toBeInTheDocument();
+    expect(screen.getByLabelText('Message')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
   });
 
   it('should update form data when user types', async () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
-    const emailInput = screen.getByLabelText('E-mailadres');
-    const bodyInput = screen.getByLabelText('Bericht');
+    const nameInput = screen.getByLabelText('Name');
+    const emailInput = screen.getByLabelText('Email address');
+    const bodyInput = screen.getByLabelText('Message');
 
     await user.type(nameInput, 'John Doe');
     await user.type(emailInput, 'john@example.com');
@@ -41,7 +39,7 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
+    const nameInput = screen.getByLabelText('Name');
 
     // Focus and blur with empty value
     await user.click(nameInput);
@@ -57,7 +55,7 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const emailInput = screen.getByLabelText('E-mailadres');
+    const emailInput = screen.getByLabelText('Email address');
 
     // Focus the field, enter invalid email, then blur
     await user.click(emailInput);
@@ -78,7 +76,7 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const emailInput = screen.getByLabelText('E-mailadres');
+    const emailInput = screen.getByLabelText('Email address');
 
     // First touch the field by focusing and blurring
     await user.click(emailInput);
@@ -98,8 +96,8 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const emailInput = screen.getByLabelText('E-mailadres');
-    const submitButton = screen.getByRole('button', { name: 'Versturen' });
+    const emailInput = screen.getByLabelText('Email address');
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
 
     // Enter invalid email
     await user.type(emailInput, 'invalid-email');
@@ -115,8 +113,8 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
-    const submitButton = screen.getByRole('button', { name: 'Versturen' });
+    const nameInput = screen.getByLabelText('Name');
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
 
     // Touch field and make it invalid
     await user.click(nameInput);
@@ -130,7 +128,7 @@ describe('ContactFormLive', () => {
 
     // Now error alert should be visible
     await waitFor(() => {
-      expect(screen.getByTestId('alert')).toHaveTextContent('Niet gelukt');
+      expect(screen.getByTestId('alert')).toHaveTextContent('Unsuccessful');
     });
   });
 
@@ -138,7 +136,7 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const emailInput = screen.getByLabelText('E-mailadres');
+    const emailInput = screen.getByLabelText('Email address');
 
     // Touch field first
     await user.click(emailInput);
@@ -167,10 +165,10 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
-    const emailInput = screen.getByLabelText('E-mailadres');
-    const bodyInput = screen.getByLabelText('Bericht');
-    const submitButton = screen.getByRole('button', { name: 'Versturen' });
+    const nameInput = screen.getByLabelText('Name');
+    const emailInput = screen.getByLabelText('Email address');
+    const bodyInput = screen.getByLabelText('Message');
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
 
     await user.type(nameInput, 'John Doe');
     await user.type(emailInput, 'john@example.com');
@@ -184,10 +182,10 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
-    const emailInput = screen.getByLabelText('E-mailadres');
-    const bodyInput = screen.getByLabelText('Bericht');
-    const submitButton = screen.getByRole('button', { name: 'Versturen' });
+    const nameInput = screen.getByLabelText('Name');
+    const emailInput = screen.getByLabelText('Email address');
+    const bodyInput = screen.getByLabelText('Message');
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
 
     await user.type(nameInput, 'John Doe');
     await user.type(emailInput, 'john@example.com');
@@ -196,10 +194,10 @@ describe('ContactFormLive', () => {
 
     await waitFor(
       () => {
-        expect(screen.getByText('Gelukt')).toBeInTheDocument();
+        expect(screen.getByText('Success!')).toBeInTheDocument();
         expect(
           screen.getByText(
-            'Het formulier is verzonden. We hebben uw gegevens goed ontvangen.'
+            'The form has been sent. We have received your details.'
           )
         ).toBeInTheDocument();
       },
@@ -211,16 +209,16 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
-    const emailInput = screen.getByLabelText('E-mailadres');
-    const bodyInput = screen.getByLabelText('Bericht');
-    const submitButton = screen.getByRole('button', { name: 'Versturen' });
+    const nameInput = screen.getByLabelText('Name');
+    const emailInput = screen.getByLabelText('Email address');
+    const bodyInput = screen.getByLabelText('Message');
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
 
     // First submission with invalid data
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByTestId('alert')).toHaveTextContent('Niet gelukt');
+      expect(screen.getByTestId('alert')).toHaveTextContent('Unsuccessful');
     });
 
     // Second submission with valid data
@@ -231,7 +229,7 @@ describe('ContactFormLive', () => {
 
     await waitFor(
       () => {
-        expect(screen.getByText('Gelukt')).toBeInTheDocument();
+        expect(screen.getByText('Success!')).toBeInTheDocument();
       },
       { timeout: 2000 }
     );
@@ -240,9 +238,9 @@ describe('ContactFormLive', () => {
   it('should have proper accessibility attributes', () => {
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
-    const emailInput = screen.getByLabelText('E-mailadres');
-    const bodyInput = screen.getByLabelText('Bericht');
+    const nameInput = screen.getByLabelText('Name');
+    const emailInput = screen.getByLabelText('Email address');
+    const bodyInput = screen.getByLabelText('Message');
 
     expect(nameInput).toHaveAttribute('id', 'name');
     expect(nameInput).toHaveAttribute('name', 'name');
@@ -256,9 +254,9 @@ describe('ContactFormLive', () => {
     const user = userEvent.setup();
     render(<ContactFormLive />);
 
-    const nameInput = screen.getByLabelText('Naam');
-    const emailInput = screen.getByLabelText('E-mailadres');
-    const bodyInput = screen.getByLabelText('Bericht');
+    const nameInput = screen.getByLabelText('Name');
+    const emailInput = screen.getByLabelText('Email address');
+    const bodyInput = screen.getByLabelText('Message');
 
     await user.type(nameInput, 'John Doe');
     await user.type(emailInput, 'invalid-email');
@@ -268,7 +266,7 @@ describe('ContactFormLive', () => {
     expect(emailInput).toHaveValue('invalid-email');
     expect(bodyInput).toHaveValue('Test message');
 
-    const submitButton = screen.getByRole('button', { name: 'Versturen' });
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
 
     await user.click(submitButton);
 
