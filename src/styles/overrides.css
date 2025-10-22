@@ -1,0 +1,12 @@
+/* stylelint-disable selector-max-compound-selectors */
+.sbdocs-content.sbdocs-content > :is(h1, h2, h3, h4, h5, h6, p),
+.sbdocs-content.sbdocs-content > div:not(.sb-unstyled) > :is(h1, h2, h3, h4, h5, h6, p),
+.sbdocs-content.sbdocs-content > :is(ol, ul) li,
+.sbdocs-content.sbdocs-content > div:not(.sb-unstyled) > :is(ol, ul) li,
+.sbdocs-content.sbdocs-content > table:not(.sb-unstyled) :is(td, th),
+.sbdocs-content.sbdocs-content > div:not(.sb-unstyled) > table:not(.sb-unstyled)
+:is(td, th),
+.sbdocs-content.sbdocs-content > div:not(.sb-unstyled) > figure > figcaption {
+  color: var(--ams-color-text);
+  font-family: 'Amsterdam Sans', 'Arial', sans-serif;
+}
