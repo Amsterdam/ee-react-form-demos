@@ -21,8 +21,25 @@ import FormDateInput from './components/FormDateInput/FormDateInput';
 import FormTimeInput from './components/FormTimeInput/FormTimeInput';
 import schema, { baseBookingSchema, BookingFormData } from './schema';
 import styles from './BookingFormZod.module.css';
+import StepIntro from './components/StepIntro/StepIntro';
+import Layout from '@/components/Layout/Layout';
+import StepPersonalDetails from './components/StepPersonalDetails/StepPersonalDetails';
+import StepAppointment from './components/StepAppointment/StepAppointment';
+import StepConfirm from './components/StepConfirm/StepConfirm';
+
+export interface FormData {
+  name: string;
+  email: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  remote: boolean;
+  comments: string;
+}
 
 const BookingFormZod = () => {
+  const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitTouched, setIsSubmitTouched] = useState(false);
@@ -31,7 +48,7 @@ const BookingFormZod = () => {
   const nowDateTime = new Date();
   const nowDate = nowDateTime.toISOString().split('T')[0];
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     startDate: nowDate,
@@ -145,6 +162,49 @@ const BookingFormZod = () => {
     });
     setErrors({});
   };
+
+  const steps = [
+    <StepIntro onButtonClick={() => setCurrentStep(1)} key="step-0" />,
+    <StepPersonalDetails
+      formData={formData}
+      onChange={handleChange}
+      errors={errors}
+      onPrevButtonClick={() => setCurrentStep(0)}
+      onNextButtonClick={() => setCurrentStep(2)}
+      key="step-1"
+    />,
+    <StepAppointment
+      formData={formData}
+      minValue={nowDate}
+      onChange={handleChange}
+      errors={errors}
+      onPrevButtonClick={() => setCurrentStep(1)}
+      onNextButtonClick={() => setCurrentStep(3)}
+      key="step-2"
+    />,
+    <StepConfirm
+      formData={formData}
+      onChange={handleChange}
+      onPrevButtonClick={() => setCurrentStep(2)}
+      onSubmitButtonClick={() => {}} // TODO
+      key="step-3"
+    />,
+  ];
+
+  return (
+    <Layout>
+      <Grid as="main" id="inhoud" paddingBottom="2x-large" paddingTop="large">
+        <Grid.Cell
+          span={{ narrow: 4, medium: 5, wide: 7 }}
+          start={{ narrow: 1, medium: 2, wide: 3 }}
+        >
+          <form onSubmit={handleSubmit} noValidate>
+            {steps[currentStep]}
+          </form>
+        </Grid.Cell>
+      </Grid>
+    </Layout>
+  );
 
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
