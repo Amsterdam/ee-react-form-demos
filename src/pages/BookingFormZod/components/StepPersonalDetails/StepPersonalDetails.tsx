@@ -8,10 +8,13 @@ import {
   Grid,
   Heading,
   Paragraph,
+  Alert,
+  UnorderedList,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingFormZod';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
+import translate, { translations } from '../../utils/translate';
 
 interface StepPersonalDetailsProps {
   formData: FormData;
@@ -29,7 +32,14 @@ const StepPersonalDetails = ({
   onNextButtonClick,
 }: StepPersonalDetailsProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
-  // const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleSubmit = () => {
+    setSubmitTouched(true);
+
+    if (!Object.keys(errors).length) {
+      onNextButtonClick();
+    }
+  };
 
   return (
     <>
@@ -55,6 +65,28 @@ const StepPersonalDetails = ({
           span={{ narrow: 4, medium: 5, wide: 7 }}
           start={{ narrow: 1, medium: 2, wide: 3 }}
         >
+          {submitTouched && Object.keys(errors).length > 0 && (
+            <Alert
+              severity="error"
+              heading="Please fix the following:"
+              headingLevel={2}
+              className="ams-mb-m"
+              data-testid="error-alert"
+            >
+              <UnorderedList>
+                {Object.entries(errors).map(
+                  ([field, message]) =>
+                    message && (
+                      <UnorderedList.Item key={field}>
+                        {translate(field as keyof typeof translations)}:{' '}
+                        {message}
+                      </UnorderedList.Item>
+                    )
+                )}
+              </UnorderedList>
+            </Alert>
+          )}
+
           <header aria-labelledby="form-header" className="ams-mb-m ams-gap-xs">
             <Heading aria-hidden id="form-header" level={2} size="level-4">
               Afspraak maken
@@ -69,7 +101,7 @@ const StepPersonalDetails = ({
           </header>
           <Field className="ams-mb-m" invalid={submitTouched && !!errors.name}>
             <Label htmlFor="name">Name</Label>
-            {errors.name && (
+            {submitTouched && errors.name && (
               <ErrorMessage id={`error-name`} data-testid="error-message">
                 {errors.name}
               </ErrorMessage>
@@ -79,32 +111,31 @@ const StepPersonalDetails = ({
               name="name"
               value={formData.name}
               placeholder="Voornaam"
-              invalid={!!errors.name}
+              invalid={submitTouched && !!errors.name}
               onChange={onChange}
-              // onBlur={handleBlur}
             />
           </Field>
 
           <Field className="ams-mb-m" invalid={submitTouched && !!errors.email}>
             <Label htmlFor="email">E-mailadres</Label>
-            {errors.email && (
+            {submitTouched && errors.email && (
               <ErrorMessage id={`error-email`} data-testid="error-message">
                 {errors.email}
               </ErrorMessage>
             )}
             <TextInput
-              // type="email"
+              type="email"
               id="email"
               name="email"
               value={formData.email}
               placeholder="E-mailadres"
               aria-describedby={errors.email ? 'error-email' : ''}
-              invalid={!!errors.email}
+              invalid={submitTouched && !!errors.email}
               onChange={onChange}
             />
           </Field>
 
-          <Button type="button" onClick={() => onNextButtonClick()}>
+          <Button type="button" onClick={handleSubmit}>
             Volgende vraag
           </Button>
         </Grid.Cell>

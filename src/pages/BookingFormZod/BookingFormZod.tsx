@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import {
   Alert,
   Button,
@@ -39,6 +39,7 @@ export interface FormData {
   comments: string;
 }
 
+// TODO post submit step
 const BookingFormZod = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +61,29 @@ const BookingFormZod = () => {
     comments: '',
   });
 
+  // const validateFields = (fields: string[]) => {
+  //   fields.forEach(field => {
+  //     const shape = baseBookingSchema.shape[field as keyof BookingFormData];
+
+  //     if (shape) {
+  //       const result = shape.safeParse(formData[field]);
+
+  //       if (!result.success) {
+  //         setErrors(prev => ({
+  //           ...prev,
+  //           [field]: result.error.errors[0].message,
+  //         }));
+  //       } else {
+  //         setErrors(prev => {
+  //           const { [field]: _unused, ...rest } = prev;
+  //           void _unused;
+  //           return rest;
+  //         });
+  //       }
+  //     }
+  //   });
+  // };
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -75,34 +99,6 @@ const BookingFormZod = () => {
     }));
 
     // validate this field immediately
-    const shape = baseBookingSchema.shape[name as keyof BookingFormData];
-
-    if (shape) {
-      const result = shape.safeParse(value);
-      if (!result.success) {
-        setErrors(prev => ({
-          ...prev,
-          [name]: result.error.errors[0].message,
-        }));
-      } else {
-        setErrors(prev => {
-          const { [name]: _unused, ...rest } = prev;
-          void _unused;
-          return rest;
-        });
-      }
-    }
-  };
-
-  const handleBlur = (
-    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, type } = e.target;
-    const value =
-      e.target instanceof HTMLInputElement && type === 'checkbox'
-        ? e.target.checked
-        : e.target.value;
-
     const shape = baseBookingSchema.shape[name as keyof BookingFormData];
 
     if (shape) {
