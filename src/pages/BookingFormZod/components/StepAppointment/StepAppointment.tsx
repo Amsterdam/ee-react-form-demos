@@ -6,16 +6,19 @@ import {
   Grid,
   Heading,
   Paragraph,
+  Alert,
+  UnorderedList,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingFormZod';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
 import FormDateInput from '../FormDateInput/FormDateInput';
 import FormTimeInput from '../FormTimeInput/FormTimeInput';
+import translate, { translations } from '../../utils/translate';
 
 interface StepAppointmentProps {
   formData: FormData;
-  minValue: string;
+  minDateValue: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   errors: Record<string, string>;
   onPrevButtonClick: () => void;
@@ -24,14 +27,21 @@ interface StepAppointmentProps {
 
 const StepAppointment = ({
   formData,
-  minValue,
+  minDateValue,
   onChange,
   errors,
   onPrevButtonClick,
   onNextButtonClick,
 }: StepAppointmentProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
-  // const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleNextButtonClick = () => {
+    setSubmitTouched(true);
+
+    if (!Object.keys(errors).length) {
+      onNextButtonClick();
+    }
+  };
 
   return (
     <>
@@ -57,13 +67,44 @@ const StepAppointment = ({
           span={{ narrow: 4, medium: 5, wide: 7 }}
           start={{ narrow: 1, medium: 2, wide: 3 }}
         >
+          {/*
+           * Notifying a user of errors is threefold:
+           * - We add the error count to the document title, so it is the first
+           * thing a screen reader user hears.
+           * - We show the Invalid Form Alert at the top of the main container.
+           * - We add error messages next to the relevant form fields.
+           * For more info, see: https://designsystem.amsterdam/?path=/docs/components-forms-invalid-form-alert--docs
+           */}
+          {/* TODO refactor into component */}
+          {submitTouched && Object.keys(errors).length > 0 && (
+            <Alert
+              severity="error"
+              heading="Please fix the following:"
+              headingLevel={2}
+              className="ams-mb-m"
+              data-testid="error-alert"
+            >
+              <UnorderedList>
+                {Object.entries(errors).map(
+                  ([field, message]) =>
+                    message && (
+                      <UnorderedList.Item key={field}>
+                        {translate(field as keyof typeof translations)}:{' '}
+                        {message}
+                      </UnorderedList.Item>
+                    )
+                )}
+              </UnorderedList>
+            </Alert>
+          )}
+
           <header aria-labelledby="form-header" className="ams-mb-m ams-gap-xs">
             <Heading aria-hidden id="form-header" level={2} size="level-4">
               Afspraak maken
             </Heading>
             {/*
-              * Start by testing your form without a progress indicator to see if
-              it’s simple enough that users do not need one.
+              * Start by testing your form without a progress indicator to see
+              if it’s simple enough that users do not need one.
               * If you do, use a simple one like this one.
               * For more info, see: https://design-system.service.gov.uk/patterns/question-pages/#using-progress-indicators
               */}
@@ -85,8 +126,8 @@ const StepAppointment = ({
                 label="Startdatum"
                 value={formData.startDate}
                 onChange={onChange}
-                minValue={minValue}
-                error={errors.startDate}
+                minValue={minDateValue}
+                error={submitTouched ? errors.startDate : undefined}
               />
               <FormTimeInput
                 id="startTime"
@@ -94,7 +135,7 @@ const StepAppointment = ({
                 label="Starttijd"
                 value={formData.startTime}
                 onChange={onChange}
-                error={errors.startTime}
+                error={submitTouched ? errors.startTime : undefined}
               />
             </Row>
           </FieldSet>
@@ -115,7 +156,7 @@ const StepAppointment = ({
                 value={formData.endDate}
                 onChange={onChange}
                 minValue={formData.startDate}
-                error={errors.endDate}
+                error={submitTouched ? errors.endDate : undefined}
               />
               <FormTimeInput
                 id="endTime"
@@ -123,12 +164,12 @@ const StepAppointment = ({
                 label="Eindtijd"
                 value={formData.endTime}
                 onChange={onChange}
-                error={errors.endTime}
+                error={submitTouched ? errors.endTime : undefined}
               />
             </Row>
           </FieldSet>
 
-          <Button type="button" onClick={() => onNextButtonClick()}>
+          <Button type="button" onClick={handleNextButtonClick}>
             Volgende vraag
           </Button>
         </Grid.Cell>

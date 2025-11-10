@@ -172,7 +172,7 @@ const BookingFormZod = () => {
     />,
     <StepAppointment
       formData={formData}
-      minValue={nowDate}
+      minDateValue={nowDate}
       onChange={handleChange}
       errors={errors}
       onPrevButtonClick={() => setCurrentStep(1)}

@@ -33,7 +33,7 @@ const StepPersonalDetails = ({
 }: StepPersonalDetailsProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
 
-  const handleSubmit = () => {
+  const handleNextButtonClick = () => {
     setSubmitTouched(true);
 
     if (!Object.keys(errors).length) {
@@ -135,7 +135,7 @@ const StepPersonalDetails = ({
             />
           </Field>
 
-          <Button type="button" onClick={handleSubmit}>
+          <Button type="button" onClick={handleNextButtonClick}>
             Volgende vraag
           </Button>
         </Grid.Cell>
