@@ -8,6 +8,8 @@ import {
   Grid,
   Heading,
   Label,
+  Page,
+  PageHeader,
   Paragraph,
   Row,
   TextInput,
@@ -22,7 +24,6 @@ import FormTimeInput from './components/FormTimeInput/FormTimeInput';
 import schema, { baseBookingSchema, BookingFormData } from './schema';
 import styles from './BookingFormZod.module.css';
 import StepIntro from './components/StepIntro/StepIntro';
-import Layout from '@/components/Layout/Layout';
 import StepPersonalDetails from './components/StepPersonalDetails/StepPersonalDetails';
 import StepAppointment from './components/StepAppointment/StepAppointment';
 import StepConfirm from './components/StepConfirm/StepConfirm';
@@ -192,18 +193,12 @@ const BookingFormZod = () => {
   ];
 
   return (
-    <Layout>
-      <Grid as="main" id="inhoud" paddingBottom="2x-large" paddingTop="large">
-        <Grid.Cell
-          span={{ narrow: 4, medium: 5, wide: 7 }}
-          start={{ narrow: 1, medium: 2, wide: 3 }}
-        >
-          <form onSubmit={handleSubmit} noValidate>
-            {steps[currentStep]}
-          </form>
-        </Grid.Cell>
-      </Grid>
-    </Layout>
+    <Page>
+      <PageHeader className="ams-mb-xl" />
+      <form onSubmit={handleSubmit} noValidate>
+        {steps[currentStep]}
+      </form>
+    </Page>
   );
 
   return (
