@@ -6,21 +6,20 @@ import {
   Grid,
   Heading,
   Paragraph,
-  Alert,
-  UnorderedList,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingFormZod';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
 import FormDateInput from '../FormDateInput/FormDateInput';
 import FormTimeInput from '../FormTimeInput/FormTimeInput';
-import translate, { translations } from '../../utils/translate';
+import InvalidFormAlert from '../InvalidFormAlert/InvalidFormAlert';
 
 interface StepAppointmentProps {
   formData: FormData;
   minDateValue: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   errors: Record<string, string>;
+  disabled?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
 }
@@ -28,8 +27,8 @@ interface StepAppointmentProps {
 const StepAppointment = ({
   formData,
   minDateValue,
-  onChange,
   errors,
+  onChange,
   onPrevButtonClick,
   onNextButtonClick,
 }: StepAppointmentProps) => {
@@ -73,28 +72,7 @@ const StepAppointment = ({
            * - We add error messages next to the relevant form fields.
            * For more info, see: https://designsystem.amsterdam/?path=/docs/components-forms-invalid-form-alert--docs
            */}
-          {/* TODO refactor into component */}
-          {showErrors && (
-            <Alert
-              severity="error"
-              heading="Please fix the following:"
-              headingLevel={2}
-              className="ams-mb-m"
-              data-testid="error-alert"
-            >
-              <UnorderedList>
-                {Object.entries(errors).map(
-                  ([field, message]) =>
-                    message && (
-                      <UnorderedList.Item key={field}>
-                        {translate(field as keyof typeof translations)}:{' '}
-                        {message}
-                      </UnorderedList.Item>
-                    )
-                )}
-              </UnorderedList>
-            </Alert>
-          )}
+          {showErrors && <InvalidFormAlert errors={errors} />}
 
           <header aria-labelledby="form-header" className="ams-mb-m ams-gap-xs">
             <Heading aria-hidden id="form-header" level={2} size="level-4">

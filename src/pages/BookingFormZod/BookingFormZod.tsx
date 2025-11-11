@@ -1,10 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import {
-  Alert,
-  Page,
-  PageHeader,
-  Paragraph,
-} from '@amsterdam/design-system-react';
+import { Page, PageHeader } from '@amsterdam/design-system-react';
 import schema, {
   baseBookingSchema,
   BookingFormData,
@@ -14,7 +9,8 @@ import StepIntro from './components/StepIntro/StepIntro';
 import StepPersonalDetails from './components/StepPersonalDetails/StepPersonalDetails';
 import StepAppointment from './components/StepAppointment/StepAppointment';
 import StepConfirm from './components/StepConfirm/StepConfirm';
-import styles from './BookingFormZod.module.css';
+import Loader from '@/components/Loader/Loader';
+import SuccessContent from './components/SuccessContent/SuccessContent';
 
 export interface FormData {
   name: string;
@@ -23,12 +19,11 @@ export interface FormData {
   startTime: string;
   endDate: string;
   endTime: string;
-  remote: boolean;
   comments: string;
 }
 
-// TODO post submit step
-// TODO disable fields on submit
+// TODO error text translations
+// TODO enter key should trigger next button
 const BookingFormZod = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +40,6 @@ const BookingFormZod = () => {
     startTime: '',
     endDate: '',
     endTime: '',
-    remote: false,
     comments: '',
   });
 
@@ -174,8 +168,9 @@ const BookingFormZod = () => {
     <StepIntro onButtonClick={() => setCurrentStep(1)} key="step-0" />,
     <StepPersonalDetails
       formData={formData}
-      onChange={handleChange}
       errors={errors}
+      disabled={isLoading}
+      onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(0)}
       onNextButtonClick={handleNextStep}
       key="step-1"
@@ -183,14 +178,16 @@ const BookingFormZod = () => {
     <StepAppointment
       formData={formData}
       minDateValue={nowDate}
-      onChange={handleChange}
       errors={errors}
+      disabled={isLoading}
+      onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(1)}
       onNextButtonClick={handleNextStep}
       key="step-2"
     />,
     <StepConfirm
       formData={formData}
+      disabled={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(2)}
       key="step-3"
@@ -200,23 +197,9 @@ const BookingFormZod = () => {
   return (
     <Page>
       <PageHeader className="ams-mb-xl" />
-      {isSubmitted && (
-        <div className={styles.success}>
-          <Alert
-            closeable
-            heading="Success!"
-            headingLevel={2}
-            severity="success"
-            onClose={() => setIsSubmitted(false)}
-          >
-            <Paragraph>
-              The form has been sent. We have received your details.
-            </Paragraph>
-          </Alert>
-        </div>
-      )}
+      {isLoading && !isSubmitted && <Loader />}
       <form onSubmit={handleSubmit} noValidate>
-        {steps[currentStep]}
+        {!isSubmitted ? steps[currentStep] : <SuccessContent />}
       </form>
     </Page>
   );

@@ -8,26 +8,24 @@ import {
   Grid,
   Heading,
   Paragraph,
-  Alert,
-  UnorderedList,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingFormZod';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
-import translate, { translations } from '../../utils/translate';
+import InvalidFormAlert from '../InvalidFormAlert/InvalidFormAlert';
 
 interface StepPersonalDetailsProps {
   formData: FormData;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   errors: Record<string, string>;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
 }
 
 const StepPersonalDetails = ({
   formData,
-  onChange,
   errors,
+  onChange,
   onPrevButtonClick,
   onNextButtonClick,
 }: StepPersonalDetailsProps) => {
@@ -63,27 +61,7 @@ const StepPersonalDetails = ({
           span={{ narrow: 4, medium: 5, wide: 7 }}
           start={{ narrow: 1, medium: 2, wide: 3 }}
         >
-          {showErrors && (
-            <Alert
-              severity="error"
-              heading="Please fix the following:"
-              headingLevel={2}
-              className="ams-mb-m"
-              data-testid="error-alert"
-            >
-              <UnorderedList>
-                {Object.entries(errors).map(
-                  ([field, message]) =>
-                    message && (
-                      <UnorderedList.Item key={field}>
-                        {translate(field as keyof typeof translations)}:{' '}
-                        {message}
-                      </UnorderedList.Item>
-                    )
-                )}
-              </UnorderedList>
-            </Alert>
-          )}
+          {showErrors && <InvalidFormAlert errors={errors} />}
 
           <header aria-labelledby="form-header" className="ams-mb-m ams-gap-xs">
             <Heading aria-hidden id="form-header" level={2} size="level-4">

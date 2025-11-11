@@ -7,7 +7,6 @@ export const baseBookingSchema = z.object({
   startTime: z.string().min(1, 'Start time is required'),
   endDate: z.string().min(1, 'End date is required'),
   endTime: z.string().min(1, 'End time is required'),
-  remote: z.boolean().default(false),
   comments: z.string().optional(),
 });
 
@@ -36,7 +35,6 @@ export const stepSchemas = {
     endTime: true,
   }),
   confirm: baseBookingSchema.pick({
-    remote: true,
     comments: true,
   }),
 };
