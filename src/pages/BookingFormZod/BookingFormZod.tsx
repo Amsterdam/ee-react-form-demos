@@ -22,8 +22,8 @@ export interface FormData {
   comments: string;
 }
 
-// TODO error text translations
 // TODO enter key should trigger next button
+// TODO tests
 const BookingFormZod = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
