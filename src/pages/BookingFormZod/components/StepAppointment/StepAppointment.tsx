@@ -34,13 +34,11 @@ const StepAppointment = ({
   onNextButtonClick,
 }: StepAppointmentProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
+  const showErrors = submitTouched && Object.keys(errors).length > 0;
 
   const handleNextButtonClick = () => {
     setSubmitTouched(true);
-
-    if (!Object.keys(errors).length) {
-      onNextButtonClick();
-    }
+    onNextButtonClick();
   };
 
   return (
@@ -76,7 +74,7 @@ const StepAppointment = ({
            * For more info, see: https://designsystem.amsterdam/?path=/docs/components-forms-invalid-form-alert--docs
            */}
           {/* TODO refactor into component */}
-          {submitTouched && Object.keys(errors).length > 0 && (
+          {showErrors && (
             <Alert
               severity="error"
               heading="Please fix the following:"

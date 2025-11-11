@@ -21,10 +21,25 @@ const bookingFormSchema = baseBookingSchema.refine(
     return endDateTime > startDateTime;
   },
   {
-    message: 'End date and time must be later than start date and time',
+    message:
+      'De einddatum en -tijd moeten later zijn dan de startdatum en -tijd.',
     path: ['endTime'],
   }
 );
+
+export const stepSchemas = {
+  personal: baseBookingSchema.pick({ name: true, email: true }),
+  appointment: baseBookingSchema.pick({
+    startDate: true,
+    startTime: true,
+    endDate: true,
+    endTime: true,
+  }),
+  confirm: baseBookingSchema.pick({
+    remote: true,
+    comments: true,
+  }),
+};
 
 export type BookingFormData = z.infer<typeof bookingFormSchema>;
 

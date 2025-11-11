@@ -32,13 +32,11 @@ const StepPersonalDetails = ({
   onNextButtonClick,
 }: StepPersonalDetailsProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
+  const showErrors = submitTouched && Object.keys(errors).length > 0;
 
   const handleNextButtonClick = () => {
     setSubmitTouched(true);
-
-    if (!Object.keys(errors).length) {
-      onNextButtonClick();
-    }
+    onNextButtonClick();
   };
 
   return (
@@ -65,7 +63,7 @@ const StepPersonalDetails = ({
           span={{ narrow: 4, medium: 5, wide: 7 }}
           start={{ narrow: 1, medium: 2, wide: 3 }}
         >
-          {submitTouched && Object.keys(errors).length > 0 && (
+          {showErrors && (
             <Alert
               severity="error"
               heading="Please fix the following:"

@@ -15,14 +15,12 @@ interface StepConfirmProps {
   formData: FormData;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onPrevButtonClick: () => void;
-  onSubmitButtonClick: () => void;
 }
 
 const StepConfirm = ({
   formData,
   onChange,
   onPrevButtonClick,
-  onSubmitButtonClick,
 }: StepConfirmProps) => (
   <>
     <Grid paddingBottom="2x-large" paddingTop="large">
@@ -76,9 +74,7 @@ const StepConfirm = ({
           onChange={onChange}
         />
 
-        <Button type="button" onClick={() => onSubmitButtonClick()}>
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </Grid.Cell>
     </Grid>
   </>
