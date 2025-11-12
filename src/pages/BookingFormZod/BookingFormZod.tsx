@@ -22,7 +22,6 @@ export interface FormData {
   comments: string;
 }
 
-// TODO enter key should trigger next button
 // TODO tests
 const BookingFormZod = () => {
   const [currentStep, setCurrentStep] = useState(0);

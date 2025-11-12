@@ -8,15 +8,17 @@ import {
   Grid,
   Heading,
   Paragraph,
+  InvalidFormAlert,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingFormZod';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
-import InvalidFormAlert from '../InvalidFormAlert/InvalidFormAlert';
+import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
 
 interface StepPersonalDetailsProps {
   formData: FormData;
   errors: Record<string, string>;
+  disabled: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
@@ -31,6 +33,7 @@ const StepPersonalDetails = ({
 }: StepPersonalDetailsProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
   const showErrors = submitTouched && Object.keys(errors).length > 0;
+  const alertErrors = mapErrorsToAlert(errors);
 
   const handleNextButtonClick = () => {
     setSubmitTouched(true);
@@ -61,7 +64,21 @@ const StepPersonalDetails = ({
           span={{ narrow: 4, medium: 5, wide: 7 }}
           start={{ narrow: 1, medium: 2, wide: 3 }}
         >
-          {showErrors && <InvalidFormAlert errors={errors} />}
+          {/*
+           * Notifying a user of errors is threefold:
+           * - We add the error count to the document title, so it is the first
+           * thing a screen reader user hears.
+           * - We show the Invalid Form Alert at the top of the main container.
+           * - We add error messages next to the relevant form fields.
+           * For more info, see: https://designsystem.amsterdam/?path=/docs/components-forms-invalid-form-alert--docs
+           */}
+          {showErrors && (
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
+          )}
 
           <header aria-labelledby="form-header" className="ams-mb-m ams-gap-xs">
             <Heading aria-hidden id="form-header" level={2} size="level-4">

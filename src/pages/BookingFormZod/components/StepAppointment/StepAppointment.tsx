@@ -6,13 +6,14 @@ import {
   Grid,
   Heading,
   Paragraph,
+  InvalidFormAlert,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingFormZod';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
 import FormDateInput from '../FormDateInput/FormDateInput';
 import FormTimeInput from '../FormTimeInput/FormTimeInput';
-import InvalidFormAlert from '../InvalidFormAlert/InvalidFormAlert';
+import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
 
 interface StepAppointmentProps {
   formData: FormData;
@@ -34,6 +35,7 @@ const StepAppointment = ({
 }: StepAppointmentProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
   const showErrors = submitTouched && Object.keys(errors).length > 0;
+  const alertErrors = mapErrorsToAlert(errors);
 
   const handleNextButtonClick = () => {
     setSubmitTouched(true);
@@ -72,7 +74,13 @@ const StepAppointment = ({
            * - We add error messages next to the relevant form fields.
            * For more info, see: https://designsystem.amsterdam/?path=/docs/components-forms-invalid-form-alert--docs
            */}
-          {showErrors && <InvalidFormAlert errors={errors} />}
+          {showErrors && (
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
+          )}
 
           <header aria-labelledby="form-header" className="ams-mb-m ams-gap-xs">
             <Heading aria-hidden id="form-header" level={2} size="level-4">
