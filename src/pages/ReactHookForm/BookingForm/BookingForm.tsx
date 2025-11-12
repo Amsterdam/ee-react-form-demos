@@ -15,7 +15,6 @@ export interface BookingFormData {
   startTime: string;
   endDate: string;
   endTime: string;
-  remote: boolean;
   comments: string;
 }
 
@@ -35,7 +34,6 @@ const BookingForm = () => {
       startTime: '',
       endDate: '',
       endTime: '',
-      remote: false,
       comments: '',
     },
   });
@@ -61,15 +59,6 @@ const BookingForm = () => {
     }, []);
 
   const handleNextStep = () => {
-    // const validation = validateStep(currentStep, formData);
-
-    // if (!validation.success) {
-    //   setErrors(validation.errors);
-    //   return; // block progress
-    // }
-
-    // clear step-specific errors and move on
-    // setErrors({});
     setCurrentStep(currentStep + 1);
   };
 
