@@ -22,11 +22,7 @@ describe('TextInputControl', () => {
   it('renders with label and input', () => {
     render(
       <Wrapper>
-        <TextInputControl<FormValues>
-          name="name"
-          label="Full Name"
-          testId="name"
-        />
+        <TextInputControl<FormValues> name="name" label="Full Name" />
       </Wrapper>
     );
 
@@ -37,11 +33,7 @@ describe('TextInputControl', () => {
   it('handles user input', () => {
     render(
       <Wrapper>
-        <TextInputControl<FormValues>
-          name="name"
-          label="Full Name"
-          testId="name"
-        />
+        <TextInputControl<FormValues> name="name" label="Full Name" />
       </Wrapper>
     );
 
@@ -55,11 +47,7 @@ describe('TextInputControl', () => {
   it('renders with initial value', () => {
     render(
       <Wrapper defaultValues={{ name: 'Bob' }}>
-        <TextInputControl<FormValues>
-          name="name"
-          label="Full Name"
-          testId="name"
-        />
+        <TextInputControl<FormValues> name="name" label="Full Name" />
       </Wrapper>
     );
 
@@ -74,7 +62,6 @@ describe('TextInputControl', () => {
           name="name"
           label="Full Name"
           description="Please enter your full legal name."
-          testId="name"
         />
       </Wrapper>
     );
@@ -91,7 +78,6 @@ describe('TextInputControl', () => {
           name="name"
           label="Full Name"
           description="Used for formal identification."
-          testId="name"
         />
       </Wrapper>
     );
@@ -121,7 +107,6 @@ describe('TextInputControl', () => {
               name="name"
               label="Full Name"
               registerOptions={{ required: 'Name is required' }}
-              testId="name"
             />
             <button type="submit">Submit</button>
           </form>

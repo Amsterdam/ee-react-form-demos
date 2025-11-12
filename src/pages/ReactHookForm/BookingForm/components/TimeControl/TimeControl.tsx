@@ -20,10 +20,9 @@ const TimeControl = <T extends FieldValues>({
   description,
   registerOptions,
   id,
-  testId,
   ...attributes
 }: TimeControlProps<T>) => {
-  const identifier = testId || id || name;
+  const identifier = id || name;
   const descriptionId = `${identifier}-description`;
   const errorId = `${identifier}-error`;
 
@@ -36,22 +35,14 @@ const TimeControl = <T extends FieldValues>({
         const hasError = !!formState.errors[name];
 
         return (
-          <Field data-testid={`${identifier}-text-input-wrapper`}>
+          <Field>
             {label && (
-              <Label
-                htmlFor={identifier}
-                data-testid={`${identifier}-label`}
-                optional={optional}
-              >
+              <Label htmlFor={identifier} optional={optional}>
                 {label}
               </Label>
             )}
             {description && (
-              <Paragraph
-                size="small"
-                id={descriptionId}
-                data-testid={descriptionId}
-              >
+              <Paragraph size="small" id={identifier}>
                 {description}
               </Paragraph>
             )}
@@ -62,7 +53,6 @@ const TimeControl = <T extends FieldValues>({
               )}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
-              data-testid={identifier}
               invalid={hasError}
               {...attributes}
             />

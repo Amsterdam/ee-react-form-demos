@@ -1,23 +1,14 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import {
-  Alert,
-  Button,
-  Grid,
-  Heading,
-  Paragraph,
-  Row,
-} from '@amsterdam/design-system-react';
+import { Page, PageHeader } from '@amsterdam/design-system-react';
 import Loader from '@/components/Loader/Loader';
-import TextInputControl from './components/TextInputControl/TextInputControl';
-import CheckboxControl from './components/CheckboxControl/CheckboxControl';
-import TextAreaControl from './components/TextAreaControl/TextAreaControl';
-import DateControl from './components/DateControl/DateControl';
-import TimeControl from './components/TimeControl/TimeControl';
-import DateTimeFieldset from './components/DateTimeFieldset/DateTimeFieldset';
-import styles from './BookingForm.module.css';
+import StepIntro from '@/pages/BookingForm/components/StepIntro/StepIntro';
+import SuccessContent from './components/SuccessContent/SuccessContent';
+import StepPersonalDetails from './components/StepPersonalDetails/StepPersonalDetails';
+import StepAppointment from './components/StepAppointment/StepAppointment';
+import StepConfirm from './components/StepConfirm/StepConfirm';
 
-interface BookingFormData {
+export interface BookingFormData {
   name: string;
   email: string;
   startDate: string;
@@ -29,6 +20,7 @@ interface BookingFormData {
 }
 
 const BookingForm = () => {
+  const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -36,8 +28,6 @@ const BookingForm = () => {
   const nowDate = new Date().toISOString().split('T')[0];
 
   const methods = useForm<BookingFormData>({
-    // Uncomment for validation onChange
-    // mode: 'onChange',
     defaultValues: {
       name: '',
       email: '',
@@ -49,41 +39,6 @@ const BookingForm = () => {
       comments: '',
     },
   });
-  const [startDate, startTime, endDate, endTime] = methods.watch([
-    'startDate',
-    'startTime',
-    'endDate',
-    'endTime',
-  ]);
-
-  const startDateTime = useMemo(() => {
-    if (!startDate || !startTime) return null;
-    return new Date(`${startDate}T${startTime}`);
-  }, [startDate, startTime]);
-
-  const endDateTime = useMemo(() => {
-    if (!endDate || !endTime) return null;
-    return new Date(`${endDate}T${endTime}`);
-  }, [endDate, endTime]);
-
-  const isValidDateRange = useMemo(() => {
-    // Skip validation if values are incomplete
-    if (!startDateTime || !endDateTime) return true;
-
-    // It would logical to use a library like dayjs to validate date strings
-    return new Date(endDate).getTime() >= new Date(startDate).getTime();
-  }, [startDateTime, endDateTime]);
-
-  const isValidTimeRange = useMemo(() => {
-    // Skip validation if values are incomplete
-    if (!startDateTime || !endDateTime) return true;
-    // return endDateTime.getTime() > startDateTime.getTime();
-    if (endDateTime.getTime() > startDateTime.getTime()) {
-      return true;
-    }
-
-    return 'This field has an invalid value.';
-  }, [startDateTime, endDateTime]);
 
   const onValidSubmit: SubmitHandler<BookingFormData> =
     useCallback(async () => {
@@ -105,150 +60,51 @@ const BookingForm = () => {
       }
     }, []);
 
+  const handleNextStep = () => {
+    // const validation = validateStep(currentStep, formData);
+
+    // if (!validation.success) {
+    //   setErrors(validation.errors);
+    //   return; // block progress
+    // }
+
+    // clear step-specific errors and move on
+    // setErrors({});
+    setCurrentStep(currentStep + 1);
+  };
+
+  const steps = [
+    <StepIntro onButtonClick={() => setCurrentStep(1)} key="step-0" />,
+    <StepPersonalDetails
+      disabled={isLoading}
+      onPrevButtonClick={() => setCurrentStep(0)}
+      onNextButtonClick={handleNextStep}
+      key="step-1"
+    />,
+    <StepAppointment
+      minDateValue={nowDate}
+      disabled={isLoading}
+      onPrevButtonClick={() => setCurrentStep(1)}
+      onNextButtonClick={handleNextStep}
+      key="step-2"
+    />,
+    <StepConfirm
+      disabled={isLoading}
+      onPrevButtonClick={() => setCurrentStep(2)}
+      key="step-3"
+    />,
+  ];
+
   return (
-    <Grid paddingBottom="x-large" paddingTop="large">
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className="ams-mb-xl">
-        {/* Fake loader to simulate API request */}
-        {isLoading && <Loader />}
-
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onValidSubmit)}>
-            <Heading level={1} size="level-3" className="ams-mb-m">
-              Booking Form
-            </Heading>
-
-            <Paragraph className="ams-mb-m">
-              This form is an example of a generic booking form. The key
-              validation is with checking that the <strong>End date</strong> and{' '}
-              <strong>End time</strong> fields are not older than the{' '}
-              <strong>Start date</strong> and <strong>Start time</strong>{' '}
-              fields.
-            </Paragraph>
-            <Paragraph className="ams-mb-m">
-              The goal of this demo is to illustrate how to handle cross-field
-              validation in forms. While individual field rules (e.g.
-              &quot;email must be valid&quot;) are straightforward, checking
-              relationships between multiple fields—such as ensuring the end of
-              a booking is after the start—requires more advanced validation
-              logic.
-            </Paragraph>
-
-            {/* This component is 'uncontrolled' (in ReactHookForm terms), as it
-            uses register inside the TextInput */}
-            <TextInputControl<{ name: string }>
-              label="Name"
-              name="name"
-              description="Your first or full name"
-              testId="booking-create-name"
-              registerOptions={{
-                required: 'This field is required.',
-              }}
-            />
-
-            <TextInputControl<{ email: string }>
-              label="Email address"
-              name="email"
-              type="email"
-              testId="booking-create-email"
-              registerOptions={{ required: 'This field is required.' }}
-            />
-
-            <DateTimeFieldset
-              legend="Start date and time"
-              fields={['startDate', 'startTime']}
-            >
-              <DateControl<{ startDate: string }>
-                label="Start date"
-                name="startDate"
-                testId="booking-create-start-date"
-                registerOptions={{
-                  required: 'This field is required.',
-                }}
-                min={nowDate}
-              />
-
-              <TimeControl<{ startTime: string }>
-                label="Start time"
-                name="startTime"
-                testId="booking-create-start-time"
-                registerOptions={{ required: 'This field is required.' }}
-              />
-            </DateTimeFieldset>
-            <DateTimeFieldset
-              legend="End date and time"
-              fields={['endDate', 'endTime']}
-            >
-              <DateControl<{ endDate: string }>
-                label="End date"
-                name="endDate"
-                testId="booking-create-end-date"
-                registerOptions={{
-                  required: 'This field is required.',
-                  validate: () => isValidDateRange,
-                }}
-                min={startDate}
-              />
-
-              <TimeControl<{ endTime: string }>
-                label="End time"
-                name="endTime"
-                testId="booking-create-end-time"
-                registerOptions={{
-                  required: 'This field is required.',
-                  validate: () => isValidTimeRange,
-                }}
-              />
-            </DateTimeFieldset>
-
-            <CheckboxControl<{ remote: boolean }>
-              label="Is the meeting remote?"
-              name="remote"
-              description="For remote meetings a video call invite will be sent in advance"
-            />
-
-            <TextAreaControl<{ comments: string }>
-              label="Additional comments"
-              name="comments"
-              testId="booking-create-comments"
-              className="ams-mb-m"
-            />
-
-            <Row>
-              <Button type="submit" variant="primary">
-                Submit
-              </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => methods.reset()}
-              >
-                Reset
-              </Button>
-            </Row>
-          </form>
-        </FormProvider>
-
-        {/* Fake placeholder for post-submission state */}
-        {isSubmitted && (
-          <div className={styles.success}>
-            <Alert
-              closeable
-              heading="Success!"
-              headingLevel={2}
-              severity="success"
-              onClose={() => {
-                setIsLoading(false);
-                setIsSubmitted(false);
-              }}
-            >
-              <Paragraph>
-                The form has been sent. We have received your details.
-              </Paragraph>
-            </Alert>
-          </div>
-        )}
-      </Grid.Cell>
-    </Grid>
+    <Page>
+      <PageHeader className="ams-mb-xl" />
+      {isLoading && !isSubmitted && <Loader />}
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onValidSubmit)}>
+          {!isSubmitted ? steps[currentStep] : <SuccessContent />}
+        </form>
+      </FormProvider>
+    </Page>
   );
 };
 
