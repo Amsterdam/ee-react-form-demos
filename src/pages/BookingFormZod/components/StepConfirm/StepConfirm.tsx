@@ -106,13 +106,9 @@ const StepConfirm = ({
           </Table.Body>
         </Table>
 
-        <Heading level={4} size="level-4" className="ams-mb-m">
-          Locatie en opmerkingen
-        </Heading>
-
         <FormTextArea
           id="comments"
-          label="Additional comments"
+          label="Opmerkingen"
           name="comments"
           value={formData.comments}
           disabled={disabled}
