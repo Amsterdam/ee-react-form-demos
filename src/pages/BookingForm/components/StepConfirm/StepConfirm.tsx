@@ -6,7 +6,7 @@ import {
   StandaloneLink,
   Table,
 } from '@amsterdam/design-system-react';
-import { FormData } from '../../BookingFormZod';
+import { FormData } from '../../BookingForm';
 import { ChangeEvent } from 'react';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
 import FormTextArea from '../FormTextArea/FormTextArea';

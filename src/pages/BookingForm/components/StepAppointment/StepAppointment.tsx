@@ -1,36 +1,38 @@
 import {
-  ErrorMessage,
-  Field,
-  Label,
-  TextInput,
   StandaloneLink,
   Button,
+  FieldSet,
+  Row,
   Grid,
   Heading,
   Paragraph,
   InvalidFormAlert,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
-import { FormData } from '../../BookingFormZod';
+import { FormData } from '../../BookingForm';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
+import FormDateInput from '../FormDateInput/FormDateInput';
+import FormTimeInput from '../FormTimeInput/FormTimeInput';
 import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
 
-interface StepPersonalDetailsProps {
+interface StepAppointmentProps {
   formData: FormData;
+  minDateValue: string;
   errors: Record<string, string>;
-  disabled: boolean;
+  disabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
 }
 
-const StepPersonalDetails = ({
+const StepAppointment = ({
   formData,
+  minDateValue,
   errors,
   onChange,
   onPrevButtonClick,
   onNextButtonClick,
-}: StepPersonalDetailsProps) => {
+}: StepAppointmentProps) => {
   const [submitTouched, setSubmitTouched] = useState(false);
   const showErrors = submitTouched && Object.keys(errors).length > 0;
   const alertErrors = mapErrorsToAlert(errors);
@@ -85,48 +87,71 @@ const StepPersonalDetails = ({
               Afspraak maken
             </Heading>
             {/*
-             * Start by testing your form without a progress indicator to see if
-             it’s simple enough that users do not need one.
-             * If you do, use a simple one like this one.
-             * For more info, see: https://design-system.service.gov.uk/patterns/question-pages/#using-progress-indicators
-             */}
-            <Paragraph>Stap 1 van 3: Uw gegevens</Paragraph>
+              * Start by testing your form without a progress indicator to see
+              if it’s simple enough that users do not need one.
+              * If you do, use a simple one like this one.
+              * For more info, see: https://design-system.service.gov.uk/patterns/question-pages/#using-progress-indicators
+              */}
+            <Paragraph>Stap 2 van 3: Afspraak</Paragraph>
           </header>
-          <Field className="ams-mb-m" invalid={submitTouched && !!errors.name}>
-            <Label htmlFor="name">Voornaam</Label>
-            {submitTouched && errors.name && (
-              <ErrorMessage id={`error-name`} data-testid="error-message">
-                {errors.name}
-              </ErrorMessage>
-            )}
-            <TextInput
-              id="name"
-              name="name"
-              value={formData.name}
-              placeholder="Voornaam"
-              invalid={submitTouched && !!errors.name}
-              onChange={onChange}
-            />
-          </Field>
 
-          <Field className="ams-mb-m" invalid={submitTouched && !!errors.email}>
-            <Label htmlFor="email">E-mailadres</Label>
-            {submitTouched && errors.email && (
-              <ErrorMessage id={`error-email`} data-testid="error-message">
-                {errors.email}
-              </ErrorMessage>
-            )}
-            <TextInput
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              placeholder="E-mailadres"
-              aria-describedby={errors.email ? 'error-email' : ''}
-              invalid={submitTouched && !!errors.email}
-              onChange={onChange}
-            />
-          </Field>
+          <FieldSet
+            legend="Startdatum en -tijd"
+            className="ams-mb-m"
+            invalid={
+              (submitTouched && !!errors.startDate) ||
+              (submitTouched && !!errors.startTime)
+            }
+          >
+            <Row>
+              <FormDateInput
+                id="startDate"
+                name="startDate"
+                label="Startdatum"
+                value={formData.startDate}
+                onChange={onChange}
+                minValue={minDateValue}
+                error={submitTouched ? errors.startDate : undefined}
+              />
+              <FormTimeInput
+                id="startTime"
+                name="startTime"
+                label="Starttijd"
+                value={formData.startTime}
+                onChange={onChange}
+                error={submitTouched ? errors.startTime : undefined}
+              />
+            </Row>
+          </FieldSet>
+
+          <FieldSet
+            legend="Einddatum-tijd"
+            className="ams-mb-m"
+            invalid={
+              (submitTouched && !!errors.endDate) ||
+              (submitTouched && !!errors.endTime)
+            }
+          >
+            <Row>
+              <FormDateInput
+                id="endDate"
+                name="endDate"
+                label="Einddatum"
+                value={formData.endDate}
+                onChange={onChange}
+                minValue={formData.startDate}
+                error={submitTouched ? errors.endDate : undefined}
+              />
+              <FormTimeInput
+                id="endTime"
+                name="endTime"
+                label="Eindtijd"
+                value={formData.endTime}
+                onChange={onChange}
+                error={submitTouched ? errors.endTime : undefined}
+              />
+            </Row>
+          </FieldSet>
 
           <Button type="button" onClick={handleNextButtonClick}>
             Volgende vraag
@@ -137,4 +162,4 @@ const StepPersonalDetails = ({
   );
 };
 
-export default StepPersonalDetails;
+export default StepAppointment;

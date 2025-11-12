@@ -18,7 +18,7 @@ interface FormDateInputProps {
   required?: boolean;
   minValue?: string;
   error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FormDateInput = ({
