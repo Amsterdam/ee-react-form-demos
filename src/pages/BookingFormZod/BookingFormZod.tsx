@@ -22,7 +22,6 @@ export interface FormData {
   comments: string;
 }
 
-// TODO tests
 const BookingFormZod = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);

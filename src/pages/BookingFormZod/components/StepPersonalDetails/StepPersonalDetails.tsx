@@ -93,7 +93,7 @@ const StepPersonalDetails = ({
             <Paragraph>Stap 1 van 3: Uw gegevens</Paragraph>
           </header>
           <Field className="ams-mb-m" invalid={submitTouched && !!errors.name}>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Voornaam</Label>
             {submitTouched && errors.name && (
               <ErrorMessage id={`error-name`} data-testid="error-message">
                 {errors.name}

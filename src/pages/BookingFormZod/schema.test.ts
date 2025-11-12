@@ -10,7 +10,6 @@ const validData: BookingFormData = {
   startTime: '01:01',
   endDate: '2025-01-02',
   endTime: '01:01',
-  remote: false,
   comments: 'Comment text goes here',
 };
 
@@ -26,7 +25,7 @@ describe('bookingFormSchema', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.flatten().fieldErrors.startDate).toContain(
-        'Start date is required'
+        'Startdatum is verplicht'
       );
     }
   });
@@ -46,7 +45,7 @@ describe('bookingFormSchema', () => {
         e => String(e.path) === 'email'
       )?.message;
 
-      expect(emailError).toMatch(/invalid email/i);
+      expect(emailError).toMatch(/ongeldig e-mailadres/i);
     } else {
       throw new Error('Expected validation to fail');
     }
@@ -71,7 +70,7 @@ describe('bookingFormSchema', () => {
       )?.message;
 
       expect(endTimeError).toMatch(
-        /end date and time must be later than start date and time/i
+        /de einddatum en -tijd moeten later zijn dan de startdatum en -tijd/i
       );
     } else {
       throw new Error('Expected validation to fail');

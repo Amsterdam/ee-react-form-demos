@@ -21,7 +21,7 @@ const bookingFormSchema = baseBookingSchema.refine(
   },
   {
     message:
-      'De einddatum en -tijd moeten later zijn dan de startdatum en -tijd.',
+      'De einddatum en -tijd moeten later zijn dan de startdatum en -tijd',
     path: ['endTime'],
   }
 );
