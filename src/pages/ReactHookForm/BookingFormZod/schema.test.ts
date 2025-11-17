@@ -13,7 +13,7 @@ const validData: BookingFormData = {
   comments: 'Comment text goes here',
 };
 
-describe('ReactHookForm / BookingForm - Schema', () => {
+describe('ReactHookForm / BookingFormZod - Schema', () => {
   it('accepts valid data', () => {
     const result = bookingFormSchema.safeParse(validData);
     expect(result.success).toBe(true);

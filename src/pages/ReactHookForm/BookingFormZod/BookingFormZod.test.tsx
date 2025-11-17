@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { act } from 'react';
 import BookingForm from './BookingFormZod';
 
-describe('ReactHookForm / BookingForm', () => {
+describe('ReactHookForm / BookingFormZod', () => {
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
   });
