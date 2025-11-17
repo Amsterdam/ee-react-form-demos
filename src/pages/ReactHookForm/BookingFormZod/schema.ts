@@ -8,7 +8,6 @@ const bookingFormSchema = z
     startTime: z.string().min(1, 'Starttijd is verplicht'),
     endDate: z.string().min(1, 'Einddatum is verplicht'),
     endTime: z.string().min(1, 'Eindtijd is verplicht'),
-    remote: z.boolean().default(false),
     comments: z.string().optional(),
   })
   .refine(

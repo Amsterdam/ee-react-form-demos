@@ -47,9 +47,9 @@ describe('ReactHookForm / BookingForm', () => {
     expect(
       screen.getAllByText(/voornaam is verplicht/i).length
     ).toBeGreaterThan(0);
-    expect(
-      screen.getAllByText(/e-mailadres is verplicht/i).length
-    ).toBeGreaterThan(0);
+    expect(screen.getAllByText(/ongeldig e-mailadres/i).length).toBeGreaterThan(
+      0
+    );
 
     expect(screen.getByLabelText(/voornaam/i)).toBeInTheDocument();
   });
