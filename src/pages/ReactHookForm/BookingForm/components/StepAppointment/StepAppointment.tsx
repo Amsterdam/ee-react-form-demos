@@ -139,11 +139,11 @@ const StepAppointment = ({
           </header>
 
           <DateTimeFieldset
-            legend="Start date and time"
+            legend="Startdatum en -tijd"
             fields={['startDate', 'startTime']}
           >
             <DateControl<BookingFormData>
-              label="Start date"
+              label="Startdatum"
               name="startDate"
               registerOptions={{
                 required: 'Startdatum is verplicht',
@@ -152,17 +152,17 @@ const StepAppointment = ({
             />
 
             <TimeControl<BookingFormData>
-              label="Start time"
+              label="Starttijd"
               name="startTime"
               registerOptions={{ required: 'Starttijd is verplicht' }}
             />
           </DateTimeFieldset>
           <DateTimeFieldset
-            legend="End date and time"
+            legend="Einddatum-tijd"
             fields={['endDate', 'endTime']}
           >
             <DateControl<BookingFormData>
-              label="End date"
+              label="Einddatum"
               name="endDate"
               registerOptions={{
                 required: 'Einddatum is verplicht',
@@ -172,7 +172,7 @@ const StepAppointment = ({
             />
 
             <TimeControl<BookingFormData>
-              label="End time"
+              label="Eindtijd"
               name="endTime"
               registerOptions={{
                 required: 'Eindtijd is verplicht',

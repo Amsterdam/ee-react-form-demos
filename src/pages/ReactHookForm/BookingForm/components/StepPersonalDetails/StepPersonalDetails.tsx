@@ -77,6 +77,7 @@ const StepPersonalDetails = ({
               errors={alertErrors}
               headingLevel={4}
               className="ams-mb-m"
+              data-testid="error-alert"
             />
           )}
 

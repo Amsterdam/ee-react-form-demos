@@ -19,7 +19,7 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('TextAreaControl', () => {
+describe('ReactHookForm / BookingForm - TextAreaControl', () => {
   it('renders with label and textarea', () => {
     render(
       <Wrapper>
@@ -111,9 +111,7 @@ describe('TextAreaControl', () => {
     const describedBy = textarea.getAttribute('aria-describedby');
     expect(describedBy).toMatch(/message-description/);
 
-    expect(screen.getByTestId('message-description')).toHaveTextContent(
-      /Send us your ideas/i
-    );
+    expect(screen.getByText(/Send us your ideas/i)).toBeInTheDocument();
   });
 
   it('shows error message when invalid', async () => {
@@ -132,7 +130,6 @@ describe('TextAreaControl', () => {
               name="message"
               label="Your Message"
               registerOptions={{ required: 'Message is required' }}
-              testId="message"
             />
             <button type="submit">Submit</button>
           </form>

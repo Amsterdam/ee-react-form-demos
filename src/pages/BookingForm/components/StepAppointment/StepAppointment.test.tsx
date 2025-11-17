@@ -1,4 +1,3 @@
-// StepAppointment.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import StepAppointment from './StepAppointment';
 import { vi } from 'vitest';

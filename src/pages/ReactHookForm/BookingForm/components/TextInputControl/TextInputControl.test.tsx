@@ -18,7 +18,7 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('TextInputControl', () => {
+describe('ReactHookForm / BookingForm - TextInputControl', () => {
   it('renders with label and input', () => {
     render(
       <Wrapper>
@@ -86,9 +86,9 @@ describe('TextInputControl', () => {
     const describedBy = input.getAttribute('aria-describedby');
     expect(describedBy).toMatch(/name-description/);
 
-    expect(screen.getByTestId('name-description')).toHaveTextContent(
-      /used for formal identification/i
-    );
+    expect(
+      screen.getByText(/used for formal identification/i)
+    ).toBeInTheDocument();
   });
 
   it('shows error message when invalid', async () => {

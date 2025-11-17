@@ -1,10 +1,16 @@
 import mapErrorsToAlert from './mapErrorsToAlert';
 
-describe('mapErrorsToAlert', () => {
+describe('ReactHookForm / BookingForm - mapErrorsToAlert', () => {
   it('maps error object to array of { id, label }', () => {
     const input = {
-      name: 'Naam is verplicht',
-      email: 'E-mailadres is verplicht',
+      name: {
+        type: 'required',
+        message: 'Naam is verplicht',
+      },
+      email: {
+        type: 'required',
+        message: 'E-mailadres is verplicht',
+      },
     };
 
     const result = mapErrorsToAlert(input);
@@ -21,7 +27,9 @@ describe('mapErrorsToAlert', () => {
   });
 
   it('handles single error correctly', () => {
-    const result = mapErrorsToAlert({ startDate: 'Ongeldige datum' });
+    const result = mapErrorsToAlert({
+      startDate: { type: 'required', message: 'Ongeldige datum' },
+    });
     expect(result).toEqual([{ id: '#startDate', label: 'Ongeldige datum' }]);
   });
 });

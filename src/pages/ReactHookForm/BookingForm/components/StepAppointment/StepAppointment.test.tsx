@@ -1,27 +1,40 @@
-// StepAppointment.test.tsx
-import { render, screen, fireEvent } from '@testing-library/react';
-import StepAppointment from './StepAppointment';
 import { vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
+import StepAppointment from './StepAppointment';
+import { BookingFormData } from '../../BookingForm';
+import { ReactElement } from 'react';
 
-describe('StepAppointment', () => {
-  const mockOnChange = vi.fn();
+const renderWithForm = (
+  ui: ReactElement,
+  defaultValues?: Partial<BookingFormData>
+) => {
+  const Wrapper = ({ children }: { children: React.ReactNode }) => {
+    const methods = useForm<BookingFormData>({
+      defaultValues: {
+        name: '',
+        email: '',
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: '',
+        comments: '',
+        ...defaultValues,
+      },
+    });
+
+    return <FormProvider {...methods}>{children}</FormProvider>;
+  };
+
+  return render(ui, { wrapper: Wrapper });
+};
+
+describe('ReactHookForm / BookingForm - StepAppointment', () => {
   const mockOnPrevButtonClick = vi.fn();
   const mockOnNextButtonClick = vi.fn();
 
   const defaultProps = {
-    formData: {
-      name: '',
-      email: '',
-      startDate: '',
-      startTime: '',
-      endDate: '',
-      endTime: '',
-      comments: '',
-    },
     minDateValue: '2025-01-01',
-    errors: {},
-    disabled: false,
-    onChange: mockOnChange,
     onPrevButtonClick: mockOnPrevButtonClick,
     onNextButtonClick: mockOnNextButtonClick,
   };
@@ -31,7 +44,7 @@ describe('StepAppointment', () => {
   });
 
   it('renders key elements', () => {
-    render(<StepAppointment {...defaultProps} />);
+    renderWithForm(<StepAppointment {...defaultProps} />);
     expect(screen.getByText(/afspraak maken/i)).toBeInTheDocument();
     expect(screen.getByText(/stap 2 van 3: afspraak/i)).toBeInTheDocument();
     expect(
@@ -43,46 +56,51 @@ describe('StepAppointment', () => {
   });
 
   it('passes minDateValue to startDate input', () => {
-    render(<StepAppointment {...defaultProps} />);
+    renderWithForm(<StepAppointment {...defaultProps} />);
     const startDateInput = screen.getByLabelText(/startdatum/i);
     expect(startDateInput).toHaveAttribute('min', '2025-01-01');
   });
 
-  it('calls onChange when changing an input', () => {
-    render(<StepAppointment {...defaultProps} />);
-    const startDateInput = screen.getByLabelText(/startdatum/i);
-    fireEvent.change(startDateInput, { target: { value: '2025-01-02' } });
-    expect(mockOnChange).toHaveBeenCalledTimes(1);
-  });
+  it('shows validation errors after clicking "Volgende vraag"', async () => {
+    renderWithForm(<StepAppointment {...defaultProps} />);
 
-  it('does not show errors before submit', () => {
-    render(<StepAppointment {...defaultProps} />);
-    expect(screen.queryByText(/invalidformalert/i)).not.toBeInTheDocument();
-  });
-
-  it('shows errors after clicking next', () => {
-    const propsWithErrors = {
-      ...defaultProps,
-      errors: {
-        startDate: 'Startdatum is verplicht',
-        endTime: 'Eindtijd is verplicht',
-      },
-    };
-    render(<StepAppointment {...propsWithErrors} />);
+    expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
-    // We don’t assert exact text structure — just that errors are shown
-    expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+    });
   });
 
-  it('calls onPrevButtonClick when clicking "Vorige vraag"', () => {
-    render(<StepAppointment {...defaultProps} />);
+  it('calls onNextButtonClick when form is valid', async () => {
+    renderWithForm(<StepAppointment {...defaultProps} />, {
+      startDate: '2025-01-10',
+      startTime: '09:00',
+      endDate: '2025-01-10',
+      endTime: '10:00',
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
+
+    await waitFor(() => {
+      expect(mockOnNextButtonClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('calls onPrevButtonClick and clears errors when clicking "Vorige vraag"', async () => {
+    renderWithForm(<StepAppointment {...defaultProps} />);
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+    });
+
     fireEvent.click(screen.getByRole('link', { name: /vorige vraag/i }));
     expect(mockOnPrevButtonClick).toHaveBeenCalledTimes(1);
-  });
 
-  it('calls onNextButtonClick when clicking "Volgende vraag"', () => {
-    render(<StepAppointment {...defaultProps} />);
-    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
-    expect(mockOnNextButtonClick).toHaveBeenCalledTimes(1);
+    // Ensure errors are cleared on return
+    await waitFor(() => {
+      expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+    });
   });
 });

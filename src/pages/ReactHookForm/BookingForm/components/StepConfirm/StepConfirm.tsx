@@ -21,7 +21,6 @@ const StepConfirm = ({
   onPrevButtonClick,
 }: StepConfirmProps) => {
   const { getValues } = useFormContext();
-
   const formData = getValues();
 
   return (
@@ -111,10 +110,11 @@ const StepConfirm = ({
             label="Opmerkingen"
             name="comments"
             className="ams-mb-m"
+            disabled={disabled}
           />
 
           <Button type="submit" disabled={disabled}>
-            Submit
+            Verzenden
           </Button>
         </Grid.Cell>
       </Grid>

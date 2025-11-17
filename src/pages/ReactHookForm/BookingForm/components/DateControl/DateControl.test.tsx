@@ -18,21 +18,15 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('DateControl', () => {
+describe('ReactHookForm / BookingForm - DateControl', () => {
   it('renders with label and input', () => {
     render(
       <Wrapper>
-        <DateControl<FormValues>
-          name="birthDate"
-          label="Date of Birth"
-          testId="birthDate"
-        />
+        <DateControl<FormValues> name="birthDate" label="Date of Birth" />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('birthDate') as HTMLInputElement;
-    expect(input).toBeInTheDocument();
-    expect(screen.getByLabelText(/date of birth/i)).toBe(input);
+    expect(screen.getByLabelText(/date of birth/i)).toBeInTheDocument();
   });
 
   it('handles user input', () => {
@@ -91,9 +85,7 @@ describe('DateControl', () => {
     const describedBy = input.getAttribute('aria-describedby');
     expect(describedBy).toMatch(/birthDate-description/);
 
-    expect(screen.getByTestId('birthDate-description')).toHaveTextContent(
-      /verify your age/i
-    );
+    expect(screen.getByText(/verify your age/i)).toBeInTheDocument();
   });
 
   it('shows error message when invalid', async () => {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import SuccessContent from './SuccessContent';
 
-describe('SuccessContent', () => {
+describe('ReactHookForm / BookingForm - SuccessContent', () => {
   it('renders the success message', () => {
     render(<SuccessContent />);
 

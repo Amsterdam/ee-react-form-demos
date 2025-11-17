@@ -42,7 +42,7 @@ const TimeControl = <T extends FieldValues>({
               </Label>
             )}
             {description && (
-              <Paragraph size="small" id={identifier}>
+              <Paragraph size="small" id={descriptionId}>
                 {description}
               </Paragraph>
             )}

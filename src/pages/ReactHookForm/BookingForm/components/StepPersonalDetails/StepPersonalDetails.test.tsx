@@ -1,25 +1,40 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import StepPersonalDetails from './StepPersonalDetails';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ReactElement } from 'react';
+import { BookingFormData } from '../../BookingForm';
 
-describe('StepPersonalDetails', () => {
-  const mockOnChange = vi.fn();
+const renderWithForm = (
+  ui: ReactElement,
+  defaultValues?: Partial<BookingFormData>
+) => {
+  const Wrapper = ({ children }: { children: React.ReactNode }) => {
+    const methods = useForm<BookingFormData>({
+      defaultValues: {
+        name: '',
+        email: '',
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: '',
+        comments: '',
+        ...defaultValues,
+      },
+    });
+
+    return <FormProvider {...methods}>{children}</FormProvider>;
+  };
+
+  return render(ui, { wrapper: Wrapper });
+};
+
+describe('ReactHookForm / BookingForm - StepPersonalDetails', () => {
   const mockOnPrevButtonClick = vi.fn();
   const mockOnNextButtonClick = vi.fn();
 
   const defaultProps = {
-    formData: {
-      name: '',
-      email: '',
-      startDate: '',
-      startTime: '',
-      endDate: '',
-      endTime: '',
-      comments: '',
-    },
-    errors: {},
     disabled: false,
-    onChange: mockOnChange,
     onPrevButtonClick: mockOnPrevButtonClick,
     onNextButtonClick: mockOnNextButtonClick,
   };
@@ -29,7 +44,7 @@ describe('StepPersonalDetails', () => {
   });
 
   it('renders all key elements', () => {
-    render(<StepPersonalDetails {...defaultProps} />);
+    renderWithForm(<StepPersonalDetails {...defaultProps} />);
     expect(screen.getByLabelText(/afspraak maken/i)).toBeInTheDocument();
 
     expect(screen.getByLabelText(/voornaam/i)).toBeInTheDocument();
@@ -42,50 +57,44 @@ describe('StepPersonalDetails', () => {
     ).toBeInTheDocument();
   });
 
-  it('does not show validation errors before submit', () => {
-    render(<StepPersonalDetails {...defaultProps} />);
-    expect(screen.queryByTestId('error-message')).not.toBeInTheDocument();
-  });
+  it('shows validation errors after clicking "Volgende vraag"', async () => {
+    renderWithForm(<StepPersonalDetails {...defaultProps} />);
 
-  it('shows validation errors after clicking "Volgende vraag"', () => {
-    const propsWithErrors = {
-      ...defaultProps,
-      errors: { name: 'Voornaam is verplicht', email: 'E-mail is verplicht' },
-    };
-    render(<StepPersonalDetails {...propsWithErrors} />);
-
-    // Initially no errors
-    expect(screen.queryByTestId('error-message')).not.toBeInTheDocument();
-
-    // Click next
+    expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
-    // Errors should appear
-    expect(screen.getAllByTestId('error-message')).toHaveLength(2);
-    expect(screen.getAllByText('Voornaam is verplicht').length).toBeGreaterThan(
-      0
-    );
-    expect(screen.getAllByText('E-mail is verplicht').length).toBeGreaterThan(
-      0
-    );
+    await waitFor(() => {
+      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+    });
   });
 
-  it('calls onChange when typing in inputs', () => {
-    render(<StepPersonalDetails {...defaultProps} />);
-    const nameInput = screen.getByLabelText(/voornaam/i);
-    fireEvent.change(nameInput, { target: { value: 'John' } });
-    expect(mockOnChange).toHaveBeenCalledTimes(1);
-  });
+  it('calls onPrevButtonClick and clears errors when clicking "Vorige vraag"', async () => {
+    renderWithForm(<StepPersonalDetails {...defaultProps} />);
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
-  it('calls onPrevButtonClick when clicking "Vorige vraag"', () => {
-    render(<StepPersonalDetails {...defaultProps} />);
+    await waitFor(() => {
+      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+    });
+
     fireEvent.click(screen.getByRole('link', { name: /vorige vraag/i }));
     expect(mockOnPrevButtonClick).toHaveBeenCalledTimes(1);
+
+    // Ensure errors are cleared on return
+    await waitFor(() => {
+      expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+    });
   });
 
-  it('calls onNextButtonClick when clicking "Volgende vraag"', () => {
-    render(<StepPersonalDetails {...defaultProps} />);
+  it('calls onNextButtonClick when form is valid', async () => {
+    renderWithForm(<StepPersonalDetails {...defaultProps} />, {
+      name: 'John Doe',
+      email: 'john@example.com',
+    });
+
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
-    expect(mockOnNextButtonClick).toHaveBeenCalledTimes(1);
+
+    await waitFor(() => {
+      expect(mockOnNextButtonClick).toHaveBeenCalledTimes(1);
+    });
   });
 });
