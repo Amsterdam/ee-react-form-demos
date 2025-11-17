@@ -3,14 +3,13 @@ import { ErrorMessage, FieldSet, Row } from '@amsterdam/design-system-react';
 import { useFormContext } from 'react-hook-form';
 
 const fieldNameMap = {
-  startDate: 'Start date',
-  startTime: 'Start time',
-  endDate: 'End date',
-  endTime: 'End time',
+  startDate: 'Startdatum',
+  startTime: 'Starttijd',
+  endDate: 'Einddatum',
+  endTime: 'Eindtijd',
 };
 
 interface DateTimeFieldsetProps {
-  errorFields?: string[]; // Array of field names to check for errors
   legend: string;
   fields: string[];
 }
@@ -21,6 +20,7 @@ const DateTimeFieldset = ({
   fields,
 }: DateTimeFieldsetProps & PropsWithChildren) => {
   const { formState } = useFormContext();
+
   const hasError = fields.some(
     field => formState.errors[field] && formState.errors[field]?.message
   );
@@ -34,10 +34,10 @@ const DateTimeFieldset = ({
 
       if (!type) continue;
 
-      if (type === 'custom') {
-        invalidFields.push(field);
-      } else {
+      if (type === 'required') {
         requiredFields.push(field);
+      } else {
+        invalidFields.push(field);
       }
     }
 
@@ -45,14 +45,14 @@ const DateTimeFieldset = ({
       if (fields.length === 0) return '';
 
       if (fields.length === 1) {
-        return `The ${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} field is required.`;
+        return `${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} is verplicht.`;
       }
 
-      return `The fields ${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} and ${fieldNameMap[fields[1] as keyof typeof fieldNameMap]} are required.`;
+      return `${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} en ${fieldNameMap[fields[1] as keyof typeof fieldNameMap]} is verplicht.`;
     };
 
     if (invalidFields.length) {
-      return 'The end date and time must be later than the start date and time.';
+      return 'De einddatum en -tijd moeten later zijn dan de startdatum en -tijd';
     }
 
     const requiredMsg = formatFields(requiredFields);

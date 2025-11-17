@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Page, PageHeader } from '@amsterdam/design-system-react';
 import Loader from '@/components/Loader/Loader';
-import StepIntro from '@/pages/BookingForm/components/StepIntro/StepIntro';
+import StepIntro from './components/StepIntro/StepIntro';
 import SuccessContent from './components/SuccessContent/SuccessContent';
 import StepPersonalDetails from './components/StepPersonalDetails/StepPersonalDetails';
 import StepAppointment from './components/StepAppointment/StepAppointment';

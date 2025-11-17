@@ -2,12 +2,12 @@ import { z } from 'zod';
 
 const bookingFormSchema = z
   .object({
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email('Invalid email'),
-    startDate: z.string().min(1, 'Start date is required'),
-    startTime: z.string().min(1, 'Start time is required'),
-    endDate: z.string().min(1, 'End date is required'),
-    endTime: z.string().min(1, 'End time is required'),
+    name: z.string().min(1, 'Voornaam is verplicht'),
+    email: z.string().email('Ongeldig e-mailadres'),
+    startDate: z.string().min(1, 'Startdatum is verplicht'),
+    startTime: z.string().min(1, 'Starttijd is verplicht'),
+    endDate: z.string().min(1, 'Einddatum is verplicht'),
+    endTime: z.string().min(1, 'Eindtijd is verplicht'),
     remote: z.boolean().default(false),
     comments: z.string().optional(),
   })
@@ -29,7 +29,8 @@ const bookingFormSchema = z
       return endDateTime > startDateTime;
     },
     {
-      message: 'End date and time must be later than start date and time',
+      message:
+        'De einddatum en -tijd moeten later zijn dan de startdatum en -tijd',
       path: ['endTime'], // This will attach the error to the endTime field
     }
   );

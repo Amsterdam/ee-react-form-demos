@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import StepIntro from './StepIntro';
 
-describe('StepIntro', () => {
+describe('ReactHookForm / BookingFormZod - StepIntro', () => {
   it('renders the headings and steps', () => {
     render(<StepIntro onButtonClick={vi.fn()} />);
 

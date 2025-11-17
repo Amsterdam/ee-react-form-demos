@@ -20,7 +20,7 @@ describe('ReactHookForm / BookingForm', () => {
     // Intro step should be visible
     expect(
       screen.getByText(/Waar u dit formulier voor gebruikt/i)
-    ).toBeInTheDocument(); // adjust to your intro text
+    ).toBeInTheDocument();
 
     // Click start button
     await userEvent.click(
@@ -51,7 +51,6 @@ describe('ReactHookForm / BookingForm', () => {
       screen.getAllByText(/e-mailadres is verplicht/i).length
     ).toBeGreaterThan(0);
 
-    // Step should still be visible
     expect(screen.getByLabelText(/voornaam/i)).toBeInTheDocument();
   });
 

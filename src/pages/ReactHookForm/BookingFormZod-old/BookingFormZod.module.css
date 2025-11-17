@@ -1,0 +1,18 @@
+.success {
+  background: rgba(255, 255, 255, 0.6);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+.success > section,
+.success > div {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  translate: -50% -50%;
+}

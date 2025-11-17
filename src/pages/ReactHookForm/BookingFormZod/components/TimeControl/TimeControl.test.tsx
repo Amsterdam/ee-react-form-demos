@@ -18,7 +18,7 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('TimeControl', () => {
+describe('ReactHookForm / BookingFormZod - TimeControl', () => {
   it('renders with label and input', () => {
     render(
       <Wrapper>
@@ -28,7 +28,7 @@ describe('TimeControl', () => {
 
     const input = screen.getByLabelText(/start time/i) as HTMLInputElement;
     expect(input).toBeInTheDocument();
-    expect(screen.getByLabelText(/start time/i)).toBe(input);
+    expect(screen.getByLabelText(/Start time/i)).toBe(input);
   });
 
   it('handles user input', () => {
@@ -83,8 +83,8 @@ describe('TimeControl', () => {
 
     const input = screen.getByLabelText(/start time/i);
     const describedBy = input.getAttribute('aria-describedby');
-    expect(describedBy).toMatch(/startTime-description/);
 
+    expect(describedBy).toMatch(/startTime-description/i);
     expect(
       screen.getByText('We need this to verify your age.')
     ).toBeInTheDocument();
