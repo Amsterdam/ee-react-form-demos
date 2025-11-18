@@ -22,7 +22,6 @@ export interface FormData {
   comments: string;
 }
 
-// TODO clear any present errors on vorige vraag button click
 const BookingForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
