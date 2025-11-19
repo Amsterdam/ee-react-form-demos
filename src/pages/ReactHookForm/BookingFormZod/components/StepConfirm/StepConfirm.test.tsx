@@ -3,7 +3,7 @@ import StepConfirm from './StepConfirm';
 import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ReactElement } from 'react';
-import { BookingFormData } from '../../BookingForm';
+import { BookingFormData } from '../../schema';
 
 const renderWithForm = (
   ui: ReactElement,

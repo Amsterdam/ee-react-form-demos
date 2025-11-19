@@ -6,12 +6,12 @@ import {
   Paragraph,
   InvalidFormAlert,
 } from '@amsterdam/design-system-react';
-import { MouseEvent } from 'react';
-import { BookingFormData } from '../../BookingForm';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
+import { MouseEvent } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { BookingFormData } from '../../schema';
 import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
 import TextInputControl from '../TextInputControl/TextInputControl';
-import { useFormContext } from 'react-hook-form';
 
 interface StepPersonalDetailsProps {
   disabled: boolean;

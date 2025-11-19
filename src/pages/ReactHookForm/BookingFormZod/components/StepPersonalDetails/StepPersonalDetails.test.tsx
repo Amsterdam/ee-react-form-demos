@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import StepPersonalDetails from './StepPersonalDetails';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ReactElement } from 'react';
-import { BookingFormData } from '../../BookingForm';
+import { BookingFormData } from '../../schema';
+import StepPersonalDetails from './StepPersonalDetails';
 
 const renderWithForm = (
   ui: ReactElement,

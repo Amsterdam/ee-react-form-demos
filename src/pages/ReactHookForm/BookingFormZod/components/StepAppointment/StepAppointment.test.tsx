@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import StepAppointment from './StepAppointment';
-import { BookingFormData } from '../../BookingForm';
+import { BookingFormData } from '../../schema';
 import { ReactElement } from 'react';
 
 const renderWithForm = (

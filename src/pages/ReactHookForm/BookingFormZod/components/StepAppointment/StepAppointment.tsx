@@ -6,14 +6,14 @@ import {
   Paragraph,
   InvalidFormAlert,
 } from '@amsterdam/design-system-react';
-import { useMemo, MouseEvent } from 'react';
-import { BookingFormData } from '../../BookingForm';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
+import { useMemo, MouseEvent } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { BookingFormData } from '../../schema';
 import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
 import DateTimeFieldset from '../DateTimeFieldset/DateTimeFieldset';
 import DateControl from '../DateControl/DateControl';
 import TimeControl from '../TimeControl/TimeControl';
-import { useFormContext } from 'react-hook-form';
 
 interface StepAppointmentProps {
   minDateValue: string;

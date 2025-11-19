@@ -6,10 +6,10 @@ import {
   StandaloneLink,
   Table,
 } from '@amsterdam/design-system-react';
-import { BookingFormData } from '../../BookingForm';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
-import TextAreaControl from '../TextAreaControl/TextAreaControl';
 import { useFormContext } from 'react-hook-form';
+import { BookingFormData } from '../../schema';
+import TextAreaControl from '../TextAreaControl/TextAreaControl';
 
 interface StepConfirmProps {
   disabled?: boolean;
