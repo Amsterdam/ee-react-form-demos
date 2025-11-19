@@ -64,7 +64,7 @@ const StepAppointment = ({
   const isValidTimeRange = useMemo(() => {
     // Skip validation if values are incomplete
     if (!startDateTime || !endDateTime) return true;
-    
+
     if (endDateTime.getTime() > startDateTime.getTime()) {
       return true;
     }
