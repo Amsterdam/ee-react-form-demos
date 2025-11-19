@@ -72,7 +72,7 @@
     "es-toolkit": "^1.39.3",
     "install": "^0.13.0",
     "js-yaml": "^4.1.0",
-    "npm": "^11.4.1",
+    "npm": "^11.6.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.57.0",
