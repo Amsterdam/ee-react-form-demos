@@ -65,11 +65,11 @@ describe('ReactHookForm / BookingFormZod - Schema', () => {
 
     if (!result.success) {
       const error = result.error as ZodError;
-      const endTimeError = error.issues.find(
-        e => String(e.path) === 'endTime'
+      const endDateError = error.issues.find(
+        e => String(e.path) === 'endDate'
       )?.message;
 
-      expect(endTimeError).toMatch(
+      expect(endDateError).toMatch(
         /de einddatum en -tijd moeten later zijn dan de startdatum en -tijd/i
       );
     } else {

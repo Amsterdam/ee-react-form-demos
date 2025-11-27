@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import TimeControl from './TimeControl';
 
@@ -88,38 +88,5 @@ describe('ReactHookForm / BookingFormZod - TimeControl', () => {
     expect(
       screen.getByText('We need this to verify your age.')
     ).toBeInTheDocument();
-  });
-
-  it('shows error message when invalid', async () => {
-    const Component = () => {
-      const methods = useForm<FormValues>({
-        defaultValues: { startTime: '' },
-        mode: 'onSubmit',
-      });
-
-      const onSubmit = vi.fn();
-
-      return (
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <TimeControl<FormValues>
-              name="startTime"
-              label="Start time"
-              registerOptions={{ required: 'Start time is required' }}
-            />
-            <button type="submit">Submit</button>
-          </form>
-        </FormProvider>
-      );
-    };
-
-    render(<Component />);
-
-    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
-
-    await waitFor(() => {
-      const input = screen.getByLabelText(/start time/i);
-      expect(input.getAttribute('aria-describedby')).toMatch(/startTime-error/);
-    });
   });
 });

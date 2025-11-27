@@ -24,7 +24,6 @@ const DateControl = <T extends FieldValues>({
 }: DateControlProps<T>) => {
   const identifier = id || name;
   const descriptionId = `${identifier}-description`;
-  const errorId = `${identifier}-error`;
 
   const required = registerOptions?.required;
   const optional = !required;
@@ -34,6 +33,8 @@ const DateControl = <T extends FieldValues>({
       {({ register, formState }) => {
         const hasError = !!formState.errors[name];
 
+        // We don't use invalid on the field or display an error message as we
+        // already handle this in the DateTimeFieldset component
         return (
           <Field>
             {label && (
@@ -51,10 +52,7 @@ const DateControl = <T extends FieldValues>({
               </Paragraph>
             )}
             <DateInput
-              aria-describedby={clsx(
-                { [descriptionId]: !!descriptionId },
-                { [errorId]: hasError }
-              )}
+              aria-describedby={clsx({ [descriptionId]: !!descriptionId })}
               {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}

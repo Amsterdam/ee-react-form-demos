@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import DateControl from './DateControl';
 
@@ -86,38 +86,5 @@ describe('ReactHookForm / BookingFormZod - DateControl', () => {
     expect(describedBy).toMatch(/birthDate-description/);
 
     expect(screen.getByText(/verify your age/i)).toBeInTheDocument();
-  });
-
-  it('shows error message when invalid', async () => {
-    const Component = () => {
-      const methods = useForm<FormValues>({
-        defaultValues: { birthDate: '' },
-        mode: 'onSubmit',
-      });
-
-      const onSubmit = vi.fn();
-
-      return (
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <DateControl<FormValues>
-              name="birthDate"
-              label="Date of Birth"
-              registerOptions={{ required: 'Birth date is required' }}
-            />
-            <button type="submit">Submit</button>
-          </form>
-        </FormProvider>
-      );
-    };
-
-    render(<Component />);
-
-    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
-
-    await waitFor(() => {
-      const input = screen.getByLabelText(/date of birth/i) as HTMLInputElement;
-      expect(input.getAttribute('aria-describedby')).toMatch(/birthDate-error/);
-    });
   });
 });
