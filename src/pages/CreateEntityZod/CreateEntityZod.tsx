@@ -7,6 +7,7 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
+import '@amsterdam/design-system-tokens/dist/compact.css';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';

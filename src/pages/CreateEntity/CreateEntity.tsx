@@ -7,6 +7,7 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
+import '@amsterdam/design-system-tokens/dist/compact.css';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { ActionMeta } from 'react-select';
 import { EntityFormData } from '@/types/types';
