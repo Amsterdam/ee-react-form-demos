@@ -38,8 +38,8 @@ import entityFormSchema, {
 import { EntityFormData } from '@/types/types';
 import mapErrorsToAlert from './utils/mapErrorsToAlert';
 import scrollToErrorAlert from './utils/scrollToErrorAlert';
-import styles from './CreateEntity.module.css';
 import collectErrorMessages from './utils/collectErrorMessages';
+import styles from './CreateEntity.module.css';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
