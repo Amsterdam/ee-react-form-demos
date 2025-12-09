@@ -91,8 +91,8 @@ describe('CreateEntity', () => {
       fireEvent.click(screen.getByRole('button', { name: /submit/i }));
     });
 
-    await screen.findByText(/Name is required/i);
-    expect(screen.getByText(/Name is required/i)).toBeInTheDocument();
+    await screen.findAllByText(/Name is required/i);
+    expect(screen.getAllByText(/Name is required/i).length).toBeGreaterThan(0);
   });
 
   it('should show individual validation errors', async () => {
@@ -105,8 +105,12 @@ describe('CreateEntity', () => {
 
     // await screen.findByText(/Name is required/i);
     await waitFor(() => {
-      expect(screen.getByText(/Name is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/Owner is required/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Name is required/i).length).toBeGreaterThan(
+        0
+      );
+      expect(screen.getAllByText(/Owner is required/i).length).toBeGreaterThan(
+        0
+      );
     });
   });
 

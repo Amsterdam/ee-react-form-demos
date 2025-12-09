@@ -36,46 +36,10 @@ import entityFormSchema, {
   EntityFormData as RHFEntityFormData,
 } from './schema';
 import { EntityFormData } from '@/types/types';
-import styles from './CreateEntity.module.css';
 import mapErrorsToAlert from './utils/mapErrorsToAlert';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function collectErrorMessages(obj: any): { [key: string]: string } {
-  const result: { [key: string]: string } = {};
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function helper(innerObj: any, prefix: string) {
-    for (const key in innerObj) {
-      if (innerObj[key] && typeof innerObj[key] === 'object') {
-        // If object has a 'message' property, add it to result
-        if (innerObj[key].message) {
-          if (prefix.startsWith('annotations')) {
-            result[`${prefix}${key}`] =
-              `Annotations - ${innerObj[key].message}`;
-          } else if (prefix.startsWith('links')) {
-            result[`${prefix}${key}`] = `Links - ${innerObj[key].message}`;
-          } else {
-            result[`${prefix}${key}`] = innerObj[key].message;
-          }
-        }
-
-        // Recursively handle child objects
-        helper(innerObj[key], prefix === 'spec' ? key : `${prefix}${key}.`);
-      }
-    }
-  }
-
-  helper(obj, '');
-  return result;
-}
-
-function scrollToErrorAlert(container: HTMLFormElement | null) {
-  const alert = container?.querySelector('.ams-alert--error');
-
-  if (alert) {
-    alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
+import scrollToErrorAlert from './utils/scrollToErrorAlert';
+import styles from './CreateEntity.module.css';
+import collectErrorMessages from './utils/collectErrorMessages';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
