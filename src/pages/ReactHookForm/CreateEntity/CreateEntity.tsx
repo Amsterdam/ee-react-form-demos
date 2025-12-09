@@ -12,6 +12,7 @@ import {
   Button,
   Grid,
   Heading,
+  InvalidFormAlert,
   Link,
   Paragraph,
   Row,
@@ -36,7 +37,45 @@ import entityFormSchema, {
 } from './schema';
 import { EntityFormData } from '@/types/types';
 import styles from './CreateEntity.module.css';
-import scrollToFirstError from './utils/scrollToFirstError';
+import mapErrorsToAlert from './utils/mapErrorsToAlert';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function collectErrorMessages(obj: any): { [key: string]: string } {
+  const result: { [key: string]: string } = {};
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function helper(innerObj: any, prefix: string) {
+    for (const key in innerObj) {
+      if (innerObj[key] && typeof innerObj[key] === 'object') {
+        // If object has a 'message' property, add it to result
+        if (innerObj[key].message) {
+          if (prefix.startsWith('annotations')) {
+            result[`${prefix}${key}`] =
+              `Annotations - ${innerObj[key].message}`;
+          } else if (prefix.startsWith('links')) {
+            result[`${prefix}${key}`] = `Links - ${innerObj[key].message}`;
+          } else {
+            result[`${prefix}${key}`] = innerObj[key].message;
+          }
+        }
+
+        // Recursively handle child objects
+        helper(innerObj[key], prefix === 'spec' ? key : `${prefix}${key}.`);
+      }
+    }
+  }
+
+  helper(obj, '');
+  return result;
+}
+
+function scrollToErrorAlert(container: HTMLFormElement | null) {
+  const alert = container?.querySelector('.ams-alert--error');
+
+  if (alert) {
+    alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
@@ -105,6 +144,7 @@ const CreateEntity = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitTouched, setSubmitTouched] = useState(false);
 
   // useFieldArray for repeater fields. This is also used in the
   // AnnotationRepeater component
@@ -138,7 +178,8 @@ const CreateEntity = () => {
   };
 
   const onInvalid = () => {
-    scrollToFirstError(formRef.current);
+    setSubmitTouched(true);
+    scrollToErrorAlert(formRef.current);
   };
 
   // Reset the form to a blank state
@@ -159,6 +200,9 @@ const CreateEntity = () => {
       },
     });
   };
+
+  const showErrors = submitTouched && Object.keys(errors).length > 0;
+  const alertErrors = mapErrorsToAlert(collectErrorMessages(errors));
 
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
@@ -182,6 +226,14 @@ const CreateEntity = () => {
           // + zod
           noValidate
         >
+          {showErrors && (
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
+          )}
+
           <Controller
             name="kind"
             control={control}
@@ -220,7 +272,6 @@ const CreateEntity = () => {
                 }}
                 value={field.value}
                 error={errors.kind?.message}
-                required
                 onChange={field.onChange}
               />
             )}
@@ -236,7 +287,6 @@ const CreateEntity = () => {
                 description="The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
                 value={field.value}
                 error={errors.name?.message}
-                required
                 onChange={field.onChange}
               />
             )}
@@ -272,7 +322,6 @@ const CreateEntity = () => {
                   'mobile-app': 'Mobile/Native App',
                 }}
                 value={field.value}
-                required
                 error={errors.spec?.componentType?.message}
                 onChange={field.onChange}
               />
@@ -296,7 +345,6 @@ const CreateEntity = () => {
                   archived: 'Archived',
                 }}
                 value={field.value}
-                required
                 error={errors.spec?.lifecycle?.message}
                 onChange={field.onChange}
               />
@@ -330,7 +378,6 @@ const CreateEntity = () => {
                   }
                   options={ownerOptions}
                   value={selectedOption}
-                  required
                   error={errors.spec?.owner?.message}
                   onChange={selectedOption => {
                     // Handling react-select requires an extra step, as using
@@ -370,7 +417,7 @@ const CreateEntity = () => {
 
                 return (
                   <FormAutoSelect
-                    id="system"
+                    id="spec.system"
                     label="System"
                     description={
                       <Paragraph id="system-description" size="small">
@@ -389,7 +436,6 @@ const CreateEntity = () => {
                     options={systemOptions}
                     value={selectedOption}
                     error={errors.spec?.system?.message}
-                    required
                     onChange={selectedOption => {
                       const option = Array.isArray(selectedOption)
                         ? selectedOption[0]

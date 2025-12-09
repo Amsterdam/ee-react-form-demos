@@ -70,13 +70,13 @@ const AnnotationRepeaterRow = ({
 
           return (
             <>
-              <Label htmlFor={`annotation-type-${index}`}>Type</Label>
+              <Label htmlFor={`annotations.${index}.key`}>Type</Label>
               <InputAutoSelect
                 options={ANNOTATIONS.map(({ key, label }) => ({
                   value: key,
                   label,
                 }))}
-                id={`annotation-type-${index}`}
+                id={`annotations.${index}.key`}
                 value={selectedOption}
                 error={errors.annotations?.[index]?.key?.message}
                 required
@@ -115,10 +115,10 @@ const AnnotationRepeaterRow = ({
         control={control}
         render={({ field }) => (
           <>
-            <Label htmlFor={`annotation-value-${index}`}>Value</Label>
+            <Label htmlFor={`annotations.${index}.value`}>Value</Label>
             {annotation?.values ? (
               <Select
-                id={`annotation-value-${index}`}
+                id={`annotations.${index}.value`}
                 className="ams-mb-m"
                 value={field.value}
                 invalid={!!errors.annotations?.[index]?.value}
@@ -142,8 +142,8 @@ const AnnotationRepeaterRow = ({
               </Select>
             ) : (
               <TextInput
-                type={annotation?.type === 'url' ? 'url' : 'text'}
-                id={`annotation-value-${index}`}
+                type={annotation?.key === 'url' ? 'url' : 'text'}
+                id={`annotations.${index}.value`}
                 placeholder={
                   annotation?.example ? annotation.example : undefined
                 }
