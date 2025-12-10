@@ -5,8 +5,8 @@ import {
   Field,
   Grid,
   Heading,
+  InvalidFormAlert,
   Label,
-  OrderedList,
   Paragraph,
   TextArea,
   TextInput,
@@ -14,9 +14,10 @@ import {
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, Resolver, useForm } from 'react-hook-form';
-import t, { translations } from './utils/translate';
 import contactFormSchema, { ContactFormData } from './schema';
+import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
 import Loader from '@/components/Loader/Loader';
+import collectErrorMessages from './utils/collectErrorMessages';
 import styles from './ContactForm.module.css';
 
 // This is a simple React Hook Form example that validates using a Zod schema
@@ -28,10 +29,6 @@ const ContactForm = () => {
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
-
-    // Uncomment for validation onChange or check the `reValidateMode` property
-    // mode: 'onChange', // Allowed values: onChange | onBlur | onSubmit
-    // | onTouched | all
     defaultValues: {
       name: '',
       email: '',
@@ -60,6 +57,7 @@ const ContactForm = () => {
   };
 
   const hasErrors = Object.keys(errors).length > 0;
+  const alertErrors = mapErrorsToAlert(collectErrorMessages(errors));
 
   if (isSubmitted) {
     return (
@@ -110,18 +108,11 @@ const ContactForm = () => {
           {/* Fake loader to simulate API request */}
           {isLoading && <Loader />}
           {hasErrors && (
-            <Alert heading="Unsuccessful" headingLevel={2} severity="error">
-              <Paragraph>
-                There was an error with the following fields:
-              </Paragraph>
-              <OrderedList>
-                {Object.entries(errors).map(([field, { message }]) => (
-                  <OrderedList.Item key={`error-item-${field}`}>
-                    {t(field as keyof typeof translations)}: {message}
-                  </OrderedList.Item>
-                ))}
-              </OrderedList>
-            </Alert>
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
           )}
 
           <Controller
