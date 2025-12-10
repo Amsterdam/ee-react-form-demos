@@ -11,9 +11,9 @@ vi.mock('./hooks/useEntityFormValidation', () => ({
   }),
 }));
 
-import CreateEntity from './CreateEntityZod';
+import CreateEntity from './CreateEntity';
 
-describe('CreateEntityZod', () => {
+describe('CreateEntity', () => {
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
 
@@ -119,7 +119,7 @@ describe('CreateEntityZod', () => {
       }),
     }));
 
-    const { default: CreateEntity } = await import('./CreateEntityZod');
+    const { default: CreateEntity } = await import('./CreateEntity');
     render(<CreateEntity />);
 
     const submitButton = screen.getByRole('button', { name: /submit/i });

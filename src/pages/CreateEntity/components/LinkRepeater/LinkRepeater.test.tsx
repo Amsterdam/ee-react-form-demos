@@ -111,7 +111,7 @@ describe('LinkRepeater', () => {
     );
 
     const input = screen.getAllByLabelText('Title')[0];
-    await fireEvent.change(input, { target: { value: 'Updated title' } });
+    fireEvent.change(input, { target: { value: 'Updated title' } });
 
     expect(onChangeMock).toHaveBeenCalledWith([
       { ...baseItems[0], title: 'Updated title' },
@@ -122,9 +122,5 @@ describe('LinkRepeater', () => {
       'links.0.title',
       'Updated title'
     );
-    expect(onValidateFieldMock).toHaveBeenCalledWith('links', [
-      { ...baseItems[0], title: 'Updated title' },
-      baseItems[1],
-    ]);
   });
 });

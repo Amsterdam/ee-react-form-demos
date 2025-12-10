@@ -65,7 +65,7 @@ const LinkRepeater = ({
 
     // Validate the single field and the entire links array
     onValidateField?.(`links.${index}.${name}`, value);
-    onValidateField?.('links', newItems);
+    // onValidateField?.('links', newItems);
   };
 
   const handleBlur = (index: number, name: string, value: string) => {

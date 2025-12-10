@@ -45,43 +45,45 @@ const LinkRepeaterRow = ({
       <Heading level={4}>Link {index + 1}</Heading>
 
       <Field className="ams-mb-m">
-        <Label htmlFor={`link-${index}-url`}>URL</Label>
+        <Label htmlFor={`links-${index}-url`}>URL</Label>
         {urlError && (
-          <ErrorMessage id={`link-${index}-url-error`}>{urlError}</ErrorMessage>
+          <ErrorMessage id={`links-${index}-url-error`}>
+            {urlError}
+          </ErrorMessage>
         )}
         <TextInput
           type="url"
           name="url"
-          id={`link-${index}-url`}
+          id={`links-${index}-url`}
           value={item.url}
           required
-          aria-describedby={`links-description ${urlError ? `link-${index}-url-error` : ''}`}
+          aria-describedby={`links-description ${urlError ? `links-${index}-url-error` : ''}`}
           onChange={e => onChange('url', e.target.value)}
           onBlur={e => onBlur('url', e.target.value)}
         />
       </Field>
       <Field className="ams-mb-m">
-        <Label htmlFor={`link-${index}-title`}>Title</Label>
+        <Label htmlFor={`links-${index}-title`}>Title</Label>
         {titleError && (
-          <ErrorMessage id={`link-${index}-title-error`}>
+          <ErrorMessage id={`links-${index}-title-error`}>
             {titleError}
           </ErrorMessage>
         )}
         <TextInput
           name="title"
           value={item.title}
-          id={`link-${index}-title`}
+          id={`links-${index}-title`}
           required
-          aria-describedby={`links-description ${titleError ? `link-${index}-title-error` : ''}`}
+          aria-describedby={`links-description ${titleError ? `links-${index}-title-error` : ''}`}
           onChange={e => onChange('title', e.target.value)}
         />
       </Field>
       <Field className="ams-mb-m">
-        <Label htmlFor={`link-${index}-icon`}>Icon</Label>
+        <Label htmlFor={`links-${index}-icon`}>Icon</Label>
         <Select
           name="icon"
           value={item?.icon}
-          id={`link-${index}-icon`}
+          id={`links-${index}-icon`}
           required
           aria-describedby="links-description"
           onChange={e =>

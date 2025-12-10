@@ -3,6 +3,7 @@ import {
   Button,
   Grid,
   Heading,
+  InvalidFormAlert,
   Link,
   Paragraph,
   Row,
@@ -22,7 +23,7 @@ import getOwners from '@/utils/getOwners';
 import getSystems from '@/utils/getSystems';
 import getTags from '@/utils/getTags';
 import sortAlphabetically from '@/utils/sortAlphabetically';
-import styles from './CreateEntityZod.module.css';
+import styles from './CreateEntity.module.css';
 import {
   // We renamed this as we still need the original EntityFormData type shape for
   // the SubmissionOutput component
@@ -31,6 +32,7 @@ import {
 import { EntityFormData } from '@/types/types';
 import useEntityFormValidation from './hooks/useEntityFormValidation';
 import scrollToFirstError from './utils/scrollToFirstError';
+import mapErrorsToAlert from './utils/mapErrorsToAlert';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
@@ -177,6 +179,8 @@ const CreateEntity = () => {
     clearAllErrors();
   };
 
+  const alertErrors = mapErrorsToAlert(errors);
+
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
@@ -195,6 +199,12 @@ const CreateEntity = () => {
         error */}
         {/* Use noValidate so browser validation doesn't block zod */}
         <form onSubmit={handleSubmit} ref={formRef} noValidate>
+          <InvalidFormAlert
+            errors={alertErrors}
+            headingLevel={4}
+            className="ams-mb-m"
+          />
+
           <FormSelect
             id="kind"
             label="Kind"
@@ -364,7 +374,7 @@ const CreateEntity = () => {
           />
 
           <FormCheckboxInput
-            id="hasSystem"
+            id="has-system"
             label="Entity belongs to a system?"
             value={formData.spec.hasSystem}
             onChange={e =>
@@ -380,7 +390,7 @@ const CreateEntity = () => {
 
           {formData.spec.hasSystem && (
             <FormAutoSelect
-              id="hasSystem"
+              id="spec-system"
               label="System"
               name="system"
               description={

@@ -1,32 +1,33 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import * as CreateEntityZodStories from './index.stories';
-import CreateEntityZod from '@/pages/CreateEntityZod/CreateEntityZod?raw';
-import styles from '@/pages/CreateEntityZod/CreateEntityZod.module.css?raw';
-import FormSelect from '@/pages/CreateEntityZod/components/FormSelect/FormSelect.tsx?raw';
-import FormTextInput from '@/pages/CreateEntityZod/components/FormTextInput/FormTextInput.tsx?raw';
-import FormTextArea from '@/pages/CreateEntityZod/components/FormTextArea/FormTextArea.tsx?raw';
-import FormCheckboxInput from '@/pages/CreateEntityZod/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
-import FormAutoSelect from '@/pages/CreateEntityZod/components/FormAutoSelect/FormAutoSelect.tsx?raw';
+import * as CreateEntityStories from './index.stories';
+import CreateEntity from '@/pages/CreateEntity/CreateEntity?raw';
+import styles from '@/pages/CreateEntity/CreateEntity.module.css?raw';
+import FormSelect from '@/pages/CreateEntity/components/FormSelect/FormSelect.tsx?raw';
+import FormTextInput from '@/pages/CreateEntity/components/FormTextInput/FormTextInput.tsx?raw';
+import FormTextArea from '@/pages/CreateEntity/components/FormTextArea/FormTextArea.tsx?raw';
+import FormCheckboxInput from '@/pages/CreateEntity/components/FormCheckboxInput/FormCheckboxInput.tsx?raw';
+import FormAutoSelect from '@/pages/CreateEntity/components/FormAutoSelect/FormAutoSelect.tsx?raw';
 import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect.tsx?raw';
 import inputAutoSelectTypes from '@/components/InputAutoSelect/types.ts?raw';
-import AnnotationRepeater from '@/pages/CreateEntityZod/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
-import AnnotationRepeaterRow from '@/pages/CreateEntityZod/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
-import LinkRepeater from '@/pages/CreateEntityZod/components/LinkRepeater/LinkRepeater.tsx?raw';
-import LinkRepeaterRow from '@/pages/CreateEntityZod/components/LinkRepeaterRow/LinkRepeaterRow.tsx?raw';
+import AnnotationRepeater from '@/pages/CreateEntity/components/AnnotationRepeater/AnnotationRepeater.tsx?raw';
+import AnnotationRepeaterRow from '@/pages/CreateEntity/components/AnnotationRepeaterRow/AnnotationRepeaterRow.tsx?raw';
+import LinkRepeater from '@/pages/CreateEntity/components/LinkRepeater/LinkRepeater.tsx?raw';
+import LinkRepeaterRow from '@/pages/CreateEntity/components/LinkRepeaterRow/LinkRepeaterRow.tsx?raw';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput.tsx?raw';
 import getOwners from '@/utils/getOwners.ts?raw';
 import getSystems from '@/utils/getSystems.ts?raw';
 import getTags from '@/utils/getTags.ts?raw';
+import mapErrorsToAlert from '@/pages/CreateEntity/utils/mapErrorsToAlert.ts?raw';
 import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
-import schema from '@/pages/CreateEntityZod/schema.ts?raw';
-import scrollToFirstError from '@/pages/CreateEntityZod/utils/scrollToFirstError.ts?raw';
+import schema from '@/pages/CreateEntity/schema.ts?raw';
+import scrollToFirstError from '@/pages/CreateEntity/utils/scrollToFirstError.ts?raw';
 import types from '@/types/types?raw';
 
-<Meta of={CreateEntityZodStories} />
+<Meta of={CreateEntityStories} />
 
 # Create Entity Form (with Zod schema validation)
 
-**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/CreateEntityZod" target="_blank">GitHub Repo URL</a>**
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/CreateEntity" target="_blank">GitHub Repo URL</a>**
 
 #### Table of Contents
 
@@ -100,7 +101,7 @@ This variant uses [Zod](https://zod.dev/) schema validation instead of native HT
 To implement this Create Entity Form, there are 21 core files:
 
 1. The React components (13 files):
-    - [CreateEntityZod.tsx](#--createentityzodtsx)
+    - [CreateEntity.tsx](#--createentityzodtsx)
     - [FormSelect.tsx](#--formselecttsx)
     - [FormTextInput.tsx](#--formtextinputtsx)
     - [FormTextArea.tsx](#--formtextareatsx)
@@ -123,6 +124,7 @@ To implement this Create Entity Form, there are 21 core files:
     - [getOwners.ts](#--getownersts)
     - [getSystems.ts](#--getsystemsts)
     - [getTags.ts](#--gettagsts)
+    - [mapErrorsToAlert.ts](#--maperrorstoalertts)
     - [sortAlphabetically.ts](#--sortalphabeticallyts)
     - [scrollToFirstError.ts](#--scrolltofirsterrorts)
 
@@ -134,9 +136,9 @@ The following files are required:
 
 ### 1. React components
 
-#### - CreateEntityZod.tsx
+#### - CreateEntity.tsx
 
-<Source code={CreateEntityZod} />
+<Source code={CreateEntity} />
 
 #### - FormSelect.tsx
 
@@ -221,6 +223,10 @@ The following files are required:
 #### - getTags.ts
 
 <Source code={getTags} />
+
+#### - mapErrorsToAlert.ts
+
+<Source code={mapErrorsToAlert} />
 
 #### - sortAlphabetically.ts
 

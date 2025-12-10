@@ -68,30 +68,30 @@ const AnnotationRepeaterRow = ({
   return (
     <Field className={styles.container} invalid={!!keyError || !!valueError}>
       <Heading level={4}>Annotation {index + 1}</Heading>
-      <Label htmlFor={`annotation-type-${index}`}>Type</Label>
+      <Label htmlFor={`annotations-${index}-type`}>Type</Label>
       <InputAutoSelect
         options={keyOptions}
-        id={`annotation-type-${index}`}
+        id={`annotations-${index}-type`}
         value={keyValue}
         required
         error={keyError}
         aria-describedby={clsx('annotations-description', {
-          [`annotation-type-${index}-error`]: keyError,
+          [`annotations-${index}-type-error`]: keyError,
         })}
         onChange={keyOnChange}
       />
 
-      <Label htmlFor={`annotation-value-${index}`}>Value</Label>
+      <Label htmlFor={`annotations-${index}-value`}>Value</Label>
 
       {annotation?.values ? (
         <Select
-          id={`annotation-value-${index}`}
+          id={`annotations-${index}-value`}
           className="style-mb-m"
           value={values.value}
           required
           invalid={!!valueError}
           aria-describedby={clsx('annotations-description', {
-            [`annotation-value-${index}-error`]: valueError,
+            [`annotations-${index}-value-error`]: valueError,
           })}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => {
             onChange(values.key, e.target.value || '');
@@ -106,14 +106,14 @@ const AnnotationRepeaterRow = ({
       ) : (
         <TextInput
           type={annotation?.type === 'url' ? 'url' : 'text'}
-          id={`annotation-value-${index}`}
+          id={`annotations-${index}-value`}
           placeholder={annotation?.example ? annotation.example : undefined}
           value={values.value ?? ''}
           required
           invalid={!!valueError}
           className="style-mb-m"
           aria-describedby={clsx('annotations-description', {
-            [`annotation-value-${index}-error`]: valueError,
+            [`annotations-${index}-value-error`]: valueError,
           })}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             onChange(values.key, e.target.value || '');

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CreateEntityZod from '@/pages/CreateEntityZod/CreateEntityZod';
+import CreateEntity from '@/pages/CreateEntity/CreateEntity';
 
 const meta = {
   title: 'Plain HTML5/CreateEntity (Zod Validation)',
-  component: CreateEntityZod,
+  component: CreateEntity,
   parameters: {
     layout: 'fullscreen',
     options: {
@@ -11,7 +11,7 @@ const meta = {
       bottomPanelHeight: 0,
     },
   },
-} satisfies Meta<typeof CreateEntityZod>;
+} satisfies Meta<typeof CreateEntity>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
