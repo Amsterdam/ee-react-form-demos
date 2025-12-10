@@ -36,7 +36,7 @@ import entityFormSchema, {
   EntityFormData as RHFEntityFormData,
 } from './schema';
 import { EntityFormData } from '@/types/types';
-import mapErrorsToAlert from './utils/mapErrorsToAlert';
+import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
 import scrollToErrorAlert from './utils/scrollToErrorAlert';
 import collectErrorMessages from './utils/collectErrorMessages';
 import styles from './CreateEntity.module.css';
