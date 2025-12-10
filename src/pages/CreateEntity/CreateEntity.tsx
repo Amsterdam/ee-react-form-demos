@@ -31,8 +31,8 @@ import {
 } from './schema';
 import { EntityFormData } from '@/types/types';
 import useEntityFormValidation from './hooks/useEntityFormValidation';
-import scrollToFirstError from './utils/scrollToFirstError';
 import mapErrorsToAlert from './utils/mapErrorsToAlert';
+import scrollToErrorAlert from '@/utils/scrollToErrorAlert';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
@@ -88,6 +88,7 @@ const CreateEntity = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitTouched, setIsSubmitTouched] = useState(false);
 
   // Keep all the form validation in a hook for reusability and to keep this
   // parent component clean. The formData handling could also be moved into a
@@ -140,7 +141,8 @@ const CreateEntity = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      scrollToFirstError(formRef.current);
+      setIsSubmitTouched(true);
+      scrollToErrorAlert(formRef.current);
       return;
     }
     // console.log('Form data:', formData);
@@ -179,6 +181,7 @@ const CreateEntity = () => {
     clearAllErrors();
   };
 
+  const showErrors = isSubmitTouched && Object.keys(errors).length > 0;
   const alertErrors = mapErrorsToAlert(errors);
 
   return (
@@ -199,11 +202,13 @@ const CreateEntity = () => {
         error */}
         {/* Use noValidate so browser validation doesn't block zod */}
         <form onSubmit={handleSubmit} ref={formRef} noValidate>
-          <InvalidFormAlert
-            errors={alertErrors}
-            headingLevel={4}
-            className="ams-mb-m"
-          />
+          {showErrors && (
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
+          )}
 
           <FormSelect
             id="kind"

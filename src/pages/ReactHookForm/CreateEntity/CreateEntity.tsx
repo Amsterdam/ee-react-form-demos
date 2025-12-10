@@ -37,7 +37,7 @@ import entityFormSchema, {
 } from './schema';
 import { EntityFormData } from '@/types/types';
 import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
-import scrollToErrorAlert from './utils/scrollToErrorAlert';
+import scrollToErrorAlert from '@/utils/scrollToErrorAlert';
 import collectErrorMessages from './utils/collectErrorMessages';
 import styles from './CreateEntity.module.css';
 
@@ -108,7 +108,7 @@ const CreateEntity = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitTouched, setSubmitTouched] = useState(false);
+  const [isSubmitTouched, setIsSubmitTouched] = useState(false);
 
   // useFieldArray for repeater fields. This is also used in the
   // AnnotationRepeater component
@@ -142,7 +142,7 @@ const CreateEntity = () => {
   };
 
   const onInvalid = () => {
-    setSubmitTouched(true);
+    setIsSubmitTouched(true);
     scrollToErrorAlert(formRef.current);
   };
 
@@ -165,7 +165,7 @@ const CreateEntity = () => {
     });
   };
 
-  const showErrors = submitTouched && Object.keys(errors).length > 0;
+  const showErrors = isSubmitTouched && Object.keys(errors).length > 0;
   const alertErrors = mapErrorsToAlert(collectErrorMessages(errors));
 
   return (

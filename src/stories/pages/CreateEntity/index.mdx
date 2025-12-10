@@ -20,7 +20,6 @@ import getTags from '@/utils/getTags.ts?raw';
 import mapErrorsToAlert from '@/pages/CreateEntity/utils/mapErrorsToAlert.ts?raw';
 import sortAlphabetically from '@/utils/sortAlphabetically.ts?raw';
 import schema from '@/pages/CreateEntity/schema.ts?raw';
-import scrollToFirstError from '@/pages/CreateEntity/utils/scrollToFirstError.ts?raw';
 import types from '@/types/types?raw';
 
 <Meta of={CreateEntityStories} />
@@ -126,7 +125,6 @@ To implement this Create Entity Form, there are 21 core files:
     - [getTags.ts](#--gettagsts)
     - [mapErrorsToAlert.ts](#--maperrorstoalertts)
     - [sortAlphabetically.ts](#--sortalphabeticallyts)
-    - [scrollToFirstError.ts](#--scrolltofirsterrorts)
 
     *These `util/get*` files are mostly static data for demo purposes. In a production environment they should be retrieved from an external service.*
 
@@ -231,7 +229,3 @@ The following files are required:
 #### - sortAlphabetically.ts
 
 <Source code={sortAlphabetically} />
-
-#### - scrollToFirstError.ts
-
-<Source code={scrollToFirstError} />
