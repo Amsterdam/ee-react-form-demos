@@ -14,11 +14,10 @@ describe('FormCheckboxInput', () => {
     render(<FormCheckboxInput {...defaultProps} />);
 
     expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
-    // TODO ID is currently broken. Waiting for design-system to release https://github.com/Amsterdam/design-system/pull/2153
-    // expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
-    //   'id',
-    //   'test-input'
-    // );
+    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
+      'id',
+      'test-input'
+    );
   });
 
   it('handles user input', () => {
