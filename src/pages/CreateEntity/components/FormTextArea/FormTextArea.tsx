@@ -17,7 +17,6 @@ interface FormTextAreaProps {
   required?: boolean;
   error?: string;
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  onBlur: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const FormTextArea = ({
@@ -29,7 +28,6 @@ const FormTextArea = ({
   required = false,
   error,
   onChange,
-  onBlur,
 }: FormTextAreaProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
@@ -52,7 +50,6 @@ const FormTextArea = ({
       required={required}
       rows={4}
       onChange={onChange}
-      onBlur={onBlur}
     />
   </Field>
 );

@@ -102,10 +102,10 @@ const CreateEntity = () => {
     const { name, value, type } = e.target;
     const checked =
       type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
+    const newValue = type === 'checkbox' ? checked : value;
 
     if (name.startsWith('spec.')) {
       const specField = name.split('.')[1] as keyof EntityFormData['spec'];
-      const newValue = type === 'checkbox' ? checked : value;
 
       setFormData(prev => ({
         ...prev,
@@ -115,26 +115,15 @@ const CreateEntity = () => {
         },
       }));
 
-      validateField(name, newValue);
+      if (isSubmitTouched) {
+        validateField(name, newValue);
+      }
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: value,
+        [name]: newValue,
       }));
-
-      validateField(name, value);
     }
-  };
-
-  const handleBlur = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value, type } = e.target;
-    const checked =
-      type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
-    const fieldValue = type === 'checkbox' ? checked : value;
-
-    validateField(name, fieldValue);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -262,7 +251,6 @@ const CreateEntity = () => {
             required
             error={errors.name}
             onChange={handleChange}
-            onBlur={handleBlur}
           />
 
           <FormTextArea
@@ -273,7 +261,6 @@ const CreateEntity = () => {
             value={formData.description ?? ''}
             error={errors.description}
             onChange={handleChange}
-            onBlur={handleBlur}
           />
 
           <FormSelect
@@ -486,7 +473,6 @@ const CreateEntity = () => {
           <LinkRepeater
             items={formData?.links ?? []}
             errors={errors}
-            onValidateField={validateField}
             onChange={links => {
               setFormData({
                 ...formData,

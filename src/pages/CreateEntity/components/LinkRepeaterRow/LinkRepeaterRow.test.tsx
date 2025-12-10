@@ -71,21 +71,6 @@ describe('LinkRepeaterRow', () => {
     expect(onChange).toHaveBeenLastCalledWith('icon', 'github');
   });
 
-  it('calls onBlur when URL or icon blur events occur', () => {
-    const onBlur = vi.fn();
-    render(<LinkRepeaterRow {...defaultProps} onBlur={onBlur} />);
-
-    const urlInput = screen.getByLabelText(/url/i);
-    fireEvent.blur(urlInput);
-
-    expect(onBlur).toHaveBeenCalledWith('url', 'https://example.com');
-
-    const iconSelect = screen.getByLabelText(/icon/i);
-    fireEvent.blur(iconSelect);
-
-    expect(onBlur).toHaveBeenCalledWith('icon', 'dashboard');
-  });
-
   it('calls removeItem when delete button is clicked', async () => {
     const removeItem = vi.fn();
     render(<LinkRepeaterRow {...defaultProps} removeItem={removeItem} />);

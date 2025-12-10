@@ -18,8 +18,6 @@ interface LinkRepeaterProps {
       icon: string;
     }[]
   ) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onValidateField?: (fieldPath: string, value: any) => void;
 }
 
 // A linkRepeater field is a repeater field of three fields:
@@ -28,28 +26,17 @@ interface LinkRepeaterProps {
 // - a select menu for Icon
 // On change it returns an array of repeater fields - an array of
 // the three fields' values
-const LinkRepeater = ({
-  items,
-  onChange,
-  errors,
-  onValidateField,
-}: LinkRepeaterProps) => {
+const LinkRepeater = ({ items, onChange, errors }: LinkRepeaterProps) => {
   // Add a new repeater row
   const addItem = () => {
     const newItems = [...items, { url: '', title: '', icon: 'dashboard' }];
     onChange(newItems);
-
-    // Validate the links array after adding a new item
-    onValidateField?.('links', newItems);
   };
 
   // Remove a repeater row
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
     onChange(newItems);
-
-    // Validate the links array after removing an item
-    onValidateField?.('links', newItems);
   };
 
   const updateItem = (index: number, name: string, value: string) => {
@@ -62,14 +49,6 @@ const LinkRepeater = ({
         : item
     );
     onChange(newItems);
-
-    // Validate the single field and the entire links array
-    onValidateField?.(`links.${index}.${name}`, value);
-    // onValidateField?.('links', newItems);
-  };
-
-  const handleBlur = (index: number, name: string, value: string) => {
-    onValidateField?.(`links.${index}.${name}`, value);
   };
 
   return (
@@ -95,7 +74,6 @@ const LinkRepeater = ({
             item={item}
             removeItem={() => removeItem(index)}
             onChange={(name, value) => updateItem(index, name, value)}
-            onBlur={(name, value) => handleBlur(index, name, value)}
             errors={errors}
             key={`lri-${index}`}
           />

@@ -20,7 +20,6 @@ interface LinkRepeaterRowProps {
   };
   removeItem: () => void;
   onChange: (name: string, value: string) => void;
-  onBlur: (name: string, value: string) => void;
   errors?: FieldErrors;
 }
 
@@ -29,7 +28,6 @@ const LinkRepeaterRow = ({
   item,
   removeItem,
   onChange,
-  onBlur,
   errors,
 }: LinkRepeaterRowProps) => {
   const getFieldError = (fieldName: string) => {
@@ -59,7 +57,6 @@ const LinkRepeaterRow = ({
           required
           aria-describedby={`links-description ${urlError ? `links-${index}-url-error` : ''}`}
           onChange={e => onChange('url', e.target.value)}
-          onBlur={e => onBlur('url', e.target.value)}
         />
       </Field>
       <Field className="ams-mb-m">
@@ -88,9 +85,6 @@ const LinkRepeaterRow = ({
           aria-describedby="links-description"
           onChange={e =>
             onChange('icon', e.target.options[e.target.selectedIndex].value)
-          }
-          onBlur={e =>
-            onBlur('icon', e.target.options[e.target.selectedIndex].value)
           }
         >
           <Select.Option value="dashboard">Dashboard</Select.Option>

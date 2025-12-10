@@ -11,13 +11,11 @@ describe('LinkRepeater', () => {
 
   it('renders heading, description and error', async () => {
     const onChangeMock = vi.fn();
-    const onValidateFieldMock = vi.fn();
 
     render(
       <LinkRepeater
         items={baseItems}
         onChange={onChangeMock}
-        onValidateField={onValidateFieldMock}
         errors={{ links: 'Links are required' }}
       />
     );
@@ -40,15 +38,8 @@ describe('LinkRepeater', () => {
     const { default: LinkRepeater } = await import('./LinkRepeater');
 
     const onChangeMock = vi.fn();
-    const onValidateFieldMock = vi.fn();
 
-    render(
-      <LinkRepeater
-        items={baseItems}
-        onChange={onChangeMock}
-        onValidateField={onValidateFieldMock}
-      />
-    );
+    render(<LinkRepeater items={baseItems} onChange={onChangeMock} />);
 
     expect(screen.getByTestId('row-0')).toBeInTheDocument();
     expect(screen.getByTestId('row-1')).toBeInTheDocument();
@@ -56,15 +47,8 @@ describe('LinkRepeater', () => {
 
   it('adds a new link on button click', async () => {
     const onChangeMock = vi.fn();
-    const onValidateFieldMock = vi.fn();
 
-    render(
-      <LinkRepeater
-        items={baseItems}
-        onChange={onChangeMock}
-        onValidateField={onValidateFieldMock}
-      />
-    );
+    render(<LinkRepeater items={baseItems} onChange={onChangeMock} />);
     const addButton = screen.getByRole('button', { name: /add a new link/i });
     await userEvent.click(addButton);
 
@@ -72,43 +56,23 @@ describe('LinkRepeater', () => {
       ...baseItems,
       { url: '', title: '', icon: 'dashboard' },
     ]);
-
-    expect(onValidateFieldMock).toHaveBeenCalledWith('links', [
-      ...baseItems,
-      { url: '', title: '', icon: 'dashboard' },
-    ]);
   });
 
   it('removes a link item when removeItem is called', async () => {
     const onChangeMock = vi.fn();
-    const onValidateFieldMock = vi.fn();
 
-    render(
-      <LinkRepeater
-        items={baseItems}
-        onChange={onChangeMock}
-        onValidateField={onValidateFieldMock}
-      />
-    );
+    render(<LinkRepeater items={baseItems} onChange={onChangeMock} />);
 
     const buttons = screen.getAllByText('Delete', { selector: 'button' });
     await userEvent.click(buttons[buttons.length - 1]);
 
     expect(onChangeMock).toHaveBeenCalledWith([baseItems[0]]);
-    expect(onValidateFieldMock).toHaveBeenCalledWith('links', [baseItems[0]]);
   });
 
   it('updates a link item when onChange is called from child', async () => {
     const onChangeMock = vi.fn();
-    const onValidateFieldMock = vi.fn();
 
-    render(
-      <LinkRepeater
-        items={baseItems}
-        onChange={onChangeMock}
-        onValidateField={onValidateFieldMock}
-      />
-    );
+    render(<LinkRepeater items={baseItems} onChange={onChangeMock} />);
 
     const input = screen.getAllByLabelText('Title')[0];
     fireEvent.change(input, { target: { value: 'Updated title' } });
@@ -117,10 +81,5 @@ describe('LinkRepeater', () => {
       { ...baseItems[0], title: 'Updated title' },
       baseItems[1],
     ]);
-
-    expect(onValidateFieldMock).toHaveBeenCalledWith(
-      'links.0.title',
-      'Updated title'
-    );
   });
 });

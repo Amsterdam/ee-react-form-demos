@@ -9,7 +9,6 @@ describe('FormTextInput', () => {
     name: 'testInput',
     value: '',
     onChange: vi.fn(),
-    onBlur: vi.fn(),
   };
 
   beforeEach(() => {
@@ -31,21 +30,6 @@ describe('FormTextInput', () => {
     fireEvent.change(input, { target: { value: 'test input' } });
 
     expect(mockOnChange).toHaveBeenCalledTimes(1);
-  });
-
-  it('handles onBlur event', () => {
-    const mockOnBlur = vi.fn();
-    render(<FormTextInput {...defaultProps} onBlur={mockOnBlur} />);
-
-    const input = screen.getByRole('textbox');
-    fireEvent.blur(input);
-
-    expect(mockOnBlur).toHaveBeenCalledTimes(1);
-    expect(mockOnBlur).toHaveBeenCalledWith(
-      expect.objectContaining({
-        target: expect.objectContaining({ name: 'testInput' }),
-      })
-    );
   });
 
   it('renders with initial value', () => {

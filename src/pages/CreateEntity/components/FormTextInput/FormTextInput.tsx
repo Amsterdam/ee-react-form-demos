@@ -17,7 +17,6 @@ interface FormTextInputProps {
   required?: boolean;
   error?: string;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FormTextInput = ({
@@ -29,7 +28,6 @@ const FormTextInput = ({
   required = false,
   error,
   onChange,
-  onBlur,
 }: FormTextInputProps) => (
   <Field className="ams-mb-m" invalid={!!error}>
     <Label htmlFor={id}>{label}</Label>
@@ -52,7 +50,6 @@ const FormTextInput = ({
       invalid={!!error}
       required={required}
       onChange={onChange}
-      onBlur={onBlur}
     />
   </Field>
 );

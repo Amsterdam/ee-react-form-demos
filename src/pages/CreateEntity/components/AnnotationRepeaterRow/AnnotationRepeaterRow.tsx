@@ -1,6 +1,7 @@
 import { ChangeEvent, useCallback, useMemo } from 'react';
 import {
   Button,
+  ErrorMessage,
   Field,
   Heading,
   Label,
@@ -69,6 +70,11 @@ const AnnotationRepeaterRow = ({
     <Field className={styles.container} invalid={!!keyError || !!valueError}>
       <Heading level={4}>Annotation {index + 1}</Heading>
       <Label htmlFor={`annotations-${index}-type`}>Type</Label>
+      {keyError && (
+        <ErrorMessage id={`annotations-${index}-type-error`}>
+          {keyError}
+        </ErrorMessage>
+      )}
       <InputAutoSelect
         options={keyOptions}
         id={`annotations-${index}-type`}
@@ -82,6 +88,11 @@ const AnnotationRepeaterRow = ({
       />
 
       <Label htmlFor={`annotations-${index}-value`}>Value</Label>
+      {valueError && (
+        <ErrorMessage id={`annotations-${index}-value-error`}>
+          {valueError}
+        </ErrorMessage>
+      )}
 
       {annotation?.values ? (
         <Select

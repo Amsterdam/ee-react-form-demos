@@ -9,7 +9,6 @@ describe('FormTextArea', () => {
     name: 'testTextarea',
     value: '',
     onChange: vi.fn(),
-    onBlur: vi.fn(),
   };
 
   beforeEach(() => {
@@ -31,16 +30,6 @@ describe('FormTextArea', () => {
     fireEvent.change(textarea, { target: { value: 'test textarea content' } });
 
     expect(mockOnChange).toHaveBeenCalledTimes(1);
-  });
-
-  it('handles onBlur event', () => {
-    const mockOnBlur = vi.fn();
-    render(<FormTextArea {...defaultProps} onBlur={mockOnBlur} />);
-
-    const textarea = screen.getByRole('textbox');
-    fireEvent.blur(textarea);
-
-    expect(mockOnBlur).toHaveBeenCalledTimes(1);
   });
 
   it('displays validation errors', () => {
