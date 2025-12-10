@@ -3,7 +3,7 @@ import * as ContactFormStories from './index.stories';
 import ContactForm from '@/pages/ReactHookForm/ContactForm/ContactForm?raw';
 import schema from '@/pages/ReactHookForm/ContactForm/schema?raw';
 import styles from '@/pages/ReactHookForm/ContactForm/ContactForm.module.css?raw';
-import translate from '@/pages/ReactHookForm/ContactForm/utils/translate.ts?raw';
+import collectErrorMessages from '@/pages/ReactHookForm/ContactForm/utils/collectErrorMessages.ts?raw';
 
 <Meta of={ContactFormStories} />
 
@@ -75,7 +75,7 @@ To implement this Contact Form, there are 4 core files:
 3. The CSS styles
     - [ContactForm.module.css](#--contactformmodulecss)
 4. Utils:
-    - [translate.ts](#--translatets)
+    - [collectErrorMessages.ts](#--collecterrormessagests)
 
 *The `Loader` component is excluded from the docs, it is a generic preloader.*
 
@@ -103,6 +103,6 @@ The following files are required:
 
 ### 4. Utils
 
-#### - translate.ts
+#### - collectErrorMessages.ts
 
-<Source code={translate} />
+<Source code={collectErrorMessages} />
