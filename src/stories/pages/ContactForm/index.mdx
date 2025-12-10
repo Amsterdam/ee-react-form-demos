@@ -3,11 +3,11 @@ import * as ContactFormStories from './index.stories';
 import ContactForm from '@/pages/ContactForm/ContactForm?raw';
 import schema from '@/pages/ContactForm/schema?raw';
 import styles from '@/pages/ContactForm/ContactForm.module.css?raw';
-import translate from '@/pages/ContactForm/utils/translate.ts?raw';
+import mapErrorsToAlert from '@/utils/mapErrorsToAlert.ts?raw';
 
 <Meta of={ContactFormStories} />
 
-# Contact Form (on Submit)
+# Contact Form
 
 **<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/ContactForm" target="_blank">GitHub Repo URL</a>**
 
@@ -74,7 +74,7 @@ To implement this Contact Form, there are 4 core files:
 3. The CSS styles
     - [ContactForm.module.css](#3-css-styles)
 4. Utils:
-    - [translate.ts](#4-utils)
+    - [mapErrorsToAlert.ts](#4-utils)
 
 *The `Loader` component is excluded from the docs, it is a generic preloader.*
 
@@ -100,6 +100,6 @@ The following files are required:
 
 ### 4. Utils
 
-#### - translate.ts
+#### - mapErrorsToAlert.ts
 
-<Source code={translate} />
+<Source code={mapErrorsToAlert} />

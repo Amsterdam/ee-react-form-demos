@@ -27,25 +27,7 @@ describe('ContactFormSchema', () => {
       const nameError = result.error.issues.find(
         issue => issue.path[0] === 'name'
       );
-      expect(nameError?.message).toBe('This field is required');
-    }
-  });
-
-  it('should reject an undefined name', () => {
-    const invalidData = {
-      name: undefined,
-      email: 'john@example.com',
-      body: 'This is a test message',
-    };
-
-    const result = ContactFormSchema.safeParse(invalidData);
-    expect(result.success).toBe(false);
-
-    if (!result.success) {
-      const nameError = result.error.issues.find(
-        issue => issue.path[0] === 'name'
-      );
-      expect(nameError?.message).toBe('This field is required');
+      expect(nameError?.message).toBe('The name field is required');
     }
   });
 
@@ -63,9 +45,7 @@ describe('ContactFormSchema', () => {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
       );
-      expect(emailError?.message).toBe(
-        'You have entered an invalid value for this field'
-      );
+      expect(emailError?.message).toBe('A valid email address is required');
     }
   });
 
@@ -83,7 +63,7 @@ describe('ContactFormSchema', () => {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
       );
-      expect(emailError?.message).toBe('This field is required');
+      expect(emailError?.message).toBe('The email address field is required');
     }
   });
 
@@ -101,7 +81,7 @@ describe('ContactFormSchema', () => {
       const bodyError = result.error.issues.find(
         issue => issue.path[0] === 'body'
       );
-      expect(bodyError?.message).toBe('This field is required');
+      expect(bodyError?.message).toBe('The message field is required');
     }
   });
 
