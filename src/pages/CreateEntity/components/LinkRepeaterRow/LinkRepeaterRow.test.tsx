@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import LinkRepeaterRow from './LinkRepeaterRow';
+import { FieldErrors } from '../../schema';
 
 describe('LinkRepeaterRow', () => {
   const defaultProps = {
@@ -12,7 +13,9 @@ describe('LinkRepeaterRow', () => {
       icon: 'dashboard',
     },
     onChange: vi.fn(),
+    onBlur: vi.fn(),
     removeItem: vi.fn(),
+    errors: {},
   };
 
   beforeEach(() => {
@@ -29,6 +32,23 @@ describe('LinkRepeaterRow', () => {
     expect(screen.getByLabelText(/url/i)).toHaveValue('https://example.com');
     expect(screen.getByLabelText(/title/i)).toHaveValue('Example Title');
     expect(screen.getByLabelText(/icon/i)).toHaveValue('dashboard');
+  });
+
+  it('renders validation errors for url and title', () => {
+    render(
+      <LinkRepeaterRow
+        {...defaultProps}
+        errors={
+          {
+            'links.0.url': 'URL is invalid',
+            'links.0.title': 'Title is required',
+          } as FieldErrors
+        }
+      />
+    );
+
+    expect(screen.getByText('URL is invalid')).toBeInTheDocument();
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
   });
 
   it('calls onChange when URL, title, or icon changes', async () => {

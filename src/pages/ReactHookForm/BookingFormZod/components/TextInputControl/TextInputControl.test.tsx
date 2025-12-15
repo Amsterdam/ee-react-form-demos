@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import TextInputControl from './TextInputControl';
 
 type FormValues = {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ContactForm from '@/pages/ContactForm/ContactForm';
 
 const meta = {
-  title: 'Plain HTML5/ContactForm (on Submit; Zod Validation)',
+  title: 'Plain HTML5/ContactForm (Zod Validation)',
   component: ContactForm,
   parameters: {
     layout: 'fullscreen',

@@ -1,10 +1,10 @@
 import type { FieldValues, RegisterOptions } from 'react-hook-form';
 import {
-  Field,
   Checkbox,
-  Paragraph,
   type CheckboxProps,
   ErrorMessage,
+  Field,
+  Paragraph,
 } from '@amsterdam/design-system-react';
 import clsx from 'clsx';
 import FormControl from '../FormControl/FormControl';

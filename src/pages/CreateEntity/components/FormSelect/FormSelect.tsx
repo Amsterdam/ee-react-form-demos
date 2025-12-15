@@ -1,10 +1,12 @@
 import { ChangeEvent, ReactNode } from 'react';
 import {
+  ErrorMessage,
   Field,
   Label,
   Paragraph,
   Select,
 } from '@amsterdam/design-system-react';
+import clsx from 'clsx';
 
 interface FormSelectProps {
   id: string;
@@ -14,7 +16,9 @@ interface FormSelectProps {
   options: Record<string, string>;
   initialValue?: string;
   required?: boolean;
+  error?: string;
   onChange: (name: string, value: string) => void;
+  onBlur?: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const FormSelect = ({
@@ -25,7 +29,9 @@ const FormSelect = ({
   options,
   initialValue = undefined,
   required = false,
+  error,
   onChange,
+  onBlur,
 }: FormSelectProps) => (
   <Field className="ams-mb-m">
     <Label htmlFor={id}>{label}</Label>
@@ -36,15 +42,21 @@ const FormSelect = ({
     ) : (
       description
     )}
+    {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
     <Select
-      aria-describedby={description ? `${id}-description` : ''}
+      aria-describedby={clsx(
+        { [`${id}-description`]: !!description },
+        { [`${id}-error`]: !!error }
+      )}
       id={id}
       name={name}
       value={initialValue}
       required={required}
+      invalid={!!error}
       onChange={(e: ChangeEvent<HTMLSelectElement>) =>
         onChange(name, e.target.options[e.target.selectedIndex].value)
       }
+      onBlur={onBlur}
     >
       {Object.keys(options).map((value, index) => (
         <Select.Option value={value} key={`form-select-${index}`}>

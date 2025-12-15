@@ -1,11 +1,18 @@
-import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
+import {
+  Button,
+  ErrorMessage,
+  Heading,
+  Paragraph,
+} from '@amsterdam/design-system-react';
 import { PlusIcon } from '@amsterdam/design-system-react-icons';
-import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
 import { AnnotationItem } from '@/types/types';
+import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
+import { FieldErrors } from '../../schema';
 import styles from './AnnotationRepeater.module.css';
 
 interface AnnotationRepeaterProps {
   items: AnnotationItem[];
+  errors: FieldErrors;
   onChange: (annotations: AnnotationItem[]) => void;
 }
 
@@ -14,7 +21,11 @@ interface AnnotationRepeaterProps {
 // 2. A corresponding input or select menu (the repeater field's
 // 'value'). On change it returns an object 'annotations' of array of
 // { key: '', value: '' }
-const AnnotationRepeater = ({ items, onChange }: AnnotationRepeaterProps) => {
+const AnnotationRepeater = ({
+  items,
+  errors,
+  onChange,
+}: AnnotationRepeaterProps) => {
   // Add a new repeater row
   const addItem = () => {
     onChange([...items, { key: '', value: '' }]);
@@ -39,6 +50,8 @@ const AnnotationRepeater = ({ items, onChange }: AnnotationRepeaterProps) => {
     onChange(newItems);
   };
 
+  const annotationsError = errors.annotations;
+
   return (
     <div className={`${styles.container} ams-mb-l`}>
       <Heading level={4} className="ams-mb-s">
@@ -50,6 +63,12 @@ const AnnotationRepeater = ({ items, onChange }: AnnotationRepeaterProps) => {
         entity, identical in use to Kubernetes object annotations.
       </Paragraph>
 
+      {annotationsError && (
+        <ErrorMessage id="annotations-error" className="ams-mb-s">
+          {annotationsError}
+        </ErrorMessage>
+      )}
+
       <div className="ams-mb-m">
         {items.map((item, index) => (
           <AnnotationRepeaterRow
@@ -57,6 +76,10 @@ const AnnotationRepeater = ({ items, onChange }: AnnotationRepeaterProps) => {
             index={index}
             values={item}
             key={`ari-${index}`}
+            keyError={errors[`annotations.${index}.key` as keyof FieldErrors]}
+            valueError={
+              errors[`annotations.${index}.value` as keyof FieldErrors]
+            }
             onChange={(key, value) => updateItem(index, key, value)}
           />
         ))}

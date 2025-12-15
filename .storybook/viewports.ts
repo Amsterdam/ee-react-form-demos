@@ -1,4 +1,4 @@
-import { ViewportMap } from './types'
+import { ViewportMap } from './types';
 
 export const viewports: ViewportMap = {
   phone: {
@@ -25,4 +25,4 @@ export const viewports: ViewportMap = {
     },
     type: 'desktop',
   },
-}
+};

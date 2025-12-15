@@ -1,11 +1,17 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import AnnotationRepeater from './AnnotationRepeater';
 
 describe('AnnotationRepeater', () => {
-  it('renders, heading and description', async () => {
-    render(<AnnotationRepeater items={[]} onChange={() => {}} />);
+  it('renders, heading, description and error', async () => {
+    render(
+      <AnnotationRepeater
+        items={[]}
+        errors={{ annotations: 'Annotations error' }}
+        onChange={() => {}}
+      />
+    );
 
     expect(screen.getByRole('heading', { level: 4 })).toHaveTextContent(
       'Annotations'
@@ -13,6 +19,7 @@ describe('AnnotationRepeater', () => {
     expect(
       screen.getByText(/An object with arbitrary non-identifying metadata/)
     ).toBeInTheDocument();
+    expect(screen.getByText('Annotations error')).toBeInTheDocument();
   });
 
   it('renders all annotation rows', async () => {
@@ -23,33 +30,38 @@ describe('AnnotationRepeater', () => {
       ),
     }));
 
-    // Dynamically import AFTER mocking
-    const { default: AnnotationRepeater } = await import(
-      './AnnotationRepeater'
-    );
+    const { default: AnnotationRepeater } =
+      await import('./AnnotationRepeater');
 
     const items = [
       { key: 'foo', value: 'bar' },
       { key: 'baz', value: 'qux' },
     ];
-    render(<AnnotationRepeater items={items} onChange={() => {}} />);
+    render(
+      <AnnotationRepeater items={items} errors={{}} onChange={() => {}} />
+    );
 
     expect(screen.getByTestId('row-0')).toBeInTheDocument();
     expect(screen.getByTestId('row-1')).toBeInTheDocument();
   });
 
   it('adds new annotation on button click', async () => {
-    const onChange = vi.fn();
+    const onChangeMock = vi.fn();
     const items = [{ key: 'foo', value: 'bar' }];
 
-    render(<AnnotationRepeater items={items} onChange={onChange} />);
+    render(
+      <AnnotationRepeater items={items} errors={{}} onChange={onChangeMock} />
+    );
 
     const addButton = screen.getByRole('button', {
       name: /add a new annotation/i,
     });
     await userEvent.click(addButton);
 
-    expect(onChange).toHaveBeenCalledWith([...items, { key: '', value: '' }]);
+    expect(onChangeMock).toHaveBeenCalledWith([
+      ...items,
+      { key: '', value: '' },
+    ]);
   });
 
   it('calls onChange with item removed', async () => {
@@ -59,7 +71,9 @@ describe('AnnotationRepeater', () => {
       { key: 'b', value: '2' },
     ];
 
-    render(<AnnotationRepeater items={items} onChange={onChangeMock} />);
+    render(
+      <AnnotationRepeater items={items} errors={{}} onChange={onChangeMock} />
+    );
 
     const buttons = screen.getAllByText('Delete', { selector: 'button' });
     await userEvent.click(buttons[buttons.length - 1]);
@@ -70,7 +84,9 @@ describe('AnnotationRepeater', () => {
     const onChangeMock = vi.fn();
     const items = [{ key: 'key', value: 'value' }];
 
-    render(<AnnotationRepeater items={items} onChange={onChangeMock} />);
+    render(
+      <AnnotationRepeater items={items} errors={{}} onChange={onChangeMock} />
+    );
 
     const input = screen.getByLabelText('Value');
     await fireEvent.change(input, { target: { value: 'Updated' } });

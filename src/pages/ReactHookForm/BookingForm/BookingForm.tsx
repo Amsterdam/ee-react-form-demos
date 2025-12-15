@@ -8,13 +8,13 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
+import Loader from '@/components/Loader/Loader';
 import TextInputControl from './components/TextInputControl/TextInputControl';
 import CheckboxControl from './components/CheckboxControl/CheckboxControl';
 import TextAreaControl from './components/TextAreaControl/TextAreaControl';
 import DateControl from './components/DateControl/DateControl';
 import TimeControl from './components/TimeControl/TimeControl';
 import DateTimeFieldset from './components/DateTimeFieldset/DateTimeFieldset';
-import Loader from '@/components/Loader/Loader';
 import styles from './BookingForm.module.css';
 
 interface BookingFormData {

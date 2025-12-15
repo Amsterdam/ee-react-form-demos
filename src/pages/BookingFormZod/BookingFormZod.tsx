@@ -25,7 +25,7 @@ import styles from './BookingFormZod.module.css';
 const BookingFormZod = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitTouched, setSubmitTouched] = useState(false);
+  const [isSubmitTouched, setIsSubmitTouched] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const nowDateTime = new Date();
@@ -107,7 +107,7 @@ const BookingFormZod = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     // Prevent the browser from submitting and handling the form
     e.preventDefault();
-    setSubmitTouched(true);
+    setIsSubmitTouched(true);
 
     const result = schema.safeParse(formData);
 
@@ -170,7 +170,7 @@ const BookingFormZod = () => {
             after the start—requires more advanced validation logic.
           </Paragraph>
 
-          {submitTouched && Object.keys(errors).length > 0 && (
+          {isSubmitTouched && Object.keys(errors).length > 0 && (
             <Alert
               severity="error"
               heading="Please fix the following:"
@@ -192,7 +192,10 @@ const BookingFormZod = () => {
             </Alert>
           )}
 
-          <Field className="ams-mb-m" invalid={submitTouched && !!errors.name}>
+          <Field
+            className="ams-mb-m"
+            invalid={isSubmitTouched && !!errors.name}
+          >
             <Label htmlFor="name">Name</Label>
             {errors.name && (
               <ErrorMessage id={`error-name`} data-testid="error-message">
@@ -210,7 +213,10 @@ const BookingFormZod = () => {
             />
           </Field>
 
-          <Field className="ams-mb-m" invalid={submitTouched && !!errors.email}>
+          <Field
+            className="ams-mb-m"
+            invalid={isSubmitTouched && !!errors.email}
+          >
             <Label htmlFor="email">Email address</Label>
             {errors.email && (
               <ErrorMessage id={`error-email`} data-testid="error-message">
@@ -233,8 +239,8 @@ const BookingFormZod = () => {
             legend="Start date and time"
             className="ams-mb-m"
             invalid={
-              (submitTouched && !!errors.startDate) ||
-              (submitTouched && !!errors.startTime)
+              (isSubmitTouched && !!errors.startDate) ||
+              (isSubmitTouched && !!errors.startTime)
             }
           >
             <Row>
@@ -262,8 +268,8 @@ const BookingFormZod = () => {
             legend="End date and time"
             className="ams-mb-m"
             invalid={
-              (submitTouched && !!errors.endDate) ||
-              (submitTouched && !!errors.endTime)
+              (isSubmitTouched && !!errors.endDate) ||
+              (isSubmitTouched && !!errors.endTime)
             }
           >
             <Row>

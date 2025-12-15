@@ -1,6 +1,4 @@
 import { ChangeEvent } from 'react';
-import ANNOTATIONS from '@/utils/getAnnotations';
-import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect';
 import {
   Button,
   ErrorMessage,
@@ -19,8 +17,10 @@ import {
   useWatch,
 } from 'react-hook-form';
 import clsx from 'clsx';
-import styles from './AnnotationRepeaterRow.module.css';
+import ANNOTATIONS from '@/utils/getAnnotations';
+import InputAutoSelect from '@/components/InputAutoSelect/InputAutoSelect';
 import { EntityFormData as RHFEntityFormData } from '../../schema';
+import styles from './AnnotationRepeaterRow.module.css';
 
 interface AnnotationRepeaterRowProps {
   control: Control<RHFEntityFormData>;
@@ -70,16 +70,15 @@ const AnnotationRepeaterRow = ({
 
           return (
             <>
-              <Label htmlFor={`annotation-type-${index}`}>Type</Label>
+              <Label htmlFor={`annotations-${index}-key`}>Type</Label>
               <InputAutoSelect
                 options={ANNOTATIONS.map(({ key, label }) => ({
                   value: key,
                   label,
                 }))}
-                id={`annotation-type-${index}`}
+                id={`annotations-${index}-key`}
                 value={selectedOption}
                 error={errors.annotations?.[index]?.key?.message}
-                required
                 aria-describedby={clsx('annotations-description', {
                   [`annotation-key-${index}-error`]:
                     errors.annotations?.[index]?.key,
@@ -115,14 +114,13 @@ const AnnotationRepeaterRow = ({
         control={control}
         render={({ field }) => (
           <>
-            <Label htmlFor={`annotation-value-${index}`}>Value</Label>
+            <Label htmlFor={`annotations-${index}-value`}>Value</Label>
             {annotation?.values ? (
               <Select
-                id={`annotation-value-${index}`}
+                id={`annotations-${index}-value`}
                 className="ams-mb-m"
                 value={field.value}
                 invalid={!!errors.annotations?.[index]?.value}
-                required
                 aria-describedby={clsx('annotations-description', {
                   [`annotation-value-${index}-error`]:
                     errors.annotations?.[index]?.value,
@@ -142,14 +140,13 @@ const AnnotationRepeaterRow = ({
               </Select>
             ) : (
               <TextInput
-                type={annotation?.type === 'url' ? 'url' : 'text'}
-                id={`annotation-value-${index}`}
+                type={annotation?.key === 'url' ? 'url' : 'text'}
+                id={`annotations-${index}-value`}
                 placeholder={
                   annotation?.example ? annotation.example : undefined
                 }
                 value={field.value}
                 invalid={!!errors.annotations?.[index]?.value}
-                required
                 className="ams-mb-m"
                 aria-describedby={clsx('annotations-description', {
                   [`annotation-value-${index}-error`]:

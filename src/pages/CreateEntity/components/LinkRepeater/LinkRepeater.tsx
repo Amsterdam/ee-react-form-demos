@@ -1,6 +1,7 @@
 import { Button, Heading, Paragraph } from '@amsterdam/design-system-react';
 import { PlusIcon } from '@amsterdam/design-system-react-icons';
 import LinkRepeaterRow from '../LinkRepeaterRow/LinkRepeaterRow';
+import { FieldErrors } from '../../schema';
 import styles from './LinkRepeater.module.css';
 
 interface LinkRepeaterProps {
@@ -9,6 +10,7 @@ interface LinkRepeaterProps {
     title: string;
     icon: string;
   }[];
+  errors?: FieldErrors;
   onChange: (
     items: {
       url: string;
@@ -24,10 +26,11 @@ interface LinkRepeaterProps {
 // - a select menu for Icon
 // On change it returns an array of repeater fields - an array of
 // the three fields' values
-const LinkRepeater = ({ items, onChange }: LinkRepeaterProps) => {
+const LinkRepeater = ({ items, onChange, errors }: LinkRepeaterProps) => {
   // Add a new repeater row
   const addItem = () => {
-    onChange([...items, { url: '', title: '', icon: 'dashboard' }]);
+    const newItems = [...items, { url: '', title: '', icon: 'dashboard' }];
+    onChange(newItems);
   };
 
   // Remove a repeater row
@@ -60,6 +63,10 @@ const LinkRepeater = ({ items, onChange }: LinkRepeaterProps) => {
         Backstage itself. For example, an admin dashboard or external CMS page.
       </Paragraph>
 
+      {errors?.links && typeof errors.links === 'string' && (
+        <div className="error-message ams-mb-s">{errors.links}</div>
+      )}
+
       <div className="ams-mb-m">
         {items.map((item, index) => (
           <LinkRepeaterRow
@@ -67,6 +74,7 @@ const LinkRepeater = ({ items, onChange }: LinkRepeaterProps) => {
             item={item}
             removeItem={() => removeItem(index)}
             onChange={(name, value) => updateItem(index, name, value)}
+            errors={errors}
             key={`lri-${index}`}
           />
         ))}
