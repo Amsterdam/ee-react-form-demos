@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import StepConfirm from './StepConfirm';
 import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';

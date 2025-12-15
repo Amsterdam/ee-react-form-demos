@@ -1,9 +1,9 @@
 import {
-  Heading,
-  Paragraph,
-  OrderedList,
   CallToActionLink,
   Grid,
+  Heading,
+  OrderedList,
+  Paragraph,
 } from '@amsterdam/design-system-react';
 
 interface StepIntroProps {

@@ -1,10 +1,10 @@
 import {
-  StandaloneLink,
   Button,
   Grid,
   Heading,
-  Paragraph,
   InvalidFormAlert,
+  Paragraph,
+  StandaloneLink,
 } from '@amsterdam/design-system-react';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
 import { MouseEvent } from 'react';

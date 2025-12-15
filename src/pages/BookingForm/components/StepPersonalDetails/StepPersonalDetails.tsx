@@ -1,14 +1,14 @@
 import {
+  Button,
   ErrorMessage,
   Field,
-  Label,
-  TextInput,
-  StandaloneLink,
-  Button,
   Grid,
   Heading,
-  Paragraph,
   InvalidFormAlert,
+  Label,
+  Paragraph,
+  StandaloneLink,
+  TextInput,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingForm';

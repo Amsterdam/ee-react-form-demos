@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import StepPersonalDetails from './StepPersonalDetails';
 import { FormProvider, useForm } from 'react-hook-form';

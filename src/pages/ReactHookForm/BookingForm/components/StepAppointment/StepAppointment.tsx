@@ -1,12 +1,12 @@
 import {
-  StandaloneLink,
   Button,
   Grid,
   Heading,
-  Paragraph,
   InvalidFormAlert,
+  Paragraph,
+  StandaloneLink,
 } from '@amsterdam/design-system-react';
-import { useMemo, MouseEvent } from 'react';
+import { MouseEvent, useMemo } from 'react';
 import { BookingFormData } from '../../BookingForm';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
 import mapErrorsToAlert from '../../utils/mapErrorsToAlert';

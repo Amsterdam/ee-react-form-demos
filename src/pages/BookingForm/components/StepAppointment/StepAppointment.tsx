@@ -1,12 +1,12 @@
 import {
-  StandaloneLink,
   Button,
   FieldSet,
-  Row,
   Grid,
   Heading,
-  Paragraph,
   InvalidFormAlert,
+  Paragraph,
+  Row,
+  StandaloneLink,
 } from '@amsterdam/design-system-react';
 import { ChangeEvent, useState } from 'react';
 import { FormData } from '../../BookingForm';
