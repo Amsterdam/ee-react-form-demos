@@ -1,9 +1,9 @@
 import {
+  DateInput,
+  type DateInputProps,
   Field,
   Label,
   Paragraph,
-  DateInput,
-  type DateInputProps,
 } from '@amsterdam/design-system-react';
 import type { FieldValues, RegisterOptions } from 'react-hook-form';
 import clsx from 'clsx';

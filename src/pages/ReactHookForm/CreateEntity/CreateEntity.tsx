@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
 import {
-  useForm,
   Controller,
-  useWatch,
-  useFieldArray,
   Resolver,
+  useFieldArray,
+  useForm,
+  useWatch,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -36,7 +36,7 @@ import entityFormSchema, {
   EntityFormData as RHFEntityFormData,
 } from './schema';
 import { EntityFormData } from '@/types/types';
-import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
+import mapErrorsToAlert from './utils/mapErrorsToAlert';
 import scrollToErrorAlert from '@/utils/scrollToErrorAlert';
 import collectErrorMessages from './utils/collectErrorMessages';
 import styles from './CreateEntity.module.css';
@@ -324,7 +324,7 @@ const CreateEntity = () => {
 
               return (
                 <FormAutoSelect
-                  id="owner"
+                  id="spec-owner"
                   label="Owner"
                   description={
                     <Paragraph size="small" id="owner-description">
@@ -363,7 +363,7 @@ const CreateEntity = () => {
             control={control}
             render={({ field }) => (
               <FormCheckboxInput
-                id="hasSystem"
+                id="has-system"
                 label="Entity belongs to a system?"
                 value={field.value ?? false}
                 onChange={field.onChange}
@@ -381,7 +381,7 @@ const CreateEntity = () => {
 
                 return (
                   <FormAutoSelect
-                    id="spec.system"
+                    id="spec-system"
                     label="System"
                     description={
                       <Paragraph id="system-description" size="small">

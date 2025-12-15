@@ -14,9 +14,9 @@ import {
 import { FormEvent, useState } from 'react';
 import { z } from 'zod/v4';
 import Loader from '@/components/Loader/Loader';
+import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
 import ContactFormSchema from './schema';
 import styles from './ContactForm.module.css';
-import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
 
 // This is a simple HTML5 form example that validates on submission using a
 // Zod schema

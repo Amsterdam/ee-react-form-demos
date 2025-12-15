@@ -11,13 +11,19 @@ export const argTypes = {
   children: {
     table: { disable: true },
   },
-}
+};
 
 // Wrap in Page, set language to Dutch for Canvas and Stories
 export const decorators = [
   (Story: StoryFn, context: StoryContext) => (
     <Page
-      className={context.args['color'] === 'inverse' ? 'ams-docs-dark-background' : context.args['color'] === 'contrast' ? 'ams-docs-light-background' : ''}
+      className={
+        context.args['color'] === 'inverse'
+          ? 'ams-docs-dark-background'
+          : context.args['color'] === 'contrast'
+            ? 'ams-docs-light-background'
+            : ''
+      }
       lang="nl"
     >
       {Story(context.args, context)}
@@ -30,7 +36,7 @@ export const decorators = [
       Spacious: '',
     },
   }),
-]
+];
 
 export const parameters = {
   backgrounds: {
@@ -77,4 +83,4 @@ export const parameters = {
   viewport: {
     viewports,
   },
-}
+};

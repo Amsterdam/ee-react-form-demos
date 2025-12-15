@@ -5,10 +5,10 @@ import {
   Paragraph,
 } from '@amsterdam/design-system-react';
 import { PlusIcon } from '@amsterdam/design-system-react-icons';
+import { AnnotationItem } from '@/types/types';
 import AnnotationRepeaterRow from '../AnnotationRepeaterRow/AnnotationRepeaterRow';
 import { FieldErrors } from '../../schema';
 import styles from './AnnotationRepeater.module.css';
-import { AnnotationItem } from '@/types/types';
 
 interface AnnotationRepeaterProps {
   items: AnnotationItem[];

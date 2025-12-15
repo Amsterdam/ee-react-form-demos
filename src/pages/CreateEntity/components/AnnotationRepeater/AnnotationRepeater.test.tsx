@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import AnnotationRepeater from './AnnotationRepeater';
 
@@ -30,9 +30,8 @@ describe('AnnotationRepeater', () => {
       ),
     }));
 
-    const { default: AnnotationRepeater } = await import(
-      './AnnotationRepeater'
-    );
+    const { default: AnnotationRepeater } =
+      await import('./AnnotationRepeater');
 
     const items = [
       { key: 'foo', value: 'bar' },

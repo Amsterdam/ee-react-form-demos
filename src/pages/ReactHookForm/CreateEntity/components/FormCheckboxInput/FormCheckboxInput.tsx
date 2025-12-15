@@ -1,4 +1,4 @@
-import { Field, Paragraph, Checkbox } from '@amsterdam/design-system-react';
+import { Checkbox, Field, Paragraph } from '@amsterdam/design-system-react';
 
 interface FormCheckboxInputProps {
   id: string;

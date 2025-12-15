@@ -10,6 +10,21 @@ import {
 } from '@amsterdam/design-system-react';
 import '@amsterdam/design-system-tokens/dist/compact.css';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
+import Loader from '@/components/Loader/Loader';
+import { EntityFormData } from '@/types/types';
+import getOwners from '@/utils/getOwners';
+import getSystems from '@/utils/getSystems';
+import getTags from '@/utils/getTags';
+import sortAlphabetically from '@/utils/sortAlphabetically';
+import scrollToErrorAlert from '@/utils/scrollToErrorAlert';
+import {
+  // We renamed this as we still need the original EntityFormData type shape for
+  // the SubmissionOutput component
+  EntityFormData as ZodEntityFormData,
+} from './schema';
+import mapErrorsToAlert from './utils/mapErrorsToAlert';
+import useEntityFormValidation from './hooks/useEntityFormValidation';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextArea from './components/FormTextArea/FormTextArea';
@@ -17,22 +32,7 @@ import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput'
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
 import LinkRepeater from './components/LinkRepeater/LinkRepeater';
-import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
-import Loader from '@/components/Loader/Loader';
-import getOwners from '@/utils/getOwners';
-import getSystems from '@/utils/getSystems';
-import getTags from '@/utils/getTags';
-import sortAlphabetically from '@/utils/sortAlphabetically';
 import styles from './CreateEntity.module.css';
-import {
-  // We renamed this as we still need the original EntityFormData type shape for
-  // the SubmissionOutput component
-  EntityFormData as ZodEntityFormData,
-} from './schema';
-import { EntityFormData } from '@/types/types';
-import useEntityFormValidation from './hooks/useEntityFormValidation';
-import mapErrorsToAlert from './utils/mapErrorsToAlert';
-import scrollToErrorAlert from '@/utils/scrollToErrorAlert';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);

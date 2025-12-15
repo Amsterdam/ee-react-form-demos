@@ -1,4 +1,4 @@
-import { FieldValues, Path, FieldPath, RegisterOptions } from 'react-hook-form';
+import { FieldPath, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 
 export type FormControlBase<TFieldValues extends FieldValues = FieldValues> = {
   name: Path<TFieldValues>;

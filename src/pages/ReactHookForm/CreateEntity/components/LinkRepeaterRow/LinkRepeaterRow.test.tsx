@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, vi, expect } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { useForm } from 'react-hook-form';
 import LinkRepeaterRow from './LinkRepeaterRow';
 import type { EntityFormData } from '../../schema';

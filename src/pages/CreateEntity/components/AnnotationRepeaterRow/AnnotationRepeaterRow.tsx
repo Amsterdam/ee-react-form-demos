@@ -9,11 +9,11 @@ import {
   TextInput,
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
+import clsx from 'clsx';
 import ANNOTATIONS from '@/utils/getAnnotations';
+import { AnnotationItem } from '@/types/types';
 import InputAutoSelect from '../../../../components/InputAutoSelect/InputAutoSelect';
 import styles from './AnnotationRepeaterRow.module.css';
-import { AnnotationItem } from '@/types/types';
-import clsx from 'clsx';
 
 interface AnnotationRepeaterRowProps {
   index: number;
