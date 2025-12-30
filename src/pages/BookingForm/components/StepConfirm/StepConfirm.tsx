@@ -116,7 +116,7 @@ const StepConfirm = ({
         />
 
         <Button type="submit" disabled={disabled}>
-          Submit
+          Verzenden
         </Button>
       </Grid.Cell>
     </Grid>

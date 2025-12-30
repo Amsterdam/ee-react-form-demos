@@ -35,7 +35,9 @@ describe('StepConfirm', () => {
     expect(
       screen.getByRole('link', { name: /vorige vraag/i })
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /verzenden/i })
+    ).toBeInTheDocument();
     expect(screen.getByLabelText(/opmerkingen/i)).toBeInTheDocument();
   });
 
@@ -63,6 +65,6 @@ describe('StepConfirm', () => {
   it('disables textarea and submit button when disabled=true', () => {
     render(<StepConfirm {...defaultProps} disabled />);
     expect(screen.getByLabelText(/opmerkingen/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /verzenden/i })).toBeDisabled();
   });
 });

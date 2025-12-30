@@ -73,7 +73,7 @@ describe('BookingForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
     // Complete Step 3
-    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+    fireEvent.click(screen.getByRole('button', { name: /verzenden/i }));
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
 
