@@ -5,28 +5,49 @@ import { Meta } from '@storybook/addon-docs/blocks';
 # File Handling
 
 > **Warning**
-> Frontend validation is only for UX, not security. It must be emphasised that much of the security enforcements needs to happen on the backend, however, frontend forms can help guide safe input and prevent common vulnerabilities.
+> Frontend validation is only for UX, not security. All file validation and enforcement must happen on the backend.
+> Frontend checks help guide user input, but they do not prevent malicious uploads.
 
-## Risks
+This document explains how to securely handle file uploads via forms. File uploads are a high-risk feature and should always be treated as untrusted input.
 
-- Uploading dangerous files (for example, `.exe`, `.php`)
-- Malicious files disguised with a safe extension (`.jpg` containing script code)
+Many cloud providers offer malware scanning services (for example, Microsoft Defender for Storage in Azure). These should be enabled for any system accepting files from public users.
+
+## Common risks
+
+- Uploading dangerous executable files (for example `.exe`, `.bat`, `.php`)
+- Files disguised with a safe extension (`.jpg` containing embedded malicious content)
 - Large files (DoS attempts)
+- Uploading valid file types containing unsafe payloads (macros in Office docs, PDFs with exploits)
+- Path/name manipulation (strange filenames, double extensions like `invoice.pdf.exe`)
 
-## Frontend best practices
+## Frontend best practices (UX only)
 
-- Restrict file types in the `<input>`:
-```tsx
-<input type="file" accept=".jpg,.png,.pdf" />
-```
-- Provide file size checks via JavaScript before uploading.
-- Avoid reading file content in the browser.
+Frontend checks should exist to improve user experience and reduce accidental bad uploads.
 
-## Backend must
+- Restrict file types via the `<input>` element:
+  ```tsx
+  <input type="file" accept=".jpg,.png,.pdf" />
+  ```
+- Validate file size before upload.
+- Provide clear user feedback (type rejected, size too large etc.).
+- Avoid reading/parsing file content in the browser.
 
-- Validate file and MIME types server-side
-- Scan for malware
-- Store files outside of the public web root (to prevent [directory traversal attacks](https://en.wikipedia.org/wiki/Directory_traversal_attack))
+> **Note**: `accept=""` is only a hint to the browser. It is not a security feature.
+
+## Backend requirements
+
+The backend must enforce all security rules regardless of frontend checks.
+
+- Validate file size server-side.
+- Validate file type server-side (do not trust the extension).
+- Validate MIME type, but do not trust MIME type alone (consider signature/magic byte detection).
+- Scan all uploads for malware.
+- Store uploaded files outside of the public web root.
+- Do not allow user-controlled filenames to determine storage paths.
+- Generate a safe filename / random identifier for storage.
+- When serving downloads, use safe headers such as:
+  - `Content-Disposition: attachment`
+  - `X-Content-Type-Options: nosniff`
 
 ## Examples
 
@@ -39,7 +60,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 // User can still bypass and upload .exe via DevTools or cURL
 ```
 
-### Safe - check the file type and size before sending to the backend
+### Safer - check the file type and size before sending to the backend (UX improvement)
 
 ```tsx
 function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -65,3 +86,31 @@ function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
 
 return <input type="file" onChange={handleFileChange} accept=".jpg,.png,.pdf" />;
 ```
+
+## Backend malware scanning example
+
+Malware scanning can only occur *after* the file is uploaded so there are 2 common approaches:
+
+- **Async release (recommended):**
+  Backend returns **HTTP 202 Accepted** and the file is *not made publicly available* until scanning has completed successfully.
+- **Sync scanning (less common):**
+  Backend uploads the file, blocks until scanning is complete, then returns **HTTP 200 OK** (or an error if scanning fails).
+  This usually requires special infrastructure and higher resource usage to keep scanning fast enough.
+
+### Example flow (async release)
+
+1. Frontend sends an upload request to the backend.
+2. Backend streams the file into blob storage.
+3. Upload completes successfully.
+4. The blob exists but should be treated as **untrusted / quarantined** by default.
+5. A malware scanning system (e.g. Microsoft Defender) scans the blob.
+6. Blob metadata/tags are updated to indicate the scan result (e.g. `safe`, `malicious`, `unknown`).
+7. A listener reacts to the scan completion event (e.g. Azure Function, queue worker, background job) and performs one of the following actions:
+   - If the file is **safe**, move it into a **public container** (or mark it as released).
+   - If the file is **malicious**, delete it or move it into a **quarantine container** for investigation.
+   - Optionally notify the backend API / database to update the file status.
+8. When the frontend (or a user) requests the file, the backend must check the scan status before serving it.
+9. The backend only returns a download URL / serves the file if the file has been explicitly marked as **safe and released**.
+10. If the file is still scanning or has failed scanning, the backend must respond accordingly (e.g. `404`, `403`, or a domain-specific "processing" response).
+
+> **Important:** A file should only become accessible in the public application once it has passed scanning and has been explicitly released.
