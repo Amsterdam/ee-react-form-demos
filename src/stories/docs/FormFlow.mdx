@@ -8,7 +8,7 @@ What happens when you submit a form in a browser? This document explains common 
 
 1. [Traditional HTML forms](#traditional-html-forms)
 2. [React SPA forms](#react-spa-forms)
-3. [React Server Components + Server Actions](#react-server-components--server-actions-forms)
+3. [React Server Components + Server Actions](#forms-with-react-server-components--server-actions)
 
 ## Traditional HTML forms
 
@@ -91,24 +91,25 @@ Configure the HTML `form` element and attach a submit handler.
 2. The user submits the form. This triggers the `onSubmit` event, which executes the custom `handleSubmit` function.
 3. `e.preventDefault()` in the `handleSubmit` function stops the browser from performing its default submission behaviour.
 4. The form data is collected. Data can come from:
-  - The DOM via new `FormData(e.currentTarget)` (good for small/medium forms)
-  - `React` state (common when fields are fully controlled components).
-  - libraries like `react-hook-form`
+    - The DOM via new `FormData(e.currentTarget)` (good for small/medium forms)
+    - `React` state (common when fields are fully controlled components).
+    - libraries like `react-hook-form`
 5. Perform client-side validation (e.g. with [Zod](https://zod.dev/), [Yup](https://github.com/jquense/yup) or custom logic).
 6. If the submission is valid, send the data to the backend. Usually, an API request with `fetch` or [Axios](https://axios-http.com/).
-  - Use **JSON** for standard text-based payloads.
-  - Use `FormData` (with `multipart/form-data`) if uploading files or sending binary data.
+    - Use **JSON** for standard text-based payloads.
+    - Use `FormData` (with `multipart/form-data`) if uploading files or sending binary data.
 7. The UI is updated based on the API response:
-  - Show success
-  - Show error(s)
+    - Show success
+    - Show error(s)
 
-## React Server Components + Server Actions forms
+## Forms with React Server Components + Server Actions
 
-With React Server Components (RSC) and frameworks like Next.js App Router, forms can submit directly to server-side functions called Server Actions.
+With React Server Components (RSC) and frameworks like [Next.js](https://nextjs.org/) App Router, forms can submit directly to server-side functions called Server Actions. Read more about [React 19 - React Server Components (RSC) & Server Actions](../?path=/docs/docs-react-react-19-react-server-components-rsc-server-actions--docs).
 
-This model restores the simplicity of native HTML forms, but still enables modern UX patterns such as partial UI updates, optimistic states, and loading indicators.
+This model restores the simplicity of native HTML forms but still enables modern UX patterns such as partial UI updates, optimistic states and loading indicators.
 
-Example
+### Example
+
 ```ts
 // app/actions.ts
 "use server";
@@ -117,7 +118,7 @@ export async function submitForm(formData: FormData) {
   const username = formData.get("username");
   const email = formData.get("email");
 
-  // Validate and persist (database, API call, etc)
+  // Validate and persist (database, API call etc)
 }
 ```
 
@@ -152,19 +153,19 @@ export default function Page() {
 
 ### Traditional HTML forms
 
-- simplest architecture
-- full page navigation on submit
-- minimal JavaScript required
+- Simplest architecture
+- Full page navigation on submit
+- Minimal JavaScript required
 
 ### React SPA forms
 
-- best for highly interactive UIs
-- requires JavaScript and API endpoints
-- no page reload (state is preserved)
+- Best for highly interactive UIs
+- Requires JavaScript and API endpoints
+- No page reload (state is preserved)
 
 ### React Server Actions
 
-- combines the best of both worlds
-- forms submit naturally without manual fetch()
-- server-side validation is built into the model
-- progressive enhancement is possible
+- Combines the best of both worlds
+- Forms submit naturally without manual fetch()
+- Server-side validation is built into the model
+- Progressive enhancement is possible
