@@ -4,16 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Which Approach Should I Use?
 
-The following guide should assist you in deciding on a solution to build your form(s).
+The following guide should assist you in deciding on a solution to build your form.
 
 1. What scales well for tiny vs. complex forms
 2. Tradeoffs: simplicity vs. flexibility vs. UX control
-3. When to use HTML5-only, HTML5 + [Zod](https://zod.dev/), or [React Hook Form (RHF)](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+3. When to use HTML5 + [Zod](https://zod.dev/), or [React Hook Form (RHF)](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 
 ## Choosing a Form Validation Strategy
 
 Different forms call for different levels of validation sophistication. The demos in this project showcase three main approaches:
-- **Plain HTML5 validation** - simplest, free but limited
+
 - **HTML5 + Zod schema validation** - middle ground, more control
 - **[React Hook Form (RHF)](https://react-hook-form.com/) + [Zod](https://zod.dev/) schema validation** - most powerful, best for scaling
 
@@ -21,7 +21,6 @@ Different forms call for different levels of validation sophistication. The demo
 
 | Form Size / Complexity                                       | Recommended Approach             | Why                                                                                 |
 | ------------------------------------------------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
-| **Tiny, 1–3 fields** (e.g. newsletter signup)                | **Plain HTML5**                  | Minimal setup, browser handles validation.                                          |
 | **Small, simple form** (e.g. Contact form)                   | **HTML5 + Zod**                  | Better UX than HTML5-only, but still lightweight.                                   |
 | **Medium form with cross-field rules** (e.g. Booking form)   | **HTML5 + Zod** or **RHF + Zod** | Zod handles logic; RHF adds smoother state handling if more fields are added later. |
 | **Large / dynamic form** (e.g. Create Entity with repeaters) | **RHF + Zod**                    | Best scalability, optimized rendering, declarative validation.                      |
@@ -29,22 +28,7 @@ Different forms call for different levels of validation sophistication. The demo
 
 Below is an overview of their strengths, weaknesses and recommended use cases.
 
-### 1. Plain HTML5 validation
-
-**Best for:** very small, static forms with a handful of fields.
-
-#### Pros
-
-- Zero setup - just use `required`, `type=email` and `pattern` etc.
-- Free browser-native validation popups.
-
-#### Cons
-
-- Stops on the first invalid field - frustrating for larger forms.
-- Inconsistent UX between browsers.
-- Consistent, styled inline errors instead of native popups.
-
-### 2. HTML5 + Zod Schema Validation
+### 1. HTML5 + Zod Schema Validation
 
 **Best for:** small to medium forms where you need custom rules but don't want the overhead of a form library.
 
@@ -61,7 +45,7 @@ Below is an overview of their strengths, weaknesses and recommended use cases.
 - Must manage error state manually (`errors`, `submitTouched`).
 - No built-in touched/dirty tracking.
 
-### 3. React Hook Form (RHF) + Zod Schema
+### 2. React Hook Form (RHF) + Zod Schema
 
 **Beast for:** medium to large forms, epsecially with repeaters, conditional fields or cross-field validation rules.
 
