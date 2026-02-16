@@ -35,8 +35,8 @@ In **Next.js**, this works seamlessly with `useActionState` because the framewor
 - This needs:
   - **React Server Components (RSC)** support
   - A special compiler/runtime that understands server actions
-- Currently (August 2025), stable support exists mainly in **Next.js App Router**.
-- Vite and other bundlers have experimental RSC support, but not full production-ready equivalents.
+- Currently (February 2026), stable support exists mainly in **Next.js App Router**. **React Router's** implementation of React Server Components is [still considered experimental](https://reactrouter.com/how-to/react-server-components).
+- Vite and other bundlers have experimental RSC support but not full production-ready equivalents.
 
 ## Why This Is Not a Drop-In for Our Non-Next.js Apps
 
@@ -48,8 +48,8 @@ In **Next.js**, this works seamlessly with `useActionState` because the framewor
 - Backend-frontend separation changes:
   - Our existing apps often talk to a separate API backend - Server Actions blur this separation, making the frontend partially backend
 - Non-Next.js frameworks (React Router / Remix / Vite):
-  - Can do SSR, but not the new RSC + Server Actions model (yet)
-
+  - Can do SSR but not the new RSC + Server Actions model (yet)
+  - As of February 2026, React Router's implementation of React Server Components is [still considered experimental](https://reactrouter.com/how-to/react-server-components), whereas actions is [now available](https://reactrouter.com/start/framework/actions).
 
 ## Therefore
 
