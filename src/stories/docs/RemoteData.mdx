@@ -4,9 +4,28 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Handling Remote Data
 
-Sometimes you may need to preload data into your form that comes from a different application.
+Sometimes forms need to be prefilled with data loaded asynchronously (for example: editing an existing record, loading user details or restoring a draft submission).
+
+This page shows the two common approaches:
+
+- **Controlled React forms**, where you update state manually using `setState()`
+- **React Hook Form**, where you preload values using `reset()`
+
+The key detail is that remote data usually arrives *after* the initial render, so you must explicitly update the form values once the request completes.
 
 **Pro tip** - Keep your form data object as flat and with as few child array/object values as possible to keep your components and state handling simple.
+
+## Caveats when prefilling async form data
+
+When loading initial form values from an API, be careful not to overwrite user input.
+
+Common issues include:
+
+- **Refetching triggers a reset loop** (for example if the `useEffect` dependencies are wrong).
+- **Prefill overwrites user edits** if the user can start typing before the API call completes.
+- **React Hook Form dirty state** can be confusing if you call `reset()` multiple times.
+
+In general, only prefill once (or only when the record ID changes) and avoid calling `reset()` repeatedly unless you intentionally want to discard local edits.
 
 ## Plain HTML5 Form in React
 
