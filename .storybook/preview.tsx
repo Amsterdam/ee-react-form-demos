@@ -6,7 +6,7 @@ import { Page } from '@amsterdam/design-system-react';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import type { StoryContext, StoryFn } from '@storybook/react';
 import { viewports } from './viewports';
-import '../src/styles/overrides.css'
+import '../src/styles/overrides.css';
 
 export const argTypes = {
   children: {
