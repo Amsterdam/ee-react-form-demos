@@ -4,58 +4,66 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Form Submission Flow
 
-What happens when you submit a form in a browser?
+What happens when you submit a form in a browser? This document explains common form submission flows:
 
-## Traditional form flow
+1. [Traditional HTML forms](#traditional-html-forms)
+2. [React SPA forms](#react-spa-forms)
+3. [React Server Components + Server Actions](#react-server-components--server-actions-forms)
 
-Traditionally in the browser, when a user clicks 'Submit' in a form, the following flow happens:
+## Traditional HTML forms
 
-1. The HTML `form` element specifies the target URL (`action` attribute) and HTTP method (`method` - usually `GET` or `POST`)
+Traditionally in the browser, when a user clicks **Submit** in a form, the browser performs a full HTTP form submission and navigates away from the current page.
 
-```html
-<form action="/submit" method="POST">
-  <input name="username" value="john">
-  <input name="email" value="john@example.com">
-  <button type="submit">Submit</button>
-</form>
-```
+1. The HTML `form` element specifies:
+  - the target URL (`action` attribute)
+  - the HTTP method (`method` - usually `GET` or `POST`)
 
-2. User clicks submit (or presses Enter), which triggers an event that the browser intercepts.
-3. The browser collects all the form field values and encodes them based on the form's `enctype`. The `enctype` can be:
+  ```html
+  <form action="/submit" method="POST">
+    <input name="username" value="john">
+    <input name="email" value="john@example.com">
+    <button type="submit">Submit</button>
+  </form>
+  ```
+
+2. The user clicks submit (or presses Enter) - which triggers an event that the browser intercepts.
+3. The browser collects all the form field values and encodes them based on the form's `enctype`. The `enctype` value can be:
     - `application/x-www-form-urlencoded` (default): `username=john&email=john%40example.com`
     - `multipart/form-data` (for file uploads): Creates `FormData` with boundaries
     - `text/plain` (rarely used): Plain text format
 4. The browser constructs and sends a HTTP request:
-    - `GET` - Data goes in the URL query string
-    - `POST` - Data goes in the requst body
+    - `GET` - Values are appended to the URL query string
+    - `POST` - Values are sent in the requst body
     - Sets appropriate `Content-Type` header based on the encoding (#3)
-5. Browser navigates away from the current page and waits for the server (backend) response
-6. Server (backend) processes the request and can respond with:
-    - HTML page: Browser renders the new page
-    - Redirect (3xx status): Browser follows the redirect
-    - Error page: Browser displays the error
+5. The browser navigates away from the current page and waits for a server response (the backend)
+6. The server (backend) processes the request and can respond with:
+    - A new HTML page - Browser renders the new page
+    - A redirect (3xx status) - Browser follows the redirect
+    - An error page - Browser displays the error(s)
 
-## React form flow
+## React SPA forms
 
-With a traditional browser flow, submitting a form triggers a full page reload, which clears all JavaScript state (#5 above occurs). In modern single-page applications (SPAs) — including most React projects — we intercept the form submission in JavaScript, send the data asynchronously and update the UI without navigating away.
+In modern React single-page applications (SPAs), a full form submission is usually avoided because it triggers a full navigation and resets application state.
 
-Therefore, in React-based applications we commonly follow a flow like:
+Instead, via JavaScript we can intercept the form submission and send the data asynchronously and then update the UI without any navigation.
 
-1. Configure the HTML `form` element and attach a submit handler.
-    - The `onSubmit={handleSubmit}` tells form submission events to execute the `handleSubmit` function
-    - In `handleSubmit` we call `e.preventDefault();` to stop the browser's default form submission behaviour (and page reload).
-    ```tsx
-      const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+### Example
 
-        const formData = new FormData(e.currentTarget);
-        const validationErrors = validateForm(formData);
-        setErrors(validationErrors);
+Configure the HTML `form` element and attach a submit handler.
+  - The `onSubmit={handleSubmit}` tells form submission events to execute the `handleSubmit` function
+  - In `handleSubmit` we call `e.preventDefault();` to stop the browser's default form submission behaviour (and page reload).
+  ```tsx
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-        ...
-      };
+      const formData = new FormData(e.currentTarget);
+      const validationErrors = validateForm(formData);
+      setErrors(validationErrors);
 
-      return (
+      ...
+    };
+
+    return (
       <Grid paddingBottom="x-large" paddingTop="large">
         <Grid.Cell span={{ narrow: 4, medium: 8, wide: 6 }}>
           <Heading
@@ -75,16 +83,88 @@ Therefore, in React-based applications we commonly follow a flow like:
           >
             {/* form fields */}
           </form>
-    ```
+  ```
 
-2. User clicks submit (or presses Enter), which triggers the `onSubmit` event, which executes the custom `handleSubmit` function.
-3. Collect and validate the form data
-    - Data can come from:
-        - The DOM via new `FormData(e.currentTarget)` (good for small/medium forms)
-        - `React` state (common when fields are fully controlled components).
-    - Perform client-side validation (e.g., with [Zod](https://zod.dev/), [Yup](https://github.com/jquense/yup), custom logic).
-4. Send the data to the backend
-    - Usually, make an API request with `fetch` or [Axios](https://axios-http.com/):
-        - Use **JSON** for standard text-based payloads.
-        - Use `FormData` (with `multipart/form-data`) if uploading files or sending binary data.
-5. The frontend handles the successful response or error returned from the API.
+### Flow
+
+1. A submit handler is attached `onSubmit={handleSubmit}`
+2. The user submits the form. This triggers the `onSubmit` event, which executes the custom `handleSubmit` function.
+3. `e.preventDefault()` in the `handleSubmit` function stops the browser from performing its default submission behaviour.
+4. The form data is collected. Data can come from:
+  - The DOM via new `FormData(e.currentTarget)` (good for small/medium forms)
+  - `React` state (common when fields are fully controlled components).
+  - libraries like `react-hook-form`
+5. Perform client-side validation (e.g. with [Zod](https://zod.dev/), [Yup](https://github.com/jquense/yup) or custom logic).
+6. If the submission is valid, send the data to the backend. Usually, an API request with `fetch` or [Axios](https://axios-http.com/).
+  - Use **JSON** for standard text-based payloads.
+  - Use `FormData` (with `multipart/form-data`) if uploading files or sending binary data.
+7. The UI is updated based on the API response:
+  - Show success
+  - Show error(s)
+
+## React Server Components + Server Actions forms
+
+With React Server Components (RSC) and frameworks like Next.js App Router, forms can submit directly to server-side functions called Server Actions.
+
+This model restores the simplicity of native HTML forms, but still enables modern UX patterns such as partial UI updates, optimistic states, and loading indicators.
+
+Example
+```ts
+// app/actions.ts
+"use server";
+
+export async function submitForm(formData: FormData) {
+  const username = formData.get("username");
+  const email = formData.get("email");
+
+  // Validate and persist (database, API call, etc)
+}
+```
+
+```tsx
+// app/page.tsx (Server Component)
+import { submitForm } from "./actions";
+
+export default function Page() {
+  return (
+    <form action={submitForm}>
+      <input name="username" />
+      <input name="email" />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### Flow
+
+1. The form's `action` attribute is bound to a server action function.
+2. The user submits the form.
+3. The browser collects and encodes form values, similar to a traditional HTML form.
+4. The request is sent to the server, and the server action executes:
+  - read values from `FormData`
+  - performs validations
+  - persists data (database, API etc.)
+5. The server returns a new render result.
+6. React updates the UI.
+
+## Comparison
+
+### Traditional HTML forms
+
+- simplest architecture
+- full page navigation on submit
+- minimal JavaScript required
+
+### React SPA forms
+
+- best for highly interactive UIs
+- requires JavaScript and API endpoints
+- no page reload (state is preserved)
+
+### React Server Actions
+
+- combines the best of both worlds
+- forms submit naturally without manual fetch()
+- server-side validation is built into the model
+- progressive enhancement is possible
