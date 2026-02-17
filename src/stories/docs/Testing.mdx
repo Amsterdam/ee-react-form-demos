@@ -4,59 +4,129 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Testing - Overview
 
-Forms are one of the most interactive parts of a web app, so testing them thoroughly ensures:
+Forms are one of the highest-risk parts of a web application.
 
-- Fields validate correctly
-- UX patterns (autosave, multi-step) work as expected
-- Accessibility and keyboard navigation remain intact
-- API requests fire with correct payloads
-- Edge cases (empty fields, invalid input, file uploads) don’t break
+They combine user interaction, validation rules, async submission, API integration, accessibility and edge cases — all in one place.
 
-Testing strategy should combine unit/integration tests (fast, local) with end-to-end tests (realistic, slower).
+This guide explains what to test and common pitfalls when testing forms in React.
 
-- **Unit/integration tests** with [Jest](https://jestjs.io)/[Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
-- **E2E tests** with [Cypress](https://www.cypress.io)/[Playwright](https://playwright.dev).
+## TL;DR
 
-## Common testing patterns
+When testing a form, make sure you have tests for:
 
-- Mock API responses in unit/integration tests to avoid real network calls
-- Data-driven tests for validation (loop over valid/invalid cases)
-- Use `userEvent` instead of `fireEvent` to mimic real user interaction
-- Accessibility checks in E2E with tools like `@axe-core/playwright`
-- Visual regression for form layouts with [Playwright](https://playwright.dev) snapshots
+- Users can complete and submit the form successfully (happy path)
+- Required and invalid inputs show clear validation errors
+- Server-side errors are displayed correctly
+- Submission behaviour is correct (loading state, prevents double submit)
+- Conditional logic works (dynamic fields, repeaters, multi-step flows)
+- Accessibility and keyboard navigation are not accidentally broken
+- The correct payload is sent to the backend
 
-## Testing Priorities
+---
 
-### High Priority:
+## Minimum recommended tests per form
 
-- Form submission happy path
-- Validation error handling
-- Critical user interactions (add/remove repeater items)
+Every form should *at least* have tests for:
 
-### Medium Priority:
+### Level 1 (minimum baseline)
 
-- Edge cases in form components
-- Accessibility compliance
-- Error recovery scenarios
+- Renders without crashing
+- Happy path submit works
+- Required validation works
 
-### Lower Priority:
+### Level 2 (recommended for most forms)
 
-- Complex interaction sequences
-- Performance-related tests
-- Visual regression tests
+- Invalid format validation (email/date/postcode etc.)
+- Server-side errors display correctly
+- Submit button disables during loading
+- Error recovery works (fail → fix → submit success)
 
-## Unit and Integration Testing with Jest / Vitest and Testing Library
+### Level 3 (critical / complex forms)
 
-| Topic                  | What to Test                             | Example                                                                                                     |
-| ---------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **Rendering**          | Fields appear with correct defaults      | `expect(screen.getByLabelText(/Name/i)).toHaveValue('')`                                                    |
-| **Validation**         | Client-side rules trigger on blur/submit | `userEvent.type(nameInput, ''); userEvent.tab(); expect(screen.getByText(/required/i)).toBeInTheDocument()` |
-| **Submission**         | Correct payload is sent                  | Mock `fetch` or Axios, assert payload matches expected                                                      |
-| **Conditional Fields** | Fields show/hide correctly               | Simulate selecting "Remote" and check if "Meeting URL" appears                                              |
-| **Error Display**      | Server errors are shown properly         | Mock API returning `{ field: 'email', message: 'Already taken' }`                                           |
-| **Accessibility**      | Labels, roles, ARIA attributes present   | `expect(input).toHaveAccessibleName('Email')`                                                               |
+- Conditional fields
+- Repeaters (add/remove)
+- Multi-step wizard navigation
+- File uploads
+- Accessibility checks + keyboard navigation
 
-Example from `ContactFormLive.test.tsx`:
+---
+
+## Recommended testing strategy
+
+Use a combination of:
+
+- **Unit / integration tests** (fast feedback, local, most coverage)
+- **End-to-end tests** (realistic browser flow, slower but high confidence)
+
+### Tools
+
+- **Unit/integration tests**: Vitest/Jest + React Testing Library
+- **E2E tests**: Cypress or Playwright
+- **Accessibility checks**: `@axe-core/playwright` or `cypress-axe`
+
+---
+
+## What to test (checklist)
+
+### Must-have tests (high value)
+
+- **Happy path submission**
+  - Fill in required fields
+  - Submit
+  - Assert success UI or navigation occurs
+
+- **Required field validation**
+  - Submit with empty required fields
+  - Assert errors are visible
+
+- **Invalid format validation**
+  - Email, date, phone, number ranges, etc.
+  - Assert correct message appears
+
+- **Server-side error handling**
+  - Mock API returning validation errors
+  - Assert correct error message appears near field and in summary
+
+- **Loading state**
+  - Submit button disables while request is in progress
+  - Prevents double submission
+
+- **Conditional fields**
+  - Selecting option A shows extra fields
+  - Option B hides them again
+  - Hidden fields should not submit invalid values
+
+- **Repeaters / dynamic collections**
+  - Add/remove row
+  - Ensure correct row updates
+  - Ensure submission payload includes correct list values
+
+---
+
+### Medium priority tests (important depending on complexity)
+
+- **Error recovery**
+  - First submit fails
+  - Second submit succeeds after correction
+
+- **Default values**
+  - Existing values render correctly (edit forms)
+  - Form reset behaviour works
+
+- **Multi-step flows**
+  - Step transitions work
+  - Validation blocks next step
+  - Data persists across steps
+
+- **Keyboard navigation**
+  - `Tab` order makes sense
+  - `Enter` triggers submission correctly
+
+---
+
+## Examples
+
+### Example from `ContactFormLive.test.tsx`:
 
 ```tsx
 it('should update form data when user types', async () => {
@@ -77,11 +147,11 @@ it('should update form data when user types', async () => {
 });
 ```
 
-## End-to-End Testing with Cypress/Playwright
+### End-to-End Testing with Cypress/Playwright
 
 Test forms in a real browser environment, catching issues unit tests might miss — such as integration with the backend, CSS and actual navigation.
 
-### What E2E Covers
+#### What E2E Covers
 
 - Full form flow (fill, submit, redirect)
 - Network requests and API integration
@@ -89,7 +159,7 @@ Test forms in a real browser environment, catching issues unit tests might miss 
 - File uploads in a real environment
 - Edge cases with actual browser behavior
 
-Example using [Cypress](https://www.cypress.io):
+#### Example using [Cypress](https://www.cypress.io):
 
 ```tsx
 it('completes booking form and submits', () => {
@@ -104,7 +174,7 @@ it('completes booking form and submits', () => {
 });
 ```
 
-Example using [Playwright](https://playwright.dev):
+#### Example using [Playwright](https://playwright.dev):
 
 ```tsx
 test('shows validation error when email is missing', async ({ page }) => {
