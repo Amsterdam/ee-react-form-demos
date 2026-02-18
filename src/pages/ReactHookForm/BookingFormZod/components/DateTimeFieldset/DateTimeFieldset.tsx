@@ -19,7 +19,7 @@ const DateTimeFieldset = ({
   legend,
   fields,
 }: DateTimeFieldsetProps & PropsWithChildren) => {
-  const { formState } = useFormContext();
+  const { formState, getValues } = useFormContext();
 
   const hasError = fields.some(
     field => formState.errors[field] && formState.errors[field]?.message
@@ -34,7 +34,10 @@ const DateTimeFieldset = ({
 
       if (!type) continue;
 
-      if (type === 'required') {
+      if (
+        type === 'required' ||
+        (type === 'too_small' && getValues(field) === '')
+      ) {
         requiredFields.push(field);
       } else {
         invalidFields.push(field);
