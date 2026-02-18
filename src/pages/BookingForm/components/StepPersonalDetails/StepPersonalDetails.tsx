@@ -117,7 +117,12 @@ const StepPersonalDetails = ({
               </ErrorMessage>
             )}
             <TextInput
-              type="email"
+              type="text"
+              // If we use type=email, in some browsers this triggers `:invalid`
+              // and error styling is applied despite the form noValidate on
+              // input change
+              inputMode="email"
+              autoComplete="email"
               id="email"
               name="email"
               value={formData.email}

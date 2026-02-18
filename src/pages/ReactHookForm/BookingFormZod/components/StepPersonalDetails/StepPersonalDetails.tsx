@@ -102,7 +102,12 @@ const StepPersonalDetails = ({
 
           <TextInputControl<BookingFormData>
             label="E-mailadres"
-            type="email"
+            type="text"
+            // If we use type=email, in some browsers this triggers `:invalid`
+            // and error styling is applied despite the form noValidate on
+            // input change
+            inputMode="email"
+            autoComplete="email"
             name="email"
             registerOptions={{
               required: 'E-mailadres is verplicht',
