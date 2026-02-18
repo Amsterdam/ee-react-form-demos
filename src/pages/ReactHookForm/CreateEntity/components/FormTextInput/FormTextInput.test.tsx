@@ -79,7 +79,7 @@ describe('FormTextInput', () => {
       'aria-describedby',
       expect.stringContaining('test-input-description')
     );
-    expect(screen.getByText(description)).toHaveAttribute(
+    expect(screen.getByText(description).parentElement).toHaveAttribute(
       'id',
       'test-input-description'
     );

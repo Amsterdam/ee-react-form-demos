@@ -75,10 +75,9 @@ describe('FormSelect', () => {
     );
 
     expect(screen.getByText('This is a description')).toBeInTheDocument();
-    expect(screen.getByText('This is a description')).toHaveAttribute(
-      'id',
-      'test-select-description'
-    );
+    expect(
+      screen.getByText('This is a description').parentElement
+    ).toHaveAttribute('id', 'test-select-description');
   });
 
   it('renders description when provided as ReactNode', () => {

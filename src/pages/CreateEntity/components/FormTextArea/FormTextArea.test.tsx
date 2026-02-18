@@ -55,10 +55,9 @@ describe('FormTextArea', () => {
     );
 
     expect(screen.getByText('This is a description')).toBeInTheDocument();
-    expect(screen.getByText('This is a description')).toHaveAttribute(
-      'id',
-      'test-textarea-description'
-    );
+    expect(
+      screen.getByText('This is a description').parentElement
+    ).toHaveAttribute('id', 'test-textarea-description');
   });
 
   it('renders description when provided as ReactNode', () => {

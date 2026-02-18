@@ -75,7 +75,7 @@ describe('FormTextArea', () => {
       'aria-describedby',
       expect.stringContaining('test-textarea-description')
     );
-    expect(screen.getByText(description)).toHaveAttribute(
+    expect(screen.getByText(description).parentElement).toHaveAttribute(
       'id',
       'test-textarea-description'
     );

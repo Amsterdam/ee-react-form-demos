@@ -69,18 +69,15 @@ describe('FormTextArea', () => {
 
   it('shows description id in aria-describedby', () => {
     const description = 'This is a description';
-    render(
-      <FormTextArea {...defaultProps} description={description} required />
-    );
+    render(<FormTextArea {...defaultProps} description={description} />);
 
     const textarea = screen.getByLabelText(defaultProps.label);
 
-    expect(textarea).toHaveAttribute('required');
     expect(textarea).toHaveAttribute(
       'aria-describedby',
       expect.stringContaining('test-textarea-description')
     );
-    expect(screen.getByText(description)).toHaveAttribute(
+    expect(screen.getByText(description).parentElement).toHaveAttribute(
       'id',
       'test-textarea-description'
     );

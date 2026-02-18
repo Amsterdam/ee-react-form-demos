@@ -45,10 +45,9 @@ describe('FormTextInput', () => {
     );
 
     expect(screen.getByText('This is a description')).toBeInTheDocument();
-    expect(screen.getByText('This is a description')).toHaveAttribute(
-      'id',
-      'test-input-description'
-    );
+    expect(
+      screen.getByText('This is a description').parentElement
+    ).toHaveAttribute('id', 'test-input-description');
   });
 
   it('renders description when provided as ReactNode', () => {

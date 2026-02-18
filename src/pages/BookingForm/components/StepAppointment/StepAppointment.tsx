@@ -1,6 +1,5 @@
 import {
   Button,
-  FieldSet,
   Grid,
   Heading,
   InvalidFormAlert,
@@ -8,12 +7,13 @@ import {
   Row,
   StandaloneLink,
 } from '@amsterdam/design-system-react';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import { FormData } from '../../BookingForm';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
 import FormDateInput from '../FormDateInput/FormDateInput';
 import FormTimeInput from '../FormTimeInput/FormTimeInput';
 import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
+import DateTimeFieldset from '../DateTimeFieldset/DateTimeFieldset';
 
 interface StepAppointmentProps {
   formData: FormData;
@@ -36,6 +36,22 @@ const StepAppointment = ({
   const [submitTouched, setSubmitTouched] = useState(false);
   const showErrors = submitTouched && Object.keys(errors).length > 0;
   const alertErrors = mapErrorsToAlert(errors);
+  const startErrors = useMemo(() => {
+    return {
+      ...(submitTouched &&
+        errors.startDate !== undefined && { startDate: errors.startDate }),
+      ...(submitTouched &&
+        errors.startTime !== undefined && { startTime: errors.startTime }),
+    };
+  }, [errors]);
+  const endErrors = useMemo(() => {
+    return {
+      ...(submitTouched &&
+        errors.endDate !== undefined && { endDate: errors.endDate }),
+      ...(submitTouched &&
+        errors.endTime !== undefined && { endTime: errors.endTime }),
+    };
+  }, [errors]);
 
   const handleNextButtonClick = () => {
     setSubmitTouched(true);
@@ -95,13 +111,10 @@ const StepAppointment = ({
             <Paragraph>Stap 2 van 3: Afspraak</Paragraph>
           </header>
 
-          <FieldSet
+          <DateTimeFieldset
             legend="Startdatum en -tijd"
-            className="ams-mb-m"
-            invalid={
-              (submitTouched && !!errors.startDate) ||
-              (submitTouched && !!errors.startTime)
-            }
+            fields={['startDate', 'startTime']}
+            errors={startErrors}
           >
             <Row>
               <FormDateInput
@@ -111,7 +124,7 @@ const StepAppointment = ({
                 value={formData.startDate}
                 onChange={onChange}
                 minValue={minDateValue}
-                error={submitTouched ? errors.startDate : undefined}
+                error={submitTouched ? !!errors.startDate : undefined}
               />
               <FormTimeInput
                 id="startTime"
@@ -119,18 +132,15 @@ const StepAppointment = ({
                 label="Starttijd"
                 value={formData.startTime}
                 onChange={onChange}
-                error={submitTouched ? errors.startTime : undefined}
+                error={submitTouched ? !!errors.startTime : undefined}
               />
             </Row>
-          </FieldSet>
+          </DateTimeFieldset>
 
-          <FieldSet
-            legend="Einddatum-tijd"
-            className="ams-mb-m"
-            invalid={
-              (submitTouched && !!errors.endDate) ||
-              (submitTouched && !!errors.endTime)
-            }
+          <DateTimeFieldset
+            legend="Einddatum en -tijd"
+            fields={['endDate', 'endTime']}
+            errors={endErrors}
           >
             <Row>
               <FormDateInput
@@ -140,7 +150,7 @@ const StepAppointment = ({
                 value={formData.endDate}
                 onChange={onChange}
                 minValue={formData.startDate}
-                error={submitTouched ? errors.endDate : undefined}
+                error={submitTouched ? !!errors.endDate : undefined}
               />
               <FormTimeInput
                 id="endTime"
@@ -148,10 +158,10 @@ const StepAppointment = ({
                 label="Eindtijd"
                 value={formData.endTime}
                 onChange={onChange}
-                error={submitTouched ? errors.endTime : undefined}
+                error={submitTouched ? !!errors.endTime : undefined}
               />
             </Row>
-          </FieldSet>
+          </DateTimeFieldset>
 
           <Button type="button" onClick={handleNextButtonClick}>
             Volgende vraag
