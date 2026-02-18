@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import DateControl from './DateControl';
 
@@ -18,35 +18,25 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('DateControl', () => {
+describe('ReactHookForm / BookingFormZod - DateControl', () => {
   it('renders with label and input', () => {
     render(
       <Wrapper>
-        <DateControl<FormValues>
-          name="birthDate"
-          label="Date of Birth"
-          testId="birthDate"
-        />
+        <DateControl<FormValues> name="birthDate" label="Date of Birth" />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('birthDate') as HTMLInputElement;
-    expect(input).toBeInTheDocument();
-    expect(screen.getByLabelText(/date of birth/i)).toBe(input);
+    expect(screen.getByLabelText(/date of birth/i)).toBeInTheDocument();
   });
 
   it('handles user input', () => {
     render(
       <Wrapper>
-        <DateControl<FormValues>
-          name="birthDate"
-          label="Date of Birth"
-          testId="birthDate"
-        />
+        <DateControl<FormValues> name="birthDate" label="Date of Birth" />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('birthDate') as HTMLInputElement;
+    const input = screen.getByLabelText(/date of birth/i) as HTMLInputElement;
     expect(input.value).toBe('');
 
     fireEvent.input(input, { target: { value: '2000-01-01' } });
@@ -56,15 +46,11 @@ describe('DateControl', () => {
   it('renders initial value', () => {
     render(
       <Wrapper defaultValues={{ birthDate: '1990-12-25' }}>
-        <DateControl<FormValues>
-          name="birthDate"
-          label="Date of Birth"
-          testId="birthDate"
-        />
+        <DateControl<FormValues> name="birthDate" label="Date of Birth" />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('birthDate') as HTMLInputElement;
+    const input = screen.getByLabelText(/date of birth/i) as HTMLInputElement;
     expect(input.value).toBe('1990-12-25');
   });
 
@@ -75,7 +61,6 @@ describe('DateControl', () => {
           name="birthDate"
           label="Date of Birth"
           description="Please enter your birth date."
-          testId="birthDate"
         />
       </Wrapper>
     );
@@ -92,51 +77,14 @@ describe('DateControl', () => {
           name="birthDate"
           label="Date of Birth"
           description="We need this to verify your age."
-          testId="birthDate"
         />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('birthDate');
+    const input = screen.getByLabelText(/date of birth/i) as HTMLInputElement;
     const describedBy = input.getAttribute('aria-describedby');
     expect(describedBy).toMatch(/birthDate-description/);
 
-    expect(screen.getByTestId('birthDate-description')).toHaveTextContent(
-      /verify your age/i
-    );
-  });
-
-  it('shows error message when invalid', async () => {
-    const Component = () => {
-      const methods = useForm<FormValues>({
-        defaultValues: { birthDate: '' },
-        mode: 'onSubmit',
-      });
-
-      const onSubmit = vi.fn();
-
-      return (
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <DateControl<FormValues>
-              name="birthDate"
-              label="Date of Birth"
-              registerOptions={{ required: 'Birth date is required' }}
-              testId="birthDate"
-            />
-            <button type="submit">Submit</button>
-          </form>
-        </FormProvider>
-      );
-    };
-
-    render(<Component />);
-
-    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
-
-    await waitFor(() => {
-      const input = screen.getByTestId('birthDate');
-      expect(input.getAttribute('aria-describedby')).toMatch(/birthDate-error/);
-    });
+    expect(screen.getByText(/verify your age/i)).toBeInTheDocument();
   });
 });

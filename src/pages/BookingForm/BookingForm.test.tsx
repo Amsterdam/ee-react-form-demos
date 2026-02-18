@@ -1,8 +1,10 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { act } from 'react';
 import BookingForm from './BookingForm';
+import { act } from 'react';
+
+// Mock fake loader delay
+// vi.useFakeTimers();
 
 describe('BookingForm', () => {
   beforeEach(() => {
@@ -14,111 +16,107 @@ describe('BookingForm', () => {
     vi.useRealTimers();
   });
 
-  it('renders all required inputs and buttons', () => {
+  it('renders intro step and moves to personal details on click', () => {
     render(<BookingForm />);
-    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Email address/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Start date/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Start time/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/End date/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/End time/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Reset/i })).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /waar u dit formulier voor gebruikt/i,
+      })
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('link', { name: /start het formulier/i }));
+
+    expect(screen.getByText(/uw gegevens/i)).toBeInTheDocument();
   });
 
-  it('validates required fields on submit and shows error messages', async () => {
+  it('validates required fields and blocks next step', async () => {
     render(<BookingForm />);
-    const submitBtn = screen.getByRole('button', { name: /Submit/i });
-    await userEvent.click(submitBtn);
 
-    expect(screen.getByTestId('error-alert')).toBeInTheDocument();
-    // expect(screen.getAllByTestId('error-message').length).toBeGreaterThan(5);
-    await waitFor(() => {
-      // name, email, 4 sets of datatime fields
-      expect(screen.getAllByText(/Invoerfout/i)).toHaveLength(5);
-    });
-  });
+    fireEvent.click(screen.getByRole('link', { name: /start het formulier/i }));
 
-  it('submits valid data and shows success alert after loading', async () => {
-    render(<BookingForm />);
-    await act(async () => {
-      await userEvent.type(screen.getByLabelText(/Name/i), 'John Doe');
-      await userEvent.type(
-        screen.getByLabelText(/Email address/i),
-        'john@example.com'
-      );
+    // Proceed to Step 1
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
-      await userEvent.type(screen.getByLabelText(/Start time/i), '09:00');
-      await userEvent.type(screen.getByLabelText(/End date/i), '2099-12-31'); // valid future date
-      await userEvent.type(screen.getByLabelText(/End time/i), '10:00');
-
-      await userEvent.click(screen.getByRole('button', { name: /Submit/i }));
-    });
-
-    // Loader should show immediately
-    await waitFor(() => {
-      expect(screen.getByTestId('loader')).toBeInTheDocument();
-    });
-
-    // Advance timers to resolve setTimeout
-    act(() => vi.advanceTimersByTime(1500));
-
-    await waitFor(() =>
-      expect(screen.getByTestId('success-alert')).toBeInTheDocument()
+    expect(screen.getAllByText(/naam is verplicht/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/ongeldig e-mailadres/i).length).toBeGreaterThan(
+      0
     );
   });
 
-  it('resets all fields when reset button is clicked', async () => {
+  it('completes all steps and shows success content', async () => {
     render(<BookingForm />);
-    const nameInput = screen.getByLabelText(/Name/i);
-    await userEvent.type(nameInput, 'Jane Doe');
-    expect(nameInput).toHaveValue('Jane Doe');
 
-    await userEvent.click(screen.getByRole('button', { name: /Reset/i }));
+    // Step 0 → 1
+    fireEvent.click(screen.getByRole('link', { name: /start het formulier/i }));
 
-    await waitFor(() => {
-      expect(nameInput).toHaveValue('');
+    // Complete Step 1
+    fireEvent.change(screen.getByLabelText(/voornaam/i), {
+      target: { value: 'John Doe' },
     });
+    fireEvent.change(screen.getByLabelText(/e-mailadres/i), {
+      target: { value: 'john@doe.com' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
+
+    // Complete Step 2
+    const startDateInput = screen.getByLabelText(/startdatum/i);
+    const endDateInput = screen.getByLabelText(/einddatum/i);
+    const startTimeInput = screen.getByLabelText(/starttijd/i);
+    const endTimeInput = screen.getByLabelText(/eindtijd/i);
+
+    fireEvent.change(startDateInput, { target: { value: '2025-11-13' } });
+    fireEvent.change(endDateInput, { target: { value: '2025-11-13' } });
+    fireEvent.change(startTimeInput, { target: { value: '09:00' } });
+    fireEvent.change(endTimeInput, { target: { value: '10:00' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
+
+    // Complete Step 3
+    fireEvent.click(screen.getByRole('button', { name: /verzenden/i }));
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+
+    // Fast-forward to skip the loader
+    act(() => vi.advanceTimersByTime(1500));
+
+    await waitFor(() =>
+      expect(screen.getByText(/dank u voor uw inzending/i)).toBeInTheDocument()
+    );
   });
 
   it('shows error when end time is before start time', async () => {
     render(<BookingForm />);
-    await userEvent.type(screen.getByLabelText(/Name/i), 'John Doe');
-    await userEvent.type(
-      screen.getByLabelText(/Email address/i),
-      'john@example.com'
-    );
 
-    // `userEvent.type` and DateInputs don't seem to get along
-    fireEvent.change(screen.getByLabelText('Start date'), {
-      target: {
-        value: new Date(Date.now() + 24 * 60 * 60 * 1000)
-          .toISOString()
-          .split('T')[0],
-      },
-    });
-    fireEvent.change(screen.getByLabelText('Start time'), {
-      target: { value: '10:00' },
-    });
-    fireEvent.change(screen.getByLabelText('End date'), {
-      target: {
-        value: new Date(Date.now() + 24 * 60 * 60 * 1000)
-          .toISOString()
-          .split('T')[0],
-      },
-    });
-    fireEvent.change(screen.getByLabelText('End time'), {
-      target: { value: '09:00' },
-    });
+    // Step 0 → 1
+    fireEvent.click(screen.getByRole('link', { name: /start het formulier/i }));
 
-    await userEvent.click(screen.getByRole('button', { name: /Submit/i }));
-
-    await waitFor(() => {
-      expect(
-        screen.getAllByText(content =>
-          content.includes('End date/time must be after start date/time')
-        )
-      ).not.toHaveLength(0);
+    // Complete Step 1
+    fireEvent.change(screen.getByLabelText(/naam/i), {
+      target: { value: 'John Doe' },
     });
+    fireEvent.change(screen.getByLabelText(/e-mailadres/i), {
+      target: { value: 'john@doe.com' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
+
+    // Complete Step 2 with invalid times
+    const startDateInput = screen.getByLabelText(/startdatum/i);
+    const endDateInput = screen.getByLabelText(/einddatum/i);
+    const startTimeInput = screen.getByLabelText(/starttijd/i);
+    const endTimeInput = screen.getByLabelText(/eindtijd/i);
+
+    fireEvent.change(startDateInput, { target: { value: '2025-11-13' } });
+    fireEvent.change(endDateInput, { target: { value: '2025-11-13' } });
+    fireEvent.change(startTimeInput, { target: { value: '12:00' } });
+    fireEvent.change(endTimeInput, { target: { value: '09:00' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
+
+    expect(
+      screen.getAllByText(
+        /de einddatum en -tijd moeten later zijn dan de startdatum en -tijd/i
+      ).length
+    ).toBeGreaterThan(0);
   });
 });

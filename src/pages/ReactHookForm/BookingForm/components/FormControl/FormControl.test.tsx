@@ -9,7 +9,7 @@ type FormValues = {
 
 // Write a single 'smoke test' to avoid re-testing internal react-hook-form
 // functionality
-describe('FormControl', () => {
+describe('ReactHookForm / BookingForm - FormControl', () => {
   it('passes useFormContext methods to children', () => {
     const TestComponent = () => {
       const methods = useForm<FormValues>({ defaultValues: { name: 'John' } });

@@ -22,11 +22,10 @@ const TextAreaControl = <T extends FieldValues>({
   description,
   registerOptions,
   id,
-  testId,
   cols,
   ...attributes
 }: TextAreaControlProps<T>) => {
-  const identifier = testId || id || name;
+  const identifier = id || name;
   const descriptionId = `${identifier}-description`;
   const errorId = `${identifier}-error`;
 
@@ -40,26 +39,15 @@ const TextAreaControl = <T extends FieldValues>({
         const hasError = !!errorMessage;
 
         return (
-          <Field
-            data-testid={`${identifier}-textarea-input-wrapper`}
-            invalid={hasError}
-          >
+          <Field invalid={hasError}>
             {label && (
-              <Label
-                htmlFor={identifier}
-                data-testid={`${identifier}-label`}
-                optional={optional}
-              >
+              <Label htmlFor={identifier} optional={optional}>
                 {label}
               </Label>
             )}
 
             {description && (
-              <Paragraph
-                size="small"
-                id={descriptionId}
-                data-testid={descriptionId}
-              >
+              <Paragraph size="small" id={descriptionId}>
                 {description}
               </Paragraph>
             )}
@@ -75,7 +63,6 @@ const TextAreaControl = <T extends FieldValues>({
                 { [errorId]: hasError }
               )}
               id={identifier}
-              data-testid={identifier}
               cols={cols}
               invalid={hasError}
             />

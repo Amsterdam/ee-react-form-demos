@@ -21,10 +21,9 @@ const TextInputControl = <T extends FieldValues>({
   description,
   registerOptions,
   id,
-  testId,
   ...attributes
 }: TextInputControlProps<T>) => {
-  const identifier = testId || id || name;
+  const identifier = id || name;
   const descriptionId = `${identifier}-description`;
   const errorId = `${identifier}-error`;
 
@@ -38,31 +37,21 @@ const TextInputControl = <T extends FieldValues>({
         const hasError = !!errorMessage;
 
         return (
-          <Field
-            className="ams-mb-m"
-            invalid={hasError}
-            data-testid={`${identifier}-text-input-wrapper`}
-          >
+          <Field className="ams-mb-m" invalid={hasError}>
             {label && (
-              <Label
-                htmlFor={identifier}
-                data-testid={`${identifier}-label`}
-                optional={optional}
-              >
+              <Label htmlFor={identifier} optional={optional}>
                 {label}
               </Label>
             )}
             {description && (
-              <Paragraph
-                size="small"
-                id={descriptionId}
-                data-testid={descriptionId}
-              >
+              <Paragraph size="small" id={descriptionId}>
                 {description}
               </Paragraph>
             )}
             {hasError && (
-              <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>
+              <ErrorMessage id={errorId} data-testid={errorId}>
+                {errorMessage}
+              </ErrorMessage>
             )}
             <TextInput
               {...register(name, registerOptions as RegisterOptions)}

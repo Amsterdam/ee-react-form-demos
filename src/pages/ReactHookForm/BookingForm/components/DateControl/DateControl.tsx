@@ -20,10 +20,9 @@ const DateControl = <T extends FieldValues>({
   description,
   registerOptions,
   id,
-  testId,
   ...attributes
 }: DateControlProps<T>) => {
-  const identifier = testId || id || name;
+  const identifier = id || name;
   const descriptionId = `${identifier}-description`;
   const errorId = `${identifier}-error`;
 
@@ -36,13 +35,9 @@ const DateControl = <T extends FieldValues>({
         const hasError = !!formState.errors[name];
 
         return (
-          <Field data-testid={`${identifier}-text-input-wrapper`}>
+          <Field>
             {label && (
-              <Label
-                htmlFor={identifier}
-                data-testid={`${identifier}-label`}
-                optional={optional}
-              >
+              <Label htmlFor={identifier} optional={optional}>
                 {label}
               </Label>
             )}
@@ -63,7 +58,6 @@ const DateControl = <T extends FieldValues>({
               {...attributes}
               {...register(name, registerOptions as RegisterOptions)}
               id={identifier}
-              data-testid={identifier}
               invalid={hasError}
             />
           </Field>

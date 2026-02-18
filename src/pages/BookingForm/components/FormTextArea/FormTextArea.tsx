@@ -15,6 +15,7 @@ interface FormTextAreaProps {
   name: string;
   value: string;
   required?: boolean;
+  disabled?: boolean;
   error?: string;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
@@ -26,6 +27,7 @@ const FormTextArea = ({
   name,
   value,
   required = false,
+  disabled = false,
   error,
   onChange,
 }: FormTextAreaProps) => (
@@ -48,6 +50,7 @@ const FormTextArea = ({
       name={name}
       value={value}
       required={required}
+      disabled={disabled}
       rows={4}
       onChange={onChange}
     />
