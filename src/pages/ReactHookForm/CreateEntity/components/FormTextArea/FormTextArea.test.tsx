@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import FormTextArea from './FormTextArea';
 
 describe('FormTextArea', () => {
@@ -75,7 +75,7 @@ describe('FormTextArea', () => {
       'aria-describedby',
       expect.stringContaining('test-textarea-description')
     );
-    expect(screen.getByText(description)).toHaveAttribute(
+    expect(screen.getByText(description).parentElement).toHaveAttribute(
       'id',
       'test-textarea-description'
     );

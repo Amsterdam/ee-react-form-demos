@@ -5,8 +5,8 @@ import {
   Field,
   Grid,
   Heading,
+  InvalidFormAlert,
   Label,
-  OrderedList,
   Paragraph,
   TextArea,
   TextInput,
@@ -14,7 +14,7 @@ import {
 import { FormEvent, useState } from 'react';
 import { z } from 'zod/v4';
 import Loader from '@/components/Loader/Loader';
-import t, { translations } from './utils/translate';
+import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
 import ContactFormSchema from './schema';
 import styles from './ContactForm.module.css';
 
@@ -78,6 +78,7 @@ const ContactForm = () => {
   };
 
   const hasErrors = Object.keys(errors).length > 0;
+  const alertErrors = mapErrorsToAlert(errors);
 
   if (isSubmitted) {
     return (
@@ -130,23 +131,11 @@ const ContactForm = () => {
         >
           {isLoading && <Loader />}
           {hasErrors && (
-            <Alert
-              heading="Unsuccessful"
-              headingLevel={2}
-              severity="error"
-              data-testid="alert"
-            >
-              <Paragraph>
-                There was an error with the following fields:
-              </Paragraph>
-              <OrderedList>
-                {Object.entries(errors).map(([field, message]) => (
-                  <OrderedList.Item key={`error-item-${field}`}>
-                    {t(field as keyof typeof translations)}: {message}
-                  </OrderedList.Item>
-                ))}
-              </OrderedList>
-            </Alert>
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
           )}
 
           <Field invalid={!!errors.name}>

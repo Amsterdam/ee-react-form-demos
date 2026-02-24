@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import FormSelect from './FormSelect';
 import userEvent from '@testing-library/user-event';
 
@@ -66,7 +66,7 @@ describe('FormSelect', () => {
       'aria-describedby',
       'test-select-description'
     );
-    expect(screen.getByText(description)).toHaveAttribute(
+    expect(screen.getByText(description).parentElement).toHaveAttribute(
       'id',
       'test-select-description'
     );

@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { UseFormReturn, FieldValues } from 'react-hook-form';
+import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 
 // Children need to be react-hook-form friendly form components

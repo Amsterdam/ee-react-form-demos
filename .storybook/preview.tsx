@@ -1,23 +1,29 @@
 import '@amsterdam/design-system-tokens/dist/index.css';
-import '@amsterdam/design-system-tokens/dist/compact.css';
 import '@amsterdam/design-system-assets/font/index.css';
 import '@amsterdam/design-system-css/dist/index.css';
 import { Page } from '@amsterdam/design-system-react';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import type { StoryContext, StoryFn } from '@storybook/react';
 import { viewports } from './viewports';
+import '../src/styles/overrides.css';
 
 export const argTypes = {
   children: {
     table: { disable: true },
   },
-}
+};
 
 // Wrap in Page, set language to Dutch for Canvas and Stories
 export const decorators = [
   (Story: StoryFn, context: StoryContext) => (
     <Page
-      className={context.args['color'] === 'inverse' ? 'ams-docs-dark-background' : context.args['color'] === 'contrast' ? 'ams-docs-light-background' : ''}
+      className={
+        context.args['color'] === 'inverse'
+          ? 'ams-docs-dark-background'
+          : context.args['color'] === 'contrast'
+            ? 'ams-docs-light-background'
+            : ''
+      }
       lang="nl"
     >
       {Story(context.args, context)}
@@ -30,7 +36,7 @@ export const decorators = [
       Spacious: '',
     },
   }),
-]
+];
 
 export const parameters = {
   backgrounds: {
@@ -77,4 +83,4 @@ export const parameters = {
   viewport: {
     viewports,
   },
-}
+};

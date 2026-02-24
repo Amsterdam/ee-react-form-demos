@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import FormControl from './FormControl';
 
 type FormValues = {
@@ -9,7 +9,7 @@ type FormValues = {
 
 // Write a single 'smoke test' to avoid re-testing internal react-hook-form
 // functionality
-describe('FormControl', () => {
+describe('ReactHookForm / BookingForm - FormControl', () => {
   it('passes useFormContext methods to children', () => {
     const TestComponent = () => {
       const methods = useForm<FormValues>({ defaultValues: { name: 'John' } });

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import TimeControl from './TimeControl';
 
 type FormValues = {
@@ -18,19 +18,15 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('TimeControl', () => {
+describe('ReactHookForm / BookingFormZod - TimeControl', () => {
   it('renders with label and input', () => {
     render(
       <Wrapper>
-        <TimeControl<FormValues>
-          name="startTime"
-          label="Start time"
-          testId="startTime"
-        />
+        <TimeControl<FormValues> name="startTime" label="Start time" />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('startTime') as HTMLInputElement;
+    const input = screen.getByLabelText(/start time/i) as HTMLInputElement;
     expect(input).toBeInTheDocument();
     expect(screen.getByLabelText(/Start time/i)).toBe(input);
   });
@@ -38,15 +34,11 @@ describe('TimeControl', () => {
   it('handles user input', () => {
     render(
       <Wrapper>
-        <TimeControl<FormValues>
-          name="startTime"
-          label="Start time"
-          testId="startTime"
-        />
+        <TimeControl<FormValues> name="startTime" label="Start time" />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('startTime') as HTMLInputElement;
+    const input = screen.getByLabelText(/start time/i) as HTMLInputElement;
     expect(input.value).toBe('');
 
     fireEvent.input(input, { target: { value: '12:02' } });
@@ -56,15 +48,11 @@ describe('TimeControl', () => {
   it('renders initial value', () => {
     render(
       <Wrapper defaultValues={{ startTime: '12:02' }}>
-        <TimeControl<FormValues>
-          name="startTime"
-          label="Start time"
-          testId="startTime"
-        />
+        <TimeControl<FormValues> name="startTime" label="Start time" />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('startTime') as HTMLInputElement;
+    const input = screen.getByLabelText(/start time/i) as HTMLInputElement;
     expect(input.value).toBe('12:02');
   });
 
@@ -75,7 +63,6 @@ describe('TimeControl', () => {
           name="startTime"
           label="Start time"
           description="Please enter a start time."
-          testId="startTime"
         />
       </Wrapper>
     );
@@ -90,51 +77,16 @@ describe('TimeControl', () => {
           name="startTime"
           label="Start time"
           description="We need this to verify your age."
-          testId="startTime"
         />
       </Wrapper>
     );
 
-    const input = screen.getByTestId('startTime');
+    const input = screen.getByLabelText(/start time/i);
     const describedBy = input.getAttribute('aria-describedby');
-    expect(describedBy).toMatch(/startTime-description/);
 
-    expect(screen.getByTestId('startTime-description')).toHaveTextContent(
-      /verify your age/i
-    );
-  });
-
-  it('shows error message when invalid', async () => {
-    const Component = () => {
-      const methods = useForm<FormValues>({
-        defaultValues: { startTime: '' },
-        mode: 'onSubmit',
-      });
-
-      const onSubmit = vi.fn();
-
-      return (
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <TimeControl<FormValues>
-              name="startTime"
-              label="Start time"
-              registerOptions={{ required: 'Start time is required' }}
-              testId="startTime"
-            />
-            <button type="submit">Submit</button>
-          </form>
-        </FormProvider>
-      );
-    };
-
-    render(<Component />);
-
-    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
-
-    await waitFor(() => {
-      const input = screen.getByTestId('startTime');
-      expect(input.getAttribute('aria-describedby')).toMatch(/startTime-error/);
-    });
+    expect(describedBy).toMatch(/startTime-description/i);
+    expect(
+      screen.getByText('We need this to verify your age.')
+    ).toBeInTheDocument();
   });
 });

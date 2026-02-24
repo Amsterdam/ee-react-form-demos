@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import LinkRepeater from './LinkRepeater';
@@ -9,15 +9,22 @@ describe('LinkRepeater', () => {
     { url: 'https://b.com', title: 'B', icon: 'book' },
   ];
 
-  it('renders heading and description', async () => {
+  it('renders heading, description and error', async () => {
     const onChangeMock = vi.fn();
 
-    render(<LinkRepeater items={baseItems} onChange={onChangeMock} />);
+    render(
+      <LinkRepeater
+        items={baseItems}
+        onChange={onChangeMock}
+        errors={{ links: 'Links are required' }}
+      />
+    );
 
     expect(screen.getByRole('heading', { name: /links/i })).toBeInTheDocument();
     expect(
       screen.getByText(/a list of external hyperlinks/i)
     ).toBeInTheDocument();
+    expect(screen.getByText('Links are required')).toBeInTheDocument();
   });
 
   it('renders all link rows', async () => {
@@ -68,7 +75,7 @@ describe('LinkRepeater', () => {
     render(<LinkRepeater items={baseItems} onChange={onChangeMock} />);
 
     const input = screen.getAllByLabelText('Title')[0];
-    await fireEvent.change(input, { target: { value: 'Updated title' } });
+    fireEvent.change(input, { target: { value: 'Updated title' } });
 
     expect(onChangeMock).toHaveBeenCalledWith([
       { ...baseItems[0], title: 'Updated title' },

@@ -9,9 +9,9 @@ import {
 } from '@amsterdam/design-system-react';
 import { TrashBinIcon } from '@amsterdam/design-system-react-icons';
 import { Control, Controller, FieldError } from 'react-hook-form';
+import clsx from 'clsx';
 import { EntityFormData as RHFEntityFormData } from '../../schema';
 import styles from './LinkRepeaterRow.module.css';
-import clsx from 'clsx';
 
 interface LinkRepeaterRowProps {
   control: Control<RHFEntityFormData>;
@@ -37,7 +37,7 @@ const LinkRepeaterRow = ({
       <Heading level={4}>Link {index + 1}</Heading>
 
       <Field className="ams-mb-m" invalid={!!errors?.url?.message}>
-        <Label htmlFor={`links.${index}.url`}>URL</Label>
+        <Label htmlFor={`links-${index}-url`}>URL</Label>
         {errors?.url?.message && (
           <ErrorMessage id={`link-url-${index}-error`}>
             {errors?.url?.message}
@@ -49,9 +49,8 @@ const LinkRepeaterRow = ({
           render={({ field }) => (
             <TextInput
               type="url"
-              id={`links.${index}.url`}
+              id={`links-${index}-url`}
               {...field}
-              required
               invalid={!!errors?.url?.message}
               aria-describedby={clsx('links-description', {
                 [`link-url-${index}-error`]: errors?.url?.message,
@@ -62,7 +61,7 @@ const LinkRepeaterRow = ({
       </Field>
 
       <Field className="ams-mb-m" invalid={!!errors?.title?.message}>
-        <Label htmlFor={`links.${index}.title`}>Title</Label>
+        <Label htmlFor={`links-${index}-title`}>Title</Label>
         {errors?.title?.message && (
           <ErrorMessage id={`link-title-${index}-error`}>
             {errors?.title?.message}
@@ -73,9 +72,8 @@ const LinkRepeaterRow = ({
           control={control}
           render={({ field }) => (
             <TextInput
-              id={`links.${index}.title`}
+              id={`links-${index}-title`}
               {...field}
-              required
               invalid={!!errors?.title?.message}
               aria-describedby={clsx('links-description', {
                 [`link-title-${index}-error`]: errors?.title?.message,
@@ -86,12 +84,12 @@ const LinkRepeaterRow = ({
       </Field>
 
       <Field className="ams-mb-m">
-        <Label htmlFor={`links.${index}.icon`}>Icon</Label>
+        <Label htmlFor={`links-${index}-icon`}>Icon</Label>
         <Controller
           name={`links.${index}.icon`}
           control={control}
           render={({ field }) => (
-            <Select id={`links.${index}.icon`} {...field}>
+            <Select id={`links-${index}-icon`} {...field}>
               <Select.Option value="dashboard">Dashboard</Select.Option>
               <Select.Option value="github">GitHub</Select.Option>
               <Select.Option value="launch">Launch</Select.Option>

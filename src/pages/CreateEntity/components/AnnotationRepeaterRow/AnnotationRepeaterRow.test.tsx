@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import AnnotationRepeaterRow from './AnnotationRepeaterRow';
 
@@ -18,6 +18,23 @@ describe('AnnotationRepeaterRow', () => {
     );
     expect(screen.getByLabelText('Type')).toBeInTheDocument();
     expect(screen.getByLabelText('Value')).toBeInTheDocument();
+  });
+
+  it('renders key and value errors', () => {
+    render(
+      <AnnotationRepeaterRow
+        index={0}
+        values={{ key: '', value: '' }}
+        onChange={vi.fn()}
+        keyError="Key error"
+        valueError="Value error"
+      />
+    );
+
+    const field = screen
+      .getByLabelText('Type')
+      .closest('[data-invalid], [aria-invalid="true"]');
+    expect(field).toBeTruthy();
   });
 
   it('calls onChange with new key and default value on key change', async () => {

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import TextAreaControl from './TextAreaControl';
 import userEvent from '@testing-library/user-event';
 
@@ -19,15 +19,11 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('TextAreaControl', () => {
+describe('ReactHookForm / BookingForm - TextAreaControl', () => {
   it('renders with label and textarea', () => {
     render(
       <Wrapper>
-        <TextAreaControl<FormValues>
-          name="message"
-          label="Your Message"
-          testId="message"
-        />
+        <TextAreaControl<FormValues> name="message" label="Your Message" />
       </Wrapper>
     );
 
@@ -40,11 +36,7 @@ describe('TextAreaControl', () => {
   it('handles user textarea', async () => {
     render(
       <Wrapper>
-        <TextAreaControl<FormValues>
-          name="message"
-          label="Your Message"
-          testId="message"
-        />
+        <TextAreaControl<FormValues> name="message" label="Your Message" />
       </Wrapper>
     );
 
@@ -72,11 +64,7 @@ describe('TextAreaControl', () => {
             'A placeat harum est sint eaque et aperiam quis et voluptas deleniti id expedita modi aut magnam minima. Vel quaerat dolores ut explicabo similique aut expedita molestiae quo doloremque temporibus ut veniam quos.',
         }}
       >
-        <TextAreaControl<FormValues>
-          name="message"
-          label="Your Message"
-          testId="message"
-        />
+        <TextAreaControl<FormValues> name="message" label="Your Message" />
       </Wrapper>
     );
 
@@ -97,7 +85,6 @@ describe('TextAreaControl', () => {
           name="message"
           label="Your Message"
           description="Please enter your full legal name."
-          testId="message"
         />
       </Wrapper>
     );
@@ -114,7 +101,6 @@ describe('TextAreaControl', () => {
           name="message"
           label="Your Message"
           description="Send us your ideas."
-          testId="message"
         />
       </Wrapper>
     );
@@ -125,9 +111,7 @@ describe('TextAreaControl', () => {
     const describedBy = textarea.getAttribute('aria-describedby');
     expect(describedBy).toMatch(/message-description/);
 
-    expect(screen.getByTestId('message-description')).toHaveTextContent(
-      /Send us your ideas/i
-    );
+    expect(screen.getByText(/Send us your ideas/i)).toBeInTheDocument();
   });
 
   it('shows error message when invalid', async () => {
@@ -146,7 +130,6 @@ describe('TextAreaControl', () => {
               name="message"
               label="Your Message"
               registerOptions={{ required: 'Message is required' }}
-              testId="message"
             />
             <button type="submit">Submit</button>
           </form>

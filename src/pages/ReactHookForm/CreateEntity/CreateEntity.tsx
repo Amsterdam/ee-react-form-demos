@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
 import {
-  useForm,
   Controller,
-  useWatch,
-  useFieldArray,
   Resolver,
+  useFieldArray,
+  useForm,
+  useWatch,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -12,10 +12,12 @@ import {
   Button,
   Grid,
   Heading,
+  InvalidFormAlert,
   Link,
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
+import '@amsterdam/design-system-tokens/dist/compact.css';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextArea from './components/FormTextArea/FormTextArea';
@@ -35,8 +37,10 @@ import entityFormSchema, {
   EntityFormData as RHFEntityFormData,
 } from './schema';
 import { EntityFormData } from '@/types/types';
+import mapErrorsToAlert from './utils/mapErrorsToAlert';
+import scrollToErrorAlert from '@/utils/scrollToErrorAlert';
+import collectErrorMessages from './utils/collectErrorMessages';
 import styles from './CreateEntity.module.css';
-import scrollToFirstError from './utils/scrollToFirstError';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
@@ -105,6 +109,7 @@ const CreateEntity = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitTouched, setIsSubmitTouched] = useState(false);
 
   // useFieldArray for repeater fields. This is also used in the
   // AnnotationRepeater component
@@ -138,7 +143,8 @@ const CreateEntity = () => {
   };
 
   const onInvalid = () => {
-    scrollToFirstError(formRef.current);
+    setIsSubmitTouched(true);
+    scrollToErrorAlert(formRef.current);
   };
 
   // Reset the form to a blank state
@@ -159,6 +165,9 @@ const CreateEntity = () => {
       },
     });
   };
+
+  const showErrors = isSubmitTouched && Object.keys(errors).length > 0;
+  const alertErrors = mapErrorsToAlert(collectErrorMessages(errors));
 
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
@@ -182,6 +191,14 @@ const CreateEntity = () => {
           // + zod
           noValidate
         >
+          {showErrors && (
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
+          )}
+
           <Controller
             name="kind"
             control={control}
@@ -220,7 +237,6 @@ const CreateEntity = () => {
                 }}
                 value={field.value}
                 error={errors.kind?.message}
-                required
                 onChange={field.onChange}
               />
             )}
@@ -236,7 +252,6 @@ const CreateEntity = () => {
                 description="The name of the entity. This name is both meant for human eyes to recognize the entity and for machines and other components to reference the entity (e.g. in URLs or from other entity specification files)."
                 value={field.value}
                 error={errors.name?.message}
-                required
                 onChange={field.onChange}
               />
             )}
@@ -272,7 +287,6 @@ const CreateEntity = () => {
                   'mobile-app': 'Mobile/Native App',
                 }}
                 value={field.value}
-                required
                 error={errors.spec?.componentType?.message}
                 onChange={field.onChange}
               />
@@ -296,7 +310,6 @@ const CreateEntity = () => {
                   archived: 'Archived',
                 }}
                 value={field.value}
-                required
                 error={errors.spec?.lifecycle?.message}
                 onChange={field.onChange}
               />
@@ -312,7 +325,7 @@ const CreateEntity = () => {
 
               return (
                 <FormAutoSelect
-                  id="owner"
+                  id="spec-owner"
                   label="Owner"
                   description={
                     <Paragraph size="small" id="owner-description">
@@ -330,7 +343,6 @@ const CreateEntity = () => {
                   }
                   options={ownerOptions}
                   value={selectedOption}
-                  required
                   error={errors.spec?.owner?.message}
                   onChange={selectedOption => {
                     // Handling react-select requires an extra step, as using
@@ -352,7 +364,7 @@ const CreateEntity = () => {
             control={control}
             render={({ field }) => (
               <FormCheckboxInput
-                id="hasSystem"
+                id="has-system"
                 label="Entity belongs to a system?"
                 value={field.value ?? false}
                 onChange={field.onChange}
@@ -370,7 +382,7 @@ const CreateEntity = () => {
 
                 return (
                   <FormAutoSelect
-                    id="system"
+                    id="spec-system"
                     label="System"
                     description={
                       <Paragraph id="system-description" size="small">
@@ -389,7 +401,6 @@ const CreateEntity = () => {
                     options={systemOptions}
                     value={selectedOption}
                     error={errors.spec?.system?.message}
-                    required
                     onChange={selectedOption => {
                       const option = Array.isArray(selectedOption)
                         ? selectedOption[0]

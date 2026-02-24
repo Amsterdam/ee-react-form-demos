@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import FormCheckboxInput from './FormCheckboxInput';
 
 describe('FormCheckboxInput', () => {
@@ -14,11 +14,10 @@ describe('FormCheckboxInput', () => {
     render(<FormCheckboxInput {...defaultProps} />);
 
     expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
-    // TODO ID is currently broken. Waiting for design-system to release https://github.com/Amsterdam/design-system/pull/2153
-    // expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
-    //   'id',
-    //   'test-input'
-    // );
+    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
+      'id',
+      'test-input'
+    );
   });
 
   it('handles user input', () => {
@@ -54,7 +53,7 @@ describe('FormCheckboxInput', () => {
       'aria-describedby',
       expect.stringContaining('test-input-description')
     );
-    expect(screen.getByText(description)).toHaveAttribute(
+    expect(screen.getByText(description).parentElement).toHaveAttribute(
       'id',
       'test-input-description'
     );

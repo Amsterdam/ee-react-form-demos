@@ -1,16 +1,22 @@
 import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
 import * as BookingFormStories from './index.stories';
 import BookingForm from '@/pages/BookingForm/BookingForm?raw';
-import FormCheckboxInput from '@/pages/BookingForm/components/FormCheckboxInput/FormCheckboxInput?raw';
 import FormTextArea from '@/pages/BookingForm/components/FormTextArea/FormTextArea?raw';
 import FormDateInput from '@/pages/BookingForm/components/FormDateInput/FormDateInput?raw';
 import FormTimeInput from '@/pages/BookingForm/components/FormTimeInput/FormTimeInput?raw';
+import StepAppointment from '@/pages/BookingForm/components/StepAppointment/StepAppointment?raw';
+import StepConfirm from '@/pages/BookingForm/components/StepConfirm/StepConfirm?raw';
+import StepIntro from '@/pages/BookingForm/components/StepIntro/StepIntro?raw';
+import StepPersonalDetails from '@/pages/BookingForm/components/StepPersonalDetails/StepPersonalDetails?raw';
+import SuccessContent from '@/pages/BookingForm/components/SuccessContent/SuccessContent?raw';
+import mapErrorsToAlert from '@/pages/BookingForm/utils/mapErrorsToAlert?raw';
 import translate from '@/pages/BookingForm/utils/translate?raw';
 import styles from '@/pages/BookingForm/BookingForm.module.css?raw';
+import schema from '@/pages/BookingForm/schema.ts?raw';
 
 <Meta of={BookingFormStories} />
 
-# Booking Form
+# Booking Form (with Zod schema validation)
 
 **<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/BookingForm" target="_blank">GitHub Repo URL</a>**
 
@@ -26,6 +32,7 @@ import styles from '@/pages/BookingForm/BookingForm.module.css?raw';
 ## Requirements
 
 - [React](https://react.dev)
+- [Zod](https://zod.dev/)
 - [Amsterdam Design System](https://designsystem.amsterdam)
 
 ## Overview
@@ -36,7 +43,6 @@ This demo implements a simple booking form with the following fields:
 - **Email** (required, must be a valid email format)
 - **Start Date & Time** (required)
 - **End Date & Time** (required, must occur after Start Date/Time)
-- **Remote Meeting?** (optional checkbox)
 - **Comments** (optional textarea)
 
 ### Validation Rules
@@ -44,47 +50,57 @@ This demo implements a simple booking form with the following fields:
 - Name, Email, Start Date/Time, End Date/Time are required.
 - Email must be a valid format.
 - End Date/Time must be later than Start Date/Time.
-- Remote Meeting? and Comments are optional.
+- The Comments field is optional.
 
 ## Purpose
 
-The goal of this demo is to illustrate how to handle cross-field validation in forms. While individual field rules (e.g. "email must be valid") are straightforward, checking relationships between multiple fields—such as ensuring the end of a booking is after the start—requires more advanced validation logic.
+The goal of this demo is to illustrate how to handle reusable cross-field validation in forms. In this example we replace HTML5's built-in validation with a [Zod](https://zod.dev/) schema for a consistent validation strategy.
 
-This scenario is deliberately chosen because HTML5 validation alone struggles here. Native browser validation can flag missing values or malformed emails but it cannot easily express rules like `End time must be after Start time.` Even if you manage to wire it up, the resulting UX is inconsistent and hard to manage.
+With [Zod](https://zod.dev/) you can centralize all rules, including cross-field checks like "end must be after start", in one schema and keep them framework-agnostic.
+
+This form validates on submit. Inline errors and the main error alert only appear after a submit attempt, keeping the interface uncluttered during typing while still providing clear feedback when validation fails.
 
 ## Key Points
 
-- **Conditional validation** - The `End Date` and `End Time` fields are validated against the chosen `Start Date` and `Start Time`. If the end occurs before the start, a custom error message is displayed.
-- **Improved UX** - Instead of relying on native validation popups (which vary by browser and cannot always be styled consistently), the demo shows how you can display validation errors inline, next to the relevant field(s), for a smoother experience.
-- **Error state handling** - In comparison to the [React Hook Form alternative](../?path=/docs/reacthookform-bookingform--docs) this example highlights how RHF makes it easier to manage complex rules and maintain a consistent error display across the form.
-- **Maintainability** - The handleChange and handleBlur functions grow more complex when custom rules are layered on top of HTML5's built-ins.
+- **Schema-driven validation** - A single [Zod](https://zod.dev/) schema defines both field-level and cross-field rules.
+- **Cross-field logic** - The schema's `.refine` ensures that the end date/time always comes after the start date/time.
+- **Cleaner UX with `submitTouched`** - Errors are collected immediately as the user types, but only revealed once the user attempts submission—preventing verbose error messages from showing too early.
+- **Consistency across browsers** - Because validation is fully handled in JavaScript, the UX looks and behaves the same everywhere.
 
 ### Pros
 
-- **Zero setup** – no extra libraries, schema, or framework required.
-- **Good for** small/simple forms – native attributes cover most basic rules.
-- **Performance –** no schema parsing or extra validation layer; browser handles it.
+- Centralized validation logic ([Zod](https://zod.dev/) schema can be reused server-side).
+- Supports advanced rules that HTML5 cannot express (e.g. comparing fields).
+- Inline, styled error messages rather than inconsistent native popups.
+- Balanced UX with `submitTouched` controlling when to reveal global errors.
+- Full developer control over error formatting and localization.
 
 ### Cons
 
-- **Limited flexibility** – can't easily enforce cross-field rules like "end after start" without custom JavaScript.
-- **Inconsistent UX** – native popups look different across browsers and can't be styled.
-- **Scaling issues** – as forms grow, juggling HTML5 attributes with custom JS logic leads to messy event handlers.
-- **Accessibility quirks** – native tooltips aren’t always screen-reader friendly, and inline error summaries must be built manually.
+- Slightly more boilerplate than using HTML5 attributes.
+- Requires managing error state manually (`errors`, `submitTouched`).
+- No free browser-native validation (must implement everything yourself).
 
 ## How to Implement
 
 To implement this `BookingForm` there are six core files:
 
 1. The React components:
-    - [BookingForm.tsx](#--bookingformtsx)
-    - [FormCheckboxInput.tsx](#--bookingformtsx)
-    - [FormDateInput.tsx](#--formcheckboxinputtsx)
+    - [BookingForm.tsx](#--bookingformzodtsx)
+    - [FormDateInput.tsx](#--formdateinputtsx)
     - [FormTextArea.tsx](#--formtextareatsx)
     - [FormTimeInput.tsx](#--formtimeinputtsx)
-2. The CSS styles (1 file)
+    - [StepAppointment.tsx](#--stepappointmenttsx)
+    - [StepConfirm.tsx](#--stepconfirmtsx)
+    - [StepIntro.tsx](#--stepintrotsx)
+    - [StepPersonalDetails.tsx](#--steppersondetailstsx)
+    - [SuccessContent.tsx](#--successcontenttsx)
+2. Validation schema (1 file):
+    - [schema.ts](#--schemats)
+3. The CSS styles (1 file)
     - [BookingForm.module.css](#2-cssstyles)
-3. Utils (1 file)
+4. Utils (2 files)
+    - [mapErrorsToAlert.ts](#3-utils)
     - [translate.ts](#3-utils)
 
 *The `Loader` component is excluded from the docs, it is a generic preloader.*
@@ -99,10 +115,6 @@ The following files are required:
 
 <Source code={BookingForm} />
 
-#### - FormCheckboxInput.tsx
-
-<Source code={FormCheckboxInput} />
-
 #### - FormTextArea.tsx
 
 <Source code={FormTextArea} />
@@ -115,13 +127,43 @@ The following files are required:
 
 <Source code={FormTimeInput} />
 
-### 2. CSS Styles
+#### - StepAppointment.tsx
+
+<Source code={StepAppointment} />
+
+#### - StepConfirm.tsx
+
+<Source code={StepConfirm} />
+
+#### - StepIntro.tsx
+
+<Source code={StepIntro} />
+
+#### - StepPersonalDetails.tsx
+
+<Source code={StepPersonalDetails} />
+
+#### - SuccessContent.tsx
+
+<Source code={SuccessContent} />
+
+### 2. Validation schema
+
+#### - schema.ts
+
+<Source code={schema} />
+
+### 3. CSS Styles
 
 #### - BookingForm.module.css
 
 <Source code={styles} />
 
-### 3. Utils
+### 4. Utils
+
+#### - mapErrorsToAlert.ts
+
+<Source code={mapErrorsToAlert} />
 
 #### - translate.ts
 

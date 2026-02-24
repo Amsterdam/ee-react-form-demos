@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import TextInputControl from './TextInputControl';
 
 type FormValues = {
@@ -18,15 +18,11 @@ const Wrapper = ({
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('TextInputControl', () => {
+describe('ReactHookForm / BookingFormZod - TextInputControl', () => {
   it('renders with label and input', () => {
     render(
       <Wrapper>
-        <TextInputControl<FormValues>
-          name="name"
-          label="Full Name"
-          testId="name"
-        />
+        <TextInputControl<FormValues> name="name" label="Full Name" />
       </Wrapper>
     );
 
@@ -37,11 +33,7 @@ describe('TextInputControl', () => {
   it('handles user input', () => {
     render(
       <Wrapper>
-        <TextInputControl<FormValues>
-          name="name"
-          label="Full Name"
-          testId="name"
-        />
+        <TextInputControl<FormValues> name="name" label="Full Name" />
       </Wrapper>
     );
 
@@ -55,11 +47,7 @@ describe('TextInputControl', () => {
   it('renders with initial value', () => {
     render(
       <Wrapper defaultValues={{ name: 'Bob' }}>
-        <TextInputControl<FormValues>
-          name="name"
-          label="Full Name"
-          testId="name"
-        />
+        <TextInputControl<FormValues> name="name" label="Full Name" />
       </Wrapper>
     );
 
@@ -74,7 +62,6 @@ describe('TextInputControl', () => {
           name="name"
           label="Full Name"
           description="Please enter your full legal name."
-          testId="name"
         />
       </Wrapper>
     );
@@ -91,7 +78,6 @@ describe('TextInputControl', () => {
           name="name"
           label="Full Name"
           description="Used for formal identification."
-          testId="name"
         />
       </Wrapper>
     );
@@ -100,9 +86,9 @@ describe('TextInputControl', () => {
     const describedBy = input.getAttribute('aria-describedby');
     expect(describedBy).toMatch(/name-description/);
 
-    expect(screen.getByTestId('name-description')).toHaveTextContent(
-      /used for formal identification/i
-    );
+    expect(
+      screen.getByText(/used for formal identification/i)
+    ).toBeInTheDocument();
   });
 
   it('shows error message when invalid', async () => {
@@ -121,7 +107,6 @@ describe('TextInputControl', () => {
               name="name"
               label="Full Name"
               registerOptions={{ required: 'Name is required' }}
-              testId="name"
             />
             <button type="submit">Submit</button>
           </form>

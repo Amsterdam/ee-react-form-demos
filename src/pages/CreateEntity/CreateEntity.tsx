@@ -3,13 +3,28 @@ import {
   Button,
   Grid,
   Heading,
+  InvalidFormAlert,
   Link,
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { ActionMeta } from 'react-select';
+import '@amsterdam/design-system-tokens/dist/compact.css';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
+import Loader from '@/components/Loader/Loader';
 import { EntityFormData } from '@/types/types';
+import getOwners from '@/utils/getOwners';
+import getSystems from '@/utils/getSystems';
+import getTags from '@/utils/getTags';
+import sortAlphabetically from '@/utils/sortAlphabetically';
+import scrollToErrorAlert from '@/utils/scrollToErrorAlert';
+import {
+  // We renamed this as we still need the original EntityFormData type shape for
+  // the SubmissionOutput component
+  EntityFormData as ZodEntityFormData,
+} from './schema';
+import mapErrorsToAlert from './utils/mapErrorsToAlert';
+import useEntityFormValidation from './hooks/useEntityFormValidation';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextArea from './components/FormTextArea/FormTextArea';
@@ -17,18 +32,14 @@ import FormCheckboxInput from './components/FormCheckboxInput/FormCheckboxInput'
 import FormAutoSelect from './components/FormAutoSelect/FormAutoSelect';
 import AnnotationRepeater from './components/AnnotationRepeater/AnnotationRepeater';
 import LinkRepeater from './components/LinkRepeater/LinkRepeater';
-import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
-import Loader from '@/components/Loader/Loader';
-import getOwners from '@/utils/getOwners';
-import getSystems from '@/utils/getSystems';
-import getTags from '@/utils/getTags';
-import sortAlphabetically from '@/utils/sortAlphabetically';
 import styles from './CreateEntity.module.css';
 
 const ownerOptions = getOwners().sort(sortAlphabetically);
 const systemOptions = getSystems().sort(sortAlphabetically);
 
 const CreateEntity = () => {
+  // The ref is only necessary if you want to scroll to the first error
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     kind: 'Component',
     name: 'ee-docs',
@@ -73,24 +84,56 @@ const CreateEntity = () => {
       hasSystem: true,
       system: 'dii-ee-developers-amsterdam',
     },
-  } as EntityFormData);
+  } as ZodEntityFormData);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitTouched, setIsSubmitTouched] = useState(false);
+
+  // Keep all the form validation in a hook for reusability and to keep this
+  // parent component clean. The formData handling could also be moved into a
+  // hook if this parent component contains extra custom logic
+  const { errors, validateField, validateForm, clearAllErrors } =
+    useEntityFormValidation(formData);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    const checked =
+      type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
+    const newValue = type === 'checkbox' ? checked : value;
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name.startsWith('spec.')) {
+      const specField = name.split('.')[1] as keyof EntityFormData['spec'];
+
+      setFormData(prev => ({
+        ...prev,
+        spec: {
+          ...prev.spec,
+          [specField]: newValue,
+        },
+      }));
+
+      if (isSubmitTouched) {
+        validateField(name, newValue);
+      }
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: newValue,
+      }));
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      setIsSubmitTouched(true);
+      scrollToErrorAlert(formRef.current);
+      return;
+    }
     // console.log('Form data:', formData);
 
     /**
@@ -107,6 +150,7 @@ const CreateEntity = () => {
     }, 1500);
   };
 
+  // Reset the form to a blank state
   const handleResetClick = () => {
     setFormData({
       kind: '',
@@ -123,7 +167,11 @@ const CreateEntity = () => {
         system: '',
       },
     });
+    clearAllErrors();
   };
+
+  const showErrors = isSubmitTouched && Object.keys(errors).length > 0;
+  const alertErrors = mapErrorsToAlert(errors);
 
   return (
     <Grid paddingBottom="x-large" paddingTop="large">
@@ -139,7 +187,18 @@ const CreateEntity = () => {
           (annotations and links) and custom select components
         </Paragraph>
 
-        <form onSubmit={handleSubmit}>
+        {/* The ref is only necessary if you want to scroll to the first
+        error */}
+        {/* Use noValidate so browser validation doesn't block zod */}
+        <form onSubmit={handleSubmit} ref={formRef} noValidate>
+          {showErrors && (
+            <InvalidFormAlert
+              errors={alertErrors}
+              headingLevel={4}
+              className="ams-mb-m"
+            />
+          )}
+
           <FormSelect
             id="kind"
             label="Kind"
@@ -159,11 +218,8 @@ const CreateEntity = () => {
               </Paragraph>
             }
             name="kind"
-            // This options format may look a bit overcomplicated. In this
-            // example it is intended to demonstate select menus where the
-            // value might be an ID or code and is, therefore, not useful
-            // to present to frontend users. Go to the 'Type' Select field for
-            // an example where this happens.
+            // This looks a bit weird but is intended because select menu values
+            // are often different to the labels (however, not in this example)
             options={{
               API: 'API',
               Component: 'Component',
@@ -175,12 +231,15 @@ const CreateEntity = () => {
             }}
             initialValue={formData.kind}
             required
+            error={errors.kind}
             onChange={(_name, value) => {
               setFormData(prev => ({
                 ...prev,
                 kind: value,
               }));
+              validateField('kind', value);
             }}
+            onBlur={e => validateField('kind', e.target.value)}
           />
 
           <FormTextInput
@@ -190,6 +249,7 @@ const CreateEntity = () => {
             name="name"
             value={formData.name}
             required
+            error={errors.name}
             onChange={handleChange}
           />
 
@@ -199,14 +259,15 @@ const CreateEntity = () => {
             description="A human readable description of the entity, to be shown in Backstage. Should be kept short and informative, suitable to give an overview of the entity's purpose at a glance. More detailed explanations and documentation should be placed elsewhere."
             name="description"
             value={formData.description ?? ''}
+            error={errors.description}
             onChange={handleChange}
           />
 
           <FormSelect
-            id="type"
+            id="spec-type"
             label="Type"
             description="The type of component as a string, e.g. `website`. This field is required."
-            name="type"
+            name="spec.type"
             options={{
               service: 'Service',
               website: 'Website',
@@ -215,7 +276,8 @@ const CreateEntity = () => {
             }}
             initialValue={formData.spec.type}
             required
-            onChange={(_name, value) => {
+            error={errors['spec.type']}
+            onChange={(name, value) => {
               setFormData(prev => ({
                 ...prev,
                 spec: {
@@ -223,14 +285,16 @@ const CreateEntity = () => {
                   type: value,
                 },
               }));
+              validateField(name, value);
             }}
+            onBlur={e => validateField('spec.type', e.target.value)}
           />
 
           <FormSelect
             id="lifecycle"
             label="Lifecycle"
             description="The lifecycle state of the component, e.g. `production`. This field is required."
-            name="lifecycle"
+            name="spec.lifecycle"
             options={{
               prototype: 'Prototype',
               alpha: 'Alpha',
@@ -241,7 +305,8 @@ const CreateEntity = () => {
             }}
             initialValue={formData.spec.lifecycle}
             required
-            onChange={(_name, value) => {
+            error={errors['spec.lifecycle']}
+            onChange={(name, value) => {
               setFormData(prev => ({
                 ...prev,
                 spec: {
@@ -249,7 +314,9 @@ const CreateEntity = () => {
                   lifecycle: value,
                 },
               }));
+              validateField(name, value);
             }}
+            onBlur={e => validateField('spec.lifecycle', e.target.value)}
           />
 
           <FormAutoSelect
@@ -274,22 +341,32 @@ const CreateEntity = () => {
             initialValues={[formData.spec.owner]}
             required
             onChange={newValue => {
-              // Handling react-select requires an extra step, as using the
-              // isMulti prop as true, will return an array of values. These
-              // minor prop differences can lead to some  complex Type handling
+              // Handling react-select requires an extra step, as using
+              // the isMulti prop as true, will return an array of values.
+              // These minor prop differences can lead to some  complex
+              // Type handling
               const option = Array.isArray(newValue) ? newValue[0] : newValue;
+              const ownerValue = option?.value ?? '';
+
+              // Update state
               setFormData(prev => ({
                 ...prev,
                 spec: {
                   ...prev.spec,
-                  owner: option?.value ?? '',
+                  owner: ownerValue,
                 },
               }));
+
+              // Validate immediately
+              validateField('spec.owner', ownerValue);
+            }}
+            onBlur={() => {
+              validateField('spec.owner', formData.spec.owner || '');
             }}
           />
 
           <FormCheckboxInput
-            id="hasSystem"
+            id="has-system"
             label="Entity belongs to a system?"
             value={formData.spec.hasSystem}
             onChange={e =>
@@ -305,7 +382,7 @@ const CreateEntity = () => {
 
           {formData.spec.hasSystem && (
             <FormAutoSelect
-              id="system"
+              id="spec-system"
               label="System"
               name="system"
               description={
@@ -323,17 +400,24 @@ const CreateEntity = () => {
                 </Paragraph>
               }
               options={systemOptions}
-              initialValues={[formData.spec.system]}
-              required
+              initialValues={[formData.spec.system || '']}
+              required={formData.spec.hasSystem}
               onChange={newValue => {
                 const option = Array.isArray(newValue) ? newValue[0] : newValue;
+                const systemValue = option?.value ?? '';
+
                 setFormData(prev => ({
                   ...prev,
                   spec: {
                     ...prev.spec,
-                    system: option?.value ?? '',
+                    system: systemValue,
                   },
                 }));
+
+                validateField('spec.system', systemValue);
+              }}
+              onBlur={() => {
+                validateField('spec.system', formData.spec.system || '');
               }}
             />
           )}
@@ -344,23 +428,23 @@ const CreateEntity = () => {
             name="tags"
             description="A list of single-valued strings, for example to classify catalog entities in various ways. This is different to the labels in metadata, as labels are key-value pairs."
             options={getTags()}
-            initialValues={formData.tags}
             isMulti
-            onChange={(
-              newValue,
-              actionMeta: ActionMeta<{
-                label: string;
-                value: string;
-              }>
-            ) => {
+            initialValues={formData.tags}
+            onChange={newValue => {
               // This React-Select component uses isMulti so we need to
               // handle an array of values
+              const tagsValue = Array.isArray(newValue)
+                ? newValue?.map(({ value }: { value: string }) => value)
+                : [];
               setFormData(prev => ({
                 ...prev,
-                [actionMeta.name as string]: Array.isArray(newValue)
-                  ? newValue?.map(({ value }: { value: string }) => value)
-                  : [],
+                tags: tagsValue,
               }));
+
+              validateField('tags', tagsValue);
+            }}
+            onBlur={() => {
+              validateField('tags', formData.spec.system || '');
             }}
           />
 
@@ -371,6 +455,7 @@ const CreateEntity = () => {
           { key: '', value: '' } */}
           <AnnotationRepeater
             items={formData.annotations ?? []}
+            errors={errors}
             onChange={annotations => {
               setFormData({
                 ...formData,
@@ -387,6 +472,7 @@ const CreateEntity = () => {
           the three fields' values */}
           <LinkRepeater
             items={formData?.links ?? []}
+            errors={errors}
             onChange={links => {
               setFormData({
                 ...formData,
@@ -396,7 +482,9 @@ const CreateEntity = () => {
           />
 
           <Row>
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Submitting...' : 'Submit'}
+            </Button>
             <Button
               type="button"
               variant="secondary"
@@ -407,7 +495,17 @@ const CreateEntity = () => {
           </Row>
         </form>
       </Grid.Cell>
-      <SubmissionOutput formData={formData} />
+      <SubmissionOutput
+        formData={
+          {
+            ...formData,
+            spec: {
+              ...formData.spec,
+              type: formData.spec.type,
+            },
+          } as EntityFormData
+        }
+      />
 
       {/* Fake loader to simulate API request */}
       {isLoading && <Loader />}

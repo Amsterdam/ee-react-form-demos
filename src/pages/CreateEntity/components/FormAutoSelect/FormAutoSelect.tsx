@@ -10,8 +10,8 @@ import {
 interface FormAutoSelectProps {
   id: string;
   label: string;
-  description?: ReactNode;
   name: string;
+  description?: ReactNode;
   options: ReactSelectOption[] | undefined;
   initialValues: string[];
   required?: boolean;
@@ -20,18 +20,20 @@ interface FormAutoSelectProps {
     newValue: ReactSelectValue,
     actionMeta: ActionMeta<ReactSelectOption>
   ) => void;
+  onBlur?: () => void;
 }
 
 const FormAutoSelect = ({
   id,
   label,
-  description,
   name,
+  description,
   options,
   initialValues,
   required = false,
   isMulti = false,
   onChange,
+  onBlur,
   ...props
 }: FormAutoSelectProps) => {
   // Filter to exclude empty strings and find any already selected key-values
@@ -63,6 +65,7 @@ const FormAutoSelect = ({
         options={options}
         isMulti={isMulti}
         onChange={onChange}
+        onBlur={onBlur}
         name={name}
         required={required}
         value={selectValue}

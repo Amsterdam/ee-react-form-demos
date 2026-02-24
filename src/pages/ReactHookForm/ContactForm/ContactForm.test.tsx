@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import ContactForm from './ContactForm';
 import { act } from 'react';
 import userEvent from '@testing-library/user-event';
@@ -51,51 +51,48 @@ describe('ContactForm', () => {
   it('should show validation errors when the form is submitted with invalid data', async () => {
     render(<ContactForm />);
 
-    act(() => {
-      fireEvent.click(screen.getByRole('button', { name: /submit/i }));
-    });
+    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
 
-    await screen.findByText(/unsuccessful/i);
-    expect(
-      screen.getByText(/there was an error with the following fields:/i)
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText('Verbeter de fouten voor u verder gaat')
+      ).toBeInTheDocument();
+    });
   });
 
   it('should show individual validation errors', async () => {
     render(<ContactForm />);
 
-    act(() => {
-      fireEvent.click(screen.getByRole('button', { name: /submit/i }));
-    });
+    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
 
-    await screen.findByText(/unsuccessful/i);
-    expect(
-      screen.getByText(/first name: this field is required/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        /email address: you have entered an invalid value for this field/i
-      )
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/message: this field is required/i)
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText('Verbeter de fouten voor u verder gaat')
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(/The name field is required/i).length
+      ).toBeGreaterThan(0);
+      expect(
+        screen.getAllByText(/A valid email address is required/i).length
+      ).toBeGreaterThan(0);
+      expect(
+        screen.getAllByText(/The message field is required/i).length
+      ).toBeGreaterThan(0);
+    });
   });
 
   it('should show a loader when form is being submitted', async () => {
     const user = userEvent.setup();
     render(<ContactForm />);
 
-    await act(async () => {
-      await user.type(screen.getByLabelText(/name/i), 'John');
-      await user.type(
-        screen.getByLabelText(/email address/i),
-        'john@example.com'
-      );
-      await user.type(screen.getByLabelText(/message/i), 'Hello!');
-    });
+    await user.type(screen.getByLabelText(/name/i), 'John');
+    await user.type(
+      screen.getByLabelText(/email address/i),
+      'john@example.com'
+    );
+    await user.type(screen.getByLabelText(/message/i), 'Hello!');
 
-    await user.click(screen.getByRole('button', { name: /submit/i }));
+    user.click(screen.getByRole('button', { name: /submit/i }));
 
     await waitFor(() => {
       expect(screen.getByTestId('loader')).toBeInTheDocument();
@@ -141,10 +138,11 @@ describe('ContactForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /submit/i }));
     });
 
-    await screen.findByText(/unsuccessful/i);
-    expect(
-      screen.getByText(/first name: This field is required/i)
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText('Verbeter de fouten voor u verder gaat')
+      ).toBeInTheDocument();
+    });
 
     // Submit with valid data
     act(() => {
@@ -168,7 +166,9 @@ describe('ContactForm', () => {
     });
 
     await screen.findByText(/the form has been sent/i);
-    expect(screen.queryByText(/unsuccessful/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Verbeter de fouten voor u verder gaat')
+    ).not.toBeInTheDocument();
   });
 
   it('should have proper accessibility attributes', () => {
@@ -189,19 +189,22 @@ describe('ContactForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /submit/i }));
     });
 
-    await screen.findByText(/unsuccessful/i);
-
-    expect(screen.getByLabelText(/name/i)).toHaveAttribute(
-      'aria-invalid',
-      'true'
-    );
-    expect(screen.getByLabelText(/email address/i)).toHaveAttribute(
-      'aria-invalid',
-      'true'
-    );
-    expect(screen.getByLabelText(/message/i)).toHaveAttribute(
-      'aria-invalid',
-      'true'
-    );
+    await waitFor(() => {
+      expect(
+        screen.getByText('Verbeter de fouten voor u verder gaat')
+      ).toBeInTheDocument();
+      expect(screen.getByLabelText(/name/i)).toHaveAttribute(
+        'aria-invalid',
+        'true'
+      );
+      expect(screen.getByLabelText(/email address/i)).toHaveAttribute(
+        'aria-invalid',
+        'true'
+      );
+      expect(screen.getByLabelText(/message/i)).toHaveAttribute(
+        'aria-invalid',
+        'true'
+      );
+    });
   });
 });

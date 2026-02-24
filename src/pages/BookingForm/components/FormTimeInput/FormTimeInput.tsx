@@ -1,7 +1,6 @@
 import { ChangeEvent, ReactNode } from 'react';
 import {
   TimeInput as AmsTimeInput,
-  ErrorMessage,
   Field,
   Label,
   Paragraph,
@@ -14,9 +13,8 @@ interface FormTimeInputProps {
   description?: ReactNode;
   name: string;
   value: string;
-  required?: boolean;
-  error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  error?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FormTimeInput = ({
@@ -25,7 +23,6 @@ const FormTimeInput = ({
   description,
   name,
   value,
-  required = false,
   error,
   onChange,
 }: FormTimeInputProps) => (
@@ -38,19 +35,17 @@ const FormTimeInput = ({
     ) : (
       description
     )}
-    {error && <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage>}
 
     <AmsTimeInput
       aria-describedby={clsx(
         { [`${id}-description`]: !!description },
-        { [`${id}-error`]: !!error }
+        { [`${id}-error`]: error }
       )}
       id={id}
       name={name}
       value={value}
-      required={required}
       data-testid={id}
-      invalid={!!error}
+      invalid={error}
       onChange={onChange}
     />
   </Field>

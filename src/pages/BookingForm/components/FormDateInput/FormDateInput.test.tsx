@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import FormDateInput from './FormDateInput';
 
 describe('DateInput', () => {
@@ -42,10 +42,8 @@ describe('DateInput', () => {
   });
 
   it('displays validation errors', () => {
-    const errorMessage = 'This field is required';
-    render(<FormDateInput {...defaultProps} error={errorMessage} />);
+    render(<FormDateInput {...defaultProps} error />);
 
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
     expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
       'aria-describedby',
       expect.stringContaining('test-date-error')
@@ -72,36 +70,17 @@ describe('DateInput', () => {
 
   it('shows description id in aria-describedby', () => {
     const description = 'This is a description';
-    render(
-      <FormDateInput {...defaultProps} description={description} required />
-    );
+    render(<FormDateInput {...defaultProps} description={description} />);
 
     const input = screen.getByLabelText(defaultProps.label);
 
-    expect(input).toHaveAttribute('required');
     expect(input).toHaveAttribute(
       'aria-describedby',
       expect.stringContaining('test-date-description')
     );
-    expect(screen.getByText(description)).toHaveAttribute(
+    expect(screen.getByText(description).parentElement).toHaveAttribute(
       'id',
       'test-date-description'
     );
-  });
-
-  it('combines description and error in aria-describedby', () => {
-    render(
-      <FormDateInput
-        {...defaultProps}
-        description="Description"
-        error="Error"
-      />
-    );
-
-    const input = screen.getByLabelText(defaultProps.label);
-    const describedBy = input.getAttribute('aria-describedby');
-
-    expect(describedBy).toContain('test-date-description');
-    expect(describedBy).toContain('test-date-error');
   });
 });

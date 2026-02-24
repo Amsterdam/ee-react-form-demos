@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import FormAutoSelect from './FormAutoSelect';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react';
 
 describe('FormAutoSelect', () => {
   const defaultProps = {
@@ -84,6 +85,27 @@ describe('FormAutoSelect', () => {
     );
 
     expect(screen.getByTestId('custom-desc')).toBeInTheDocument();
+  });
+
+  it('calls onBlur when input is blurred', async () => {
+    const onBlur = vi.fn();
+    render(
+      <FormAutoSelect
+        {...defaultProps}
+        id="blur-test"
+        options={[{ label: 'Test', value: '1' }]}
+        onBlur={onBlur}
+      />
+    );
+
+    const input = screen.getByLabelText(defaultProps.label);
+
+    act(() => {
+      input.focus();
+      input.blur();
+    });
+
+    expect(onBlur).toHaveBeenCalled();
   });
 
   it('marks field as required', () => {

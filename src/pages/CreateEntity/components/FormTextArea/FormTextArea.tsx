@@ -16,7 +16,7 @@ interface FormTextAreaProps {
   value: string;
   required?: boolean;
   error?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const FormTextArea = ({

@@ -64,18 +64,6 @@ Frontend applications in Gemeente Amsterdam use the component library [React](ht
     </div>
     <div className="sb-section-item">
       <img
-        src={BookingForm0}
-        alt="An example of a booking form"
-      />
-      <h4 className="sb-section-item-heading">Booking form (HTML5 validation)</h4>
-      <p className="sb-section-item-paragraph">A booking form with required contact, scheduling fields and native HTML5 validation.</p>
-      <div className="sb-section-item-links">
-        <a href="./?path=/docs/plain-html5-bookingform-html5-validation--docs">Learn more (HTML5) <RightArrow /></a>
-        <a href="./?path=/docs/reacthookform-bookingform--docs">Learn more (React Hook Form) <RightArrow /></a>
-      </div>
-    </div>
-    <div className="sb-section-item">
-      <img
         src={BookingForm1}
         alt="An example of simple contact form"
       />
@@ -128,6 +116,13 @@ An advanced form for generating correctly formatted YAML for a Backstage entity,
   </div>
 </div>
 
+## Useful links
+
+- [Amsterdam Design System - Form Flow](https://designsystem.amsterdam/?path=/docs/pages-amsterdam-nl-form-flow--docs)
+- [Gov.uk Design System - Patterns](https://design-system.service.gov.uk/patterns/)
+- [Gov.uk Service Manual - Structuring forms](https://www.gov.uk/service-manual/design/form-structure)
+- [Introductie richtlijnen NL Design System voor formulieren](https://nldesignsystem.nl/richtlijnen/formulieren/)
+
 ## Feedback
 
 Contributions and feedback are highly appreciated, if you have spotted something that you think is incorrect or unsure about please <a href="https://github.com/Amsterdam/ee-react-form-demos/issues/new" target="_blank">create an issue</a> in the <a href="https://github.com/Amsterdam/ee-react-form-demos" target="_blank">GitHub repository</a>. Missing an example you think is necessary? Think an improvement can be made to an existing demo? Feel free to <a href="https://github.com/Amsterdam/ee-react-form-demos/compare" target="_blank">make a pull request</a>!
@@ -173,11 +168,17 @@ Otherwise if you have any questions or other matters regarding implementing form
     object-fit: cover;
   }
 
+  .sbdocs :where(ul:not(.sb-anchor, .sb-unstyled, .sb-unstyled ul)) :last-child {
+    font-family: 'Amsterdam Sans', 'Arial', sans-serif !important;
+  }
+
   .sb-section-title {
+    font-family: 'Amsterdam Sans', 'Arial', sans-serif;
     margin-bottom: 32px;
   }
 
   .sb-section a:not(h1 a, h2 a, h3 a) {
+    font-family: 'Amsterdam Sans', 'Arial', sans-serif;
     font-size: 14px;
   }
 
@@ -188,11 +189,13 @@ Otherwise if you have any questions or other matters regarding implementing form
   }
 
   .sb-section-item-heading {
+    font-family: 'Amsterdam Sans', 'Arial', sans-serif !important;
     padding-top: 20px !important;
     padding-bottom: 5px !important;
     margin: 0 !important;
   }
   .sb-section-item-paragraph {
+    font-family: 'Amsterdam Sans', 'Arial', sans-serif;
     margin: 0;
     padding-bottom: 10px;
   }

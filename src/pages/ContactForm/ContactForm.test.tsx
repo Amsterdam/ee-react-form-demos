@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ContactForm from './ContactForm';
@@ -43,16 +43,15 @@ describe('ContactForm', () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByTestId('alert')).toHaveTextContent('Unsuccessful');
       expect(
-        screen.getByText('There was an error with the following fields:')
+        screen.getByText('Verbeter de fouten voor u verder gaat')
       ).toBeInTheDocument();
     });
 
     // Check for specific error messages
     expect(
-      screen.getAllByText('This field is required')[0]
-    ).toBeInTheDocument();
+      screen.getAllByText('The name field is required').length
+    ).toBeGreaterThan(0);
   });
 
   it('should show individual validation errors', async () => {
@@ -129,7 +128,9 @@ describe('ContactForm', () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByTestId('alert')).toHaveTextContent('Unsuccessful');
+      expect(
+        screen.getByText('Verbeter de fouten voor u verder gaat')
+      ).toBeInTheDocument();
     });
 
     // Second submission with valid data

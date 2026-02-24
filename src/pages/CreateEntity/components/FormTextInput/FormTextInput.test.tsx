@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import FormTextInput from './FormTextInput';
 
 describe('FormTextInput', () => {
@@ -11,98 +11,119 @@ describe('FormTextInput', () => {
     onChange: vi.fn(),
   };
 
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('renders with label and input', () => {
     render(<FormTextInput {...defaultProps} />);
 
-    expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
-    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
-      'id',
-      'test-input'
-    );
-    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
-      'name',
-      'testInput'
-    );
+    expect(screen.getByLabelText('Test Label')).toBeInTheDocument();
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
   it('handles user input', () => {
     const mockOnChange = vi.fn();
     render(<FormTextInput {...defaultProps} onChange={mockOnChange} />);
 
-    const input = screen.getByLabelText(defaultProps.label);
-    fireEvent.change(input, { target: { value: 'test value' } });
+    const input = screen.getByRole('textbox');
+    fireEvent.change(input, { target: { value: 'test input' } });
 
     expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
 
-  it('displays validation errors', () => {
-    const errorMessage = 'This field is required';
-    render(<FormTextInput {...defaultProps} error={errorMessage} />);
-
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    expect(screen.getByLabelText(defaultProps.label)).toHaveAttribute(
-      'aria-describedby',
-      expect.stringContaining('test-input-error')
-    );
-  });
-
-  it('renders initial value', () => {
+  it('renders with initial value', () => {
     render(<FormTextInput {...defaultProps} value="initial value" />);
 
-    expect(screen.getByDisplayValue('initial value')).toBeInTheDocument();
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveValue('initial value');
   });
 
-  it('renders description', () => {
-    const description = (
-      <span data-testid="custom-description">Custom description</span>
-    );
-    render(<FormTextInput {...defaultProps} description={description} />);
-
-    expect(screen.getByTestId('custom-description')).toBeInTheDocument();
-  });
-
-  it('sets invalid state when error is present', () => {
-    render(<FormTextInput {...defaultProps} error="Error message" />);
-
-    const input = screen.getByLabelText(defaultProps.label);
-    expect(input).toHaveAttribute(
-      'aria-describedby',
-      expect.stringContaining('test-input-error')
-    );
-  });
-
-  it('shows description id in aria-describedby', () => {
-    const description = 'This is a description';
+  it('renders description when provided as string', () => {
     render(
-      <FormTextInput {...defaultProps} description={description} required />
+      <FormTextInput {...defaultProps} description="This is a description" />
     );
 
-    const input = screen.getByLabelText(defaultProps.label);
+    expect(screen.getByText('This is a description')).toBeInTheDocument();
+    expect(
+      screen.getByText('This is a description').parentElement
+    ).toHaveAttribute('id', 'test-input-description');
+  });
 
-    expect(input).toHaveAttribute('required');
-    expect(input).toHaveAttribute(
-      'aria-describedby',
-      expect.stringContaining('test-input-description')
-    );
-    expect(screen.getByText(description)).toHaveAttribute(
+  it('renders description when provided as ReactNode', () => {
+    const customDescription = <span>Custom description node</span>;
+    render(<FormTextInput {...defaultProps} description={customDescription} />);
+
+    expect(screen.getByText('Custom description node')).toBeInTheDocument();
+  });
+
+  it('shows description id in aria-describedby when description is provided', () => {
+    render(<FormTextInput {...defaultProps} description="Test description" />);
+
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('aria-describedby', 'test-input-description');
+  });
+
+  it('shows error message when error is provided', () => {
+    render(<FormTextInput {...defaultProps} error="This is an error" />);
+
+    expect(screen.getByText('This is an error')).toBeInTheDocument();
+    expect(screen.getByText('This is an error')).toHaveAttribute(
       'id',
-      'test-input-description'
+      'test-input-error'
     );
   });
 
-  it('combines description and error in aria-describedby', () => {
+  it('shows error id in aria-describedby when error is provided', () => {
+    render(<FormTextInput {...defaultProps} error="Test error" />);
+
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('aria-describedby', 'test-input-error');
+  });
+
+  it('shows both description and error ids in aria-describedby when both are provided', () => {
     render(
       <FormTextInput
         {...defaultProps}
-        description="Description"
-        error="Error"
+        description="Test description"
+        error="Test error"
       />
     );
 
-    const input = screen.getByLabelText(defaultProps.label);
-    const describedBy = input.getAttribute('aria-describedby');
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute(
+      'aria-describedby',
+      'test-input-description test-input-error'
+    );
+  });
 
-    expect(describedBy).toContain('test-input-description');
-    expect(describedBy).toContain('test-input-error');
+  it('sets required attribute when required prop is true', () => {
+    render(<FormTextInput {...defaultProps} required />);
+
+    const input = screen.getByRole('textbox');
+    expect(input).toBeRequired();
+  });
+
+  it('sets invalid attribute when error is provided', () => {
+    render(<FormTextInput {...defaultProps} error="Test error" />);
+
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('passes correct props to input element', () => {
+    render(
+      <FormTextInput
+        {...defaultProps}
+        id="custom-id"
+        name="customName"
+        value="custom value"
+      />
+    );
+
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('id', 'custom-id');
+    expect(input).toHaveAttribute('name', 'customName');
+    expect(input).toHaveValue('custom value');
   });
 });
