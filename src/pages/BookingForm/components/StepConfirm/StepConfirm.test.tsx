@@ -62,9 +62,12 @@ describe('StepConfirm', () => {
     expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
 
-  it('disables textarea and submit button when disabled=true', () => {
-    render(<StepConfirm {...defaultProps} disabled />);
+  it('disables textarea and updates submit button when isSubmitting=true', () => {
+    render(<StepConfirm {...defaultProps} isSubmitting />);
     expect(screen.getByLabelText(/opmerkingen/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /verzenden/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /verzenden/i })).toHaveAttribute(
+      'aria-busy',
+      'true'
+    );
   });
 });

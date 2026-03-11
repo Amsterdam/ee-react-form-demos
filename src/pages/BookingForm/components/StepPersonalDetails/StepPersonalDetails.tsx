@@ -18,7 +18,6 @@ import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
 interface StepPersonalDetailsProps {
   formData: FormData;
   errors: Record<string, string>;
-  disabled: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;

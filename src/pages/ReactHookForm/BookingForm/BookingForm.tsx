@@ -45,6 +45,9 @@ const BookingForm = () => {
 
   const handleSubmit: SubmitHandler<FieldValues> = useCallback(async () => {
     try {
+      // Prevent duplicate submissions
+      if (isLoading) return;
+
       /**
        * Use setTimeout to Simulate API call
        * - Here's where validation can happen
@@ -82,7 +85,7 @@ const BookingForm = () => {
       key="step-2"
     />,
     <StepConfirm
-      disabled={isLoading}
+      isSubmitting={isLoading}
       onPrevButtonClick={() => setCurrentStep(2)}
       onSubmit={handleSubmit}
       key="step-3"

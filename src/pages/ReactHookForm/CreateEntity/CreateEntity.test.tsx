@@ -118,7 +118,9 @@ describe('CreateEntity', () => {
 
     // This waits for the button text to change
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /submitting/i })).toBeDisabled()
+      expect(
+        screen.getByRole('button', { name: /submitting/i })
+      ).toHaveAttribute('aria-busy', 'true')
     );
   });
 
@@ -130,7 +132,7 @@ describe('CreateEntity', () => {
     act(() => fireEvent.click(submitButton));
 
     await waitFor(() => {
-      expect(submitButton).toBeDisabled();
+      expect(submitButton).toHaveAttribute('aria-busy', 'true');
     });
 
     act(() => {

@@ -17,7 +17,6 @@ import TimeControl from '../TimeControl/TimeControl';
 
 interface StepAppointmentProps {
   minDateValue: string;
-  disabled?: boolean;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
 }
