@@ -129,12 +129,13 @@ const CreateEntity = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (isLoading) return;
+
     if (!validateForm()) {
       setIsSubmitTouched(true);
       scrollToErrorAlert(formRef.current);
       return;
     }
-    // console.log('Form data:', formData);
 
     /**
      * Use setTimeout to Simulate API call
@@ -482,7 +483,7 @@ const CreateEntity = () => {
           />
 
           <Row>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" aria-live="polite" aria-busy={isLoading}>
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
             <Button

@@ -13,7 +13,7 @@ import FormTextArea from '../FormTextArea/FormTextArea';
 
 interface StepConfirmProps {
   formData: FormData;
-  disabled?: boolean;
+  isSubmitting?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onPrevButtonClick: () => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -21,7 +21,7 @@ interface StepConfirmProps {
 
 const StepConfirm = ({
   formData,
-  disabled = false,
+  isSubmitting = false,
   onChange,
   onPrevButtonClick,
   onSubmit,
@@ -115,11 +115,10 @@ const StepConfirm = ({
             label="Opmerkingen"
             name="comments"
             value={formData.comments}
-            disabled={disabled}
             onChange={onChange}
           />
 
-          <Button type="submit" disabled={disabled}>
+          <Button type="submit">
             Verzenden
           </Button>
         </form>

@@ -14,7 +14,6 @@ import mapErrorsToAlert from '../../utils/mapErrorsToAlert';
 import TextInputControl from '../TextInputControl/TextInputControl';
 
 interface StepPersonalDetailsProps {
-  disabled: boolean;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
 }

@@ -77,8 +77,11 @@ describe('ReactHookForm / BookingFormZod - StepConfirm', () => {
   });
 
   it('disables textarea and submit button when disabled=true', () => {
-    renderWithForm(<StepConfirm {...defaultProps} disabled />);
+    renderWithForm(<StepConfirm {...defaultProps} isSubmitting />);
     expect(screen.getByLabelText(/opmerkingen/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /verzenden/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /verzenden/i })).toHaveAttribute(
+      'aria-busy',
+      'true'
+    );
   });
 });
