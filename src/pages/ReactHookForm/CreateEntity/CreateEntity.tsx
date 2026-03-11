@@ -126,7 +126,7 @@ const CreateEntity = () => {
   // @ts-expect-error 'data' is defined but never used
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (data: RHFEntityFormData) => {
-    // console.log('Form data:', data);
+    if (isSubmitting) return;
 
     /**
      * Use setTimeout to Simulate API call
@@ -479,7 +479,7 @@ const CreateEntity = () => {
           />
 
           <Row>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" aria-live="polite" aria-busy={isSubmitting}>
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
             <Button type="button" variant="secondary" onClick={resetForm}>

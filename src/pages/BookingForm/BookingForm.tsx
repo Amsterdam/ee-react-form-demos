@@ -138,6 +138,9 @@ const BookingForm = () => {
     // Prevent the browser from submitting and handling the form
     e.preventDefault();
 
+    // Prevent duplicate submissions
+    if (isLoading) return;
+
     const result = schema.safeParse(formData);
 
     if (!result.success) {
@@ -166,7 +169,6 @@ const BookingForm = () => {
     <StepPersonalDetails
       formData={formData}
       errors={errors}
-      disabled={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(0)}
       onNextButtonClick={handleNextStep}
@@ -176,7 +178,6 @@ const BookingForm = () => {
       formData={formData}
       minDateValue={nowDate}
       errors={errors}
-      disabled={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(1)}
       onNextButtonClick={handleNextStep}
@@ -184,7 +185,7 @@ const BookingForm = () => {
     />,
     <StepConfirm
       formData={formData}
-      disabled={isLoading}
+      isSubmitting={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(2)}
       onSubmit={handleSubmit}
