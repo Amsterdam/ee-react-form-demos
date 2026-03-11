@@ -38,7 +38,6 @@ Every form should *at least* have tests for:
 
 - Invalid format validation (email/date/postcode etc.)
 - Server-side errors display correctly
-- Submit button disables during loading
 - Error recovery works (fail → fix → submit success)
 
 ### Level 3 (critical / complex forms)
@@ -88,7 +87,7 @@ Use a combination of:
   - Assert correct error message appears near field and in summary
 
 - **Loading state**
-  - Submit button disables while request is in progress
+  - Submit button updates while request is in progress
   - Prevents double submission
 
 - **Conditional fields**
