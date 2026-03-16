@@ -138,52 +138,55 @@ const StepAppointment = ({
             <Paragraph>Stap 2 van 3: Afspraak</Paragraph>
           </header>
 
-          <DateTimeFieldset
-            legend="Startdatum en -tijd"
-            fields={['startDate', 'startTime']}
-          >
-            <DateControl<BookingFormData>
-              label="Startdatum"
-              name="startDate"
-              registerOptions={{
-                required: 'Startdatum is verplicht',
-              }}
-              min={minDateValue}
-            />
+          {/* Enable noValidate to prevent browser validation blocking JS */}
+          <form noValidate>
+            <DateTimeFieldset
+              legend="Startdatum en -tijd"
+              fields={['startDate', 'startTime']}
+            >
+              <DateControl<BookingFormData>
+                label="Startdatum"
+                name="startDate"
+                registerOptions={{
+                  required: 'Startdatum is verplicht',
+                }}
+                min={minDateValue}
+              />
 
-            <TimeControl<BookingFormData>
-              label="Starttijd"
-              name="startTime"
-              registerOptions={{ required: 'Starttijd is verplicht' }}
-            />
-          </DateTimeFieldset>
-          <DateTimeFieldset
-            legend="Einddatum-tijd"
-            fields={['endDate', 'endTime']}
-          >
-            <DateControl<BookingFormData>
-              label="Einddatum"
-              name="endDate"
-              registerOptions={{
-                required: 'Einddatum is verplicht',
-                validate: () => isValidDateRange,
-              }}
-              min={startDate}
-            />
+              <TimeControl<BookingFormData>
+                label="Starttijd"
+                name="startTime"
+                registerOptions={{ required: 'Starttijd is verplicht' }}
+              />
+            </DateTimeFieldset>
+            <DateTimeFieldset
+              legend="Einddatum-tijd"
+              fields={['endDate', 'endTime']}
+            >
+              <DateControl<BookingFormData>
+                label="Einddatum"
+                name="endDate"
+                registerOptions={{
+                  required: 'Einddatum is verplicht',
+                  validate: () => isValidDateRange,
+                }}
+                min={startDate}
+              />
 
-            <TimeControl<BookingFormData>
-              label="Eindtijd"
-              name="endTime"
-              registerOptions={{
-                required: 'Eindtijd is verplicht',
-                validate: () => isValidTimeRange,
-              }}
-            />
-          </DateTimeFieldset>
+              <TimeControl<BookingFormData>
+                label="Eindtijd"
+                name="endTime"
+                registerOptions={{
+                  required: 'Eindtijd is verplicht',
+                  validate: () => isValidTimeRange,
+                }}
+              />
+            </DateTimeFieldset>
 
-          <Button type="button" onClick={handleNextButtonClick}>
-            Volgende vraag
-          </Button>
+            <Button type="button" onClick={handleNextButtonClick}>
+              Volgende vraag
+            </Button>
+          </form>
         </Grid.Cell>
       </Grid>
     </>

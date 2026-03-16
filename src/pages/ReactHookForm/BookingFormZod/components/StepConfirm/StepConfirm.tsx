@@ -1,3 +1,4 @@
+import { FieldValues, SubmitHandler, useFormContext } from 'react-hook-form';
 import {
   Button,
   Grid,
@@ -7,20 +8,21 @@ import {
   Table,
 } from '@amsterdam/design-system-react';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
-import { useFormContext } from 'react-hook-form';
 import { BookingFormData } from '../../schema';
 import TextAreaControl from '../TextAreaControl/TextAreaControl';
 
 interface StepConfirmProps {
   disabled?: boolean;
   onPrevButtonClick: () => void;
+  onSubmit: SubmitHandler<FieldValues>;
 }
 
 const StepConfirm = ({
   disabled = false,
   onPrevButtonClick,
+  onSubmit,
 }: StepConfirmProps) => {
-  const { getValues } = useFormContext();
+  const { getValues, handleSubmit } = useFormContext();
   const formData = getValues();
 
   return (
@@ -106,16 +108,19 @@ const StepConfirm = ({
             </Table.Body>
           </Table>
 
-          <TextAreaControl<BookingFormData>
-            label="Opmerkingen"
-            name="comments"
-            className="ams-mb-m"
-            disabled={disabled}
-          />
+          {/* Enable noValidate to prevent browser validation blocking JS */}
+          <form noValidate onSubmit={handleSubmit(onSubmit)}>
+            <TextAreaControl<BookingFormData>
+              label="Opmerkingen"
+              name="comments"
+              className="ams-mb-m"
+              disabled={disabled}
+            />
 
-          <Button type="submit" disabled={disabled}>
-            Verzenden
-          </Button>
+            <Button type="submit" disabled={disabled}>
+              Verzenden
+            </Button>
+          </form>
         </Grid.Cell>
       </Grid>
     </>

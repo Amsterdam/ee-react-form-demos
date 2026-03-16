@@ -1,5 +1,10 @@
 import { useCallback, useState } from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 import { Page, PageHeader } from '@amsterdam/design-system-react';
 import Loader from '@/components/Loader/Loader';
 import StepIntro from './components/StepIntro/StepIntro';
@@ -38,25 +43,24 @@ const BookingForm = () => {
     },
   });
 
-  const onValidSubmit: SubmitHandler<BookingFormData> =
-    useCallback(async () => {
-      try {
-        /**
-         * Use setTimeout to Simulate API call
-         * - Here's where validation can happen
-         * - Here's where you can show a post-submission success component
-         * or redirect the user to a new page
-         */
-        setIsLoading(true);
+  const handleSubmit: SubmitHandler<FieldValues> = useCallback(async () => {
+    try {
+      /**
+       * Use setTimeout to Simulate API call
+       * - Here's where validation can happen
+       * - Here's where you can show a post-submission success component
+       * or redirect the user to a new page
+       */
+      setIsLoading(true);
 
-        setTimeout(() => {
-          setIsLoading(false);
-          setIsSubmitted(true);
-        }, 1500);
-      } catch (error) {
-        console.log('form error!', error);
-      }
-    }, []);
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsSubmitted(true);
+      }, 1500);
+    } catch (error) {
+      console.log('form error!', error);
+    }
+  }, []);
 
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -80,6 +84,7 @@ const BookingForm = () => {
     <StepConfirm
       disabled={isLoading}
       onPrevButtonClick={() => setCurrentStep(2)}
+      onSubmit={handleSubmit}
       key="step-3"
     />,
   ];
@@ -89,9 +94,7 @@ const BookingForm = () => {
       <PageHeader className="ams-mb-xl" />
       {isLoading && !isSubmitted && <Loader />}
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onValidSubmit)}>
-          {!isSubmitted ? steps[currentStep] : <SuccessContent />}
-        </form>
+        {!isSubmitted ? steps[currentStep] : <SuccessContent />}
       </FormProvider>
     </Page>
   );
