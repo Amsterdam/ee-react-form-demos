@@ -116,7 +116,7 @@ const StepPersonalDetails = ({
             </Field>
 
             <Field
-              className="ams-mb-m"
+              className="ams-mb-xl"
               invalid={submitTouched && !!errors.email}
             >
               <Label htmlFor="email">E-mailadres</Label>

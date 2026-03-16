@@ -118,6 +118,9 @@ const StepPersonalDetails = ({
                   message: 'Ongeldig e-mailadres',
                 },
               }}
+              wrapperProps={{
+                className: 'ams-mb-xl',
+              }}
             />
 
             <Button type="button" onClick={handleNextButtonClick}>

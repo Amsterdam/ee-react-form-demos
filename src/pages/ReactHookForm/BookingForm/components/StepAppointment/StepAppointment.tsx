@@ -162,6 +162,7 @@ const StepAppointment = ({
             <DateTimeFieldset
               legend="Einddatum-tijd"
               fields={['endDate', 'endTime']}
+              className="ams-mb-xl"
             >
               <DateControl<BookingFormData>
                 label="Einddatum"

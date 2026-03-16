@@ -12,6 +12,7 @@ interface DateTimeFieldsetProps {
   legend: string;
   fields: string[];
   errors: Record<string, string | undefined>;
+  className?: string;
 }
 
 const DateTimeFieldset = ({
@@ -19,6 +20,7 @@ const DateTimeFieldset = ({
   legend,
   fields,
   errors,
+  className = 'ams-mb-m',
 }: DateTimeFieldsetProps & PropsWithChildren) => {
   const hasError = fields.some(field => errors[field]);
 
@@ -60,7 +62,7 @@ const DateTimeFieldset = ({
   }, [errors]);
 
   return (
-    <FieldSet legend={legend} className="ams-mb-m" invalid={!!hasError}>
+    <FieldSet legend={legend} className={className} invalid={!!hasError}>
       {hasError && (
         <Row>
           <ErrorMessage id={`${fields[0]}-error`}>{errorMessage}</ErrorMessage>

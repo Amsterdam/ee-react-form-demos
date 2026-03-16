@@ -113,7 +113,7 @@ const StepConfirm = ({
             <TextAreaControl<BookingFormData>
               label="Opmerkingen"
               name="comments"
-              className="ams-mb-m"
+              className="ams-mb-xl"
               disabled={disabled}
             />
 

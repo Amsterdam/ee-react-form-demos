@@ -143,6 +143,7 @@ const StepAppointment = ({
               legend="Einddatum en -tijd"
               fields={['endDate', 'endTime']}
               errors={endErrors}
+              className="ams-mb-xl"
             >
               <Row>
                 <FormDateInput
