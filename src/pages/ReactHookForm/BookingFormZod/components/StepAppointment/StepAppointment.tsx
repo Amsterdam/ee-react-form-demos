@@ -90,9 +90,9 @@ const StepAppointment = ({
 
   return (
     <>
-      <Grid paddingBottom="2x-large" paddingTop="large">
+      <Grid className="ams-mb-xl">
         <Grid.Cell
-          span={{ narrow: 4, medium: 5, wide: 7 }}
+          span={{ narrow: 4, medium: 6, wide: 7 }}
           start={{ narrow: 1, medium: 2, wide: 3 }}
         >
           <StandaloneLink
@@ -104,9 +104,9 @@ const StepAppointment = ({
           </StandaloneLink>
         </Grid.Cell>
       </Grid>
-      <Grid as="main" id="inhoud" paddingBottom="2x-large" paddingTop="large">
+      <Grid as="main" paddingBottom="2x-large">
         <Grid.Cell
-          span={{ narrow: 4, medium: 5, wide: 7 }}
+          span={{ narrow: 4, medium: 6, wide: 7 }}
           start={{ narrow: 1, medium: 2, wide: 3 }}
         >
           {/*
