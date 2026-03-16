@@ -94,33 +94,39 @@ const StepPersonalDetails = ({
             <Paragraph>Stap 1 van 3: Uw gegevens</Paragraph>
           </header>
 
-          <TextInputControl<BookingFormData>
-            label="Voornaam"
-            name="name"
-            registerOptions={{ required: 'Voornaam is verplicht' }}
-          />
+          {/* Enable noValidate to prevent browser validation blocking JS */}
+          <form noValidate>
+            <TextInputControl<BookingFormData>
+              label="Voornaam"
+              name="name"
+              registerOptions={{ required: 'Voornaam is verplicht' }}
+            />
 
-          <TextInputControl<BookingFormData>
-            label="E-mailadres"
-            type="text"
-            // If we use type=email, in some browsers this triggers `:invalid`
-            // and error styling is applied despite the form noValidate on
-            // input change
-            inputMode="email"
-            autoComplete="email"
-            name="email"
-            registerOptions={{
-              required: 'E-mailadres is verplicht',
-              pattern: {
-                value: /^\S+@\S+$/i,
-                message: 'Ongeldig e-mailadres',
-              },
-            }}
-          />
+            <TextInputControl<BookingFormData>
+              label="E-mailadres"
+              type="text"
+              // If we use type=email, in some browsers this triggers `:invalid`
+              // and error styling is applied despite the form noValidate on
+              // input change
+              inputMode="email"
+              autoComplete="email"
+              name="email"
+              registerOptions={{
+                required: 'E-mailadres is verplicht',
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: 'Ongeldig e-mailadres',
+                },
+              }}
+              wrapperProps={{
+                className: 'ams-mb-xl',
+              }}
+            />
 
-          <Button type="button" onClick={handleNextButtonClick}>
-            Volgende vraag
-          </Button>
+            <Button type="button" onClick={handleNextButtonClick}>
+              Volgende vraag
+            </Button>
+          </form>
         </Grid.Cell>
       </Grid>
     </>

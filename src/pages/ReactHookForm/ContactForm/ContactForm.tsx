@@ -172,7 +172,7 @@ const ContactForm = () => {
             name="body"
             control={control}
             render={({ field }) => (
-              <Field invalid={!!errors.body}>
+              <Field invalid={!!errors.body} className="ams-mb-m">
                 <Label htmlFor="body">Message</Label>
                 {errors.body?.message && (
                   <ErrorMessage id={`error-body`}>

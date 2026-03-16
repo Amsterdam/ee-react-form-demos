@@ -111,61 +111,65 @@ const StepAppointment = ({
             <Paragraph>Stap 2 van 3: Afspraak</Paragraph>
           </header>
 
-          <DateTimeFieldset
-            legend="Startdatum en -tijd"
-            fields={['startDate', 'startTime']}
-            errors={startErrors}
-          >
-            <Row>
-              <FormDateInput
-                id="startDate"
-                name="startDate"
-                label="Startdatum"
-                value={formData.startDate}
-                onChange={onChange}
-                minValue={minDateValue}
-                error={submitTouched ? !!errors.startDate : undefined}
-              />
-              <FormTimeInput
-                id="startTime"
-                name="startTime"
-                label="Starttijd"
-                value={formData.startTime}
-                onChange={onChange}
-                error={submitTouched ? !!errors.startTime : undefined}
-              />
-            </Row>
-          </DateTimeFieldset>
+          {/* Enable noValidate to prevent browser validation blocking JS */}
+          <form noValidate>
+            <DateTimeFieldset
+              legend="Startdatum en -tijd"
+              fields={['startDate', 'startTime']}
+              errors={startErrors}
+            >
+              <Row>
+                <FormDateInput
+                  id="startDate"
+                  name="startDate"
+                  label="Startdatum"
+                  value={formData.startDate}
+                  onChange={onChange}
+                  minValue={minDateValue}
+                  error={submitTouched ? !!errors.startDate : undefined}
+                />
+                <FormTimeInput
+                  id="startTime"
+                  name="startTime"
+                  label="Starttijd"
+                  value={formData.startTime}
+                  onChange={onChange}
+                  error={submitTouched ? !!errors.startTime : undefined}
+                />
+              </Row>
+            </DateTimeFieldset>
 
-          <DateTimeFieldset
-            legend="Einddatum en -tijd"
-            fields={['endDate', 'endTime']}
-            errors={endErrors}
-          >
-            <Row>
-              <FormDateInput
-                id="endDate"
-                name="endDate"
-                label="Einddatum"
-                value={formData.endDate}
-                onChange={onChange}
-                minValue={formData.startDate}
-                error={submitTouched ? !!errors.endDate : undefined}
-              />
-              <FormTimeInput
-                id="endTime"
-                name="endTime"
-                label="Eindtijd"
-                value={formData.endTime}
-                onChange={onChange}
-                error={submitTouched ? !!errors.endTime : undefined}
-              />
-            </Row>
-          </DateTimeFieldset>
+            <DateTimeFieldset
+              legend="Einddatum en -tijd"
+              fields={['endDate', 'endTime']}
+              errors={endErrors}
+              className="ams-mb-xl"
+            >
+              <Row>
+                <FormDateInput
+                  id="endDate"
+                  name="endDate"
+                  label="Einddatum"
+                  value={formData.endDate}
+                  onChange={onChange}
+                  minValue={formData.startDate}
+                  error={submitTouched ? !!errors.endDate : undefined}
+                />
+                <FormTimeInput
+                  id="endTime"
+                  name="endTime"
+                  label="Eindtijd"
+                  value={formData.endTime}
+                  onChange={onChange}
+                  error={submitTouched ? !!errors.endTime : undefined}
+                />
+              </Row>
+            </DateTimeFieldset>
 
-          <Button type="button" onClick={handleNextButtonClick}>
-            Volgende vraag
-          </Button>
+            <Button type="button" onClick={handleNextButtonClick}>
+              Volgende vraag
+            </Button>
+          </form>
         </Grid.Cell>
       </Grid>
     </>

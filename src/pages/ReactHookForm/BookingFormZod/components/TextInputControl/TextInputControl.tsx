@@ -1,3 +1,5 @@
+import { ComponentPropsWithoutRef } from 'react';
+import type { FieldValues, RegisterOptions } from 'react-hook-form';
 import {
   ErrorMessage,
   Field,
@@ -6,14 +8,16 @@ import {
   TextInput,
   type TextInputProps,
 } from '@amsterdam/design-system-react';
-import type { FieldValues, RegisterOptions } from 'react-hook-form';
 import clsx from 'clsx';
 import FormControl from '../FormControl/FormControl';
 import { FormControlBase } from '../../types';
 
 // Merge design-system and react-hook-form types
 export type TextInputControlProps<TFieldValues extends FieldValues> =
-  TextInputProps & FormControlBase<TFieldValues>;
+  TextInputProps &
+    FormControlBase<TFieldValues> & {
+      wrapperProps?: ComponentPropsWithoutRef<'div'>;
+    };
 
 const TextInputControl = <T extends FieldValues>({
   name,
@@ -21,6 +25,7 @@ const TextInputControl = <T extends FieldValues>({
   description,
   registerOptions,
   id,
+  wrapperProps = { className: 'ams-mb-m' },
   ...attributes
 }: TextInputControlProps<T>) => {
   const identifier = id || name;
@@ -37,7 +42,7 @@ const TextInputControl = <T extends FieldValues>({
         const hasError = !!errorMessage;
 
         return (
-          <Field className="ams-mb-m" invalid={hasError}>
+          <Field {...wrapperProps} invalid={hasError}>
             {label && (
               <Label htmlFor={identifier} optional={optional}>
                 {label}

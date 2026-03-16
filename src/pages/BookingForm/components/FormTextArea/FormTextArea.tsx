@@ -29,7 +29,7 @@ const FormTextArea = ({
   error,
   onChange,
 }: FormTextAreaProps) => (
-  <Field className="ams-mb-m">
+  <Field className="ams-mb-xl">
     <Label htmlFor={id}>{label}</Label>
     {typeof description === 'string' ? (
       <Paragraph id={`${id}-description`} size="small">
