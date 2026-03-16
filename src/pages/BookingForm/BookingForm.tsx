@@ -187,6 +187,7 @@ const BookingForm = () => {
       disabled={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(2)}
+      onSubmit={handleSubmit}
       key="step-3"
     />,
   ];
@@ -195,9 +196,7 @@ const BookingForm = () => {
     <Page>
       <PageHeader className="ams-mb-xl" />
       {isLoading && !isSubmitted && <Loader />}
-      <form onSubmit={handleSubmit} noValidate>
-        {!isSubmitted ? steps[currentStep] : <SuccessContent />}
-      </form>
+      <div>{!isSubmitted ? steps[currentStep] : <SuccessContent />}</div>
     </Page>
   );
 };
