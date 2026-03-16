@@ -1,3 +1,4 @@
+import { ChangeEvent, FormEvent } from 'react';
 import {
   Button,
   Grid,
@@ -6,9 +7,8 @@ import {
   StandaloneLink,
   Table,
 } from '@amsterdam/design-system-react';
-import { FormData } from '../../BookingForm';
-import { ChangeEvent } from 'react';
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons';
+import { FormData } from '../../BookingForm';
 import FormTextArea from '../FormTextArea/FormTextArea';
 
 interface StepConfirmProps {
@@ -16,6 +16,7 @@ interface StepConfirmProps {
   disabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onPrevButtonClick: () => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 const StepConfirm = ({
@@ -23,6 +24,7 @@ const StepConfirm = ({
   disabled = false,
   onChange,
   onPrevButtonClick,
+  onSubmit,
 }: StepConfirmProps) => (
   <>
     <Grid className="ams-mb-xl">
@@ -106,18 +108,21 @@ const StepConfirm = ({
           </Table.Body>
         </Table>
 
-        <FormTextArea
-          id="comments"
-          label="Opmerkingen"
-          name="comments"
-          value={formData.comments}
-          disabled={disabled}
-          onChange={onChange}
-        />
+        {/* Enable noValidate to prevent browser validation blocking JS */}
+        <form noValidate onSubmit={onSubmit}>
+          <FormTextArea
+            id="comments"
+            label="Opmerkingen"
+            name="comments"
+            value={formData.comments}
+            disabled={disabled}
+            onChange={onChange}
+          />
 
-        <Button type="submit" disabled={disabled}>
-          Verzenden
-        </Button>
+          <Button type="submit" disabled={disabled}>
+            Verzenden
+          </Button>
+        </form>
       </Grid.Cell>
     </Grid>
   </>

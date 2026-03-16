@@ -92,50 +92,60 @@ const StepPersonalDetails = ({
              */}
             <Paragraph>Stap 1 van 3: Uw gegevens</Paragraph>
           </header>
-          <Field className="ams-mb-m" invalid={submitTouched && !!errors.name}>
-            <Label htmlFor="name">Voornaam</Label>
-            {submitTouched && errors.name && (
-              <ErrorMessage id={`error-name`} data-testid="error-message">
-                {errors.name}
-              </ErrorMessage>
-            )}
-            <TextInput
-              id="name"
-              name="name"
-              value={formData.name}
-              placeholder="Voornaam"
+
+          {/* Enable noValidate to prevent browser validation blocking JS */}
+          <form noValidate>
+            <Field
+              className="ams-mb-m"
               invalid={submitTouched && !!errors.name}
-              onChange={onChange}
-            />
-          </Field>
+            >
+              <Label htmlFor="name">Voornaam</Label>
+              {submitTouched && errors.name && (
+                <ErrorMessage id={`error-name`} data-testid="error-message">
+                  {errors.name}
+                </ErrorMessage>
+              )}
+              <TextInput
+                id="name"
+                name="name"
+                value={formData.name}
+                placeholder="Voornaam"
+                invalid={submitTouched && !!errors.name}
+                onChange={onChange}
+              />
+            </Field>
 
-          <Field className="ams-mb-m" invalid={submitTouched && !!errors.email}>
-            <Label htmlFor="email">E-mailadres</Label>
-            {submitTouched && errors.email && (
-              <ErrorMessage id={`error-email`} data-testid="error-message">
-                {errors.email}
-              </ErrorMessage>
-            )}
-            <TextInput
-              type="text"
-              // If we use type=email, in some browsers this triggers `:invalid`
-              // and error styling is applied despite the form noValidate on
-              // input change
-              inputMode="email"
-              autoComplete="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              placeholder="E-mailadres"
-              aria-describedby={errors.email ? 'error-email' : ''}
+            <Field
+              className="ams-mb-m"
               invalid={submitTouched && !!errors.email}
-              onChange={onChange}
-            />
-          </Field>
+            >
+              <Label htmlFor="email">E-mailadres</Label>
+              {submitTouched && errors.email && (
+                <ErrorMessage id={`error-email`} data-testid="error-message">
+                  {errors.email}
+                </ErrorMessage>
+              )}
+              <TextInput
+                type="text"
+                // If we use type=email, in some browsers this triggers
+                // `:invalid` and error styling is applied despite the form
+                // noValidate on input change
+                inputMode="email"
+                autoComplete="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                placeholder="E-mailadres"
+                aria-describedby={errors.email ? 'error-email' : ''}
+                invalid={submitTouched && !!errors.email}
+                onChange={onChange}
+              />
+            </Field>
 
-          <Button type="button" onClick={handleNextButtonClick}>
-            Volgende vraag
-          </Button>
+            <Button type="button" onClick={handleNextButtonClick}>
+              Volgende vraag
+            </Button>
+          </form>
         </Grid.Cell>
       </Grid>
     </>
