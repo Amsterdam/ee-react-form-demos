@@ -12,12 +12,14 @@ const fieldNameMap = {
 interface DateTimeFieldsetProps {
   legend: string;
   fields: string[];
+  className?: string;
 }
 
 const DateTimeFieldset = ({
   children,
   legend,
   fields,
+  className = 'ams-mb-m',
 }: DateTimeFieldsetProps & PropsWithChildren) => {
   const { formState, getValues } = useFormContext();
 
@@ -64,7 +66,7 @@ const DateTimeFieldset = ({
   }, [formState]);
 
   return (
-    <FieldSet legend={legend} className="ams-mb-m" invalid={!!hasError}>
+    <FieldSet legend={legend} className={className} invalid={!!hasError}>
       {hasError && (
         <Row>
           <ErrorMessage id={`${fields[0]}-error`}>{errorMessage}</ErrorMessage>
