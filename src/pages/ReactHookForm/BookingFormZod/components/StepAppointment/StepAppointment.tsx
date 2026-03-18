@@ -148,7 +148,7 @@ const StepAppointment = ({
                 label="Startdatum"
                 name="startDate"
                 registerOptions={{
-                  required: 'Startdatum is verplicht',
+                  required: 'Vul een startdatum in',
                 }}
                 min={minDateValue}
               />
@@ -156,7 +156,7 @@ const StepAppointment = ({
               <TimeControl<BookingFormData>
                 label="Starttijd"
                 name="startTime"
-                registerOptions={{ required: 'Starttijd is verplicht' }}
+                registerOptions={{ required: 'Vul een starttijd in' }}
               />
             </DateTimeFieldset>
             <DateTimeFieldset
@@ -168,7 +168,7 @@ const StepAppointment = ({
                 label="Einddatum"
                 name="endDate"
                 registerOptions={{
-                  required: 'Einddatum is verplicht',
+                  required: 'Vul een einddatum in',
                   validate: () => isValidDateRange,
                 }}
                 min={startDate}
@@ -178,7 +178,7 @@ const StepAppointment = ({
                 label="Eindtijd"
                 name="endTime"
                 registerOptions={{
-                  required: 'Eindtijd is verplicht',
+                  required: 'Vul een eindtijd in',
                   validate: () => isValidTimeRange,
                 }}
               />

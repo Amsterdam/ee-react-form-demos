@@ -63,14 +63,16 @@ describe('StepAppointment', () => {
     const propsWithErrors = {
       ...defaultProps,
       errors: {
-        startDate: 'Startdatum is verplicht',
-        endTime: 'Eindtijd is verplicht',
+        startDate: 'Vul een startdatum in',
+        endTime: 'Vul een starttijd in',
       },
     };
     render(<StepAppointment {...propsWithErrors} />);
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
     // We don’t assert exact text structure — just that errors are shown
-    expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/vul een startdatum in/i).length
+    ).toBeGreaterThan(0);
   });
 
   it('calls onPrevButtonClick when clicking "Vorige vraag"', () => {

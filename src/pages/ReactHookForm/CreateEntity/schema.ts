@@ -2,8 +2,10 @@ import z from 'zod/v4';
 
 const specSchema = z
   .object({
-    // Avoid the property name `type`, as RHF uses this
-    componentType: z.string().min(1, 'Enter a type'),
+    // RHF reserves a top-level field named `type`; in the RHF CreateEntity form
+    // we use `componentType` instead.
+    // Using a nested field like `spec.type` here is intentional and safe.
+    componentType: z.string().min(1, 'Select a type'),
     lifecycle: z.string().min(1, 'Select a lifecycle'),
     owner: z.string().min(1, 'Select an owner'),
     hasSystem: z.boolean().default(false),
@@ -22,7 +24,7 @@ const entityFormSchema = z.object({
   name: z.string().min(1, 'Enter a name'),
   description: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  // With RHF - handle annoations as an array than object
+  // With RHF - handle annotations as an array than object
   annotations: z
     .array(
       z.object({

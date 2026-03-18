@@ -46,10 +46,10 @@ const DateTimeFieldset = ({
       if (fields.length === 0) return '';
 
       if (fields.length === 1) {
-        return `${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} is verplicht.`;
+        return `Vul een ${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} in.`;
       }
 
-      return `${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} en ${fieldNameMap[fields[1] as keyof typeof fieldNameMap]} is verplicht.`;
+      return `Vul een ${fieldNameMap[fields[0] as keyof typeof fieldNameMap]} en ${fieldNameMap[fields[1] as keyof typeof fieldNameMap]} in.`;
     };
 
     if (invalidFields.length) {

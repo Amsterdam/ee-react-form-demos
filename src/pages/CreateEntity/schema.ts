@@ -22,7 +22,7 @@ const entityFormSchema = z.object({
   name: z.string().min(1, 'Enter a name'),
   description: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  // With RHF - handle annoations as an array than object
+  // With RHF - handle annotations as an array than object
   annotations: z
     .array(
       z.object({

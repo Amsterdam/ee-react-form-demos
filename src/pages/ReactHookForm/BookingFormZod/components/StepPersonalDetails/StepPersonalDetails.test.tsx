@@ -60,11 +60,15 @@ describe('ReactHookForm / BookingFormZod - StepPersonalDetails', () => {
   it('shows validation errors after clicking "Volgende vraag"', async () => {
     renderWithForm(<StepPersonalDetails {...defaultProps} />);
 
-    expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/voornaam is verplicht/i)
+    ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+      expect(
+        screen.getAllByText(/voornaam is verplicht/i).length
+      ).toBeGreaterThan(0);
     });
   });
 
@@ -73,7 +77,9 @@ describe('ReactHookForm / BookingFormZod - StepPersonalDetails', () => {
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+      expect(
+        screen.getAllByText(/voornaam is verplicht/i).length
+      ).toBeGreaterThan(0);
     });
 
     fireEvent.click(screen.getByRole('link', { name: /vorige vraag/i }));
@@ -81,7 +87,9 @@ describe('ReactHookForm / BookingFormZod - StepPersonalDetails', () => {
 
     // Ensure errors are cleared on return
     await waitFor(() => {
-      expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(/voornaam is verplicht/i)
+      ).not.toBeInTheDocument();
     });
   });
 
