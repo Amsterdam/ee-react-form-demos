@@ -23,6 +23,10 @@ const DateTimeFieldset = ({
   className = 'ams-mb-m',
 }: DateTimeFieldsetProps & PropsWithChildren) => {
   const hasError = fields.some(field => errors[field]);
+  const errorMessageId = fields
+    .filter(field => errors[field])
+    .map(field => `${field}-error`)
+    .join(' ');
 
   const errorMessage = useMemo(() => {
     const requiredFields: string[] = [];
@@ -65,7 +69,7 @@ const DateTimeFieldset = ({
     <FieldSet legend={legend} className={className} invalid={!!hasError}>
       {hasError && (
         <Row>
-          <ErrorMessage id={`${fields[0]}-error`}>{errorMessage}</ErrorMessage>
+          <ErrorMessage id={errorMessageId}>{errorMessage}</ErrorMessage>
         </Row>
       )}
       <Row>{children}</Row>

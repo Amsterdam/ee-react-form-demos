@@ -109,6 +109,7 @@ const StepPersonalDetails = ({
                 id="name"
                 name="name"
                 value={formData.name}
+                aria-describedby={errors.name ? 'error-name' : ''}
                 invalid={submitTouched && !!errors.name}
                 onChange={onChange}
               />

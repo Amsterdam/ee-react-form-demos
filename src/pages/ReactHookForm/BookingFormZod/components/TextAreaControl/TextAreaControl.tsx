@@ -59,7 +59,7 @@ const TextAreaControl = <T extends FieldValues>({
               {...register(name, registerOptions as RegisterOptions)}
               {...attributes}
               aria-describedby={clsx(
-                { [descriptionId]: !!descriptionId },
+                { [descriptionId]: !!description },
                 { [errorId]: hasError }
               )}
               id={identifier}
