@@ -109,7 +109,6 @@ const StepPersonalDetails = ({
                 id="name"
                 name="name"
                 value={formData.name}
-                placeholder="Voornaam"
                 invalid={submitTouched && !!errors.name}
                 onChange={onChange}
               />
@@ -135,7 +134,6 @@ const StepPersonalDetails = ({
                 id="email"
                 name="email"
                 value={formData.email}
-                placeholder="E-mailadres"
                 aria-describedby={errors.email ? 'error-email' : ''}
                 invalid={submitTouched && !!errors.email}
                 onChange={onChange}

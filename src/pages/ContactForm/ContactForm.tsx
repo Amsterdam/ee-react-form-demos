@@ -148,7 +148,6 @@ const ContactForm = () => {
             <TextInput
               id="name"
               name="name"
-              placeholder="First name"
               aria-describedby={errors.name ? 'error-name' : ''}
               invalid={!!errors.name}
               onChange={e =>
@@ -167,7 +166,6 @@ const ContactForm = () => {
               type="email"
               id="email"
               name="email"
-              placeholder="Email address"
               aria-describedby={errors.email ? 'error-email' : ''}
               invalid={!!errors.email}
               onChange={e =>
@@ -185,7 +183,6 @@ const ContactForm = () => {
             <TextArea
               id="body"
               name="body"
-              placeholder="Message"
               aria-describedby={errors.body ? 'error-body' : ''}
               invalid={!!errors.body}
               onChange={e =>
