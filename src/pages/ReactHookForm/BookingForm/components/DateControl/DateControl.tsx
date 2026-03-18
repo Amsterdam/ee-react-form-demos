@@ -52,7 +52,7 @@ const DateControl = <T extends FieldValues>({
             )}
             <DateInput
               aria-describedby={clsx(
-                { [descriptionId]: !!descriptionId },
+                { [descriptionId]: !!description },
                 { [errorId]: hasError }
               )}
               {...attributes}
