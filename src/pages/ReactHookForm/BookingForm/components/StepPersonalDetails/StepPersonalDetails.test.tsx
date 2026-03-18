@@ -60,11 +60,19 @@ describe('ReactHookForm / BookingForm - StepPersonalDetails', () => {
   it('shows validation errors after clicking "Volgende vraag"', async () => {
     renderWithForm(<StepPersonalDetails {...defaultProps} />);
 
-    expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/vul uw voornaam in/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/vul uw e-mailadres in/i)
+    ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/vul uw voornaam in/i).length).toBeGreaterThan(
+        0
+      );
+      expect(
+        screen.getAllByText(/vul uw e-mailadres in/i).length
+      ).toBeGreaterThan(0);
     });
   });
 
@@ -73,7 +81,12 @@ describe('ReactHookForm / BookingForm - StepPersonalDetails', () => {
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/vul uw voornaam in/i).length).toBeGreaterThan(
+        0
+      );
+      expect(
+        screen.getAllByText(/vul uw e-mailadres in/i).length
+      ).toBeGreaterThan(0);
     });
 
     fireEvent.click(screen.getByRole('link', { name: /vorige vraag/i }));
@@ -81,7 +94,10 @@ describe('ReactHookForm / BookingForm - StepPersonalDetails', () => {
 
     // Ensure errors are cleared on return
     await waitFor(() => {
-      expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/vul uw voornaam in/i)).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(/vul uw e-mailadres in/i)
+      ).not.toBeInTheDocument();
     });
   });
 

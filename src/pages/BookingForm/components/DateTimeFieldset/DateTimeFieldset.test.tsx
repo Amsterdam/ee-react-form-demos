@@ -33,7 +33,7 @@ describe('DateTimeFieldset', () => {
     );
 
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/vul een starttijd in/i)).not.toBeInTheDocument();
   });
 
   it('shows required field error message', () => {
@@ -42,7 +42,7 @@ describe('DateTimeFieldset', () => {
         legend="Startdatum en -tijd"
         fields={['startDate', 'startTime']}
         errors={{
-          startDate: 'Startdatum is verplicht',
+          startDate: 'Vul een startdatum in',
           startTime: undefined,
         }}
       >
@@ -50,7 +50,11 @@ describe('DateTimeFieldset', () => {
       </DateTimeFieldset>
     );
 
-    expect(screen.getByText('Startdatum is verplicht.')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'De einddatum en -tijd moeten later zijn dan de startdatum en -tijd'
+      )
+    ).toBeInTheDocument();
   });
 
   it('shows invalid date/time error message', () => {
@@ -80,8 +84,8 @@ describe('DateTimeFieldset', () => {
         legend="Startdatum en -tijd"
         fields={['startDate', 'startTime']}
         errors={{
-          startDate: 'Startdatum is verplicht',
-          startTime: 'Starttijd is verplicht',
+          startDate: 'Vul een startdatum in',
+          startTime: 'Vul een starttijd in',
         }}
       >
         <div>Child content</div>
@@ -89,7 +93,9 @@ describe('DateTimeFieldset', () => {
     );
 
     expect(
-      screen.getByText('Startdatum en Starttijd is verplicht.')
+      screen.getByText(
+        'De einddatum en -tijd moeten later zijn dan de startdatum en -tijd'
+      )
     ).toBeInTheDocument();
   });
 });

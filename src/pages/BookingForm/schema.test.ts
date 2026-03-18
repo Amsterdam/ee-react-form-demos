@@ -25,7 +25,7 @@ describe('bookingFormSchema', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.flatten().fieldErrors.startDate).toContain(
-        'Startdatum is verplicht'
+        'Vul een startdatum in'
       );
     }
   });
@@ -45,7 +45,7 @@ describe('bookingFormSchema', () => {
         e => String(e.path) === 'email'
       )?.message;
 
-      expect(emailError).toMatch(/ongeldig e-mailadres/i);
+      expect(emailError).toMatch(/vul een geldig e-mailadres in/i);
     } else {
       throw new Error('Expected validation to fail');
     }

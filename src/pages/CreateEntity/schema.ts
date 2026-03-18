@@ -2,10 +2,9 @@ import z from 'zod/v4';
 
 const specSchema = z
   .object({
-    // Avoid the property name `type`, as RHF uses this
-    type: z.string().min(1, 'Type is required'),
-    lifecycle: z.string().min(1, 'Lifecycle is required'),
-    owner: z.string().min(1, 'Owner is required'),
+    type: z.string().min(1, 'Select a type'),
+    lifecycle: z.string().min(1, 'Select a lifecycle'),
+    owner: z.string().min(1, 'Select an owner'),
     hasSystem: z.boolean().default(false),
     system: z.string().optional(),
   })
@@ -13,30 +12,30 @@ const specSchema = z
     data => !data.hasSystem || (data.system && data.system.trim() !== ''),
     {
       path: ['system'],
-      message: 'System is required',
+      message: 'Select a system',
     }
   );
 
 const entityFormSchema = z.object({
-  kind: z.string().min(1, 'Kind is required'),
-  name: z.string().min(1, 'Name is required'),
+  kind: z.string().min(1, 'Select a kind'),
+  name: z.string().min(1, 'Enter a name'),
   description: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  // With RHF - handle annoations as an array than object
+  // With RHF - handle annotations as an array than object
   annotations: z
     .array(
       z.object({
-        key: z.string().min(1, 'Annotation key is required'),
-        value: z.string().min(1, 'Annotation value is required'),
+        key: z.string().min(1, 'Select an annotation key'),
+        value: z.string().min(1, 'Enter an annotation value'),
       })
     )
     .default([]),
   links: z
     .array(
       z.object({
-        url: z.string().url('Must be a valid URL'),
-        title: z.string().min(1, 'Title is required'),
-        icon: z.string().min(1, 'Icon is required'),
+        url: z.string().url('Enter a valid URL'),
+        title: z.string().min(1, 'Enter a title'),
+        icon: z.string().min(1, 'Select an icon'),
       })
     )
     .default([]),
