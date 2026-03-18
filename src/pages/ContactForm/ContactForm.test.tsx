@@ -49,9 +49,7 @@ describe('ContactForm', () => {
     });
 
     // Check for specific error messages
-    expect(
-      screen.getAllByText('The name field is required').length
-    ).toBeGreaterThan(0);
+    expect(screen.getAllByText('Enter your name').length).toBeGreaterThan(0);
   });
 
   it('should show individual validation errors', async () => {

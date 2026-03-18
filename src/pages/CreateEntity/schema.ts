@@ -3,7 +3,7 @@ import z from 'zod/v4';
 const specSchema = z
   .object({
     // Avoid the property name `type`, as RHF uses this
-    type: z.string().min(1, 'Enter a type'),
+    type: z.string().min(1, 'Select a type'),
     lifecycle: z.string().min(1, 'Select a lifecycle'),
     owner: z.string().min(1, 'Select an owner'),
     hasSystem: z.boolean().default(false),

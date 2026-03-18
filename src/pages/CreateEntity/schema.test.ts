@@ -37,7 +37,7 @@ describe('entityFormSchema', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.flatten().fieldErrors.kind).toContain(
-        'Kind is required'
+        'Select a kind'
       );
     }
   });
@@ -82,7 +82,7 @@ describe('entityFormSchema', () => {
         e => e.path.join('.') === 'spec.system'
       )?.message;
 
-      expect(systemError).toBe('System is required');
+      expect(systemError).toBe('Select a system');
     } else {
       throw new Error('Expected validation to fail');
     }
