@@ -48,7 +48,7 @@ const TimeControl = <T extends FieldValues>({
             )}
             <TimeInput
               aria-describedby={clsx(
-                { [descriptionId]: !!descriptionId },
+                { [descriptionId]: !!description },
                 { [errorId]: hasError }
               )}
               {...register(name, registerOptions as RegisterOptions)}

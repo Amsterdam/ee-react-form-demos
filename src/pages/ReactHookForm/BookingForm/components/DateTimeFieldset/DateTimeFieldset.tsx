@@ -26,6 +26,10 @@ const DateTimeFieldset = ({
   const hasError = fields.some(
     field => formState.errors[field] && formState.errors[field]?.message
   );
+  const errorMessageId = fields
+    .filter(field => formState.errors[field])
+    .map(field => `${field}-error`)
+    .join(' ');
 
   const errorMessage = useMemo(() => {
     const requiredFields: string[] = [];
@@ -66,7 +70,7 @@ const DateTimeFieldset = ({
     <FieldSet legend={legend} className={className} invalid={!!hasError}>
       {hasError && (
         <Row>
-          <ErrorMessage id={`${fields[0]}-error`}>{errorMessage}</ErrorMessage>
+          <ErrorMessage id={errorMessageId}>{errorMessage}</ErrorMessage>
         </Row>
       )}
       <Row>{children}</Row>
