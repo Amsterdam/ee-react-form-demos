@@ -64,7 +64,7 @@ describe('StepAppointment', () => {
       ...defaultProps,
       errors: {
         startDate: 'Vul een startdatum in',
-        endTime: 'Vul een starttijd in',
+        endTime: 'Vul een eindtijd in',
       },
     };
     render(<StepAppointment {...propsWithErrors} />);
