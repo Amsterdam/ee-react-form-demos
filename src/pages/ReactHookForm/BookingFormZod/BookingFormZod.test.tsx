@@ -44,12 +44,12 @@ describe('ReactHookForm / BookingFormZod', () => {
     await userEvent.click(screen.getByRole('button', { name: /volgende/i }));
 
     // Should show validation errors
-    expect(
-      screen.getAllByText(/voornaam is verplicht/i).length
-    ).toBeGreaterThan(0);
-    expect(screen.getAllByText(/ongeldig e-mailadres/i).length).toBeGreaterThan(
+    expect(screen.getAllByText(/vul uw voornaam in/i).length).toBeGreaterThan(
       0
     );
+    expect(
+      screen.getAllByText(/vul een geldig e-mailadres in/i).length
+    ).toBeGreaterThan(0);
 
     expect(screen.getByLabelText(/voornaam/i)).toBeInTheDocument();
   });

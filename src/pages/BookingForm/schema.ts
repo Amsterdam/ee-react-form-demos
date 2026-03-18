@@ -1,12 +1,14 @@
 import { z } from 'zod';
 
 export const baseBookingSchema = z.object({
-  name: z.string().min(1, 'Voornaam is verplicht'),
-  email: z.string().email('Ongeldig e-mailadres'),
-  startDate: z.string().min(1, 'Startdatum is verplicht'),
-  startTime: z.string().min(1, 'Starttijd is verplicht'),
-  endDate: z.string().min(1, 'Einddatum is verplicht'),
-  endTime: z.string().min(1, 'Eindtijd is verplicht'),
+  name: z.string().min(1, 'Vul uw voornaam in'),
+  email: z
+    .string()
+    .email('Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.nl'),
+  startDate: z.string().min(1, 'Vul een startdatum in'),
+  startTime: z.string().min(1, 'Vul een starttijd in'),
+  endDate: z.string().min(1, 'Vul een einddatum in'),
+  endTime: z.string().min(1, 'Vul een eindtijd in'),
   comments: z.string().optional(),
 });
 

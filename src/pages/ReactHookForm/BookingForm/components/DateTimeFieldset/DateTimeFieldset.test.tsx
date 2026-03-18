@@ -51,8 +51,8 @@ describe('ReactHookForm / BookingForm - DateTimeFieldset', () => {
     (useFormContext as any).mockReturnValue({
       formState: {
         errors: {
-          startDate: { type: 'required', message: 'Startdatum is verplicht' },
-          startTime: { type: 'required', message: 'Starttijd is verplicht' },
+          startDate: { type: 'required', message: 'Vul een startdatum in' },
+          startTime: { type: 'required', message: 'Vul een starttijd in' },
         },
       },
     });
@@ -67,7 +67,7 @@ describe('ReactHookForm / BookingForm - DateTimeFieldset', () => {
     );
 
     expect(
-      screen.getByText('Startdatum en Starttijd is verplicht.')
+      screen.getByText('Vul een Startdatum en Starttijd in.')
     ).toBeInTheDocument();
   });
 

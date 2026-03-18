@@ -69,15 +69,15 @@ describe('ContactForm', () => {
       expect(
         screen.getByText('Verbeter de fouten voor u verder gaat')
       ).toBeInTheDocument();
+      expect(screen.getAllByText(/Enter your name/i).length).toBeGreaterThan(0);
       expect(
-        screen.getAllByText(/The name field is required/i).length
+        screen.getAllByText(
+          /Enter an email address in the correct format, like name@example.com/i
+        ).length
       ).toBeGreaterThan(0);
-      expect(
-        screen.getAllByText(/A valid email address is required/i).length
-      ).toBeGreaterThan(0);
-      expect(
-        screen.getAllByText(/The message field is required/i).length
-      ).toBeGreaterThan(0);
+      expect(screen.getAllByText(/Enter your message/i).length).toBeGreaterThan(
+        0
+      );
     });
   });
 

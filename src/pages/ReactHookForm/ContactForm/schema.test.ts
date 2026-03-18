@@ -27,7 +27,7 @@ describe('ContactFormSchema', () => {
       const nameError = result.error.issues.find(
         issue => issue.path[0] === 'name'
       );
-      expect(nameError?.message).toBe('The name field is required');
+      expect(nameError?.message).toBe('Enter your name');
     }
   });
 
@@ -45,7 +45,9 @@ describe('ContactFormSchema', () => {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
       );
-      expect(emailError?.message).toBe('A valid email address is required');
+      expect(emailError?.message).toBe(
+        'Enter an email address in the correct format, like name@example.com'
+      );
     }
   });
 
@@ -63,7 +65,7 @@ describe('ContactFormSchema', () => {
       const emailError = result.error.issues.find(
         issue => issue.path[0] === 'email'
       );
-      expect(emailError?.message).toBe('The email address field is required');
+      expect(emailError?.message).toBe('Enter your email address');
     }
   });
 
@@ -81,7 +83,7 @@ describe('ContactFormSchema', () => {
       const bodyError = result.error.issues.find(
         issue => issue.path[0] === 'body'
       );
-      expect(bodyError?.message).toBe('The message field is required');
+      expect(bodyError?.message).toBe('Enter your message');
     }
   });
 

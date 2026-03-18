@@ -55,9 +55,9 @@ describe('useEntityFormValidation', () => {
     });
 
     expect(result.current.errors).toMatchObject({
-      kind: 'Kind is required',
-      'spec.type': 'Type is required',
-      'spec.system': 'System is required',
+      kind: 'Select a kind',
+      'spec.type': 'Select a type',
+      'spec.system': 'Select a system',
     });
   });
 
@@ -73,7 +73,7 @@ describe('useEntityFormValidation', () => {
       result.current.validateField('kind', '');
     });
 
-    expect(result.current.errors.kind).toBe('Kind is required');
+    expect(result.current.errors.kind).toBe('Select a kind');
 
     act(() => {
       result.current.validateField('kind', 'Component');
@@ -94,7 +94,7 @@ describe('useEntityFormValidation', () => {
       result.current.validateField('kind', '');
     });
 
-    expect(result.current.errors.kind).toBe('Kind is required');
+    expect(result.current.errors.kind).toBe('Select a kind');
 
     act(() => {
       result.current.clearFieldError('kind');
@@ -152,7 +152,7 @@ describe('useEntityFormValidation', () => {
       result.current.validateField('links.0.url', '');
     });
 
-    expect(result.current.errors['links.0.url']).toBe('Must be a valid URL');
+    expect(result.current.errors['links.0.url']).toBe('Enter a valid URL');
 
     act(() => {
       result.current.validateField('links.0.url', 'https://fixed.com');
