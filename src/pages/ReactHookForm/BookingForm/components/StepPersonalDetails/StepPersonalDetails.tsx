@@ -99,7 +99,7 @@ const StepPersonalDetails = ({
             <TextInputControl<BookingFormData>
               label="Voornaam"
               name="name"
-              registerOptions={{ required: 'Voornaam is verplicht' }}
+              registerOptions={{ required: 'Vul uw voornaam in' }}
             />
 
             <TextInputControl<BookingFormData>
@@ -112,10 +112,11 @@ const StepPersonalDetails = ({
               autoComplete="email"
               name="email"
               registerOptions={{
-                required: 'E-mailadres is verplicht',
+                required: 'Vul uw e-mailadres in',
                 pattern: {
                   value: /^\S+@\S+$/i,
-                  message: 'Ongeldig e-mailadres',
+                  message:
+                    'Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.nl',
                 },
               }}
               wrapperProps={{

@@ -1,16 +1,16 @@
 import z from 'zod/v4';
 
 const contactFormSchema = z.object({
-  name: z.string().min(1, { error: 'The name field is required' }),
+  name: z.string().min(1, { error: 'Enter your name' }),
   email: z
     .email({
       error: issue =>
         issue.input === undefined
-          ? 'The email address field is required'
-          : 'A valid email address is required',
+          ? 'Enter your email address'
+          : 'Enter an email address in the correct format, like name@example.com',
     })
-    .min(1, { error: 'The email field is required' }),
-  body: z.string().min(1, { error: 'The message field is required' }),
+    .min(1, { error: 'Enter your email address' }),
+  body: z.string().min(1, { error: 'Enter your message' }),
 });
 
 export default contactFormSchema;

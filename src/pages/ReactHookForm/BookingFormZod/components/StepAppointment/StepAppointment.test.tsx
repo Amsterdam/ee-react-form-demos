@@ -64,11 +64,13 @@ describe('ReactHookForm / BookingFormZod - StepAppointment', () => {
   it('shows validation errors after clicking "Volgende vraag"', async () => {
     renderWithForm(<StepAppointment {...defaultProps} />);
 
-    expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/vul een starttijd in/i)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+      expect(
+        screen.getAllByText(/vul een starttijd in/i).length
+      ).toBeGreaterThan(0);
     });
   });
 
@@ -92,7 +94,9 @@ describe('ReactHookForm / BookingFormZod - StepAppointment', () => {
     fireEvent.click(screen.getByRole('button', { name: /volgende vraag/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText(/verplicht/i).length).toBeGreaterThan(0);
+      expect(
+        screen.getAllByText(/vul een starttijd in/i).length
+      ).toBeGreaterThan(0);
     });
 
     fireEvent.click(screen.getByRole('link', { name: /vorige vraag/i }));
@@ -100,7 +104,9 @@ describe('ReactHookForm / BookingFormZod - StepAppointment', () => {
 
     // Ensure errors are cleared on return
     await waitFor(() => {
-      expect(screen.queryByText(/verplicht/i)).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(/vul een starttijd in/i)
+      ).not.toBeInTheDocument();
     });
   });
 });
