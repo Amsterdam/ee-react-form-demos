@@ -107,9 +107,9 @@ const CreateEntity = () => {
       },
     },
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitTouched, setIsSubmitTouched] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   // useFieldArray for repeater fields. This is also used in the
   // AnnotationRepeater component
@@ -126,7 +126,9 @@ const CreateEntity = () => {
   // @ts-expect-error 'data' is defined but never used
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (data: RHFEntityFormData) => {
-    if (isSubmitting) return;
+    // Prevent duplicate submissions
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
 
     /**
      * Use setTimeout to Simulate API call
@@ -134,11 +136,9 @@ const CreateEntity = () => {
      * - Here's where you can show a post-submission success component
      * or redirect the user to a new page
      */
-    setIsLoading(true);
-
     setTimeout(() => {
-      setIsLoading(false);
       setIsSubmitted(true);
+      isSubmittingRef.current = false;
     }, 1500);
   };
 
@@ -502,7 +502,7 @@ const CreateEntity = () => {
       />
 
       {/* Fake loader to simulate API request */}
-      {isLoading && <Loader />}
+      {isSubmitting && <Loader />}
       {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>
@@ -512,7 +512,6 @@ const CreateEntity = () => {
             headingLevel={2}
             severity="success"
             onClose={() => {
-              setIsLoading(false);
               setIsSubmitted(false);
             }}
           >
