@@ -185,7 +185,6 @@ const BookingForm = () => {
     />,
     <StepConfirm
       formData={formData}
-      isSubmitting={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(2)}
       onSubmit={handleSubmit}

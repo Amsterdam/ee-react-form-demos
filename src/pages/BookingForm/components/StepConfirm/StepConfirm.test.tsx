@@ -5,6 +5,7 @@ import { vi } from 'vitest';
 describe('StepConfirm', () => {
   const mockOnChange = vi.fn();
   const mockOnPrevButtonClick = vi.fn();
+  const mockOnSubmit = vi.fn();
 
   const baseFormData = {
     name: 'John Doe',
@@ -18,9 +19,9 @@ describe('StepConfirm', () => {
 
   const defaultProps = {
     formData: baseFormData,
-    disabled: false,
     onChange: mockOnChange,
     onPrevButtonClick: mockOnPrevButtonClick,
+    onSubmit: mockOnSubmit,
   };
 
   beforeEach(() => {
@@ -60,14 +61,5 @@ describe('StepConfirm', () => {
     const textarea = screen.getByLabelText(/opmerkingen/i);
     fireEvent.change(textarea, { target: { value: 'Extra note' } });
     expect(mockOnChange).toHaveBeenCalledTimes(1);
-  });
-
-  it('disables textarea and updates submit button when isSubmitting=true', () => {
-    render(<StepConfirm {...defaultProps} isSubmitting />);
-    expect(screen.getByLabelText(/opmerkingen/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /verzenden/i })).toHaveAttribute(
-      'aria-busy',
-      'true'
-    );
   });
 });

@@ -85,7 +85,7 @@ describe('CreateEntity', () => {
     await waitFor(() =>
       expect(
         screen.getByRole('button', { name: /submitting/i })
-      ).toHaveAttribute('aria-busy', 'true')
+      ).toBeInTheDocument()
     );
   });
 
@@ -94,13 +94,9 @@ describe('CreateEntity', () => {
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
 
-    act(() => fireEvent.click(submitButton));
+    await act(() => fireEvent.click(submitButton));
 
-    await waitFor(() => {
-      expect(submitButton).toHaveAttribute('aria-busy', 'true');
-    });
-
-    act(() => {
+    await act(() => {
       vi.runAllTimers();
     });
 

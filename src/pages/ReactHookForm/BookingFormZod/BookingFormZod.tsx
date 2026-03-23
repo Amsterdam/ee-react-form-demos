@@ -57,7 +57,7 @@ const BookingFormZod = () => {
     } catch (error) {
       console.log('form error!', error);
     }
-  }, []);
+  }, [isLoading]);
 
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -77,7 +77,6 @@ const BookingFormZod = () => {
       key="step-2"
     />,
     <StepConfirm
-      isSubmitting={isLoading}
       onPrevButtonClick={() => setCurrentStep(2)}
       onSubmit={handleSubmit}
       key="step-3"
