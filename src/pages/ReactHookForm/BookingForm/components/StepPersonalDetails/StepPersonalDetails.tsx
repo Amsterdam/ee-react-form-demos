@@ -14,7 +14,6 @@ import TextInputControl from '../TextInputControl/TextInputControl';
 import { useFormContext } from 'react-hook-form';
 
 interface StepPersonalDetailsProps {
-  disabled: boolean;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
 }
