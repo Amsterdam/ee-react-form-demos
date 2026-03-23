@@ -89,6 +89,7 @@ const CreateEntity = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitTouched, setIsSubmitTouched] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   // Keep all the form validation in a hook for reusability and to keep this
   // parent component clean. The formData handling could also be moved into a
@@ -129,11 +130,14 @@ const CreateEntity = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isLoading) return;
+    // Prevent duplicate submissions
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
 
     if (!validateForm()) {
       setIsSubmitTouched(true);
       scrollToErrorAlert(formRef.current);
+      isSubmittingRef.current = false;
       return;
     }
 
@@ -148,6 +152,7 @@ const CreateEntity = () => {
     setTimeout(() => {
       setIsLoading(false);
       setIsSubmitted(true);
+      isSubmittingRef.current = false;
     }, 1500);
   };
 
