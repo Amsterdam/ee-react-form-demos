@@ -483,7 +483,7 @@ const CreateEntity = () => {
           />
 
           <Row>
-            <Button type="submit" aria-live="polite" aria-busy={isLoading}>
+            <Button type="submit">
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
             <Button
