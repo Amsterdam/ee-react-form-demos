@@ -74,7 +74,7 @@ describe('CreateEntity', () => {
     );
   });
 
-  it('disables the submit button and shows submitting text after submit', async () => {
+  it('updates the submit button and shows submitting text after submit', async () => {
     render(<CreateEntity />);
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
@@ -83,7 +83,9 @@ describe('CreateEntity', () => {
 
     // This waits for the button text to change
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /submitting/i })).toBeDisabled()
+      expect(
+        screen.getByRole('button', { name: /submitting/i })
+      ).toBeInTheDocument()
     );
   });
 
@@ -92,13 +94,9 @@ describe('CreateEntity', () => {
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
 
-    act(() => fireEvent.click(submitButton));
+    await act(() => fireEvent.click(submitButton));
 
-    await waitFor(() => {
-      expect(submitButton).toBeDisabled();
-    });
-
-    act(() => {
+    await act(() => {
       vi.runAllTimers();
     });
 

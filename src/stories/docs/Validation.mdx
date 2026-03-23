@@ -2,109 +2,47 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 <Meta title="Docs/Validation" />
 
-# Validation
+# How to Handle Validation
 
 > **Warning**
-> Frontend validation is only for UX, not security. It must be emphasised that much of the security enforcements needs to happen on the backend, however, frontend forms can help guide safe input and prevent common vulnerabilities.
+> Frontend validation is only for UX, not security. All validation must also be enforced on the backend. Frontend forms can still guide users toward valid input and prevent common mistakes.
 
-Validation ensures that the data submitted through a form meets your requirements before it’s sent to the server. In [React](https://react.dev)-based applications, there are two main approaches: **HTML5 built-in browser validation** and **JavaScript-based validation** (often with schema libraries like [Zod](https://zod.dev) or [Yup](https://github.com/jquense/yup)).
+This document explains how to handle form validation errors and is based on the [GOV.UK Design System Validation Patterns document](https://design-system.service.gov.uk/patterns/validation/).
 
-## 1. HTML5 Browser Validation
+Validation errors happen when a user enters data that is missing, incorrect, ambiguous, or unusable. The goal is to communicate these errors clearly and accessibly so users can fix them and continue.
 
-Browser validation uses native attributes (`required`, `pattern`, `min`, `max`, `type="email" etc.) and the `checkValidity()` API.
+Follow this pattern whenever you need to check user-provided information and provide feedback when something is invalid or missing.
 
-### Pros
+## 1. Validate inputs appropriately
 
-- Zero dependencies - No extra libraries required.
-- Fast to set up - Just add attributes like `required` or `pattern`.
-- Accessible defaults - Many browsers already announce validation errors to screen readers.
+- Reject information that is clearly incorrect, too ambiguous or missing (when required).
+- Accept reasonable variations in format (for example, a postcode with or without a space).
+- Strip out or ignore unnecessary characters such as extra spaces or punctuation where possible.
 
-### Cons
+## 2. Show validation errors clearly
 
-- Validates one field at a time - You only see the first invalid field; you can't easily validate the 'whole' form at once.
-- No complex rules - Can't handle conditional logic or cross-field dependencies easily.
-- Inflexible error messages - You can override them but it's clunky.
-- Required fields can trigger on page load - This is poor UX.
+When validation fails:
 
-### When to Use
+- Re-render the page with the form fields preserved as the user entered them.
+- Show an [Invalid Form Alert](https://designsystem.amsterdam/?path=/docs/components-forms-invalid-form-alert--docs) at the top of the main container and move keyboard focus to it.
+- Add `(X invoerfouten)` to the start of the page `<title>` so screen readers announce the error state immediately (the Invalid Form Alert does this automatically).
+- Show [Error message](https://designsystem.amsterdam/?path=/docs/components-forms-error-message--docs) components next to each field with an error.
 
-- Small to medium forms
-- Forms where fields are mostly independent
-- Prototypes or quick MVPs
+See also: [Amsterdam Design System - Form Flow](https://designsystem.amsterdam/?path=/docs/pages-public-form-flow--docs)
 
-## 2. JavaScript / Schema-Based validation
+## 3. When to validate
 
-With JavaScript-based validation, the frontend manually checks inputs - often using schema libraries like [Zod](https://zod.dev), [Yup](https://github.com/jquense/yup) or the `Resolver` API in [React Hook Form](https://react-hook-form.com).
+- Validate when the user attempts to continue (for example after clicking Continue/Submit).
+- Avoid validating on change (while the user is still typing), unless there is evidence it improves usability.
 
-Example libraries:
+## 4. Client vs. server validation
 
-- **[Zod](https://zod.dev)**: TypeScript-first, easy to integrate with React Hook Form.
-- **[Yup](https://github.com/jquense/yup)**: Popular in older codebases and with Formik.
-- **[Superstruct](https://docs.superstructjs.org/)**: Lightweight alternative to Zod.
+- Always implement server-side validation (it is the only reliable enforcement).
+- Only add client-side validation if there is a clear user benefit.
 
-### Pros
+## 5. Turn off built-in HTML5 validation
 
-- Full control - Validate multiple fields at once, apply complex logic or run async checks (e.g. username availability)
-- Centralized schema - Validation logic is all in one place, easier to test and maintain.
-- Custom error messages - Fully tailored to your UX.
+Default browser validation cannot be styled or made accessible in a way consistent with [Amsterdam Design System](https://designsystem.amsterdam/) standards:
 
-### Cons
-
-- More setup - You must write and maintain the schema.
-- Performance overhead - Especially in large, deeply nested forms.
-- Can conflict with HTML5 validation - Usually requires adding `noValidate` on `<form>` elements and removing `required` attributes, which means you lose built-in browser accessibility - unless you reimplement it.
-
-### When to Use
-
-- Large, more complex forms
-- Forms with conditional or repeater fields
-- When you want to run the same validation rules in frontend and backend
-
-## 3. Validation Strategies
-
-| Strategy      | Description                                  | Pros                         | Cons                         | Typical Use Case           |
-| ------------- | -------------------------------------------- | ---------------------------- | ---------------------------- | -------------------------- |
-| **On Submit** | Validate only when the user submits the form | Less distraction, cleaner UX | Errors only shown at the end | Checkout forms             |
-| **On Change** | Validate as the user types                   | Immediate feedback           | Can be noisy; perf impact    | Search forms, live filters |
-| **On Blur**   | Validate when a field loses focus            | Balanced feedback timing     | Still field-by-field         | Login, signup              |
-| **Hybrid**    | Mix of strategies                            | Flexible UX                  | More logic to manage         | Large multi-step forms     |
-
-In [React Hook Form](https://react-hook-form.com) the strategy can be configured with the `mode` or `reValidateMode` properties in `useForm` ([see docs](https://react-hook-form.com/docs/useform#mode)):
-
-- `mode: onChange | onBlur | onSubmit | onTouched | all = 'onSubmit'`)
-- `reValidateMode` (`reValidateMode: onChange | onBlur | onSubmit = 'onChange'`)
-
-## 4. Conditional Validation
-
-Sometime rules depend on other fields. An example with Zod schema, from `CreateEntity`, where `hasSystem` is a checkbox that when checked displays another field to select the `system`:
-
-```ts
-const specSchema = z
-  .object({
-    type: z.string().min(1, 'Type is required'),
-    lifecycle: z.string().min(1, 'Lifecycle is required'),
-    owner: z.string().min(1, 'Owner is required'),
-    hasSystem: z.boolean().default(false),
-    system: z.string().optional(),
-  })
-  .refine(
-    data => !data.hasSystem || (data.system && data.system.trim() !== ''),
-    {
-      path: ['system'],
-      message: 'System is required',
-    }
-  );
-```
-
-## 5. Sync vs Async Validation
-
-- **HTML5 validation** is always synchronous.
-- **JavaScript validation** can be:
-  - **Sync** - Runs immediately in memory (fast, efficient for static rules)
-  - **Async** - Useful for server checks (for example, checking if username or email exists)
-
-## 6. Our Recommendation
-
-- **HTML5 validation** for small-medium forms with simple independent fields.
-- **[React Hook Form](https://react-hook-form.com) (+ [Zod](https://zod.dev))** for medium-larger, advanced or schema-driven forms.
-  - Always disable HTML5 validation (`noValidate`) when using JS-based schemas to avoid conflicts.
+- Add `novalidate` to the `<form>` tag. In React/JSX the prop is `noValidate` (camelCase).
+- Don't use `required` attributes on inputs.

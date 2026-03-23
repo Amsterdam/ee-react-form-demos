@@ -19,7 +19,6 @@ interface StepAppointmentProps {
   formData: FormData;
   minDateValue: string;
   errors: Record<string, string>;
-  disabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;

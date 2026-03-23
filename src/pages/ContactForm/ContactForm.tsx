@@ -11,7 +11,7 @@ import {
   TextArea,
   TextInput,
 } from '@amsterdam/design-system-react';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { z } from 'zod/v4';
 import Loader from '@/components/Loader/Loader';
 import mapErrorsToAlert from '@/utils/mapErrorsToAlert';
@@ -29,6 +29,7 @@ const ContactForm = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   const validateForm = (formData: FormData): Record<string, string> => {
     const data = {
@@ -59,6 +60,10 @@ const ContactForm = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Prevent duplicate submissions
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+
     const formData = new FormData(e.currentTarget);
     const validationErrors = validateForm(formData);
     setErrors(validationErrors);
@@ -73,7 +78,10 @@ const ContactForm = () => {
       setIsLoading(true);
       setTimeout(() => {
         setIsSubmitted(true);
+        isSubmittingRef.current = false;
       }, 1500);
+    } else {
+      isSubmittingRef.current = false;
     }
   };
 
@@ -163,7 +171,12 @@ const ContactForm = () => {
               </ErrorMessage>
             )}
             <TextInput
-              type="email"
+              type="text"
+              // If we use type=email, in some browsers this triggers
+              // `:invalid` and error styling is applied despite the form
+              // noValidate on input change
+              inputMode="email"
+              autoComplete="email"
               id="email"
               name="email"
               aria-describedby={errors.email ? 'error-email' : ''}

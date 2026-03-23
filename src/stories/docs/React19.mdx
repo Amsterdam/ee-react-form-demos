@@ -4,6 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # React 19 - React Server Components (RSC) & Server Actions
 
+This page summarises key changes introduced in **React 19**, with a focus on form handling improvements such as `useActionState` and Server Actions.
+
+It also explains why some of these features are framework-dependent (for example, [Next.js](https://nextjs.org/)) and why they may not be immediately applicable to non-Next.js React applications.
+
 ## What's New in React 19
 
 React 19 introduced `useActionState`, a hook for managing the state of form submissions handled by an **action function** (such as a server action). It helps with:
@@ -31,8 +35,8 @@ In **Next.js**, this works seamlessly with `useActionState` because the framewor
 - This needs:
   - **React Server Components (RSC)** support
   - A special compiler/runtime that understands server actions
-- Currently (August 2025), stable support exists mainly in **Next.js App Router**.
-- Vite and other bundlers have experimental RSC support, but not full production-ready equivalents.
+- Currently (February 2026), stable support exists mainly in **Next.js App Router**. **React Router's** implementation of React Server Components is [still considered experimental](https://reactrouter.com/how-to/react-server-components).
+- Vite and other bundlers have experimental RSC support but not full production-ready equivalents.
 
 ## Why This Is Not a Drop-In for Our Non-Next.js Apps
 
@@ -44,8 +48,8 @@ In **Next.js**, this works seamlessly with `useActionState` because the framewor
 - Backend-frontend separation changes:
   - Our existing apps often talk to a separate API backend - Server Actions blur this separation, making the frontend partially backend
 - Non-Next.js frameworks (React Router / Remix / Vite):
-  - Can do SSR, but not the new RSC + Server Actions model (yet)
-
+  - Can do SSR but not the new RSC + Server Actions model (yet)
+  - As of February 2026, React Router's implementation of React Server Components is [still considered experimental](https://reactrouter.com/how-to/react-server-components), whereas actions is [now available](https://reactrouter.com/start/framework/actions).
 
 ## Therefore
 

@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { Page, PageHeader } from '@amsterdam/design-system-react';
 import schema, {
   baseBookingSchema,
@@ -26,6 +26,7 @@ const BookingForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const isSubmittingRef = useRef(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const nowDateTime = new Date();
@@ -138,6 +139,10 @@ const BookingForm = () => {
     // Prevent the browser from submitting and handling the form
     e.preventDefault();
 
+    // Prevent duplicate submissions
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+
     const result = schema.safeParse(formData);
 
     if (!result.success) {
@@ -148,9 +153,16 @@ const BookingForm = () => {
         fieldErrors[field] = err.message;
       });
       setErrors(fieldErrors);
+      isSubmittingRef.current = false;
       return;
     }
 
+    /**
+     * Use setTimeout to Simulate API call
+     * - Here's where validation can happen
+     * - Here's where you can show a post-submission success component
+     * or redirect the user to a new page
+     */
     setErrors({});
     setIsLoading(true);
 
@@ -158,6 +170,7 @@ const BookingForm = () => {
     setTimeout(() => {
       setIsLoading(false);
       setIsSubmitted(true);
+      isSubmittingRef.current = false;
     }, 1500);
   };
 
@@ -166,7 +179,6 @@ const BookingForm = () => {
     <StepPersonalDetails
       formData={formData}
       errors={errors}
-      disabled={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(0)}
       onNextButtonClick={handleNextStep}
@@ -176,7 +188,6 @@ const BookingForm = () => {
       formData={formData}
       minDateValue={nowDate}
       errors={errors}
-      disabled={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(1)}
       onNextButtonClick={handleNextStep}
@@ -184,7 +195,6 @@ const BookingForm = () => {
     />,
     <StepConfirm
       formData={formData}
-      disabled={isLoading}
       onChange={handleChange}
       onPrevButtonClick={() => setCurrentStep(2)}
       onSubmit={handleSubmit}

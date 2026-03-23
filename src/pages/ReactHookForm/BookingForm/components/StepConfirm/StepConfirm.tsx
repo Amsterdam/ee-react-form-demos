@@ -12,16 +12,11 @@ import { BookingFormData } from '../../BookingForm';
 import TextAreaControl from '../TextAreaControl/TextAreaControl';
 
 interface StepConfirmProps {
-  disabled?: boolean;
   onPrevButtonClick: () => void;
   onSubmit: SubmitHandler<FieldValues>;
 }
 
-const StepConfirm = ({
-  disabled = false,
-  onPrevButtonClick,
-  onSubmit,
-}: StepConfirmProps) => {
+const StepConfirm = ({ onPrevButtonClick, onSubmit }: StepConfirmProps) => {
   const { getValues, handleSubmit } = useFormContext();
   const formData = getValues();
 
@@ -113,13 +108,10 @@ const StepConfirm = ({
             <TextAreaControl<BookingFormData>
               label="Opmerkingen"
               name="comments"
-              className="ams-mb-xl"
-              disabled={disabled}
+              className="ams-mb-m"
             />
 
-            <Button type="submit" disabled={disabled}>
-              Verzenden
-            </Button>
+            <Button type="submit">Verzenden</Button>
           </form>
         </Grid.Cell>
       </Grid>

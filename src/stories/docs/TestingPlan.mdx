@@ -2,9 +2,45 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 <Meta title="Docs/Testing/A Plan" />
 
-# Testing - A Plan
+# Testing Forms - Case Study (CreateEntity)
 
-Testing a large form can be quite confusing from where to start testing, avoiding duplicate tests, mocking external dependencies, timeouts, sever responses and more... For this example we use the `CreateEntity` form example. Here's an overview of the file structure:
+Testing large forms can feel overwhelming:
+
+- Where do you start?
+- When is a unit-test vs integration-test more suitable?
+- How do you avoid writing duplicate tests?
+- How do you mock APIs?
+
+This guide uses the [`CreateEntity`](../?path=/story/reacthookform-createentity--base) page as a real example. The goal is to demonstrate a repeatable strategy for testing large forms in React.
+
+## What we want to prove
+
+For CreateEntity, the test suite should prove that:
+
+- The user can complete and submit the form successfully (happy path)
+- Client-side validation is correct and user-friendly
+- Server-side errors are displayed correctly
+- Repeaters work (add/remove rows)
+- Conditional fields behave correctly
+- Submission prevents double-submit (loading state)
+- The correct payload is sent to the backend
+- Accessibility is not accidentally broken
+
+These are the same goals as the [main testing docs](../?path=/docs/docs-testing-overview--docs).
+
+---
+
+## The CreateEntity form structure
+
+The CreateEntity page is made up of:
+
+- A Zod schema (`schema.ts`)
+- A form page container (`CreateEntity.tsx`)
+- Shared hooks and utilities
+- Field wrapper components
+- Complex components like repeaters (annotation/link lists)
+
+File structure:
 
 ```text
 src/pages/CreateEntity/schema.ts
@@ -40,43 +76,160 @@ src/pages/CreateEntity/utils/collectErrorMessages.test.ts
 src/pages/CreateEntity/utils/collectErrorMessages.ts
 ```
 
-Most form fields use components from [amsterdam-design-system](https://designsystem.amsterdam/), however, we also have a wrapper around [react-select](https://react-select.com) - and some 'repeater' components (e.g. `AnnotationRepeaterRow`) between the [amsterdam-design-system](https://designsystem.amsterdam/) form component and our parent form.
+## Testing approach: test the workflow first, then the risky components
 
-We adopted a **bottom-up approach** to writing the tests - meaning we test the individual components first and work up to the parent `CreateEntity.tsx` component. We followed this approach:
+The key thing to understand is:
 
-## 1. Foundation components
+> The form page (`CreateEntity.tsx`) is the workflow.
+> The components are building blocks.
 
-Begin with the individual form components since they're the building blocks:
+We recommend a workflow-first strategy:
 
-**Priority Order:**
+### Step 1: CreateEntity integration tests (highest value)
 
-1. **FormTextInput, FormTextarea, FormSelect** - These are likely your most straightforward components
-2. **FormCheckboxInput, FormAutoSelect** - Slightly more complex but still isolated
-3. **AnnotationRepeaterRow, LinkRepeaterRow** - Test the row components before the containers
-4. **AnnotationRepeater, LinkRepeater** - Test the repeater logic after rows work
+Start with tests that simulate real user behaviour on the page:
 
-**Testing Strategy for Components:**
+- Fill in required fields
+- Submit successfully
+- Assert navigation / success UI
+- Assert API called with correct payload
 
-- Test props acceptance and rendering
-- Test user interactions (typing, selecting, checking)
-- Test validation states (if handled at component level)
-- Test accessibility (labels, ARIA attributes)
-- Mock any external dependencies
+These tests provide the highest confidence, even if internal components change.
 
-## 2. Utilties and Hooks
-## 3. Integration Testing Strategy
+#### Minimum CreateEntity page tests
 
-For the main `CreateEntity` container, create separate test suites:
+- Happy path submit
+- Submit with missing required fields shows validation errors
+- Server error response shows error state
 
-1. CreateEntity (HTML5 version) - Test basic form submission, field interactions
-2. CreateEntity (HTML5 + Zod) - Test schema validation integration
-3. CreateEntity (react-hook-form + Zod) - Test RHF integration
+### Step 2: Test repeaters and complex UI components
 
-The focus for testing the container should be on:
+Repeaters are high-risk because they involve:
 
-- Form submission with valid data
-- Validation error handling and display
-- Field interactions and state updates
-- Repeater add/remove functionality
-- Error scrolling behavior
+- Dynamic fields
+- Index-based updates
+- Add/remove logic
+- Edge cases with empty rows
 
+These deserve their own tests because they are easy to break and hard to debug.
+
+Focus on:
+
+- Add/remove row works
+- Row data updates correctly
+- Validation errors display in correct row
+
+Example targets:
+
+- `AnnotationRepeater`
+- `LinkRepeater`
+
+### Step 3: Test wrapper components only if they add behaviour
+
+If your component is effectively just a wrapper around an Amsterdam Design System component, it probably doesn't need deep tests.
+
+Write tests only if the wrapper adds behaviour such as:
+
+- Custom error rendering
+- Custom label/ARIA logic
+- Value transformation
+- Integration with react-hook-form
+
+Good candidates:
+
+- `FormAutoSelect` (react-select wrapper - `src/pages/ReactHookForm/CreateEntity/components/FormAutoSelect/FormAutoSelect.tsx`)
+- Checkbox components with conditional behaviour
+
+### Step 4: Test utilities and hooks separately
+
+Utilities and hooks are great test targets because they are:
+
+- Fast
+- Deterministic
+- Unlikely to become flaky
+
+Examples:
+
+- `collectErrorMessages` (`src/pages/ReactHookForm/CreateEntity/utils/collectErrorMessages.ts`)
+- `useEntityFormValidation` (`src/pages/CreateEntity/hooks/useEntityFormValidation.ts`)
+
+These tests catch bugs early without needing UI rendering.
+
+---
+
+### Recommended test breakdown (CreateEntity)
+
+This is a practical "what tests go where" breakdown.
+
+#### schema.test.ts
+
+Test schema validation rules in isolation:
+
+- Required fields
+- Invalid formats
+- Boundary cases (length, ranges)
+- Conditional schema logic (if any)
+
+This is the fastest place to test validation logic.
+
+#### CreateEntity.test.tsx
+
+Test the full workflow:
+
+- Renders correctly
+- Happy path submit works
+- Required validation works
+- Server errors display
+- Repeaters function correctly at page level (at least one test)
+- Loading state prevents double submit
+
+> Do not try to test every possible validation error here.
+> That belongs in schema tests.
+
+#### Component tests (repeaters, select wrappers)
+
+Focus on complex behaviour:
+
+- Repeater row add/remove
+- Correct field name mapping
+- Correct interaction with react-hook-form
+- React-select behaviour
+- Accessibility name/label behaviour
+
+---
+
+### Avoiding duplicate tests
+
+Use this rule:
+
+**Test validation rules once, in the schema**
+
+If the Zod schema already tests that "email must be valid", you do not need 5 UI tests checking invalid emails.
+
+Instead, UI tests should prove:
+
+- Errors appear when invalid
+- Errors are displayed in the right place
+- Error summary behaviour works
+
+---
+
+### Mocking Strategy
+
+#### For unit/integration tests
+
+- Use [MSW](https://mswjs.io/) (preferred) or mock fetch/axios
+- Assert request payload
+- Mock server errors (400 validation errors, 500 unexpected errors)
+
+---
+
+### Summary
+
+When testing [`CreateEntity`](../?path=/story/reacthookform-createentity--base):
+
+1. Start with a few integration tests for the page workflow
+2. Add targeted tests for repeaters and complex components
+3. Test schema validation rules separately
+4. Use utility/hook tests for deterministic logic
+5. Avoid duplicate tests by keeping responsibilities clear

@@ -44,7 +44,9 @@ describe('FormTextInput', () => {
       <FormTextInput {...defaultProps} description="This is a description" />
     );
 
-    expect(screen.getByText('This is a description')).toBeInTheDocument();
+    expect(
+      screen.getByText('This is a description').parentElement
+    ).toBeInTheDocument();
     expect(
       screen.getByText('This is a description').parentElement
     ).toHaveAttribute('id', 'test-input-description');

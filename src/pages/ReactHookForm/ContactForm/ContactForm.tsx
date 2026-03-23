@@ -11,7 +11,7 @@ import {
   TextArea,
   TextInput,
 } from '@amsterdam/design-system-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, Resolver, useForm } from 'react-hook-form';
 import contactFormSchema, { ContactFormData } from './schema';
@@ -26,7 +26,7 @@ const ContactForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
     defaultValues: {
@@ -36,12 +36,16 @@ const ContactForm = () => {
     },
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   // onSubmit will only fire if the form is valid
   const onSubmit = async (data: ContactFormData) => {
     console.log('Form data:', data);
+
+    // Prevent duplicate submissions
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
 
     /**
      * If form is valid use setTimeout to Simulate API call
@@ -49,10 +53,9 @@ const ContactForm = () => {
      * - Here's where you can show a post-submission success component
      * or redirect the user to a new page
      */
-    setIsLoading(true);
-
     setTimeout(() => {
       setIsSubmitted(true);
+      isSubmittingRef.current = false;
     }, 1500);
   };
 
@@ -106,7 +109,7 @@ const ContactForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           {/* Fake loader to simulate API request */}
-          {isLoading && <Loader />}
+          {isSubmitting && <Loader />}
           {hasErrors && (
             <InvalidFormAlert
               errors={alertErrors}
@@ -152,7 +155,12 @@ const ContactForm = () => {
                   </ErrorMessage>
                 )}
                 <TextInput
-                  type="email"
+                  type="text"
+                  // If we use type=email, in some browsers this triggers
+                  // `:invalid` and error styling is applied despite the form
+                  // noValidate on input change
+                  inputMode="email"
+                  autoComplete="email"
                   id="email"
                   name="email"
                   aria-describedby={errors.email?.message ? 'error-email' : ''}
