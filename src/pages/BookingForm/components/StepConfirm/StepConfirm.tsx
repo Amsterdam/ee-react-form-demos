@@ -13,7 +13,6 @@ import FormTextArea from '../FormTextArea/FormTextArea';
 
 interface StepConfirmProps {
   formData: FormData;
-  isSubmitting?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onPrevButtonClick: () => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -21,7 +20,6 @@ interface StepConfirmProps {
 
 const StepConfirm = ({
   formData,
-  isSubmitting = false,
   onChange,
   onPrevButtonClick,
   onSubmit,
@@ -118,9 +116,7 @@ const StepConfirm = ({
             onChange={onChange}
           />
 
-          <Button type="submit">
-            Verzenden
-          </Button>
+          <Button type="submit">Verzenden</Button>
         </form>
       </Grid.Cell>
     </Grid>

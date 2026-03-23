@@ -31,10 +31,11 @@ const renderWithForm = (
 
 describe('ReactHookForm / BookingFormZod - StepConfirm', () => {
   const mockOnPrevButtonClick = vi.fn();
+  const mockOnSubmit = vi.fn();
 
   const defaultProps = {
-    disabled: false,
     onPrevButtonClick: mockOnPrevButtonClick,
+    onSubmit: mockOnSubmit,
   };
 
   beforeEach(() => {
@@ -74,14 +75,5 @@ describe('ReactHookForm / BookingFormZod - StepConfirm', () => {
     renderWithForm(<StepConfirm {...defaultProps} />);
     fireEvent.click(screen.getByRole('link', { name: /vorige vraag/i }));
     expect(mockOnPrevButtonClick).toHaveBeenCalledTimes(1);
-  });
-
-  it('disables textarea and submit button when disabled=true', () => {
-    renderWithForm(<StepConfirm {...defaultProps} isSubmitting />);
-    expect(screen.getByLabelText(/opmerkingen/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /verzenden/i })).toHaveAttribute(
-      'aria-busy',
-      'true'
-    );
   });
 });
