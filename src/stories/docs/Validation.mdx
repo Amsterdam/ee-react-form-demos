@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 > **Warning**
 > Frontend validation is only for UX, not security. All validation must also be enforced on the backend. Frontend forms can still guide users toward valid input and prevent common mistakes.
 
-This document explains how to handle form validation errors and is based on the [GOV.UK Design System Validation Patterns document](https://design-system.service.gov.uk/patterns/validation/)..
+This document explains how to handle form validation errors and is based on the [GOV.UK Design System Validation Patterns document](https://design-system.service.gov.uk/patterns/validation/).
 
 Validation errors happen when a user enters data that is missing, incorrect, ambiguous, or unusable. The goal is to communicate these errors clearly and accessibly so users can fix them and continue.
 
@@ -44,5 +44,5 @@ See also: [Amsterdam Design System - Form Flow](https://designsystem.amsterdam/?
 
 Default browser validation cannot be styled or made accessible in a way consistent with [Amsterdam Design System](https://designsystem.amsterdam/) standards:
 
-- Add `novalidate` to the `<form>` tag.
+- Add `novalidate` to the `<form>` tag. In React/JSX the prop is `noValidate` (camelCase).
 - Don't use `required` attributes on inputs.
