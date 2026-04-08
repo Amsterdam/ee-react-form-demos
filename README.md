@@ -4,15 +4,16 @@ Team responsible: Engineering Enablement team
 
 ## Aims of this repo
 
-This project uses [Storybook](https://storybook.js.org/) to provide demos and examples of common use-cases of forms for Gemeente Amsterdam. There are 2 recommended approaches for building forms in the frontend library [React](react.dev):
+This project uses [Storybook](https://storybook.js.org/) to provide demos and examples of common form use-cases for Gemeente Amsterdam. 
 
-1. Simple flat forms with minimal fields - Forms via [plain HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form)
-2. Advanced/larger forms - Forms via [React Hook Form](https://react-hook-form.com)
+There are two recommended approaches for building forms in [React](react.dev):
 
-- **Flat** means with a single level of hierachy (i.e. no conditional child fields). 
-- **Minimal fields** means with simple default form fields (for example, input, textarea, select) with no conditional handling or relations between fields.
+1. **Simple forms** — few fields, single level of hierarchy, no conditional logic → use [plain HTML5 forms](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form)
+2. **Complex forms** — many fields, conditional child fields, or relations between fields → use [React Hook Form](https://react-hook-form.com)
 
-[TODO: See storybook docs]
+Check out the [project storybook](https://amsterdam.github.io/ee-react-form-demos/) for documentation and demos.
+
+If you are looking for a React Hook Form + Amsterdam Design System solution, check out our forms package [ee-ads-rhf](https://github.com/Amsterdam/ee-ads-rhf).
 
 ## How to use this repo?
 
