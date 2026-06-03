@@ -34,7 +34,7 @@
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@typescript-eslint/parser": "^8.49.0",
     "@vitejs/plugin-react-swc": "^4.2.2",
-    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/coverage-v8": "^4.1.8",
     "copyfiles": "^2.4.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
@@ -59,7 +59,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.2",
     "vite-plugin-svgr": "^4.5.0",
-    "vitest": "^4.0.15"
+    "vitest": "^4.1.8"
   },
   "dependencies": {
     "@amsterdam/design-system-assets": "^2.0.0",
