@@ -94,10 +94,13 @@ describe('ContactForm', () => {
 
     await user.click(screen.getByRole('button', { name: /submit/i }));
 
-    await waitFor(() => {
-      expect(
-        screen.getByRole('status', { name: /bezig met verzenden/i })
-      ).toBeInTheDocument();
+    expect(
+      screen.getByRole('status', { name: /bezig met verzenden/i })
+    ).toBeInTheDocument();
+
+    // Let the fake API call finish *inside* act
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
     });
   });
 

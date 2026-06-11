@@ -114,12 +114,15 @@ describe('CreateEntity', () => {
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
 
-    act(() => fireEvent.click(submitButton));
+    fireEvent.click(submitButton);
 
     // This waits for the button text to change
-    await waitFor(() =>
-      expect(screen.getByRole('button', { name: /submitting/i }))
-    );
+    expect(screen.getByRole('button', { name: /submitting/i }));
+
+    // Let the fake API call finish *inside* act
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
   });
 
   it('submits form and shows loader + success alert', async () => {
@@ -127,20 +130,21 @@ describe('CreateEntity', () => {
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
 
-    await act(() => fireEvent.click(submitButton));
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
 
     expect(
       screen.getByRole('status', { name: /bezig met verzenden/i })
     ).toBeInTheDocument();
 
-    await act(() => {
-      vi.runAllTimers();
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
     });
 
-    await waitFor(() => {
-      const successMessage = screen.queryByText(/the form has been sent/i);
-      return expect(successMessage).toBeInTheDocument();
-    });
+    expect(
+      await screen.findByText(/the form has been sent/i)
+    ).toBeInTheDocument();
   });
 
   it('resets the form on clicking "Reset"', () => {
