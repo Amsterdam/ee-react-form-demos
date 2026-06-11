@@ -171,7 +171,7 @@ const BookingForm = () => {
       setIsLoading(false);
       setIsSubmitted(true);
       isSubmittingRef.current = false;
-    }, 1500);
+    }, 2500);
   };
 
   const steps = [

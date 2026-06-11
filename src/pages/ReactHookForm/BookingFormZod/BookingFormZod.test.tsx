@@ -85,8 +85,12 @@ describe('ReactHookForm / BookingFormZod', () => {
     // Step 3 — Confirm
     await user.click(screen.getByRole('button', { name: /verzenden/i }));
 
+    expect(
+      screen.getByRole('status', { name: /bezig met verzenden/i })
+    ).toBeInTheDocument();
+
     // Simulate setTimeout completion
-    act(() => vi.advanceTimersByTime(1500));
+    act(() => vi.advanceTimersByTime(2500));
 
     await waitFor(() => {
       expect(screen.getByText(/dank u voor uw inzending/i)).toBeInTheDocument();

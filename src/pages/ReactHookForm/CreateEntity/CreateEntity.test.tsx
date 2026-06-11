@@ -129,6 +129,10 @@ describe('CreateEntity', () => {
 
     await act(() => fireEvent.click(submitButton));
 
+    expect(
+      screen.getByRole('status', { name: /bezig met verzenden/i })
+    ).toBeInTheDocument();
+
     await act(() => {
       vi.runAllTimers();
     });

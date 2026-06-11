@@ -44,23 +44,19 @@ const BookingForm = () => {
   });
 
   const handleSubmit: SubmitHandler<FieldValues> = useCallback(async () => {
-    try {
-      // Prevent duplicate submissions
-      if (isSubmittingRef.current) return;
-      isSubmittingRef.current = true;
+    // Prevent duplicate submissions
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
 
-      /**
-       * Use setTimeout to Simulate API call
-       * - Here's where validation can happen
-       * - Here's where you can show a post-submission success component
-       * or redirect the user to a new page
-       */
-      setTimeout(() => {
-        setIsSubmitted(true);
-        isSubmittingRef.current = false;
-      }, 1500);
+    try {
+      await new Promise<void>(resolve => {
+        window.setTimeout(resolve, 2500);
+      });
+
+      setIsSubmitted(true);
     } catch (error) {
       console.log('form error!', error);
+    } finally {
       isSubmittingRef.current = false;
     }
   }, []);
