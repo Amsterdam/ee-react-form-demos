@@ -6,6 +6,10 @@ const meta = {
   component: CreateEntity,
   parameters: {
     layout: 'fullscreen',
+    pageBackgroundColor: '#fff',
+    themes: {
+      themeOverride: 'Compact',
+    },
     options: {
       panelPosition: 'bottom',
       bottomPanelHeight: 0,

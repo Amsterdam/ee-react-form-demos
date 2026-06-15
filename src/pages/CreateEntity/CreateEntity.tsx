@@ -8,7 +8,6 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import '@amsterdam/design-system-tokens/dist/compact.css';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import SubmissionOutput from '@/components/SubmissionOutput/SubmissionOutput';
 import Loader from '@/components/Loader/Loader';
