@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import BookingFormZod from '@/pages/BookingForm/BookingForm';
 import rawComponent from '@/pages/BookingForm/BookingForm?raw';
 import rawLoader from '@/components/Loader/Loader?raw';

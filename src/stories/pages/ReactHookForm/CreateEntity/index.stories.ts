@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import CreateEntity from '@/pages/ReactHookForm/CreateEntity/CreateEntity';
 
 const meta = {

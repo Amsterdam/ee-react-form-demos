@@ -1,5 +1,5 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
+import storybook from 'eslint-plugin-storybook';
 
 import { defineConfig, globalIgnores } from 'eslint/config';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
@@ -20,76 +20,80 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
-export default defineConfig([globalIgnores([
-  '**/.history',
-  '**/.husky',
-  '**/.vscode',
-  '**/coverage',
-  '**/dist',
-  '**/node_modules',
-  '**/tsconfig.json',
-  '**/tsconfig.prod.json',
-  '**/package-lock.json',
-  '**/package.json',
-]), {
-  extends: compat.extends(
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:react/recommended'
-  ),
+export default defineConfig([
+  globalIgnores([
+    '**/.history',
+    '**/.husky',
+    '**/.vscode',
+    '**/coverage',
+    '**/dist',
+    '**/node_modules',
+    '**/tsconfig.json',
+    '**/tsconfig.prod.json',
+    '**/package-lock.json',
+    '**/package.json',
+  ]),
+  {
+    extends: compat.extends(
+      'eslint:recommended',
+      'plugin:@typescript-eslint/eslint-recommended',
+      'plugin:@typescript-eslint/recommended',
+      'prettier',
+      'plugin:react/recommended'
+    ),
 
-  plugins: {
-    '@typescript-eslint': typescriptEslint,
-    prettier,
-    react,
-  },
-
-  languageOptions: {
-    globals: {
-      ...globals.browser,
-      ...globals.node,
+    plugins: {
+      '@typescript-eslint': typescriptEslint,
+      prettier,
+      react,
     },
 
-    parser: tsParser,
-    ecmaVersion: 5,
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
 
-    parserOptions: {
-      ecmaFeatures: {
-        jsx: true,
+      parser: tsParser,
+      ecmaVersion: 5,
+
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
-  },
 
-  settings: {
-    react: {
-      version: 'detect',
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+
+    rules: {
+      'prettier/prettier': 'error',
+      'react/react-in-jsx-scope': 'off',
+      'sort-imports': [
+        'error',
+        {
+          allowSeparatedGroups: false,
+          ignoreCase: true,
+          ignoreDeclarationSort: true,
+          ignoreMemberSort: false,
+        },
+      ],
+      'max-len': [
+        'warn',
+        {
+          code: 100,
+          comments: 80,
+          ignoreUrls: true,
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+        },
+      ],
+      '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
-
-  rules: {
-    'prettier/prettier': 'error',
-    'react/react-in-jsx-scope': 'off',
-    'sort-imports': [
-      'error',
-      {
-        allowSeparatedGroups: false,
-        ignoreCase: true,
-        ignoreDeclarationSort: true,
-        ignoreMemberSort: false,
-      },
-    ],
-    'max-len': [
-      'warn',
-      {
-        code: 100,
-        comments: 80,
-        ignoreUrls: true,
-        ignoreStrings: true,
-        ignoreTemplateLiterals: true,
-      },
-    ],
-    '@typescript-eslint/no-empty-object-type': 'off',
-  },
-}, ...storybook.configs["flat/recommended"]]);
+  ...storybook.configs['flat/recommended'],
+]);
