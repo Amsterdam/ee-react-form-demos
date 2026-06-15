@@ -40,10 +40,10 @@ export const decorators = [
 
 export const parameters = {
   backgrounds: {
-    disable: true,
     grid: {
       disable: true,
     },
+    disabled: true,
   },
   controls: {
     sort: 'alpha', // Sorts controls in the Controls addon
@@ -81,6 +81,6 @@ export const parameters = {
   },
   viewMode: 'docs',
   viewport: {
-    viewports,
+    options: viewports,
   },
 };
