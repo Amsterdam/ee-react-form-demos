@@ -1,3 +1,4 @@
+/* stylelint-disable @stylistic/function-parentheses-space-inside */
 .loader {
   background: #fff;
   border: 1px solid #ccc;
@@ -9,11 +10,13 @@
 
 .loader::before {
   background-image:
-    radial-gradient(ellipse at center,
-    #0000 24%,
-    #ec0000 25%,
-    #ec0000 64%,
-    #0000 65%),
+    radial-gradient(
+      ellipse at center,
+      #0000 24%,
+      #ec0000 25%,
+      #ec0000 64%,
+      #0000 65%
+    ),
     linear-gradient(to bottom, #0000 34%, #ec0000 35%);
   background-position: center top;
   background-repeat: no-repeat;
