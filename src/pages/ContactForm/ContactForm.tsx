@@ -79,7 +79,7 @@ const ContactForm = () => {
       setTimeout(() => {
         setIsSubmitted(true);
         isSubmittingRef.current = false;
-      }, 1500);
+      }, 2500);
     } else {
       isSubmittingRef.current = false;
     }

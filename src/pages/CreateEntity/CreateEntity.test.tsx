@@ -79,14 +79,17 @@ describe('CreateEntity', () => {
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
 
-    act(() => fireEvent.click(submitButton));
+    fireEvent.click(submitButton);
 
     // This waits for the button text to change
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /submitting/i })
-      ).toBeInTheDocument()
-    );
+    expect(
+      screen.getByRole('button', { name: /submitting/i })
+    ).toBeInTheDocument();
+
+    // Let the fake API call finish *inside* act
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
   });
 
   it('submits form and shows loader + success alert', async () => {

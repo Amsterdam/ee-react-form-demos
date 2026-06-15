@@ -1,15 +1,17 @@
 {
   "customSyntax": "postcss-scss",
-  "plugins": ["stylelint-order", "@stylistic/stylelint-plugin"],
+  "plugins": ["stylelint-order", "stylelint-prettier"],
   "extends": [
     "stylelint-config-recommended",
     "stylelint-config-sass-guidelines"
   ],
   "rules": {
-    "no-descending-specificity": null,
     "max-nesting-depth": 2,
-    "selector-max-id": 1,
+    "media-query-no-invalid": null,
+    "no-descending-specificity": null,
+    "prettier/prettier": true,
     "order/properties-alphabetical-order": true,
-    "media-query-no-invalid": null
+    "selector-class-pattern": null,
+    "selector-max-id": 1
   }
 }

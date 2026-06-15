@@ -47,16 +47,15 @@ const ContactForm = () => {
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
 
-    /**
-     * If form is valid use setTimeout to Simulate API call
-     * - Here's where validation can happen
-     * - Here's where you can show a post-submission success component
-     * or redirect the user to a new page
-     */
-    setTimeout(() => {
+    try {
+      await new Promise<void>(resolve => {
+        window.setTimeout(resolve, 2500);
+      });
+
       setIsSubmitted(true);
+    } finally {
       isSubmittingRef.current = false;
-    }, 1500);
+    }
   };
 
   const hasErrors = Object.keys(errors).length > 0;

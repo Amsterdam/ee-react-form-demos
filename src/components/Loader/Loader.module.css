@@ -1,29 +1,10 @@
 .root {
-  background: rgba(255, 255, 255, 0.6);
-  bottom: 0;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
   height: 100%;
-  left: 0;
+  inset: 0;
+  justify-content: center;
   position: fixed;
-  right: 0;
-  top: 0;
   width: 100%;
-}
-
-.loader {
-  animation: loader 1s infinite linear;
-  aspect-ratio: 1;
-  border: 8px solid var(--ams-color-separator);
-  border-radius: 50%;
-  border-right-color: var(--ams-button-primary-background-color);
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  translate: -50%;
-  width: 50px;
-}
-
-@keyframes loader {
-  to {
-    transform: rotate(1turn);
-  }
 }

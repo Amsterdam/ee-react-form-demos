@@ -153,7 +153,7 @@ const CreateEntity = () => {
       setIsLoading(false);
       setIsSubmitted(true);
       isSubmittingRef.current = false;
-    }, 1500);
+    }, 2500);
   };
 
   // Reset the form to a blank state

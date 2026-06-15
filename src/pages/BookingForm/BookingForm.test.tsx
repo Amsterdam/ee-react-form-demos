@@ -77,10 +77,12 @@ describe('BookingForm', () => {
     // Complete Step 3
     fireEvent.click(screen.getByRole('button', { name: /verzenden/i }));
 
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
+    expect(
+      screen.getByRole('status', { name: /bezig met verzenden/i })
+    ).toBeInTheDocument();
 
     // Fast-forward to skip the loader
-    act(() => vi.advanceTimersByTime(1500));
+    act(() => vi.advanceTimersByTime(2500));
 
     await waitFor(() =>
       expect(screen.getByText(/dank u voor uw inzending/i)).toBeInTheDocument()

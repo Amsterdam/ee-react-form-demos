@@ -125,21 +125,20 @@ const CreateEntity = () => {
   // onSubmit will only fire if the form is valid
   // @ts-expect-error 'data' is defined but never used
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit = (data: RHFEntityFormData) => {
+  const onSubmit = async (data: RHFEntityFormData) => {
     // Prevent duplicate submissions
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
 
-    /**
-     * Use setTimeout to Simulate API call
-     * - Here's where validation can happen
-     * - Here's where you can show a post-submission success component
-     * or redirect the user to a new page
-     */
-    setTimeout(() => {
+    try {
+      await new Promise<void>(resolve => {
+        window.setTimeout(resolve, 2500);
+      });
+
       setIsSubmitted(true);
+    } finally {
       isSubmittingRef.current = false;
-    }, 1500);
+    }
   };
 
   const onInvalid = () => {

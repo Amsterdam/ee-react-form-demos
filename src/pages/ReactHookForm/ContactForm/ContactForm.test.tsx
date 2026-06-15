@@ -82,7 +82,7 @@ describe('ContactForm', () => {
   });
 
   it('should show a loader when form is being submitted', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<ContactForm />);
 
     await user.type(screen.getByLabelText(/name/i), 'John');
@@ -92,10 +92,15 @@ describe('ContactForm', () => {
     );
     await user.type(screen.getByLabelText(/message/i), 'Hello!');
 
-    user.click(screen.getByRole('button', { name: /submit/i }));
+    await user.click(screen.getByRole('button', { name: /submit/i }));
 
-    await waitFor(() => {
-      expect(screen.getByTestId('loader')).toBeInTheDocument();
+    expect(
+      screen.getByRole('status', { name: /bezig met verzenden/i })
+    ).toBeInTheDocument();
+
+    // Let the fake API call finish *inside* act
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
     });
   });
 

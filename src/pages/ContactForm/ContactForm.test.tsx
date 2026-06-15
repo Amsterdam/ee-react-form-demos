@@ -83,7 +83,9 @@ describe('ContactForm', () => {
     await user.type(bodyInput, 'Test message');
     await user.click(submitButton);
 
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
+    expect(
+      screen.getByRole('status', { name: /bezig met verzenden/i })
+    ).toBeInTheDocument();
   });
 
   it('should show success message after successful submission', async () => {
@@ -109,7 +111,7 @@ describe('ContactForm', () => {
           )
         ).toBeInTheDocument();
       },
-      { timeout: 2000 }
+      { timeout: 3000 }
     );
   });
 
@@ -141,7 +143,7 @@ describe('ContactForm', () => {
       () => {
         expect(screen.getByText('Success!')).toBeInTheDocument();
       },
-      { timeout: 2000 }
+      { timeout: 3000 }
     );
   });
 
