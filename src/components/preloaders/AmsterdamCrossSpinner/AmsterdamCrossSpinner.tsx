@@ -8,6 +8,8 @@ const AmsterdamCrossSpinner = () => (
           key={index}
           className={styles.cross}
           style={{ animationDelay: `${index * 0.75}s` }}
+          aria-hidden="true"
+          focusable="false"
           width="187"
           height="187"
           viewBox="0 0 187 187"
