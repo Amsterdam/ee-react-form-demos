@@ -21,7 +21,6 @@ const config: StorybookConfig = {
       },
     },
     '@storybook/addon-themes',
-    '@jls-digital/storybook-addon-code',
   ],
 
   framework: {

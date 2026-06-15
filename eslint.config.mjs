@@ -1,3 +1,6 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from 'eslint-plugin-storybook';
+
 import { defineConfig, globalIgnores } from 'eslint/config';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import prettier from 'eslint-plugin-prettier';
@@ -92,4 +95,5 @@ export default defineConfig([
       '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
+  ...storybook.configs['flat/recommended'],
 ]);

@@ -1,6 +1,8 @@
 import '@amsterdam/design-system-tokens/dist/index.css';
+import '@amsterdam/design-system-tokens/dist/compact.theme.css';
 import '@amsterdam/design-system-assets/font/index.css';
 import '@amsterdam/design-system-css/dist/index.css';
+import type { CSSProperties } from 'react';
 import { Page } from '@amsterdam/design-system-react';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import type { StoryContext, StoryFn } from '@storybook/react';
@@ -15,35 +17,45 @@ export const argTypes = {
 
 // Wrap in Page, set language to Dutch for Canvas and Stories
 export const decorators = [
-  (Story: StoryFn, context: StoryContext) => (
-    <Page
-      className={
-        context.args['color'] === 'inverse'
-          ? 'ams-docs-dark-background'
-          : context.args['color'] === 'contrast'
-            ? 'ams-docs-light-background'
-            : ''
-      }
-      lang="nl"
-    >
-      {Story(context.args, context)}
-    </Page>
-  ),
+  (Story: StoryFn, context: StoryContext) => {
+    const pageBackgroundColor = context.parameters['pageBackgroundColor'];
+    const pageStyle = pageBackgroundColor
+      ? ({
+          '--ams-page-background-color': pageBackgroundColor,
+        } as CSSProperties)
+      : undefined;
+
+    return (
+      <Page
+        className={
+          context.args['color'] === 'inverse'
+            ? 'ams-docs-dark-background'
+            : context.args['color'] === 'contrast'
+              ? 'ams-docs-light-background'
+              : ''
+        }
+        lang="nl"
+        style={pageStyle}
+      >
+        {Story(context.args, context)}
+      </Page>
+    );
+  },
   withThemeByClassName({
     defaultTheme: 'Spacious',
     themes: {
-      Compact: 'ams-theme--compact',
-      Spacious: '',
+      Compact: 'ams-body ams-theme--compact',
+      Spacious: 'ams-body',
     },
   }),
 ];
 
 export const parameters = {
   backgrounds: {
-    disable: true,
     grid: {
       disable: true,
     },
+    disabled: true,
   },
   controls: {
     sort: 'alpha', // Sorts controls in the Controls addon
@@ -81,6 +93,6 @@ export const parameters = {
   },
   viewMode: 'docs',
   viewport: {
-    viewports,
+    options: viewports,
   },
 };

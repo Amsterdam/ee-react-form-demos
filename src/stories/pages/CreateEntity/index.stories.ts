@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import CreateEntity from '@/pages/CreateEntity/CreateEntity';
 
 const meta = {
@@ -6,6 +6,10 @@ const meta = {
   component: CreateEntity,
   parameters: {
     layout: 'fullscreen',
+    pageBackgroundColor: '#fff',
+    themes: {
+      themeOverride: 'Compact',
+    },
     options: {
       panelPosition: 'bottom',
       bottomPanelHeight: 0,

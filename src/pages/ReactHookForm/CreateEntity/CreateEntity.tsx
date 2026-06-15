@@ -17,7 +17,6 @@ import {
   Paragraph,
   Row,
 } from '@amsterdam/design-system-react';
-import '@amsterdam/design-system-tokens/dist/compact.css';
 import FormSelect from './components/FormSelect/FormSelect';
 import FormTextInput from './components/FormTextInput/FormTextInput';
 import FormTextArea from './components/FormTextArea/FormTextArea';
