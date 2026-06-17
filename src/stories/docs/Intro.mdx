@@ -7,7 +7,8 @@ import ContactForm0 from '../assets/contact-form-0.png';
 import CreateEntity1 from '../assets/create-entity-1.png';
 import CreateEntity2 from '../assets/create-entity-2.png';
 
-export const RightArrow = () => <svg
+export const RightArrow = () => (
+  <svg
     viewBox="0 0 14 14"
     width="8px"
     height="14px"
@@ -17,11 +18,12 @@ export const RightArrow = () => <svg
       shapeRendering: 'inherit',
       verticalAlign: 'middle',
       fill: 'currentColor',
-      'path fill': 'currentColor'
+      'path fill': 'currentColor',
     }}
->
-  <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
-</svg>
+  >
+    <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
+  </svg>
+);
 
 <Meta title="Docs/Introduction" />
 
@@ -44,7 +46,7 @@ Frontend applications in Gemeente Amsterdam use the component library [React](ht
 
 - **HTML5** for quick, simple forms
 - **React Hook Form** when you need advanced validation, performance and flexibility.
-  - For a React Hook Form + Amsterdam Design System solution, check out the forms package [ee-ads-rhf](https://github.com/Amsterdam/ee-ads-rhf).
+- **@amsterdam/ee-ads-rhf** as our internal [React Hook Form](https://react-hook-form.com/) + [Amsterdam Design System](https://designsystem.amsterdam/) package: [npm package](https://www.npmjs.com/package/@amsterdam/ee-ads-rhf).
 
 ## Starter Demos
 
@@ -54,23 +56,30 @@ Frontend applications in Gemeente Amsterdam use the component library [React](ht
       <img src={ContactForm0} alt="An example of simple contact form" />
       <div>
         <h4 className="sb-section-item-heading">Contact form</h4>
-        <p className="sb-section-item-paragraph">A simple three-field contact form with schema validation on form submit.</p>
+        <p className="sb-section-item-paragraph">
+          A simple three-field contact form with schema validation on form
+          submit.
+        </p>
         <div className="sb-section-item-links">
           <a href="./?path=/docs/plain-html5-contactform-zod-validation--docs">Learn more (HTML5) <RightArrow /></a>
           <a href="./?path=/docs/reacthookform-contactform--docs">Learn more (React Hook Form) <RightArrow /></a>
+          <a href="./?path=/docs/ee-ads-rhf-contactform--docs">Learn more (@amsterdam/ee-ads-rhf) <RightArrow /></a>
         </div>
       </div>
     </div>
     <div className="sb-section-item">
-      <img
-        src={BookingForm1}
-        alt="An example of simple contact form"
-      />
-      <h4 className="sb-section-item-heading">Booking form (Schema validation)</h4>
-      <p className="sb-section-item-paragraph">A booking form with required contact, scheduling fields and validation via a Zod schema.</p>
+      <img src={BookingForm1} alt="An example of simple contact form" />
+      <h4 className="sb-section-item-heading">
+        Booking form (Schema validation)
+      </h4>
+      <p className="sb-section-item-paragraph">
+        A booking form with required contact, scheduling fields and validation
+        via a Zod schema.
+      </p>
       <div className="sb-section-item-links">
         <a href="./?path=/docs/plain-html5-bookingform-zod-validation--docs">Learn more (HTML5) <RightArrow /></a>
         <a href="./?path=/docs/reacthookform-bookingformzod--docs">Learn more (React Hook Form) <RightArrow /></a>
+        <a href="./?path=/docs/ee-ads-rhf-bookingformzod--docs">Learn more (@amsterdam/ee-ads-rhf) <RightArrow /></a>
       </div>
     </div>
   </div>
@@ -87,19 +96,28 @@ An advanced form for generating correctly formatted YAML for a Backstage entity,
         src={CreateEntity1}
         alt="An example of create an entity form with schema validation"
       />
-      <h4 className="sb-section-item-heading">Create an entity form (HTML5 with Schema validation)</h4>
-      <p className="sb-section-item-paragraph">With HTML5 inputs and Zod-based validation for stricter, more customizable field checks. Includes repeater fields, conditional inputs and auto-complete suggestions.</p>
+      <h4 className="sb-section-item-heading">
+        Create an entity form (HTML5 with Schema validation)
+      </h4>
+      <p className="sb-section-item-paragraph">
+        With HTML5 inputs and Zod-based validation for stricter, more
+        customizable field checks. Includes repeater fields, conditional inputs
+        and auto-complete suggestions.
+      </p>
       <div className="sb-section-item-links">
         <a href="./?path=/docs/plain-html5-createentity-zod-validation--docs">Learn more <RightArrow /></a>
       </div>
     </div>
     <div className="sb-section-item">
-      <img
-        src={CreateEntity2}
-        alt="An example of simple contact form"
-      />
-      <h4 className="sb-section-item-heading">Create an entity form (React Hook Form with Schema validation)</h4>
-      <p className="sb-section-item-paragraph">Powered by React Hook Form and Zod validation, optimised for performance, flexibility and complex input handling. Features repeater fields, conditional inputs and auto-complete suggestions.</p>
+      <img src={CreateEntity2} alt="An example of simple contact form" />
+      <h4 className="sb-section-item-heading">
+        Create an entity form (React Hook Form with Schema validation)
+      </h4>
+      <p className="sb-section-item-paragraph">
+        Powered by React Hook Form and Zod validation, optimised for
+        performance, flexibility and complex input handling. Features repeater
+        fields, conditional inputs and auto-complete suggestions.
+      </p>
       <div className="sb-section-item-links">
         <a href="./?path=/docs/reacthookform-createentity--docs">Learn more (React Hook Form) <RightArrow /></a>
       </div>
@@ -139,8 +157,8 @@ Otherwise if you have any questions or other matters regarding implementing form
           target="_blank"
         >developers.amsterdam<RightArrow /></a>
     </div>
-</div>
 
+</div>
 
 <style>
   {`
