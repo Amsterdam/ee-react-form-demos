@@ -1,0 +1,135 @@
+import { Canvas, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as BookingFormStories from './index.stories';
+import BookingForm from '@/pages/EeAdsRhf/BookingForm/BookingForm?raw';
+
+import StepIntro from '@/pages/EeAdsRhf/BookingForm/components/StepIntro/StepIntro?raw';
+import SuccessContent from '@/pages/EeAdsRhf/BookingForm/components/SuccessContent/SuccessContent?raw';
+import StepPersonalDetails from '@/pages/EeAdsRhf/BookingForm/components/StepPersonalDetails/StepPersonalDetails?raw';
+import StepAppointment from '@/pages/EeAdsRhf/BookingForm/components/StepAppointment/StepAppointment?raw';
+import StepConfirm from '@/pages/EeAdsRhf/BookingForm/components/StepConfirm/StepConfirm?raw';
+import Loader from '@/components/Loader/Loader?raw';
+import schema from '@/pages/EeAdsRhf/BookingForm/schema?raw';
+
+<Meta of={BookingFormStories} />
+
+# @amsterdam/ee-ads-rhf - Booking Form
+
+**<a href="https://github.com/Amsterdam/ee-react-form-demos/tree/main/src/pages/EeAdsRhf/BookingForm" target="_blank">GitHub Repo URL</a>**
+
+#### Table of Contents
+
+- [Requirements](#requirements)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Key Points](#key-points)
+- [How to Implement](#how-to-implement)
+- [Usage](#usage)
+
+## Requirements
+
+- [React](https://react.dev)
+- [React Hook Form](https://react-hook-form.com/)
+- [Amsterdam Design System](https://designsystem.amsterdam)
+- [@amsterdam/ee-ads-rhf](https://www.npmjs.com/package/@amsterdam/ee-ads-rhf)
+
+## Overview
+
+This demo implements the NPM package [@amsterdam/ee-ads-rhf](https://www.npmjs.com/package/@amsterdam/ee-ads-rhf) variant of the booking form with the following fields:
+
+- **Name** (required)
+- **Email** (required, must be a valid email format)
+- **Start Date & Time** (required)
+- **End Date & Time** (required, must occur after Start Date/Time)
+- **Comments** (optional textarea)
+
+### Validation Rules
+
+- Name, Email, Start Date/Time, End Date/Time are required.
+- Email must be a valid format.
+- End Date/Time must be later than Start Date/Time.
+- The Comments field is optional.
+
+## Purpose
+
+This variant demonstrates the same RHF booking flow as the standard examples, but implemented through `@amsterdam/ee-ads-rhf` abstractions.
+
+In this case, the form must ensure that the end date/time occurs after the start date/time. HTML5 alone cannot reliably enforce this, but with RHF (and optionally a [Zod](https://zod.dev/) schema), the rule is expressed cleanly and enforced consistently.
+
+## Key Points
+
+- **Package variant** - Behavior is intentionally aligned with the RHF Booking Form demo, while form integration is routed through `@amsterdam/ee-ads-rhf`.
+- **Cross-field validation** - RHF integrates with schema validation or custom rules, making it easy to compare related fields (e.g. end vs start).
+- **Consistent UX** - Instead of browser tooltips, errors are displayed inline, styled with the design system.
+- **Error state management** - RHF automatically tracks touched/dirty states and surfaces errors in a predictable way.
+- **Cleaner developer experience** - With `zodResolver` or RHF’s built-in rules, validation logic is centralized and easier to maintain.
+
+### Pros
+
+- **Advanced validation support** – cross-field rules are expressed clearly and enforced consistently.
+- **Better UX** – inline errors are consistent, accessible and not tied to browser quirks.
+- **Scalable** – adding more conditional fields or rules is straightforward.
+- **State handling built in** – RHF tracks touched, dirty and error states without boilerplate.
+
+### Cons
+
+- **Extra setup** – requires RHF setup and optional schema integration compared to HTML5 attributes.
+- **Learning curve** – developers need to understand RHF concepts (e.g. `register`, `watch`, `resolver`).
+- **Overhead for small forms** – for a very simple form, RHF may feel heavier than necessary.
+
+When consuming this package variant, an additional consideration is package versioning and release synchronization across consuming apps.
+
+## How to Implement
+
+To implement this `BookingForm` there are 8 core files:
+
+1. The React components (7 files):
+   - [StepIntro](#--stepintrotsx)
+   - [SuccessContent](#--successcontenttsx)
+   - [StepPersonalDetails](#--steppersonaldetailstsx)
+   - [StepAppointment](#--stepappointmenttsx)
+   - [StepConfirm](#--stepconfirmtsx)
+   - [Loader](#--loadertsx)
+2. Validation schema (1 file):
+   - [schema.ts](#--schemats)
+
+_The `Loader` component is excluded from the docs, it is a generic preloader._
+
+## Usage
+
+The following files are required:
+
+### 1. React Components
+
+#### - BookingForm.tsx
+
+<Source code={BookingForm} />
+
+#### - StepIntro.tsx
+
+<Source code={StepIntro} />
+
+#### - StepPersonalDetails.tsx
+
+<Source code={StepPersonalDetails} />
+
+#### - StepAppointment.tsx
+
+<Source code={StepAppointment} />
+
+#### - StepConfirm.tsx
+
+<Source code={StepConfirm} />
+
+#### - Loader.tsx
+
+<Source code={Loader} />
+
+#### - SuccessContent.tsx
+
+<Source code={SuccessContent} />
+
+### 2. Validation schema
+
+#### - schema.tsx
+
+<Source code={schema} />

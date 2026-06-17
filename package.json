@@ -39,6 +39,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-storybook": "10.4.5",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
@@ -59,8 +60,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.2",
     "vite-plugin-svgr": "^4.5.0",
-    "vitest": "^4.1.8",
-    "eslint-plugin-storybook": "10.4.5"
+    "vitest": "^4.1.8"
   },
   "dependencies": {
     "@amsterdam/design-system-assets": "^2.3.0",
@@ -68,6 +68,7 @@
     "@amsterdam/design-system-react": "^4.1.0",
     "@amsterdam/design-system-react-icons": "^2.0.0",
     "@amsterdam/design-system-tokens": "^4.0.1",
+    "@amsterdam/ee-ads-rhf": "^0.0.5",
     "@hookform/resolvers": "^5.1.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
