@@ -28,6 +28,7 @@ export interface FormData {
 const BookingForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isSubmittingRef = useRef(false);
 
   const nowDateTime = new Date();
@@ -50,6 +51,7 @@ const BookingForm = () => {
     // Prevent duplicate submissions
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
+    setIsLoading(true);
 
     /**
      * Use setTimeout to Simulate API call
@@ -67,6 +69,7 @@ const BookingForm = () => {
     } catch (error) {
       console.log('form error!', error);
     } finally {
+      setIsLoading(false);
       isSubmittingRef.current = false;
     }
   }, []);
@@ -98,7 +101,7 @@ const BookingForm = () => {
   return (
     <Page>
       <PageHeader className="ams-mb-xl" />
-      {form.formState.isSubmitting && !isSubmitted && <Loader />}
+      {isLoading && !isSubmitted && <Loader />}
       <FormProvider {...form}>
         {!isSubmitted ? steps[currentStep] : <SuccessContent />}
       </FormProvider>

@@ -51,7 +51,7 @@ const CreateEntity = () => {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setValue,
     watch,
   } = useForm<RHFEntityFormData>({
@@ -108,6 +108,7 @@ const CreateEntity = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitTouched, setIsSubmitTouched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isSubmittingRef = useRef(false);
 
   // useFieldArray for repeater fields. This is also used in the
@@ -128,6 +129,7 @@ const CreateEntity = () => {
     // Prevent duplicate submissions
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
+    setIsLoading(true);
 
     try {
       await new Promise<void>(resolve => {
@@ -136,6 +138,7 @@ const CreateEntity = () => {
 
       setIsSubmitted(true);
     } finally {
+      setIsLoading(false);
       isSubmittingRef.current = false;
     }
   };
@@ -478,7 +481,7 @@ const CreateEntity = () => {
 
           <Row>
             <Button type="submit">
-              {isSubmitting ? 'Submitting...' : 'Submit'}
+              {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
             <Button type="button" variant="secondary" onClick={resetForm}>
               Reset
@@ -500,7 +503,7 @@ const CreateEntity = () => {
       />
 
       {/* Fake loader to simulate API request */}
-      {isSubmitting && <Loader />}
+      {isLoading && <Loader />}
       {/* Fake placeholder for post-submission state */}
       {isSubmitted && (
         <div className={styles.loader}>

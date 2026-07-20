@@ -65,6 +65,25 @@ describe('Examples / ContactForm', () => {
     });
   });
 
+  it('should not lock page scroll after an invalid submit', async () => {
+    render(<ContactForm />);
+
+    expect(document.body.style.overflow).toBe('');
+
+    fireEvent.click(screen.getByRole('button', { name: /verzenden/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/verbeter de fouten voor u verder gaat/i)
+      ).toBeInTheDocument();
+    });
+
+    expect(document.body.style.overflow).toBe('');
+    expect(
+      screen.queryByRole('status', { name: /bezig met verzenden/i })
+    ).not.toBeInTheDocument();
+  });
+
   it('should show individual validation errors', async () => {
     render(<ContactForm />);
 
@@ -101,10 +120,12 @@ describe('Examples / ContactForm', () => {
     });
     fireEvent.click(screen.getByLabelText(/man/i));
     fireEvent.click(screen.getByLabelText(/nieuwsbrieven/i));
-    fireEvent.click(screen.getByRole('button', { name: /verzenden/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /verzenden/i }));
+    });
 
     expect(
-      screen.getByRole('status', { name: /bezig met verzenden/i })
+      await screen.findByRole('status', { name: /bezig met verzenden/i })
     ).toBeInTheDocument();
 
     // Let the fake API call finish *inside* act

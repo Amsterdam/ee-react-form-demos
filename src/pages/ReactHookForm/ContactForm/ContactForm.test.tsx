@@ -58,6 +58,11 @@ describe('ContactForm', () => {
         screen.getByText('Verbeter de fouten voor u verder gaat')
       ).toBeInTheDocument();
     });
+
+    expect(document.body.style.overflow).toBe('');
+    expect(
+      screen.queryByRole('status', { name: /bezig met verzenden/i })
+    ).not.toBeInTheDocument();
   });
 
   it('should show individual validation errors', async () => {
@@ -95,7 +100,7 @@ describe('ContactForm', () => {
     await user.click(screen.getByRole('button', { name: /submit/i }));
 
     expect(
-      screen.getByRole('status', { name: /bezig met verzenden/i })
+      await screen.findByRole('status', { name: /bezig met verzenden/i })
     ).toBeInTheDocument();
 
     // Let the fake API call finish *inside* act

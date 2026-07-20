@@ -33,6 +33,7 @@ const ContactForm = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isSubmittingRef = useRef(false);
 
   // onSubmit will only fire if the form is valid
@@ -40,6 +41,7 @@ const ContactForm = () => {
     // Prevent duplicate submissions
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
+    setIsLoading(true);
 
     console.log('Form data:', data);
 
@@ -57,6 +59,7 @@ const ContactForm = () => {
         }, 1500);
       });
     } finally {
+      setIsLoading(false);
       isSubmittingRef.current = false;
     }
   };
@@ -66,7 +69,7 @@ const ContactForm = () => {
 
   // Disable scroll when preloader shows
   useEffect(() => {
-    if (!form.formState.isSubmitting) return;
+    if (!isLoading) return;
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -74,7 +77,7 @@ const ContactForm = () => {
     return () => {
       document.body.style.overflow = originalOverflow;
     };
-  }, [form.formState.isSubmitting]);
+  }, [isLoading]);
 
   if (isSubmitted) {
     return (
@@ -119,7 +122,7 @@ const ContactForm = () => {
 
         <FormProvider form={form} onSubmit={onSubmit}>
           {/* Fake loader to simulate API request */}
-          {form.formState.isSubmitting && <Loader />}
+          {isLoading && <Loader />}
 
           {showErrors && (
             <InvalidFormAlert

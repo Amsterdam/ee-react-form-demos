@@ -26,7 +26,7 @@ const ContactForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema) as Resolver<ContactFormData>,
     defaultValues: {
@@ -37,6 +37,7 @@ const ContactForm = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isSubmittingRef = useRef(false);
 
   // onSubmit will only fire if the form is valid
@@ -46,6 +47,7 @@ const ContactForm = () => {
     // Prevent duplicate submissions
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
+    setIsLoading(true);
 
     try {
       await new Promise<void>(resolve => {
@@ -54,6 +56,7 @@ const ContactForm = () => {
 
       setIsSubmitted(true);
     } finally {
+      setIsLoading(false);
       isSubmittingRef.current = false;
     }
   };
@@ -108,7 +111,7 @@ const ContactForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           {/* Fake loader to simulate API request */}
-          {isSubmitting && <Loader />}
+          {isLoading && <Loader />}
           {hasErrors && (
             <InvalidFormAlert
               errors={alertErrors}

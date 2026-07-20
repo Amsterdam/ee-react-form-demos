@@ -93,6 +93,10 @@ describe('CreateEntity', () => {
 
     await screen.findAllByText(/Enter a name/i);
     expect(screen.getAllByText(/Enter a name/i).length).toBeGreaterThan(0);
+    expect(document.body.style.overflow).toBe('');
+    expect(
+      screen.queryByRole('status', { name: /bezig met verzenden/i })
+    ).not.toBeInTheDocument();
   });
 
   it('should show individual validation errors', async () => {
@@ -114,10 +118,14 @@ describe('CreateEntity', () => {
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
 
-    fireEvent.click(submitButton);
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
 
     // This waits for the button text to change
-    expect(screen.getByRole('button', { name: /submitting/i }));
+    expect(
+      await screen.findByRole('button', { name: /submitting/i })
+    ).toBeInTheDocument();
 
     // Let the fake API call finish *inside* act
     await act(async () => {
@@ -135,7 +143,7 @@ describe('CreateEntity', () => {
     });
 
     expect(
-      screen.getByRole('status', { name: /bezig met verzenden/i })
+      await screen.findByRole('status', { name: /bezig met verzenden/i })
     ).toBeInTheDocument();
 
     await act(async () => {

@@ -52,6 +52,10 @@ describe('ReactHookForm / BookingForm', () => {
     ).toBeGreaterThan(0);
 
     expect(screen.getByLabelText(/voornaam/i)).toBeInTheDocument();
+    expect(document.body.style.overflow).toBe('');
+    expect(
+      screen.queryByRole('status', { name: /bezig met verzenden/i })
+    ).not.toBeInTheDocument();
   });
 
   it('completes all steps and shows success content', async () => {
