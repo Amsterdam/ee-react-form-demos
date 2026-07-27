@@ -1,3 +1,4 @@
+/* stylelint-disable selector-no-qualifying-type */
 /* stylelint-disable selector-max-compound-selectors, @stylistic/indentation */
 .sbdocs-content.sbdocs-content > :is(h1, h2, h3, h4, h5, h6, p),
 .sbdocs-content.sbdocs-content

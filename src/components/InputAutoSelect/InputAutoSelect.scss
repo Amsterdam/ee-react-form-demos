@@ -1,4 +1,4 @@
-/* stylelint-disable selector-class-pattern */
+/* stylelint-disable selector-class-pattern, selector-no-qualifying-type */
 .react-select {
   &--is-disabled {
     &.react-select__container {
@@ -42,10 +42,8 @@
     box-shadow: var(--ams-select-hover-box-shadow);
   }
 
-  /* stylelint-disable-next-line selector-no-qualifying-type */
   &:has(input:last-of-type:invalid) {
     border-color: var(--ams-select-invalid-border-color);
-    /* box-shadow: var(--ams-select-invalid-hover-box-shadow); */
   }
 }
 
