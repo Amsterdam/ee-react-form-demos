@@ -123,6 +123,9 @@ describe('CreateEntity', () => {
     const { default: CreateEntity } = await import('./CreateEntity');
     render(<CreateEntity />);
 
+    // Reset form to empty values to trigger validation errors
+    fireEvent.click(screen.getByRole('button', { name: /Reset/i }));
+
     const submitButton = screen.getByRole('button', { name: /submit/i });
     fireEvent.click(submitButton);
 
