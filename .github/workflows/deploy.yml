@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "main" # change to the branch you wish to deploy from
+      - 'main' # change to the branch you wish to deploy from
 
 permissions:
   contents: read
@@ -12,7 +12,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - id: build-publish
-      uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
-      with:
-        path: storybook-static
+      - id: build-publish
+        uses: bitovi/github-actions-storybook-to-github-pages@ddd9d35f670cceedd2bfc444be681001b0709730 # v1.0.4
+        with:
+          path: storybook-static
