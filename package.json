@@ -18,9 +18,9 @@
     "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^10.5.5",
-    "@storybook/addon-themes": "10.5.5",
-    "@storybook/react-vite": "^10.5.5",
+    "@storybook/addon-docs": "^10.6.6",
+    "@storybook/addon-themes": "10.6.6",
+    "@storybook/react-vite": "^10.6.6",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -39,7 +39,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-storybook": "10.5.5",
+    "eslint-plugin-storybook": "10.6.6",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
@@ -92,5 +92,11 @@
     "*.{ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.6": true,
+    "@swc/core@1.15.46": true,
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.3": true
   }
 }
