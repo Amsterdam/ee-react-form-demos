@@ -69,7 +69,7 @@
     "@amsterdam/design-system-react-icons": "^2.0.0",
     "@amsterdam/design-system-tokens": "^4.0.1",
     "@amsterdam/ee-ads-rhf": "^0.0.5",
-    "@hookform/resolvers": "^5.1.1",
+    "@hookform/resolvers": "^7.0.3",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "es-toolkit": "^1.39.3",
